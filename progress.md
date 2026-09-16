@@ -143,3 +143,11 @@
 - 按requesting-code-review进行三轮针对性只读审查，修正标题祖先、链接输出、行偏移／Unicode行、上下文验收和失败标记；最终无剩余重要发现。
 - 新增docs/p2-chunking-guide.md，完成实施计划复选框，更新主计划、路线、需求变更、参考调研与问题日志。
 - 下一节点P2.3：固定Embedding模型及revision，核验真实tokenizer和模板，建立隔离Qdrant持久化索引。PaperQA2接入仍在P2.5/P4，当前没有生成答案或基准得分。
+
+### GitHub私有仓库备份（2026-09-16）
+
+- 按用户授权上传当前项目到https://github.com/Masterq8/ICAN，仓库为private。
+- 新增README和.gitattributes，保存67个源码／配置／文档／来源及评测文件；原始模型、第三方仓库、权重、缓存、processed产物和索引继续忽略。
+- 初始提交ac298469f77c301dc854a9cb193f358a665987d0已推送main，origin/main已设为跟踪分支；本地Git历史额外备份于.git/ican-p2.2.bundle。
+- 复用Git Credential Manager设备登录解决私有仓库访问，访问token未写入项目；13个数据／配置提交blob与原文件字节一致，冻结集哈希未变。
+- 本次仅备份及文档完善，P2.3仍为下一开发节点。
