@@ -1,0 +1,26 @@
+{
+  "schema_version": "1",
+  "tokenizer": "cl100k_base",
+  "max_tokens": 768,
+  "max_context_tokens": 128,
+  "overlap_tokens": 64,
+  "datasets": [
+    {
+      "dataset_id": "swin_chunks_v1",
+      "kind": "parsed",
+      "parent_manifest": "data/processed/swin/v1/parse_report.json",
+      "expected_manifest_sha256": "277a37bebb8d576bc30d538cc43fa5ccf8e6f0cbceb7fab4335cf673b5fa0a31",
+      "inputs": {"default": "data/processed/swin/v1/parsed_units.jsonl"},
+      "sources": "data/processed/swin/v1/sources.jsonl",
+      "output_dir": "data/processed/swin/chunks/v1"
+    },
+    {
+      "dataset_id": "qasper_external_chunks_v1",
+      "kind": "qasper",
+      "parent_manifest": "data/processed/qasper_external/v1/manifest.json",
+      "expected_manifest_sha256": "593e3c071031c95815797d4796e5d3fa103a210922f853a77be19e5934365d6f",
+      "inputs": {"train": "data/processed/qasper_external/v1/train_corpus.jsonl", "validation": "data/processed/qasper_external/v1/validation_corpus.jsonl"},
+      "output_dir": "data/processed/qasper_external/chunks/v1"
+    }
+  ]
+}

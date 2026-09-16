@@ -1,0 +1,58 @@
+{
+  "dataset_id": "swin_t_rag_eval_v1",
+  "version": "1.0.0",
+  "created_at": "2026-09-15",
+  "status": "frozen",
+  "language": "zh-CN",
+  "scope": {
+    "paper": "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows",
+    "paper_version": "arXiv:2103.14030v2 / ICCV 2021",
+    "paper_file": "data/raw/papers/swin_transformer_2103.14030.pdf",
+    "paper_sha256": "dfdc7631fe2a35bb5892080b9c0eeadc4432d55cf1856f84bc88802efa877a7c",
+    "repository": "microsoft/Swin-Transformer",
+    "repository_commit": "f82860bfb5225915aca09c3227159ee9e1df874d"
+  },
+  "counts": {
+    "candidate_sources": 31,
+    "dev": 12,
+    "test": 8,
+    "total": 20
+  },
+  "category_distribution": {
+    "architecture": 4,
+    "input_shape": 3,
+    "configuration": 4,
+    "training": 3,
+    "pretrained_finetune": 2,
+    "implementation_difference": 2,
+    "insufficient_evidence": 1,
+    "conflicting_evidence": 1
+  },
+  "difficulty_distribution": {
+    "L1": 4,
+    "L2": 7,
+    "L3": 6,
+    "L4": 3
+  },
+  "answer_status_distribution": {
+    "supported": 13,
+    "conditional": 5,
+    "insufficient": 1,
+    "conflicting": 1
+  },
+  "files": {
+    "candidates": {"path":"data/eval/swin_candidates.jsonl","sha256":"d69a116828738464947114d01592d259462d2e99e6338a1d7b55135bf8976ff2"},
+    "evidence": {"path":"data/eval/swin_evidence.json","sha256":"a0fdb2448f70b3e6c5193ab779e383096d802d506087f458f8f04b5c9d4207b6"},
+    "dev": {"path":"data/eval/swin_dev.jsonl","sha256":"c1849c4dd3e953e22145f7a67468536d11c96600d805d35839c8727fcdb2174c"},
+    "test": {"path":"data/eval/swin_test.jsonl","sha256":"5b2db3539abd08fd52b1e2d6aab4b5b78a1398d3738e3ebce9764c35b55c74b2"}
+  },
+  "leakage_policy": "Do not index evaluation JSONL files or docs/swin-t-evaluation-set-v1.md. Dev and test leakage_group values are unique across both splits.",
+  "validation": {
+    "json_parse": "pass",
+    "required_evidence_references": "pass",
+    "unique_item_ids": "pass",
+    "unique_leakage_groups": "pass",
+    "distribution_checks": "pass",
+    "runtime_model_execution": "not_run_missing_pytorch"
+  }
+}

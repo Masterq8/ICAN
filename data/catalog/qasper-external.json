@@ -1,0 +1,91 @@
+{
+  "artifact_sha256": {
+    "data/eval/qasper_external/v1/train_questions.jsonl": "d16b5c02a93d2cd82e8632545a8d2122f5ef2091caab94cbf384b95194ac7065",
+    "data/eval/qasper_external/v1/validation_questions.jsonl": "21ecb3df1c226997c999e786882ae22b3620e405f324b5ac8e95de7562c3f761",
+    "data/processed/qasper_external/v1/train_corpus.jsonl": "bee8df4016b7fdbb4022af8a07b2c0a0557d7af4b09f90d62a3c0026f72d1760",
+    "data/processed/qasper_external/v1/validation_corpus.jsonl": "f6ba131118749f33932bb9b2845e81822d6dbbd339e4ff8aabc5245a94de903b"
+  },
+  "card_revision": "fdc9d8214fbab5dd782958601db4d678e6934a54",
+  "card_sha256": "da348d3f8277f8a93ca397941f6a525433e282858b1c0562aed3f667d8e55b05",
+  "counts": {
+    "train": {
+      "ambiguous_matches": 0,
+      "annotations": 51,
+      "papers": 20,
+      "questions": 51,
+      "units": 1656,
+      "unmatched_evidence": 1
+    },
+    "validation": {
+      "ambiguous_matches": 0,
+      "annotations": 57,
+      "papers": 10,
+      "questions": 32,
+      "units": 698,
+      "unmatched_evidence": 0
+    }
+  },
+  "dataset_id": "qasper_external_v1",
+  "dataset_revision": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+  "evaluation_only": [
+    "data/eval/qasper_external/v1/train_questions.jsonl",
+    "data/eval/qasper_external/v1/validation_questions.jsonl"
+  ],
+  "index_allowlist": [
+    "data/processed/qasper_external/v1/train_corpus.jsonl",
+    "data/processed/qasper_external/v1/validation_corpus.jsonl"
+  ],
+  "license": "CC-BY-4.0",
+  "location": "section/paragraph or caption index; PDF pages unavailable",
+  "scope": "External benchmark; Swin frozen test remains unchanged; no QASPER test download",
+  "selected_papers": {
+    "train": [
+      "1601.00901",
+      "1601.01705",
+      "1601.02166",
+      "1601.02543",
+      "1601.04012",
+      "1601.06068",
+      "1601.06081",
+      "1601.06738",
+      "1602.00812",
+      "1602.01208",
+      "1602.01595",
+      "1602.03661",
+      "1602.06291",
+      "1602.07618",
+      "1602.08741",
+      "1603.00968",
+      "1603.01417",
+      "1603.04513",
+      "1603.04553",
+      "1603.07044"
+    ],
+    "validation": [
+      "1503.00841",
+      "1601.02403",
+      "1603.01514",
+      "1603.01987",
+      "1603.08594",
+      "1603.09631",
+      "1604.00400",
+      "1604.00727",
+      "1604.03114",
+      "1604.05372"
+    ]
+  },
+  "selection": "first N paper IDs in lexicographic order within each original split",
+  "source": "https://huggingface.co/datasets/allenai/qasper",
+  "transport": [
+    {
+      "bytes": 14374550,
+      "path": "data/raw/external/qasper/qasper/train/0000.parquet",
+      "sha256": "9af08092ee26c4f700202c1f90d1592b662926f23f3a308a10ff0a53345e37fe"
+    },
+    {
+      "bytes": 4749127,
+      "path": "data/raw/external/qasper/qasper/validation/0000.parquet",
+      "sha256": "089781b91c337d348dd9e8b57cc8adc100ed2d9cab84a6127402bcccf1559222"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "catalog_version": "0.1",
+  "collected_at": "2026-09-15",
+  "models": [
+    {
+      "id": "swin-transformer",
+      "name": "Swin Transformer",
+      "variant": "Swin-T",
+      "task_family": ["image-classification", "object-detection", "semantic-segmentation"],
+      "architecture_family": "vision-transformer",
+      "paper_arxiv": "2103.14030",
+      "paper_file": "data/raw/papers/swin_transformer_2103.14030.pdf",
+      "repository": "https://github.com/microsoft/Swin-Transformer",
+      "repository_commit": "f82860bfb5225915aca09c3227159ee9e1df874d",
+      "repository_path": "data/raw/repositories/Swin-Transformer",
+      "code_license": "MIT",
+      "weight_file": "data/raw/weights/swin_tiny_patch4_window7_224.pth",
+      "weight_access": "public"
+    },
+    {
+      "id": "vision-mamba",
+      "name": "Vision Mamba",
+      "variant": "Vim-Tiny",
+      "task_family": ["image-classification", "object-detection", "semantic-segmentation"],
+      "architecture_family": "visual-state-space-model",
+      "paper_arxiv": "2401.09417",
+      "paper_file": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "repository": "https://github.com/hustvl/Vim",
+      "repository_commit": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "repository_path": "data/raw/repositories/Vim",
+      "code_license": "Apache-2.0",
+      "weight_file": "data/raw/weights/vim_t_midclstok_76p1acc.pth",
+      "weight_access": "public"
+    },
+    {
+      "id": "mamba",
+      "name": "Mamba",
+      "task_family": ["sequence-modeling"],
+      "architecture_family": "selective-state-space-model",
+      "paper_arxiv": "2312.00752",
+      "paper_file": "data/raw/papers/mamba_2312.00752.pdf",
+      "repository": "https://github.com/state-spaces/mamba",
+      "repository_commit": "e9594ce1c732d97440f0332fdc43170a2294dbfa",
+      "repository_path": "data/raw/repositories/mamba",
+      "code_license": "Apache-2.0",
+      "weight_access": "public-not-downloaded"
+    },
+    {
+      "id": "sam3",
+      "name": "SAM 3",
+      "task_family": ["image-segmentation", "video-segmentation", "open-vocabulary-concept-segmentation"],
+      "architecture_family": "promptable-segmentation-foundation-model",
+      "paper_arxiv": "2511.16719",
+      "paper_file": "data/raw/papers/sam3_2511.16719.pdf",
+      "repository": "https://github.com/facebookresearch/sam3",
+      "repository_commit": "660a5e9e1b8b4c02c0ad97229b88a09a6e4ff5b7",
+      "repository_path": "data/raw/repositories/sam3",
+      "code_license": "SAM License",
+      "weight_access": "manual-gated",
+      "weight_repository": "https://huggingface.co/facebook/sam3"
+    },
+    {
+      "id": "vit",
+      "name": "Vision Transformer",
+      "task_family": ["image-classification"],
+      "architecture_family": "vision-transformer",
+      "paper_arxiv": "2010.11929",
+      "paper_file": "data/raw/papers/vit_2010.11929.pdf",
+      "repository": "https://github.com/google-research/vision_transformer",
+      "repository_commit": "64801f1b3b367b3611cc27a3d45cc22870a36fb3",
+      "repository_path": "data/raw/repositories/vision_transformer",
+      "code_license": "Apache-2.0"
+    },
+    {
+      "id": "deit",
+      "name": "Data-efficient Image Transformers",
+      "task_family": ["image-classification"],
+      "architecture_family": "vision-transformer",
+      "paper_arxiv": "2012.12877",
+      "paper_file": "data/raw/papers/deit_2012.12877.pdf",
+      "repository": "https://github.com/facebookresearch/deit",
+      "repository_commit": "7e160fe43f0252d17191b71cbb5826254114ea5b",
+      "repository_path": "data/raw/repositories/deit"
+    },
+    {
+      "id": "vmamba",
+      "name": "VMamba",
+      "task_family": ["image-classification", "object-detection", "semantic-segmentation"],
+      "architecture_family": "visual-state-space-model",
+      "paper_arxiv": "2401.10166",
+      "paper_file": "data/raw/papers/vmamba_2401.10166.pdf",
+      "repository": "https://github.com/MzeroMiko/VMamba",
+      "repository_commit": "2ed52ead062a51a64521ed3871d52914bf532876",
+      "repository_path": "data/raw/repositories/VMamba"
+    },
+    {
+      "id": "mambavision",
+      "name": "MambaVision",
+      "task_family": ["image-classification", "object-detection", "semantic-segmentation"],
+      "architecture_family": "mamba-transformer-hybrid",
+      "paper_arxiv": "2407.08083",
+      "paper_file": "data/raw/papers/mambavision_2407.08083.pdf",
+      "repository": "https://github.com/NVlabs/MambaVision",
+      "repository_commit": "7860a506b2eb844eaaae676f08461ce8c3c26f43",
+      "repository_path": "data/raw/repositories/MambaVision"
+    },
+    {
+      "id": "sam2",
+      "name": "SAM 2",
+      "task_family": ["image-segmentation", "video-segmentation"],
+      "architecture_family": "promptable-segmentation-foundation-model",
+      "paper_arxiv": "2408.00714",
+      "paper_file": "data/raw/papers/sam2_2408.00714.pdf",
+      "repository": "https://github.com/facebookresearch/sam2",
+      "repository_commit": "2b90b9f5ceec907a1c18123530e92e794ad901a4",
+      "repository_path": "data/raw/repositories/sam2",
+      "code_license": "Apache-2.0"
+    },
+    {
+      "id": "unet",
+      "name": "U-Net",
+      "task_family": ["biomedical-image-segmentation"],
+      "architecture_family": "encoder-decoder-cnn",
+      "paper_arxiv": "1505.04597",
+      "paper_file": "data/raw/papers/unet_1505.04597.pdf",
+      "repository": "https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/",
+      "repository_path": "data/raw/repositories/u-net-release-2015-10-02.tar.gz",
+      "implementation_status": "author-release-legacy-caffe-matlab"
+    }
+  ]
+}

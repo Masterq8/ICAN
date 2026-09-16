@@ -1,0 +1,79 @@
+# Web API and configuration
+fastapi
+uvicorn[standard]
+pydantic>=2,<3
+pydantic-settings
+python-multipart
+httpx
+orjson
+python-dotenv
+tenacity
+structlog
+rich
+typer
+
+# Persistence
+sqlalchemy>=2,<3
+aiosqlite
+alembic
+
+# RAG, Agent and model clients
+langgraph
+langgraph-cli[inmem]
+langchain-core
+# Ragas imports the legacy VertexAI module removed in langchain-community 0.4.
+langchain-community==0.3.31
+langchain-openai==1.1.9
+langchain-qdrant
+qdrant-client[fastembed]
+openai>=2,<3
+tiktoken
+sentence-transformers
+transformers
+accelerate
+huggingface-hub
+safetensors
+tokenizers
+
+# Sparse retrieval and evaluation
+rank-bm25
+bm25s
+jieba
+rapidfuzz
+# Ragas 0.4.3 depends on Instructor. Instructor 1.17 currently requires
+# OpenAI SDK 2.x (its jiter constraint conflicts with OpenAI SDK 3.x).
+ragas==0.4.3
+instructor==1.17.0
+datasets
+pandas
+scikit-learn
+scipy
+
+# PDF, HTML, code and configuration parsing
+docling-slim[convert-core,extract-core,format-pdf,models-local]==2.127.0
+pypdf
+pymupdf
+pdfplumber
+beautifulsoup4
+lxml
+markdown-it-py
+pyyaml
+yacs
+tree-sitter
+tree-sitter-python
+pygments
+jsonschema
+
+# Vision model utilities
+timm
+einops
+opencv-python-headless
+
+# Development and tests
+pytest
+pytest-asyncio
+pytest-cov
+ruff
+mypy
+ipykernel
+jupyter-client

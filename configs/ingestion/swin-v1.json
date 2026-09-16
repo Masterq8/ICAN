@@ -1,0 +1,23 @@
+{
+  "dataset_id": "swin_corpus_v1",
+  "pdf_backend": "docling",
+  "output_dir": "data/processed/swin/v1",
+  "max_file_bytes": 2097152,
+  "extensions": [".py", ".yaml", ".yml", ".json", ".md", ".sh", ".txt"],
+  "filenames": ["LICENSE", "LICENSE.txt"],
+  "sources": [
+    {
+      "kind": "paper",
+      "path": "data/raw/papers/swin_transformer_2103.14030.pdf",
+      "version": "arXiv:2103.14030v2 / ICCV 2021",
+      "url": "https://arxiv.org/abs/2103.14030v2",
+      "expected_sha256": "dfdc7631fe2a35bb5892080b9c0eeadc4432d55cf1856f84bc88802efa877a7c"
+    },
+    {
+      "kind": "repository",
+      "path": "data/raw/repositories/Swin-Transformer",
+      "version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+      "url": "https://github.com/microsoft/Swin-Transformer"
+    }
+  ]
+}

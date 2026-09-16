@@ -1,0 +1,4 @@
+* text=auto eol=lf
+# Keep hash-checked evaluation, catalogs, and configuration byte-for-byte.
+data/** -text
+configs/** -text

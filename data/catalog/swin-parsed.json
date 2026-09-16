@@ -1,0 +1,61 @@
+{
+  "artifact_sha256": {
+    "parse_failures.jsonl": "c18f439e8110cd8a57086a030c251beb595a3f4d62cef674d2b855102b0b79f9",
+    "parsed_units.jsonl": "0d0da117cb0eb584cf011aceef2a9be0d8a8ffbb6010321b69039ff8f3d1461f",
+    "sources.jsonl": "763b75389a2416f57e4fed18a8c18b6c930b98d2b1884feaeea8383f95b16deb"
+  },
+  "config_sha256": "312fd15eaccc498b82b36d04d4f2c5849309a03362f737328eb8efc80f6bb152",
+  "dataset_id": "swin_corpus_v1",
+  "errors": 0,
+  "pdf_backend": "docling",
+  "pdf_pages": 14,
+  "skipped": [
+    {
+      "path": "data/raw/repositories/Swin-Transformer/.gitignore",
+      "reason": "extension_not_allowed"
+    },
+    {
+      "path": "data/raw/repositories/Swin-Transformer/figures/teaser.png",
+      "reason": "extension_not_allowed"
+    },
+    {
+      "path": "data/raw/repositories/Swin-Transformer/kernels/window_process/swin_window_process.cpp",
+      "reason": "extension_not_allowed"
+    },
+    {
+      "path": "data/raw/repositories/Swin-Transformer/kernels/window_process/swin_window_process_kernel.cu",
+      "reason": "extension_not_allowed"
+    }
+  ],
+  "source_records": 85,
+  "status": "passed",
+  "units": 97,
+  "versions": {
+    "docling-core": "2.96.1",
+    "docling-ibm-models": "4.0.2",
+    "docling-parse": "7.20.0",
+    "docling-slim": "2.127.0"
+  },
+  "warnings": 13,
+  "verification": {
+    "checks": [
+      "source registration, input/text hashes, version, line/character positions and PDF bounding boxes",
+      "14 physical PDF pages present",
+      "Swin frozen test SHA-256 unchanged",
+      "QASPER artifacts, cross-split isolation, gold-label separation and evidence registration"
+    ],
+    "qasper_units": 2354,
+    "status": "passed",
+    "swin_spans": 1496,
+    "swin_units": 97
+  },
+  "rebuild_verification": {
+    "status": "passed",
+    "artifact_sha256": {
+      "sources.jsonl": "763b75389a2416f57e4fed18a8c18b6c930b98d2b1884feaeea8383f95b16deb",
+      "parsed_units.jsonl": "0d0da117cb0eb584cf011aceef2a9be0d8a8ffbb6010321b69039ff8f3d1461f",
+      "parse_failures.jsonl": "c18f439e8110cd8a57086a030c251beb595a3f4d62cef674d2b855102b0b79f9",
+      "parse_report.json": "277a37bebb8d576bc30d538cc43fa5ccf8e6f0cbceb7fab4335cf673b5fa0a31"
+    }
+  }
+}
