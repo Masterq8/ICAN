@@ -18,6 +18,7 @@ aiosqlite
 alembic
 
 # RAG, Agent and model clients
+paper-qa==2026.8.12
 langgraph
 langgraph-cli[inmem]
 langchain-core

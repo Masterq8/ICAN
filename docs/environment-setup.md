@@ -71,6 +71,8 @@ conda run -n ican python scripts/smoke_environment.py
 
 ## 范围说明
 
+**2026-09-17 P2.5环境更新：** 固定安装paper-qa2026.8.12／fhaviary0.37.0／fhlmi1.0.7／LiteLLM1.84.1等21个新增或变更包；packaging26.3→25.0。安装前锁为requirements/ican-before-p25-lock.txt，新增依赖锁为requirements/paperqa2-lock.txt，完整实际环境锁已更新ican-lock.txt。pip check、123测试及真实BGE／PaperQA2问答通过；六个索引identity库保持原版本。运行配置参见[p2-qa-guide.md](p2-qa-guide.md)，密钥不在仓库。
+
 - Qdrant 首版可以使用 Python Client 的本地持久化模式；需要网页 Dashboard 或服务部署时再启动 Docker 服务。
 - `mamba-ssm` 和 SAM 3 的运行/训练依赖暂不放入基础环境。当前 MambaVision 固定 `mamba-ssm==2.2.4` 与 `transformers==4.50.0`，而 SAM 3 声明 `numpy<2`；它们与当前 RAG 基础栈的版本和 Windows CUDA 扩展条件不同，将在对应动态复现实验开始前使用独立环境安装和锁定。
 - 评测 JSONL 和带答案的评测文档不得加入 RAG 索引。

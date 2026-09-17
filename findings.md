@@ -140,3 +140,13 @@
 - 上游会剥除伪引用ID，必须先检查raw_answer；Text extras若携带dict可能hash失败，完整location放本项目注册表。默认serializer按score／name排序，dense分数不可伪装成0–10相关性。
 - 首次依赖dry-run要求packaging降为25.0，实际安装后仍需pip check及旧流程回归；本轮未安装。运行时模型API与开发助手模型是独立配置。
 - 详细一手来源和接口边界见docs/paperqa2-integration-investigation.md；P2.5实现尚未开始，不能将调研标记为接入完成。
+
+## 2026-09-17：P2.5接入实证与失败方法
+
+- 外部Context适配能保留既有Qdrant证据：公开aadd_texts、预置PQASession.contexts及aquery均实际执行，不需要迁移payload或fork。
+- raw_answer仍可能已经被上游清理：默认示例ID在赋值前删除。正确边界是捕获LLMResult.text，再做本项目注册表校验；ID和定位通过只代表结构有效，语义支持留正式评测。
+- OpenAI SDK单调用+fhlmi结果契约允许明确关闭重试，避免LiteLLM未登记新模型的路由／成本猜测；cost未知必须null，不能写零。
+- 真实DeepSeek模型列表验证deepseek-flash存在，使用OpenAI兼容接口并关闭思考模式；开发工具模型与作品服务配置相互独立。
+- 首轮论文题因未问到的细节扩展触发证据不足：保留失败记录、从证据与回答定位原因、修正prompt到v2后仅复核失败样例。配置样例v1已通过，不额外重跑；不是正式效果比较。
+- 共3次调用6139输入／1144输出tokens，配置定位YAML6–9行，论文定位PDF2／4页；全部结果保留在忽略的data/processed/qa。123测试通过／1权限跳过，六个identity库和61受保护文件未变。
+- 下一节点固定P2.6问题、语料、模型、prompt与预算，再分别报告Swin开发集和QASPER validation，冻结测试不参与调参。

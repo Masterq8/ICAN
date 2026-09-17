@@ -4,7 +4,7 @@
 
 ## 当前进度
 
-已完成 **P2.4：只返回证据的检索接口**：
+已完成 **P2.5：PaperQA2领域适配与带引用问答**：
 
 - Swin 固定版本论文与官方仓库解析：97 个单元。
 - Swin 结构分块：1,602 块，保留物理页、代码行、来源版本与原文范围。
@@ -16,7 +16,11 @@
 - FastAPI `POST /v1/evidence/search` 支持collection、来源类型和安全路径前缀过滤，只返回可定位证据；真实Swin配置路径约束验证通过。
 - P2.4完成后完整测试：101项通过，1项真实符号链接测试因Windows权限跳过。
 
-下一节点为 **P2.5：PaperQA2接入验证与带引用问答**。进入Agent规划或回答生成前，先切换最高阶模型。网页尚未完成；现有功能查询不代表正式基准得分。
+- 固定PaperQA2 2026.8.12，实际复用公开对象及 `Docs.aquery`；新增 `POST /v1/qa/answer`，返回答案、原文引用、页／行、版本和用量。
+- DeepSeek真实功能样例已运行：配置题定位到YAML第6–9行，论文题定位到PDF第2、4页；保留首轮论文失败及prompt调整记录。
+- P2.5完整测试：123项通过，1项Windows符号链接权限跳过；独立审查确认引用清理漏洞修复。
+
+下一节点为 **P2.6：开发集基线与外部评测**。网页尚未完成；现有功能样例不代表正式基准得分。Agent工具规划进入P4。
 
 ## 文档入口
 
@@ -29,6 +33,7 @@
 - [分块说明与验收](docs/p2-chunking-guide.md)
 - [Embedding与索引说明](docs/p2-indexing-guide.md)
 - [检索接口说明](docs/p2-retrieval-guide.md)
+- [PaperQA2问答配置、接口与验收](docs/p2-qa-guide.md)
 - [环境说明](docs/environment-setup.md)
 
 ## 环境与测试
@@ -60,6 +65,7 @@ python scripts/prepare_embedding_model.py
 python scripts/build_index.py
 python scripts/verify_index.py --smoke
 python scripts/verify_retrieval_api.py
+python scripts/verify_paperqa2.py
 ```
 
 分块配置固定输入 manifest 哈希。若重新生成的解析输入与当前快照不一致，先核验差异，再建立新的配置／输出版本，不跳过校验。冻结测试文件不得用于调参；QASPER 原始 test 未下载。

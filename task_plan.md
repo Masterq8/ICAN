@@ -6,7 +6,7 @@
 ## 当前阶段
 P2：基础 RAG（进行中）
 
-**当前节点：P2.5 PaperQA2接入验证与带引用问答（in_progress，前置核验）。** 用户已按提醒切换开发助手模型。固定上游2026.8.12源码与依赖dry-run已核验；尚未安装或调用生成API。领域adapter设计待审阅，作品运行的生成服务与预算待用户配置。
+**下一节点：P2.6 开发集基线与外部评测（pending）。** P2.5已完成固定PaperQA2 2026.8.12公开接口适配、原始引用校验与问答API；DeepSeek真实论文／配置样例通过，首轮失败及prompt版本差异已保留。123项测试通过，1项Windows权限跳过；六个索引identity库和61个受保护文件未变。详见[问答说明](docs/p2-qa-guide.md)。
 
 ## 复用主线与职责
 
@@ -17,8 +17,8 @@ P2：基础 RAG（进行中）
 | 资源 | 复用方式 | 开发节点 | 当前状态／边界 |
 |---|---|---|---|
 | Docling＋PyMuPDF | 复用文档转换与位置数据，通过本项目 adapter 保留来源契约；失效位置从原 PDF 恢复 | P2.1；P2.2 消费既有结构 | 解析与结构分块已完成；10个表格产生15个待核验块 |
-| PaperQA2 | 以证据收集、上下文处理、带引用生成和 Agent 流程为主要复用目标；扩展代码／配置来源及核查工具 | P2.5 接入与问答；P2.6 基准；P4 Agent 改造 | 尚未安装／接入；先固定版本、核验依赖和接口；默认存储／回答索引不直接混入证据库 |
-| Qdrant | 保留本项目持久化检索组件，通过 adapter 对接 PaperQA2 可用的证据输入或存储接口 | P2.3–P2.5；P3 | 接入方式待验证；PaperQA2 默认 Numpy 存储不能视为已支持 Qdrant |
+| PaperQA2 | 实际复用公开Doc/Text/Context/PQASession、Docs.aadd_texts/aquery、引用格式化与用量统计；扩展代码／配置来源注册表 | P2.5 接入与问答；P2.6 基准；P4 Agent 改造 | 2026.8.12已安装并完成领域adapter；未fork，未迁移上游存储；自主Agent待P4 |
+| Qdrant | 保留持久化检索组件，以外部Context证据入口对接PaperQA2 | P2.3–P2.5；P3 | 已验证现有collection可经adapter消费；没有将不同上游payload直接加载为Text |
 | Kotaemon | 借鉴混合检索／重排流程及 PDF 引用高亮体验，按需复用独立模块 | P3 检索；P5 界面 | 不迁移完整 Gradio 应用；Vue 页面继续消费 FastAPI 与统一证据数据 |
 | ASReview LAB | 借鉴人工修改筛选决策、主动学习排序与审计记录 | P4 筛选流程；P5 筛选界面 | 不作为全文问答／报告引擎；先交付精选库的可修改筛选记录 |
 | OpenScholar／STORM | 借鉴多论文补查、引用归因、大纲与分章节生成 | P4 报告流程；P5 预览／导出 | 围绕 PaperQA2 主流程补充能力，不并行维护另一套完整 Agent；不下载全量论文向量库 |
@@ -61,7 +61,7 @@ P2：基础 RAG（进行中）
 - [x] P2.2：结构化分块；Swin 1,602／QASPER 2,357 块，60 项测试通过，定位覆盖与 12 个产物重建哈希一致（[使用说明](docs/p2-chunking-guide.md)）
 - [x] P2.3：固定BGE-M3与实际tokenizer；Swin／QASPER train／validation共3959点，3个持久化collection；79测试通过，独立进程验收及复用通过（[使用说明](docs/p2-indexing-guide.md)）
 - [x] P2.4：只返回证据的检索接口；FastAPI、请求／响应契约、安全路径约束、真实索引HTTP验证完成（不生成答案）
-- [ ] P2.5：PaperQA2 接入验证、针对性来源适配与带引用问答
+- [x] P2.5：PaperQA2 接入验证、针对性来源适配与带引用问答
 - [ ] P2.6：Swin 开发集基线、QASPER 外部结果和调用日志
 - **状态：** in_progress
 
@@ -119,7 +119,7 @@ P2：基础 RAG（进行中）
 - **状态：** pending
 
 ## 关键问题
-1. 生成模型、Embedding 与重排序服务尚未选定。P2.3前选择可运行的Embedding基线，P2.5前选择生成模型和预算；P2.6后决定是否替换，PaperQA2框架选择不代替这些决策。
+1. 首版Embedding已固定本地BGE-M3；生成已由用户选择DeepSeek deepseek-flash并完成有限真实验收。P2.6开始前明确整批评测预算；重排序模型待P3，替换模型须独立版本评测。
 2. 论文检索范围是精选语料库还是开放互联网？比赛版以精选语料库为主，外部检索作为扩展。
 3. 复杂仓库解析能覆盖到什么程度？先保证 Python、YAML、JSON、Shell 和 Markdown。
 4. PaperQA2如何消费外部chunk／检索证据，能否完整保留页码、行号和配置路径？P2.5用固定版本小试验证，记录接口限制及adapter方案；未验证前不承诺无改动接入Qdrant。

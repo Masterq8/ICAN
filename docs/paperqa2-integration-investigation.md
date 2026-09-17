@@ -1,6 +1,6 @@
 # P2.5：PaperQA2接入前置核验
 
-核验日期：2026-09-17。当前状态为官方源码核验与依赖dry-run完成，尚未安装、修改上游或调用生成API。
+核验日期：2026-09-17。官方源码与依赖核验后已安装固定版本、实现公开接口adapter并运行真实生成；未修改上游。实施与验收记录见 [问答说明](p2-qa-guide.md)。以下保留接入前的接口分析，安装结果另述。
 
 ## 固定上游身份
 
@@ -32,7 +32,7 @@
 
 ## 依赖dry-run
 
-`pip install --dry-run paper-qa==2026.8.12`成功解析出22个新增／变更包，包括fhaviary0.37.0、fhlmi1.0.7、LiteLLM1.84.1、tantivy0.26.2。当前packaging26.3需降为25.0；此结果尚未代表安装后pip check和旧功能回归通过。
+`pip install --dry-run paper-qa==2026.8.12`成功解析出21个新增／变更包，包括fhaviary0.37.0、fhlmi1.0.7、LiteLLM1.84.1、tantivy0.26.2。packaging26.3降为25.0；安装前快照见requirements/ican-before-p25-lock.txt，新增锁见requirements/paperqa2-lock.txt，实际完整环境已更新ican-lock.txt。安装后pip check通过，六个索引identity库版本保持不变，真实BGE检索和离线问答通过。
 
 实现前应保存既有lock，固定新增包版本并安装后检查依赖、完整测试、真实BGE检索；不要为新增库破坏P2.3索引身份。索引identity所包含的torch／transformers／sentence-transformers／qdrant-client／tokenizers／numpy应保持原版本。
 
@@ -40,4 +40,10 @@
 
 优先使用“现有Qdrant检索→领域Context adapter→PaperQA2 Docs.aquery”的公开接口方案。P2.5先完成固定单轮带引用问答，P4再引入Agent补查和核查工具。完整迁移上游存储需要转换payload与重新验证；小范围fork目前没有已证实的必要性。
 
-开发助手切换最高阶模型不等于作品拥有API配置。本轮只检查配置变量名称，未读取或使用其他工具的密钥。真实生成验收需用户指定作品的模型服务与预算，mock只能证明接口行为。
+开发助手切换最高阶模型不等于作品拥有API配置。实施阶段使用用户明确提供的DeepSeek服务，密钥仅存忽略的.env，未读取或使用其他工具凭据。fake LLM只能证明接口行为。
+
+## 实施中新增发现
+
+上游在设置session.raw_answer之前还会移除默认示例引用pqac-0f650d59，单独校验session.raw_answer不足以发现它。现以CapturedAnswerModel捕获原始LLMResult.text，实际执行上游aquery后验证未经清理的文本；回归覆盖合法引用混合该未知示例ID。独立只读审查确认修复。
+
+运行时采用OpenAI SDK单调用桥接fhlmi公开LLMResult契约，没有使用LiteLLM路由或默认重试。保留上游回答组织、对象适配、格式化和token统计；API最终编号由本项目注册表映射，以保证未知引用不会被隐藏。
