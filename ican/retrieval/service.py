@@ -7,6 +7,7 @@ import uuid
 from collections.abc import Callable
 from contextlib import closing
 from pathlib import Path
+from threading import Lock
 
 from qdrant_client import QdrantClient, models
 
@@ -14,6 +15,7 @@ from ican.indexing.inputs import load_chunks
 from ican.indexing.model import DenseEncoder, verified_model
 from ican.indexing.pipeline import index_directory, index_identity
 from ican.indexing.schema import IndexConfig
+from ican.indexing.verification import verify_artifacts
 
 from .schema import EvidenceResult, EvidenceSource, SearchRequest, SearchResponse
 
@@ -46,33 +48,48 @@ class EvidenceSearchService:
         self.client_factory = client_factory
         self._index_path = index_path
         self._manifest: dict | None = None
+        self._initialization_lock = Lock()
+        self._query_lock = Lock()
 
     def _load_index(self) -> tuple[Path, dict]:
         if self._manifest is not None and self._index_path is not None:
             return self._index_path, self._manifest
-        try:
-            if self._index_path is None:
-                _, ledger_hash = verified_model(self.root, self.config.model)
-                _, snapshots = load_chunks(self.root, self.config)
-                identity = index_identity(self.config, snapshots, ledger_hash)
-                self._index_path = index_directory(self.root, self.config, identity)
-            manifest_path = self._index_path / "index_manifest.json"
-            qdrant_path = self._index_path / "qdrant"
-            if not manifest_path.is_file() or not qdrant_path.is_dir():
-                raise IndexUnavailable("Verified local index is missing")
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            if (
-                manifest.get("status") != "passed"
-                or manifest.get("config") != self.config.model_dump()
-                or not isinstance(manifest.get("collections"), dict)
-            ):
-                raise IndexUnavailable("Verified local index manifest is invalid")
-            self._manifest = manifest
-            return self._index_path, manifest
-        except IndexUnavailable:
-            raise
-        except (OSError, ValueError, json.JSONDecodeError, KeyError) as error:
-            raise IndexUnavailable("Verified local index is unavailable") from error
+        with self._initialization_lock:
+            if self._manifest is not None and self._index_path is not None:
+                return self._index_path, self._manifest
+            try:
+                # index_path is a deliberately unverified dependency-injection seam
+                # for offline unit tests. Production always derives and verifies it.
+                if self._index_path is not None:
+                    manifest_path = self._index_path / "index_manifest.json"
+                    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                else:
+                    _, ledger_hash = verified_model(self.root, self.config.model)
+                    rows, snapshots = load_chunks(self.root, self.config)
+                    identity = index_identity(self.config, snapshots, ledger_hash)
+                    self._index_path = index_directory(self.root, self.config, identity)
+                    manifest_path = self._index_path / "index_manifest.json"
+                    with self._query_lock:
+                        verify_artifacts(self._index_path, rows, self.config, identity)
+                    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                    if manifest.get("identity") != identity:
+                        raise IndexUnavailable(
+                            "Verified local index identity is invalid"
+                        )
+                qdrant_path = self._index_path / "qdrant"
+                if (
+                    not qdrant_path.is_dir()
+                    or manifest.get("status") != "passed"
+                    or manifest.get("config") != self.config.model_dump()
+                    or not isinstance(manifest.get("collections"), dict)
+                ):
+                    raise IndexUnavailable("Verified local index manifest is invalid")
+                self._manifest = manifest
+                return self._index_path, manifest
+            except IndexUnavailable:
+                raise
+            except (OSError, ValueError, json.JSONDecodeError, KeyError) as error:
+                raise IndexUnavailable("Verified local index is unavailable") from error
 
     @staticmethod
     def _query_filter(request: SearchRequest) -> models.Filter | None:
@@ -109,7 +126,10 @@ class EvidenceSearchService:
             raise CollectionNotFound("Unknown evidence collection")
         try:
             vector = self._encoder().encode([request.query])[0].tolist()
-            with closing(self.client_factory(path=str(directory / "qdrant"))) as client:
+            with (
+                self._query_lock,
+                closing(self.client_factory(path=str(directory / "qdrant"))) as client,
+            ):
                 found = client.query_points(
                     collection_name=request.collection,
                     query=vector,

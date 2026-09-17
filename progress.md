@@ -169,3 +169,4 @@
 - 服务惰性加载固定BGE-M3，先核验索引manifest和collection；无效请求／collection为422，索引不可用为不泄露内部路径的503。`GET /health`不加载模型。
 - 实际HTTP验证显示config类型过滤仍混入SwinV2／SwinMoE；加入真实快照路径前缀后5条结果均在标准`configs/swin/`目录。该结果只验证检索约束，不构成gold正确率。
 - P2.5前保留边界：不含回答、摘要、报告、Agent或PaperQA2。开始Agent规划或回答生成前提醒用户切换最高阶模型。
+- 独立审查发现并修正同worker并发Qdrant目录争用、以及首次服务未完整验证索引identity／payload／向量的问题；新增并发及篡改回归后，检索测试22项通过。

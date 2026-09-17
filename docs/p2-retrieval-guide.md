@@ -4,7 +4,7 @@
 
 本节点将P2.3的固定BGE-M3／Qdrant索引提供为只读HTTP接口。它只返回已入库的chunk、来源版本、页码或行号、核验标记和Cosine分数；不会生成回答、摘要、报告，亦不会规划或执行Agent动作。
 
-服务默认读取不可变索引版本`3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87`。首次实际查询会核验模型账本和阶段输入，再加载固定本地模型；`GET /health`不加载模型或打开Qdrant。
+服务默认读取不可变索引版本`3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87`。首次实际查询会核验模型账本、阶段输入、索引identity、落盘payload和向量，再加载固定本地模型；成功验收状态在进程内缓存。`GET /health`不加载模型或打开Qdrant。
 
 ## 启动与调用
 
@@ -13,7 +13,7 @@ conda activate ican
 python scripts/serve_api.py
 ```
 
-Qdrant local会锁定数据库目录，因此脚本固定单worker。不要用多worker启动；需要并发服务时改为Qdrant server，并保持相同payload契约。
+Qdrant local会锁定数据库目录，因此脚本固定单worker。服务也会在同一worker内串行化Qdrant打开、查询和关闭，避免并发HTTP请求争用目录。不要用多worker启动；需要并发服务时改为Qdrant server，并保持相同payload契约。
 
 ```powershell
 Invoke-RestMethod -Method Post http://127.0.0.1:8000/v1/evidence/search `

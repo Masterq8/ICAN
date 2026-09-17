@@ -341,6 +341,22 @@
 
 **P2.4更新（2026-09-17）：** 已通过`source_type=config`加`data/raw/repositories/Swin-Transformer/configs/swin/`路径前缀验证，返回结果均被约束到标准Swin配置目录。变体混入的接口层控制已解决；dense排序、BM25／混合检索及更细粒度配置实体识别仍留P3评估。
 
+### P-20260917-06：同一FastAPI worker的并发请求争用Qdrant local目录
+
+- **分类：** 检索／并发。
+- **现象：** 单worker中的同步路由可并发运行；每个请求重新打开local Qdrant时会触发目录已被访问错误并返回503。
+- **解决方案：** 以进程内互斥锁覆盖Qdrant client的打开、查询和关闭，首次索引完整验收也在同一锁中执行。
+- **验证结果：** 五个并发service请求的最大同时client数为1；真实HTTP查询仍通过。
+- **状态：** 已解决。
+
+### P-20260917-07：服务读取已发布索引时未复核完整性
+
+- **分类：** 检索／数据完整性。
+- **现象：** 初版仅检查manifest状态、配置和集合，落盘payload或向量被篡改时可能继续返回不可信证据。
+- **解决方案：** 首次服务时重新计算固定输入／模型identity并调用P2.3完整artifact和store验收，成功后缓存该状态；identity不匹配或验收失败统一返回503。
+- **验证结果：** identity与篡改artifact回归均被拒绝；真实索引HTTP验证通过。
+- **状态：** 已解决。
+
 ```markdown
 ### P-YYYYMMDD-NN：问题标题
 

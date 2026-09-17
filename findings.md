@@ -131,3 +131,4 @@
 - `source_path`是快照内的完整相对路径，不是仓库内简写路径。真实Swin路径前缀为`data/raw/repositories/Swin-Transformer/configs/swin/`；API严格拒绝绝对路径、反斜杠及`..`。
 - Qdrant的`MatchPrefix`可在local模式直接执行路径前缀约束。真实HTTP smoke表明它消除了SwinV2／SwinMoE目录混入，但不证明检索答案正确；P3仍需混合检索与实体约束评测。
 - 模型、Qdrant和数据库都按首次证据查询惰性加载；health不会触发。local Qdrant只能单worker，日志不记录查询文本或证据正文。
+- 单worker不等于单请求。服务须用进程内互斥锁覆盖每次本地Qdrant的打开、查询和关闭；首次启动还须在同一锁下完整比对immutable索引的identity、payload与向量，成功后才缓存可服务状态。
