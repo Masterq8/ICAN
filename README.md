@@ -22,6 +22,8 @@
 
 下一节点为 **P2.6：开发集基线与外部评测**。网页尚未完成；现有功能样例不代表正式基准得分。Agent工具规划进入P4。
 
+**P2.6进行中：** 完成47题dense检索与评测管线；Swin dev12题Top8必要定位召回32.64%，QASPER validation31题完整段落召回78.49%。136测试通过／1权限跳过。批量生成与语义审核待本轮预算选择，尚无正式回答效果结果，见[基线报告](docs/p2-baseline-report.md)。
+
 ## 文档入口
 
 - [任务计划](task_plan.md)
@@ -34,6 +36,7 @@
 - [Embedding与索引说明](docs/p2-indexing-guide.md)
 - [检索接口说明](docs/p2-retrieval-guide.md)
 - [PaperQA2问答配置、接口与验收](docs/p2-qa-guide.md)
+- [开发集与外部基线报告](docs/p2-baseline-report.md)
 - [环境说明](docs/environment-setup.md)
 
 ## 环境与测试

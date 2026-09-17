@@ -150,3 +150,13 @@
 - 首轮论文题因未问到的细节扩展触发证据不足：保留失败记录、从证据与回答定位原因、修正prompt到v2后仅复核失败样例。配置样例v1已通过，不额外重跑；不是正式效果比较。
 - 共3次调用6139输入／1144输出tokens，配置定位YAML6–9行，论文定位PDF2／4页；全部结果保留在忽略的data/processed/qa。123测试通过／1权限跳过，六个identity库和61受保护文件未变。
 - 下一节点固定P2.6问题、语料、模型、prompt与预算，再分别报告Swin开发集和QASPER validation，冻结测试不参与调参。
+
+## 2026-09-17：P2.6检索基线与评测边界
+
+- 真实Top8 dense查询47题：Swin必要定位召回32.64%，完整仓库行范围覆盖8.33%；近似SwinV2／MoE／MLP／SimMIM变体普遍混入，这是P3精确实体与混合检索的实证入口。
+- QASPER validation有32题／57标注，31题适用非空可回答证据召回，完整段落宏平均78.49%；1份可回答标注无证据、4份unanswerable标注需保留适用性分母。
+- 论文页码标注不能当成完整语义证据范围；代码多个区间及additional_path必须联合覆盖。QASPER字符区间需覆盖整个原段落非空白字符。
+- 默认PaperQA2 serializer最多5sources并按score/name排序，本项目输入8块不能全部算实际送入。production中文prompt与英文QASPER的F1语言不一致，评测单独采用问题语言协议，在train检查后固定。
+- 默认配置对照不等于完整上游Agent／检索基线；官方QASPER词面F1与语义正确性分开报告，未生成指标null。
+- 密封快照SHA和chunk artifactSHA是复现的一部分；仅检查case key或允许检索命令重新赋hash，会破坏两版同证据对照。started-only调用必须出现在失败分母，未知tokens不可算零费用。
+- 生成预算待用户回复，本轮调用0；独立审查全部重要问题已修复，136测试通过／1权限跳过。详见docs/p2-baseline-report.md。

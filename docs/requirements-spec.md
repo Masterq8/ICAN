@@ -299,6 +299,8 @@ flowchart LR
 
 ## 13. 待决策事项
 
+**P2.6实施更新（2026-09-17，v0.9）：** 增加隔离gold的评测管线、密封检索快照、预算累计／恢复journal及官方QASPER多标注评分；定位代理、完整行／段落覆盖、答案词面F1与引用语义支持分开报告。47题dense检索已完成，预算回复前生成0；生产问答和产品范围不变。默认配置对照单独记录sources数量、serializer及评测语言差异，完整上游Agent留后续。详见[p2-baseline-report.md](p2-baseline-report.md)。
+
 **P2.5实现更新（2026-09-17，v0.8）：** 已批准的领域adapter方案实际复用固定PaperQA2 2026.8.12公开对象和aquery；只读问答API消费既有检索证据，返回编号引用、完整位置／版本、用量及可靠性状态。原始LLM输出先保存，避免上游示例ID删除绕过校验。用户选择DeepSeek deepseek-flash，OpenAI SDK单次生成，无重试／fallback／summary／远程embedding；8块／18000原文字符、1536输出tokens、90秒生成超时。真实功能样例通过，网页／Agent和正式语义评测继续原后续节点。详见[p2-qa-guide.md](p2-qa-guide.md)。
 
 **P2.3实现更新（2026-09-17，v0.6）：** 首版Embedding固定本地BAAI/bge-m3 revision `5617a9f61b028005a4858fdac845db406aefb181`，Sentence Transformers dense-only／CLS／1024维Cosine；实际tokenizer限长检查、模型与输入字节身份、来源payload和immutable索引版本已验收。Swin／QASPER train／validation分collection。本地Qdrant仅单进程访问；P2.4来源类型／路径约束用于处理近似变体，P3再评估混合检索，PaperQA2接入仍在P2.5。

@@ -192,3 +192,14 @@
 - 独立只读审查发现上游在raw_answer前删除示例引用；已用CapturedAnswerModel捕获未经修改文本并新增回归，复查确认修复。
 - 最终123项pytest通过，1项Windows符号链接权限跳过；22项QA测试、scoped Ruff／format、pip check通过。61个受保护文件哈希未变，现有索引版本保持不变。
 - 完成问答使用说明、接入报告、问题日志、计划和复用记录；下一节点P2.6开发集基线与独立QASPER结果，批量真实评测前明确预算。P4再做Agent工具规划，P5网页产品化。
+
+### 2026-09-17：P2.6评测管线及本地检索完成，生成预算待选择
+
+- 用户授权开始P2.6，创建codex/p2-6-evaluation分支，固定设计／实现计划。
+- 复用官方QASPER evaluator commit afd0fb96bf78ce8cd8157639c6f6a6995e4f9089及Apache-2.0许可；gold用于离线评分，生成case不携带答案／证据标签。
+- 固定Swin dev12题、QASPER train格式3题、validation32题。47次dense查询完成；Swin不按gold指定路径，QASPER按原paper_id限制给定论文。
+- Top8 Swin定位召回32.64%、必要仓库完整行范围覆盖8.33%；QASPER validation31适用题完整段落召回78.49%，24/32题完整覆盖至少一组非空标注。Swin变体混入已按开发题记录，未用gold改写检索结果。
+- preflight快照经固定输入／正文来源复核复用至最终p26-v2，保存初始provenance和密封SHA，避免反复加载／检索。sealed快照不能重新封存覆盖。
+- 新增预算累计、started fsync／永久跳过、单写者锁、未知用量与中断失败分母；实际输入ID遵从默认serializer最多5与领域版8。评测领域版仅改答句语言指令，生产prompt不变。
+- 136pytest通过／1Windows权限跳过，13评测测试通过；pip check／Ruff通过，61受保护hash未变。独立审查及复核修复全部重要发现。
+- 已向用户询问本轮94次双版／47次领域版／暂不生成预算；尚无回复，本轮生成0。答案F1、引用语义、用量成本与逐题审核待执行；P2.6仍in_progress。

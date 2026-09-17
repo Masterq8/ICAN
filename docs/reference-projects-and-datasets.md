@@ -4,6 +4,8 @@
 
 **2026-09-17实施状态：** P2.5已安装固定PaperQA2 2026.8.12，公开Context adapter与Docs.aquery实际接入；外部Qdrant继续独立，领域注册表保留论文／代码／配置位置及版本。DeepSeek真实功能样例通过，未进行正式问答评分。Kotaemon仍留P3/P5，其他项目按原模块节点使用，详见[问答说明](p2-qa-guide.md)。
 
+**P2.6复用更新：** 固定引入allenai/qasper-led-baseline官方evaluator commit afd0fb96bf78ce8cd8157639c6f6a6995e4f9089，保留Apache-2.0及source/hash；对独立QASPER多参考答案／证据调用其evaluate，语义正确性另审。PaperQA2默认问答配置与领域版将消费同一sealed检索快照，对照尚待本轮批量预算，未运行完整上游Agent基线。见[基线报告](p2-baseline-report.md)。
+
 ## 1. 结论与采用顺序
 
 已有开源项目覆盖了论文解析、证据问答、论文筛选和带引用报告中的大量基础能力。推荐先评估 Docling 解析 Swin PDF，以 PaperQA2 作为科研问答参考基线，借鉴 ASReview 的可修改筛选记录、Kotaemon 的引用展示，以及 OpenScholar/STORM 的报告生成流程。
