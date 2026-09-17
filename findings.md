@@ -132,3 +132,11 @@
 - Qdrant的`MatchPrefix`可在local模式直接执行路径前缀约束。真实HTTP smoke表明它消除了SwinV2／SwinMoE目录混入，但不证明检索答案正确；P3仍需混合检索与实体约束评测。
 - 模型、Qdrant和数据库都按首次证据查询惰性加载；health不会触发。local Qdrant只能单worker，日志不记录查询文本或证据正文。
 - 单worker不等于单请求。服务须用进程内互斥锁覆盖每次本地Qdrant的打开、查询和关闭；首次启动还须在同一锁下完整比对immutable索引的identity、payload与向量，成功后才缓存可服务状态。
+
+## 2026-09-17：P2.5公开接口核验
+
+- PaperQA2当前官方稳定版2026.8.12，固定源码commit 57e89f7223b0960d5ee5ea048c69e3c47e088572。现有QdrantVectorStore接收序列化Text，不兼容本项目chunk payload，直接复用现有集合会失败。
+- 公开aquery可消费带Context的PQASession；推荐保持检索独立，通过Doc／Text／Context adapter实际复用回答和引用流程，P4再加入Agent。
+- 上游会剥除伪引用ID，必须先检查raw_answer；Text extras若携带dict可能hash失败，完整location放本项目注册表。默认serializer按score／name排序，dense分数不可伪装成0–10相关性。
+- 首次依赖dry-run要求packaging降为25.0，实际安装后仍需pip check及旧流程回归；本轮未安装。运行时模型API与开发助手模型是独立配置。
+- 详细一手来源和接口边界见docs/paperqa2-integration-investigation.md；P2.5实现尚未开始，不能将调研标记为接入完成。
