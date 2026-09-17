@@ -1,0 +1,25 @@
+{
+  "run": "p26-v2",
+  "reviewer_type": "assistant",
+  "rubric_version": "p26-semantic-v1",
+  "human_reviewed": false,
+  "journal_sha256": "fb657021ba30bfab4df22fa92a10e3a51dc9d141c94d1753a84b3e191eabfa25",
+  "retrieval_sha256": "14aa782abf9a15bfc43fc820ac22122c129388a47bc26304e47df6cef1558d7f",
+  "input_sha256": {
+    "data/eval/swin_dev.jsonl": "c1849c4dd3e953e22145f7a67468536d11c96600d805d35839c8727fcdb2174c",
+    "data/eval/swin_evidence.json": "a0fdb2448f70b3e6c5193ab779e383096d802d506087f458f8f04b5c9d4207b6",
+    "data/eval/swin_test.jsonl": "5b2db3539abd08fd52b1e2d6aab4b5b78a1398d3738e3ebce9764c35b55c74b2",
+    "data/eval/qasper_external/v1/train_questions.jsonl": "d16b5c02a93d2cd82e8632545a8d2122f5ef2091caab94cbf384b95194ac7065",
+    "data/eval/qasper_external/v1/validation_questions.jsonl": "21ecb3df1c226997c999e786882ae22b3620e405f324b5ac8e95de7562c3f761",
+    "data/processed/qasper_external/v1/train_corpus.jsonl": "bee8df4016b7fdbb4022af8a07b2c0a0557d7af4b09f90d62a3c0026f72d1760",
+    "data/processed/qasper_external/v1/validation_corpus.jsonl": "f6ba131118749f33932bb9b2845e81822d6dbbd339e4ff8aabc5245a94de903b",
+    "data/processed/swin/chunks/v1/chunk_manifest.json": "7e75b67d481b6128daf90c895684b8f0cad9368277f6e597f041c8f2454c170f",
+    "data/processed/swin/chunks/v1/chunks.jsonl": "569388dbdce12f96e9f8f545d406d878ccdb047aa3a50928f082e7d12ae75723",
+    "data/processed/qasper_external/chunks/v1/chunk_manifest.json": "e85143f4ebb1881a4447215a2e978340cc1f610af6f76f0aaccf4e8a414dd8bb",
+    "data/processed/qasper_external/chunks/v1/chunks.jsonl": "996fcc1e0ffcc2552918f5893d1cd6a08652d1764a84e20e11c3b8b7c4a7791d"
+  },
+  "review_files_sha256": {
+    "p26-root-review.jsonl": "751e743e7ec7ae7f70299fd120099ec0309c3d76bfc0c0a27f9965fbf5a41f87",
+    "p26-qasper-review.jsonl": "25e2295c93085a20d3d3b21e9852cd6eb478ea7bf12757c728bd200da137acbf"
+  }
+}

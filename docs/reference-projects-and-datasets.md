@@ -2,9 +2,9 @@
 
 核验日期：2026-09-16。调研后的实施状态：P2.1 解析与 QASPER 外部样本准备已完成，尚未进入问答评测。
 
-**2026-09-17实施状态：** P2.5已安装固定PaperQA2 2026.8.12，公开Context adapter与Docs.aquery实际接入；外部Qdrant继续独立，领域注册表保留论文／代码／配置位置及版本。DeepSeek真实功能样例通过，未进行正式问答评分。Kotaemon仍留P3/P5，其他项目按原模块节点使用，详见[问答说明](p2-qa-guide.md)。
+**2026-09-17实施状态：** P2.5已安装固定PaperQA2 2026.8.12，公开Context adapter与Docs.aquery实际接入；P2.6正式双版评测及助手审核完成。外部Qdrant继续独立，领域注册表保留论文／代码／配置位置及版本。Kotaemon仍留P3/P5，其他项目按原模块节点使用，详见[问答说明](p2-qa-guide.md)及下方评测更新。
 
-**P2.6复用更新：** 固定引入allenai/qasper-led-baseline官方evaluator commit afd0fb96bf78ce8cd8157639c6f6a6995e4f9089，保留Apache-2.0及source/hash；对独立QASPER多参考答案／证据调用其evaluate，语义正确性另审。PaperQA2默认问答配置与领域版将消费同一sealed检索快照，对照尚待本轮批量预算，未运行完整上游Agent基线。见[基线报告](p2-baseline-report.md)。
+**P2.6复用更新：** 固定引入allenai/qasper-led-baseline官方evaluator commit afd0fb96bf78ce8cd8157639c6f6a6995e4f9089，保留Apache-2.0及source/hash；对QASPER多参考答案／证据实际调用evaluate，语义正确性由助手逐题审核。PaperQA2默认问答配置与领域版复用同一sealed检索快照，94次对照完成；默认serializer最多5sources与领域版8块、排序／prompt差异明确记录。未运行完整上游Agent基线。QASPER占位公式／caption与参考冲突保留边界，不修改gold。见[基线报告](p2-baseline-report.md)。
 
 ## 1. 结论与采用顺序
 

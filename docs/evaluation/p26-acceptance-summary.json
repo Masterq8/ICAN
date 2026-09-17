@@ -1,0 +1,508 @@
+{
+  "reviewer_type": "assistant",
+  "human_reviewed": false,
+  "audit_manifest": {
+    "run": "p26-v2",
+    "reviewer_type": "assistant",
+    "rubric_version": "p26-semantic-v1",
+    "human_reviewed": false,
+    "journal_sha256": "fb657021ba30bfab4df22fa92a10e3a51dc9d141c94d1753a84b3e191eabfa25",
+    "retrieval_sha256": "14aa782abf9a15bfc43fc820ac22122c129388a47bc26304e47df6cef1558d7f",
+    "input_sha256": {
+      "data/eval/swin_dev.jsonl": "c1849c4dd3e953e22145f7a67468536d11c96600d805d35839c8727fcdb2174c",
+      "data/eval/swin_evidence.json": "a0fdb2448f70b3e6c5193ab779e383096d802d506087f458f8f04b5c9d4207b6",
+      "data/eval/swin_test.jsonl": "5b2db3539abd08fd52b1e2d6aab4b5b78a1398d3738e3ebce9764c35b55c74b2",
+      "data/eval/qasper_external/v1/train_questions.jsonl": "d16b5c02a93d2cd82e8632545a8d2122f5ef2091caab94cbf384b95194ac7065",
+      "data/eval/qasper_external/v1/validation_questions.jsonl": "21ecb3df1c226997c999e786882ae22b3620e405f324b5ac8e95de7562c3f761",
+      "data/processed/qasper_external/v1/train_corpus.jsonl": "bee8df4016b7fdbb4022af8a07b2c0a0557d7af4b09f90d62a3c0026f72d1760",
+      "data/processed/qasper_external/v1/validation_corpus.jsonl": "f6ba131118749f33932bb9b2845e81822d6dbbd339e4ff8aabc5245a94de903b",
+      "data/processed/swin/chunks/v1/chunk_manifest.json": "7e75b67d481b6128daf90c895684b8f0cad9368277f6e597f041c8f2454c170f",
+      "data/processed/swin/chunks/v1/chunks.jsonl": "569388dbdce12f96e9f8f545d406d878ccdb047aa3a50928f082e7d12ae75723",
+      "data/processed/qasper_external/chunks/v1/chunk_manifest.json": "e85143f4ebb1881a4447215a2e978340cc1f610af6f76f0aaccf4e8a414dd8bb",
+      "data/processed/qasper_external/chunks/v1/chunks.jsonl": "996fcc1e0ffcc2552918f5893d1cd6a08652d1764a84e20e11c3b8b7c4a7791d"
+    },
+    "review_files_sha256": {
+      "p26-root-review.jsonl": "751e743e7ec7ae7f70299fd120099ec0309c3d76bfc0c0a27f9965fbf5a41f87",
+      "p26-qasper-review.jsonl": "25e2295c93085a20d3d3b21e9852cd6eb478ea7bf12757c728bd200da137acbf"
+    }
+  },
+  "started_calls": 94,
+  "generation_calls_reported": 94,
+  "semantic_audit_n": 94,
+  "semantic_results": [
+    {
+      "dataset": "qasper",
+      "split": "train",
+      "variant": "adapter",
+      "n": 3,
+      "answer_judgments": {
+        "incorrect": 3
+      },
+      "citation_support_judgments": {
+        "partial": 2,
+        "unsupported": 1
+      },
+      "fully_supported_answer_n": 0,
+      "citation_support_applicable_n": 3,
+      "semantic_abstention_n": 0,
+      "abstention_discrepancy_keys": [],
+      "semantic_status_scored_n": 2,
+      "semantic_status_correct_n": 0,
+      "semantic_status_accuracy_scored_subset": 0
+    },
+    {
+      "dataset": "qasper",
+      "split": "train",
+      "variant": "paperqa-default",
+      "n": 3,
+      "answer_judgments": {
+        "incorrect": 1,
+        "abstained": 1,
+        "ambiguous_reference": 1
+      },
+      "citation_support_judgments": {
+        "partial": 1,
+        "not_applicable": 1,
+        "supported": 1
+      },
+      "fully_supported_answer_n": 1,
+      "citation_support_applicable_n": 2,
+      "semantic_abstention_n": 1,
+      "abstention_discrepancy_keys": [],
+      "semantic_status_scored_n": 2,
+      "semantic_status_correct_n": 0,
+      "semantic_status_accuracy_scored_subset": 0
+    },
+    {
+      "dataset": "qasper",
+      "split": "validation",
+      "variant": "adapter",
+      "n": 32,
+      "answer_judgments": {
+        "full": 21,
+        "ambiguous_reference": 5,
+        "incorrect": 4,
+        "partial": 1,
+        "abstained": 1
+      },
+      "citation_support_judgments": {
+        "supported": 24,
+        "partial": 3,
+        "unsupported": 2,
+        "not_applicable": 3
+      },
+      "fully_supported_answer_n": 24,
+      "citation_support_applicable_n": 29,
+      "semantic_abstention_n": 3,
+      "abstention_discrepancy_keys": [
+        "qasper/validation/7697baf8d8d582c1f664a614f6332121061f87db/adapter"
+      ],
+      "semantic_status_scored_n": 27,
+      "semantic_status_correct_n": 25,
+      "semantic_status_accuracy_scored_subset": 0.9259259259259259
+    },
+    {
+      "dataset": "qasper",
+      "split": "validation",
+      "variant": "paperqa-default",
+      "n": 32,
+      "answer_judgments": {
+        "full": 18,
+        "ambiguous_reference": 5,
+        "partial": 5,
+        "incorrect": 3,
+        "abstained": 1
+      },
+      "citation_support_judgments": {
+        "supported": 19,
+        "not_applicable": 3,
+        "partial": 8,
+        "unsupported": 2
+      },
+      "fully_supported_answer_n": 19,
+      "citation_support_applicable_n": 29,
+      "semantic_abstention_n": 4,
+      "abstention_discrepancy_keys": [
+        "qasper/validation/0fc2b5bc2ead08a6fe0280fb3a47477c6df1587c/paperqa-default",
+        "qasper/validation/3f856097be2246bde8244add838e83a2c793bd17/paperqa-default",
+        "qasper/validation/6a633811019e9323dc8549ad540550d27aa6d972/paperqa-default",
+        "qasper/validation/c49ee6ac4dc812ff84d255886fd5aff794f53c39/paperqa-default"
+      ],
+      "semantic_status_scored_n": 27,
+      "semantic_status_correct_n": 25,
+      "semantic_status_accuracy_scored_subset": 0.9259259259259259
+    },
+    {
+      "dataset": "swin",
+      "split": "dev",
+      "variant": "adapter",
+      "n": 12,
+      "answer_judgments": {
+        "partial": 7,
+        "abstained": 4,
+        "incorrect": 1
+      },
+      "citation_support_judgments": {
+        "partial": 6,
+        "not_applicable": 4,
+        "unsupported": 1,
+        "supported": 1
+      },
+      "fully_supported_answer_n": 1,
+      "citation_support_applicable_n": 8,
+      "semantic_abstention_n": 4,
+      "abstention_discrepancy_keys": [],
+      "semantic_status_scored_n": 4,
+      "semantic_status_correct_n": 1,
+      "semantic_status_accuracy_scored_subset": 0.25,
+      "grading_points_covered": 18,
+      "grading_points_total": 49,
+      "grading_coverage_macro": 0.375
+    },
+    {
+      "dataset": "swin",
+      "split": "dev",
+      "variant": "paperqa-default",
+      "n": 12,
+      "answer_judgments": {
+        "partial": 6,
+        "abstained": 5,
+        "incorrect": 1
+      },
+      "citation_support_judgments": {
+        "partial": 6,
+        "supported": 1,
+        "not_applicable": 5
+      },
+      "fully_supported_answer_n": 1,
+      "citation_support_applicable_n": 7,
+      "semantic_abstention_n": 5,
+      "abstention_discrepancy_keys": [
+        "swin/dev/swin_dev_04/paperqa-default",
+        "swin/dev/swin_dev_06/paperqa-default",
+        "swin/dev/swin_dev_08/paperqa-default",
+        "swin/dev/swin_dev_12/paperqa-default"
+      ],
+      "semantic_status_scored_n": 5,
+      "semantic_status_correct_n": 1,
+      "semantic_status_accuracy_scored_subset": 0.2,
+      "grading_points_covered": 16,
+      "grading_points_total": 49,
+      "grading_coverage_macro": 0.3333333333333333
+    }
+  ],
+  "retrieval": [
+    {
+      "dataset": "qasper",
+      "split": "train",
+      "k": 1,
+      "n": 3,
+      "unit_hit_recall": 0.0,
+      "unit_hit_recall_n": 2,
+      "complete_unit_recall": 0.0,
+      "complete_unit_recall_n": 2,
+      "complete_set_rate": 0
+    },
+    {
+      "dataset": "qasper",
+      "split": "train",
+      "k": 3,
+      "n": 3,
+      "unit_hit_recall": 0.0,
+      "unit_hit_recall_n": 2,
+      "complete_unit_recall": 0.0,
+      "complete_unit_recall_n": 2,
+      "complete_set_rate": 0
+    },
+    {
+      "dataset": "qasper",
+      "split": "train",
+      "k": 5,
+      "n": 3,
+      "unit_hit_recall": 0.0,
+      "unit_hit_recall_n": 2,
+      "complete_unit_recall": 0.0,
+      "complete_unit_recall_n": 2,
+      "complete_set_rate": 0
+    },
+    {
+      "dataset": "qasper",
+      "split": "train",
+      "k": 8,
+      "n": 3,
+      "unit_hit_recall": 0.0,
+      "unit_hit_recall_n": 2,
+      "complete_unit_recall": 0.0,
+      "complete_unit_recall_n": 2,
+      "complete_set_rate": 0
+    },
+    {
+      "dataset": "swin",
+      "split": "dev",
+      "k": 1,
+      "n": 12,
+      "locator_recall": 0.08333333333333333,
+      "locator_recall_n": 12,
+      "repository_complete_recall": 0.0,
+      "repository_complete_recall_n": 12,
+      "complete_set_rate": 0.08333333333333333
+    },
+    {
+      "dataset": "swin",
+      "split": "dev",
+      "k": 3,
+      "n": 12,
+      "locator_recall": 0.2708333333333333,
+      "locator_recall_n": 12,
+      "repository_complete_recall": 0.0,
+      "repository_complete_recall_n": 12,
+      "complete_set_rate": 0.16666666666666666
+    },
+    {
+      "dataset": "swin",
+      "split": "dev",
+      "k": 5,
+      "n": 12,
+      "locator_recall": 0.2708333333333333,
+      "locator_recall_n": 12,
+      "repository_complete_recall": 0.08333333333333333,
+      "repository_complete_recall_n": 12,
+      "complete_set_rate": 0.16666666666666666
+    },
+    {
+      "dataset": "swin",
+      "split": "dev",
+      "k": 8,
+      "n": 12,
+      "locator_recall": 0.3263888888888889,
+      "locator_recall_n": 12,
+      "repository_complete_recall": 0.08333333333333333,
+      "repository_complete_recall_n": 12,
+      "complete_set_rate": 0.16666666666666666
+    },
+    {
+      "dataset": "qasper",
+      "split": "validation",
+      "k": 1,
+      "n": 32,
+      "unit_hit_recall": 0.25268817204301075,
+      "unit_hit_recall_n": 31,
+      "complete_unit_recall": 0.25268817204301075,
+      "complete_unit_recall_n": 31,
+      "complete_set_rate": 0.21875
+    },
+    {
+      "dataset": "qasper",
+      "split": "validation",
+      "k": 3,
+      "n": 32,
+      "unit_hit_recall": 0.6236559139784946,
+      "unit_hit_recall_n": 31,
+      "complete_unit_recall": 0.6236559139784946,
+      "complete_unit_recall_n": 31,
+      "complete_set_rate": 0.5625
+    },
+    {
+      "dataset": "qasper",
+      "split": "validation",
+      "k": 5,
+      "n": 32,
+      "unit_hit_recall": 0.7365591397849462,
+      "unit_hit_recall_n": 31,
+      "complete_unit_recall": 0.7365591397849462,
+      "complete_unit_recall_n": 31,
+      "complete_set_rate": 0.6875
+    },
+    {
+      "dataset": "qasper",
+      "split": "validation",
+      "k": 8,
+      "n": 32,
+      "unit_hit_recall": 0.7849462365591398,
+      "unit_hit_recall_n": 31,
+      "complete_unit_recall": 0.7849462365591398,
+      "complete_unit_recall_n": 31,
+      "complete_set_rate": 0.75
+    }
+  ],
+  "generation": [
+    {
+      "dataset": "qasper",
+      "split": "train",
+      "variant": "adapter",
+      "expected_n": 3,
+      "recorded_n": 3,
+      "attempted_n": 3,
+      "unfinished_started_n": 0,
+      "failed_or_unfinished_n": 0,
+      "error_n": 0,
+      "citation_valid_rate": 1.0,
+      "citation_valid_rate_all_cases": 1.0,
+      "usage_missing_n": 0,
+      "abstention_n": 0,
+      "review_required_n": 0,
+      "prompt_tokens_reported": 7602,
+      "completion_tokens_reported": 262,
+      "request_seconds_median": 1.1230451999872457,
+      "cost_usd": null,
+      "official_metrics": {
+        "Answer F1": 0.07375478927203065,
+        "Answer F1 by type": {
+          "extractive": 0.0,
+          "abstractive": 0.11063218390804597,
+          "boolean": 0.0,
+          "none": 0.0
+        },
+        "Evidence F1": 0.0,
+        "Missing predictions": 0
+      },
+      "complete_paragraph_evidence_f1": 0.0
+    },
+    {
+      "dataset": "qasper",
+      "split": "train",
+      "variant": "paperqa-default",
+      "expected_n": 3,
+      "recorded_n": 3,
+      "attempted_n": 3,
+      "unfinished_started_n": 0,
+      "failed_or_unfinished_n": 0,
+      "error_n": 0,
+      "citation_valid_rate": 1.0,
+      "citation_valid_rate_all_cases": 1.0,
+      "usage_missing_n": 0,
+      "abstention_n": 1,
+      "review_required_n": 0,
+      "prompt_tokens_reported": 4237,
+      "completion_tokens_reported": 732,
+      "request_seconds_median": 1.6010643000190612,
+      "cost_usd": null,
+      "official_metrics": {
+        "Answer F1": 0.0,
+        "Answer F1 by type": {
+          "extractive": 0.0,
+          "abstractive": 0.0,
+          "boolean": 0.0,
+          "none": 0.0
+        },
+        "Evidence F1": 0.0,
+        "Missing predictions": 0
+      },
+      "complete_paragraph_evidence_f1": 0.0
+    },
+    {
+      "dataset": "swin",
+      "split": "dev",
+      "variant": "adapter",
+      "expected_n": 12,
+      "recorded_n": 12,
+      "attempted_n": 12,
+      "unfinished_started_n": 0,
+      "failed_or_unfinished_n": 0,
+      "error_n": 0,
+      "citation_valid_rate": 0.9166666666666666,
+      "citation_valid_rate_all_cases": 0.9166666666666666,
+      "usage_missing_n": 0,
+      "abstention_n": 4,
+      "review_required_n": 0,
+      "prompt_tokens_reported": 37069,
+      "completion_tokens_reported": 2215,
+      "request_seconds_median": 1.3527931499993429,
+      "cost_usd": null
+    },
+    {
+      "dataset": "swin",
+      "split": "dev",
+      "variant": "paperqa-default",
+      "expected_n": 12,
+      "recorded_n": 12,
+      "attempted_n": 12,
+      "unfinished_started_n": 0,
+      "failed_or_unfinished_n": 0,
+      "error_n": 0,
+      "citation_valid_rate": 1.0,
+      "citation_valid_rate_all_cases": 1.0,
+      "usage_missing_n": 0,
+      "abstention_n": 1,
+      "review_required_n": 0,
+      "prompt_tokens_reported": 20086,
+      "completion_tokens_reported": 3593,
+      "request_seconds_median": 1.8773627000045963,
+      "cost_usd": null
+    },
+    {
+      "dataset": "qasper",
+      "split": "validation",
+      "variant": "adapter",
+      "expected_n": 32,
+      "recorded_n": 32,
+      "attempted_n": 32,
+      "unfinished_started_n": 0,
+      "failed_or_unfinished_n": 0,
+      "error_n": 0,
+      "citation_valid_rate": 1.0,
+      "citation_valid_rate_all_cases": 1.0,
+      "usage_missing_n": 0,
+      "abstention_n": 2,
+      "review_required_n": 0,
+      "prompt_tokens_reported": 74256,
+      "completion_tokens_reported": 4000,
+      "request_seconds_median": 1.288578449995839,
+      "cost_usd": null,
+      "official_metrics": {
+        "Answer F1": 0.1694737735659306,
+        "Answer F1 by type": {
+          "extractive": 0.16076714763123692,
+          "abstractive": 0.10636079900124845,
+          "boolean": 0.0,
+          "none": 0.5
+        },
+        "Evidence F1": 0.47410714285714284,
+        "Missing predictions": 0
+      },
+      "complete_paragraph_evidence_f1": 0.47410714285714284
+    },
+    {
+      "dataset": "qasper",
+      "split": "validation",
+      "variant": "paperqa-default",
+      "expected_n": 32,
+      "recorded_n": 32,
+      "attempted_n": 32,
+      "unfinished_started_n": 0,
+      "failed_or_unfinished_n": 0,
+      "error_n": 0,
+      "citation_valid_rate": 1.0,
+      "citation_valid_rate_all_cases": 1.0,
+      "usage_missing_n": 0,
+      "abstention_n": 0,
+      "review_required_n": 0,
+      "prompt_tokens_reported": 37411,
+      "completion_tokens_reported": 8984,
+      "request_seconds_median": 1.7698110500059556,
+      "cost_usd": null,
+      "official_metrics": {
+        "Answer F1": 0.08423644685727982,
+        "Answer F1 by type": {
+          "extractive": 0.12153324675839774,
+          "abstractive": 0.09538701011274825,
+          "boolean": 0.0028169014084507044,
+          "none": 0.0
+        },
+        "Evidence F1": 0.22247023809523805,
+        "Missing predictions": 0
+      },
+      "complete_paragraph_evidence_f1": 0.22247023809523805
+    }
+  ],
+  "billing": {
+    "prompt_tokens_reported": 180661,
+    "completion_tokens_reported": 19786,
+    "actual_cost_usd": null,
+    "estimated_usd_peak_all_input_cache_miss": 0.0779415,
+    "price_verified_date": "2026-09-17",
+    "price_source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "assumption": "USD per million: input0.30, output1.20; actual cache/time discounts unknown",
+    "billing_csv_status": "supplied temporary paths expired; actual receipt unavailable"
+  }
+}

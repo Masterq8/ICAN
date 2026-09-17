@@ -1,6 +1,6 @@
 # P2.6 Baseline Evaluation Implementation Plan
 
-> Current-session inline execution with executing-plans. User has authorized the P2.6 scope; budget question is pending for batch generation only.
+> Current-session inline execution with executing-plans. User authorized P2.6 and delegated call-count choice;94 total generation calls completed.
 
 **Goal:** Reproducible Swin dev and QASPER validation baselines with separated retrieval, answer and citation metrics.
 
@@ -24,25 +24,25 @@ Files: ican/evaluation/runner.py; scripts/evaluate_baseline.py; tests/test_evalu
 
 - [x] Test global budget deduction before model dispatch, existing started items not repeated, gold excluded from prompt, default serializer source limit, timeout/failure accounting, and no-paper leakage for QASPER.
 - [x] CLI `retrieval --run-dir data/processed/evaluation/p26-v1`: record query-only requests, Top8 SearchResponse, input hashes, index, source versions and elapsed_seconds. One shared evidence service, no generation.
-- [ ] CLI `generate --run-dir ... --max-calls N --variants adapter,paperqa-default`: reuse stored search results, do not reretrieve from gold. Append started journal before SDK call and completed/error after; each dispatch consumes one budget slot. Resume matches all input/config/prompt/model fingerprints and skips every started key.
+- [x] CLI `generate --run-dir ... --max-calls N --variants adapter,paperqa-default`: reuse stored search results, do not reretrieve from gold. Append started journal before SDK call and completed/error after; each dispatch consumes one budget slot. Resume matches all input/config/prompt/model fingerprints and skips every started key.
 - [x] Adapted eval Settings changes only answer language instruction (eval version separate from productionv2); upstream-default uses default prompts/serializer/source limit, disables only automatic retrieval and auxiliary calls for equal single-call budget. Registry is pruned to IDs actually serialized.
-- [ ] Execute train first, then Swin dev, then QASPER validation using frozen config. Each request 1536tokens/90seconds, no retry/fallback. No generation until user budget reply.
+- [x] Execute train first, then Swin dev, then QASPER validation using frozen config. Each request1536tokens/90seconds, no retry/fallback. User delegated budget; chosen94calls, all completed.
 
 ## 3. Reports and semantic review
 
 Files: scripts/evaluate_baseline.py report; docs/p2-baseline-report.md; ignoredrun/audit.jsonl.
 
 - [x] Report K1/3/5/8 locator and strict-range metrics; QASPER official answer/evidence F1, complete-unit recall, n/denominators, no-gold cases and errors. Aggregate by dataset+variant, keep train separate. Incomplete runs are labelled incomplete; failures receive0 in answer metrics, not silently excluded.
-- [ ] Inspect all generated answers against grading_points/reference answers and cited evidence, record semantic judgments with explicit reasons; automatic gold overlap is labelled proxy. Answer status semantics reviewed separately from API reliability statuses.
-- [ ] Report models, prompt hashes, index, configuration differences, call counts/tokens, timing, unknown cost, failures and next P3 priorities. Do not claim an unrun full PaperQA2 Agent baseline.
+- [x] Inspect all94 generated answers against grading_points/reference answers and cited evidence, record assistant judgments with reasons; gold overlap is proxy. Audit hash bound to exact journal; status scoring coverage explicit.
+- [x] Report models, prompt hashes, index, configuration differences, call counts/tokens, timing, unknown actual cost and labeled estimate, failures and P3 priorities. No full PaperQA2 Agent claim.
 
 ## 4. Verification and handoff
 
 - [x] Run targeted/full pytest, scoped Ruff excluding vendoredsource, pip check, protected61 hashes and staged credential scan. Request independent read-only code review, fix important findings.
-- [ ] Update task_plan/progress/findings, requirements/roadmap/reuse notes and problem log. Commit locally on codex/p2-6-evaluation; no push requested.
+- [x] Update task_plan/progress/findings, requirements/roadmap/reuse notes and problem log. Save local completion commit on codex/p2-6-evaluation; no push requested.
 
-## Current checkpoint (in_progress)
+## Completed checkpoint
 
 2026-09-17: all47 local dense retrieval cases complete. Final p26-v2 reuses the checked preflight ranking with original provenance and sealed SHA. Swin locator@8=0.326389; repository fullrange@8=0.083333. QASPER validation complete paragraph@8=0.784946 on31 applicable questions; all32 questions retained. 136 tests passed, 1 Windowspermission skip;13 evaluation tests, pip check and scoped Ruff passed. Independent code review resolved mutable/resealable snapshot, interrupted-denominator, and no-evidence applicability findings.
 
-Generation implementation is complete and tested offline, but its CLI execution acceptance remains unchecked. No batch generation has been sent (0calls); user budget reply pending (94bothvariants /47adapter /localretrieval only). Real answers, semantic audit, final generation comparison and P2.6 completion remain pending. Current records/docs are saved locally; status stays in_progress.
+Subsequent user authorization: supplied billing CSV paths expired, but user delegated the call count.94calls completed,180661input/19786outputtokens, zero errors/unknown usage. QASPER validation answerF1 .169474/.084236, evidenceF1 .474107/.222470. All94 assistant reviews saved with exact journal binding, ambiguity and9 semantic/recorded abstention discrepancies preserved. Swin49 rubric points covered18/16; no complete Swin answer. Actual cost null, peak all-miss estimate0.0779415USD. Final142tests pass/1Windowspermission skip,19evaluation tests included; scopedRuff/format pass. Independent review found and resolved audit journal uniqueness/call-count guard gap; final review ready.61protected hashes and generation protocol unchanged. P2.6complete; nextP3.

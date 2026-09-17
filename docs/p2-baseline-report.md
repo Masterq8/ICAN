@@ -1,6 +1,6 @@
-# P2.6 基线报告：检索已完成，生成与语义评测待执行
+# P2.6 基线报告：检索、双版问答与语义审核
 
-日期：2026-09-17。状态：**in_progress**。本轮已完成评测管线、47题真实dense检索、官方QASPER评分接入和独立代码审查；**本轮生成调用为0**，等待用户选择批量调用预算。不能据以下结果宣称回答正确率、引用支持率或领域版优于默认版。
+日期：2026-09-17。状态：**complete**。用户授权由助手决定调用量，本轮选择47题×2版＝**94次真实生成**，全部完成，逐条保存94份助手语义审核。结果显示：领域版在本次QASPER样本的词面答案／段落证据F1较高，但Swin固定实现核查仍受变体混入、代码块缺失及配置链检索失败限制。两版均没有完整解决全部要求的Swin答句，后续优先改善检索。此结论仅适用于本轮模型、配置与样本。
 
 ## 1. 固定材料与协议
 
@@ -40,9 +40,9 @@
 
 这些是原始dense基线的实际失败，不在本节点用gold路径修正后覆盖基线。P3优先加入可从问题／仓库元数据识别的模型家族约束、精确符号／配置检索、BM25融合及重排序。参数用Swin dev／QASPER train决定，validation保留为本轮独立结果。
 
-## 4. 待运行的问答对照
+## 4. 已运行的问答对照
 
-模型使用用户已配置的 `deepseek-flash`；每题每版最多1次、1536输出tokens、90秒，无summary／embedding／补查／重试／fallback。预计47题×2版=94次（其中6次train格式检查）。用户也可选47次领域版或暂只保留本地检索。
+模型使用用户已配置的 `deepseek-flash`，服务为DeepSeek OpenAI兼容接口；每题每版最多1次、1536输出tokens、90秒，无summary／embedding／补查／重试／fallback。实际47题×2版＝94次，其中6次train格式检查、24次Swin dev、64次QASPER validation。先train、后dev、再validation，全程未根据validation结果调整配置。
 
 | 配置 | prompt／serializer | 实际证据范围 |
 |---|---|---|
@@ -53,15 +53,59 @@
 
 QASPER指标调用[作者官方evaluator](https://github.com/allenai/qasper-led-baseline/blob/afd0fb96bf78ce8cd8157639c6f6a6995e4f9089/scripts/evaluator.py)，按其规则分别对多份答案／证据标注取最佳F1。原始答句保留，评分前移除引用标记；证据从被引用chunk回溯原段落，段落命中Evidence F1与完整段落Evidence F1分别统计。词面F1受答案长度、语言和改写影响，不等于语义正确率。
 
-生成后逐题审核Swin grading_points与QASPER参考答案，检查相邻引用是否支持结论，记录理由和实际审核者类型（助手／人类）；助手审核不标成人类复核。API answered等可靠性状态与gold supported／conditional等语义状态不直接比较字符串。当前答案指标、引用语义支持、语义状态准确率、耗时／tokens／费用均待生成；未生成的官方指标为null。
+### 4.1 官方词面评分与引用格式
+
+| 数据／指标 | adapter | paperqa-default |
+|---|---:|---:|
+| QASPER validation Answer F1，n=32 | 16.95% | 8.42% |
+| QASPER validation Evidence F1，n=32 | 47.41% | 22.25% |
+| QASPER validation完整段落Evidence F1，n=32 | 47.41% | 22.25% |
+| QASPER validation引用格式有效答句 | 32/32 | 32/32 |
+| Swin dev引用格式有效答句 | 11/12 | 12/12 |
+| QASPER train Answer F1，仅3题格式样本 | 7.38% | 0.00% |
+| QASPER train Evidence F1，仅3题格式样本 | 0.00% | 0.00% |
+
+没有未知引用ID；唯一未满足引用格式条件的是adapter的swin_dev_08无引用拒答，不能算成伪造引用。引用ID存在不等于结论得到支持。Evidence F1通过被引用chunk回溯原段落，是段落集合匹配；本样本命中与完整段落两种F1恰好相同。
+
+**已发现评分限制：** 原始拒答识别器接受`[INSUFFICIENT_EVIDENCE]`或开头的`I cannot answer`，会漏掉末尾／自然表达的拒答。上述官方分数保持本轮原始协议，不在观察validation后修改规则回填。人工语义式审核发现9条记录与拒答标记不一致（Swin默认版4条，QASPER领域版1条／默认版4条）；明细可复查。后续建立新评分协议时修正，并同时保留本轮结果。
+
+### 4.2 逐题助手审核
+
+对Swin逐项核对固定grading_points，对QASPER逐份参考答案核对；再读实际引用原文，检查相邻结论及模型／实验范围。每条保存具体理由，不用段落重叠自动替代语义支持。**审核者为开发助手，未有人类独立复核；这些是定性基线，不能当成人工验证的正确率。**
+
+| 样本／判断 | adapter | paperqa-default |
+|---|---:|---:|
+| Swin完整／部分／错误／拒答，n=12 | 0 / 7 / 1 / 4 | 0 / 6 / 1 / 5 |
+| Swin评分点覆盖，micro，49点 | 18/49（36.73%） | 16/49（32.65%） |
+| Swin逐题评分点覆盖，macro | 37.50% | 33.33% |
+| Swin答句结论全部受引用支持／适用答句 | 1/8 | 1/7 |
+| QASPER完整／部分／错误／拒答／参考歧义，n=32 | 21 / 1 / 4 / 1 / 5 | 18 / 5 / 3 / 1 / 5 |
+| QASPER答句结论全部受引用支持／适用答句 | 24/29 | 19/29 |
+| QASPER语义上的拒答（含歧义题） | 3/32 | 4/32 |
+
+评分点用0/1严格记录，复合点需覆盖规定内容；只说“无法回答”不获得“没有错误归因”等分数。评分点覆盖和完整答句正确性是两种判断：swin_dev_10虽覆盖四点，但额外把head不匹配时的warning解读为跳过张量；源代码并未删除该参数，因此整体仍为部分正确。引用支持按**答句**统计，不是逐个citation百分比；分母排除`not_applicable`，如没有实质答案的拒答。可以有“部分正确但已给部分均有支持”，不能把引用支持直接等同答案完整。
+
+语义状态不比较API状态字符串。QASPER可答性／拒答状态在27个非歧义题上两版各25/27；5个参考歧义题记null。Swin仅对明确拒答审核该状态：领域版1/4、默认版1/5符合gold（swin_dev_12）；其余非拒答的supported／conditional细分未独立赋状态，记null，**不报告全12题状态准确率**。train3题单列：领域版3条错误，默认版1错误／1拒答／1参考歧义，不代表全训练集。
+
+**失败原因与资料边界：**
+
+- swin_dev_05：领域版找到目标YAML的0.2，仍缺config.py→BASE→当前YAML→CLI链；默认serializer排序／5sources丢掉该目标项后拒答。差异同时涉及排序和证据容量，不能归因只改了prompt。
+- swin_dev_07：领域版改答main_simmim_pt.py，并声称PRETRAINED先加载；这不是指定main.py，引用也未显示该分支。默认版从工具函数独立推成无互斥逻辑，同样缺入口证据。
+- QASPER：出现把相关工作的非英语数据误当本论文实验、把综述算法当本论文方法、漏第三个正则项、SimpleQuestions之外数据集问题答Yes等错误。INLINEFORM占位公式没有恢复，不能凭常识补成确定的文内等式。
+- QASPER参考也有冲突：语言对与aligned argument的CLV粒度、SOTA／医疗术语／英语TAC的混合可答性、None与MemNN的baseline标注，均保留歧义理由。train的表格差值题只有caption而缺数值；另一baseline题参考名单与其证据不一致。未改写原gold来提高得分。
+- QASPER短标准答案对冗长解释敏感；布尔题附加解释后token F1可能很低。领域版仍有英语题输出中文的问题。21个语义完整答句与16.95%词面F1可以同时出现，二者不可互换。
+
+逐条理由及hash绑定见[审核目录](evaluation/README.md)；运行journal、原始答句和完整引用保存在本机忽略的run目录。此validation已用于观察结果，后续不能称同一批题是从未看过的新盲测；最终独立验收继续保留冻结集／另设留出样本。
 
 ## 5. 耗时、可靠性与恢复
 
-检索请求耗时中位数0.984秒，首题75.141秒，含首次索引核验和BGE-M3加载；没有剔除首题后宣称冷启动性能。费用目前没有生成支出，未来provider费用未提供时记null。
+检索请求耗时中位数0.984秒，首题75.141秒，含首次索引核验和BGE-M3加载。生成请求中位数：Swin领域版1.353秒／默认版1.877秒，QASPER validation领域版1.289秒／默认版1.770秒；这些是复用检索快照的单次生成耗时，不是新请求端到端RAG耗时。
+
+94个started和94个completed，无error／unfinished／缺用量；本轮无review_required引用（不代表人工验证通过）。总输入180,661、输出19,786 tokens。两份用户账单CSV位于已失效的临时路径，未能读取，不能声称核对过账单。按[官方价格](https://api-docs.deepseek.com/quick_start/pricing/)在2026-09-17核验的USD／百万tokens高峰cache-miss输入0.30、输出1.20估算：`180661×0.30/1e6 + 19786×1.20/1e6 = 0.0779415 USD`。这是指定价格假设下的估算；缓存／时段／账单币种折算未知，实付cost_usd保持null。本节点不再追加付费调用。
 
 调用前started记录flush＋fsync，已开始键永久跳过；中断／失败不自动重试。未完成started计入失败及引用率分母，未知tokens单独计数。CLI单写者文件锁避免两个进程同时消耗同一运行预算。resume核对模型服务、输入／代码／prompt hash和密封快照；改变配置需新run，不将旧结果混入。
 
-本轮完整测试136通过／1项Windows符号链接权限跳过，13项评测测试通过；pip check及改动范围Ruff／format通过。独立审查发现并修正快照可变、重新封存绕过、中断统计遗漏和无证据分母缺失，最终无剩余重要发现。61个受保护文件及索引identity未变。
+最终完整测试142通过／1项Windows符号链接权限跳过，改动范围Ruff／format通过；此前pip check通过且本次未改依赖。新增6项审核完整性回归验证重复审核不能掩盖缺题、评分点不能丢失、审核不能移用到另一次生成，以及重复started／completed和超额call记录不能被字典／计数掩盖。审核CLI与评测CLI共用单写者锁。独立审查修正快照可变、重新封存绕过、中断统计遗漏、无证据分母和审核journal完整性问题，最终无剩余重要发现。61个受保护文件、生成代码／prompt协议及索引identity未变；冻结gold仍只核对SHA。
 
 ## 6. 运行说明
 
@@ -73,8 +117,10 @@ python scripts/evaluate_baseline.py report --run-dir data/processed/evaluation/n
 # 以下会调用用户API；max-calls为同一run累计上限，须符合已给定预算。
 python scripts/evaluate_baseline.py generate --run-dir data/processed/evaluation/p26-v2 --max-calls 94
 python scripts/evaluate_baseline.py report --run-dir data/processed/evaluation/p26-v2
+# 不调用模型；仅用于hash匹配的本轮结果，合并已经做出的逐条审核。
+python scripts/finalize_baseline_audit.py --run-dir data/processed/evaluation/p26-v2
 ```
 
-当前最终产物：manifest.json、retrieval.jsonl、summary.json；生成将追加generation-identity.json、journal.jsonl，语义审核单独保存semantic-audit.jsonl。数据产物被Git忽略，协议、代码、报告和官方脚本／Apache-2.0许可入库。
+最终本地产物：manifest.json、retrieval.jsonl、generation-identity.json、journal.jsonl、summary.json、semantic-audit.jsonl、acceptance-summary.json。原始材料／生成数据被Git忽略，协议、代码、官方脚本与Apache-2.0许可入库；[汇总](evaluation/p26-acceptance-summary.json)、逐题审核理由与审核manifest入库。审核manifest绑定输入、检索、journal及review文件SHA，不能把旧判定移用于新答案。
 
-P2.6完成条件还包括预算内真实生成、两版配置的答案／引用结果及语义审核。当前仍为in_progress，不提前进入P3或宣称生成基线完成。
+P2.6完成。下一节点为P3混合检索：先识别Swin模型家族与精确符号，再比较dense／BM25／hybrid／hybrid＋rerank；针对代码函数与配置覆盖链补齐上下文。拒答协议修正、布尔短答与公式／表格边界处理另立版本，保留本轮94次结果作比较。本次不提前修改检索排序。
