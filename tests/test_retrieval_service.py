@@ -199,10 +199,30 @@ class ExclusiveClient(FakeClient):
         return super().query_points(*args, **kwargs)
 
 
-def test_service_serializes_local_qdrant_client_lifetimes(service):
+class DelayedEncoder:
+    constructions = 0
+    guard = threading.Lock()
+
+    def __init__(self, *_):
+        with self.guard:
+            type(self).constructions += 1
+        time.sleep(0.02)
+
+    def encode(self, texts: list[str]) -> np.ndarray:
+        vector = np.zeros((len(texts), 1024), dtype=np.float32)
+        vector[:, 0] = 1
+        return vector
+
+
+def test_service_serializes_local_qdrant_and_first_encoder_load(
+    service, monkeypatch: pytest.MonkeyPatch
+):
     service.client_factory = ExclusiveClient
+    service.encoder = None
+    monkeypatch.setattr(retrieval_service, "DenseEncoder", DelayedEncoder)
     ExclusiveClient.active = 0
     ExclusiveClient.maximum_active = 0
+    DelayedEncoder.constructions = 0
     request = SearchRequest(query="window size", collection="swin_v1")
 
     with ThreadPoolExecutor(max_workers=5) as executor:
@@ -211,6 +231,7 @@ def test_service_serializes_local_qdrant_client_lifetimes(service):
     assert len(responses) == 5
     assert ExclusiveClient.maximum_active == 1
     assert ExclusiveClient.active == 0
+    assert DelayedEncoder.constructions == 1
 
 
 def test_production_service_verifies_index_identity_and_artifacts(

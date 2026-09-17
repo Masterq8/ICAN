@@ -49,6 +49,7 @@ class EvidenceSearchService:
         self._index_path = index_path
         self._manifest: dict | None = None
         self._initialization_lock = Lock()
+        self._encoder_lock = Lock()
         self._query_lock = Lock()
 
     def _load_index(self) -> tuple[Path, dict]:
@@ -115,7 +116,9 @@ class EvidenceSearchService:
 
     def _encoder(self):
         if self.encoder is None:
-            self.encoder = DenseEncoder(self.root, self.config.model)
+            with self._encoder_lock:
+                if self.encoder is None:
+                    self.encoder = DenseEncoder(self.root, self.config.model)
         return self.encoder
 
     def search(self, request: SearchRequest) -> SearchResponse:
