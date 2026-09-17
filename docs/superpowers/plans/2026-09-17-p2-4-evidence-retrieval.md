@@ -24,7 +24,7 @@ def test_search_request_normalizes_and_accepts_safe_filters():
     request = SearchRequest(
         query="  Swin-T window size  ",
         collection="swin_v1",
-        filters=SearchFilters(source_types=["config"], path_prefixes=["configs/swin/"]),
+        filters=SearchFilters(source_types=["config"], path_prefixes=["data/raw/repositories/Swin-Transformer/configs/swin/"]),
     )
     assert request.query == "Swin-T window size"
 
@@ -212,7 +212,7 @@ The script must call the service against `configs/indexing/v1.json`, then assert
 
 ```python
 unrestricted = search("Swin-T 的窗口大小配置是多少？", "swin_v1", ["config"], None)
-restricted = search("Swin-T 的窗口大小配置是多少？", "swin_v1", ["config"], ["configs/swin/"])
+restricted = search("Swin-T 的窗口大小配置是多少？", "swin_v1", ["config"], ["data/raw/repositories/Swin-Transformer/configs/swin/"])
 assert unrestricted.results
 assert restricted.results
 assert all(item.source.source_path.startswith("configs/swin/") for item in restricted.results)
@@ -232,7 +232,7 @@ D:/CondaEnv/ican/python.exe -m ruff check ican/retrieval ican/api scripts/serve_
 D:/CondaEnv/ican/python.exe -m ruff format --check ican/retrieval ican/api scripts/serve_api.py scripts/verify_retrieval_api.py tests/test_retrieval_schema.py tests/test_retrieval_service.py tests/test_retrieval_api.py
 ```
 
-Expected: all retrieval tests pass; integration reports paths restricted to `configs/swin/`; existing test count does not regress; generated data stays within the ignored immutable index directory.
+Expected: all retrieval tests pass; integration reports paths restricted to `data/raw/repositories/Swin-Transformer/configs/swin/`; existing test count does not regress; generated data stays within the ignored immutable index directory.
 
 - [ ] **Step 3: Write the operational guide and update project records**
 

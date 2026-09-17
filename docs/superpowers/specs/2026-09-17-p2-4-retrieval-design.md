@@ -25,7 +25,7 @@
   "limit": 5,
   "filters": {
     "source_types": ["config"],
-    "path_prefixes": ["configs/swin/"]
+    "path_prefixes": ["data/raw/repositories/Swin-Transformer/configs/swin/"]
   }
 }
 ```
@@ -78,13 +78,13 @@ flowchart LR
 
 `EvidenceSearchService`负责加载已验证的索引manifest与查询encoder，构造Qdrant过滤条件，映射最小证据DTO。路由只处理HTTP与错误映射。应用创建时使用单一service实例；P2.3的local Qdrant限制要求单worker，测试可通过依赖覆盖使用fake service，不触及真实2.29GB模型。
 
-路径约束使用payload `chunk.source_path` 的正向匹配；它解决“把Swin-T限定到configs/swin目录”的场景，不能取代P3的BM25、RRF和rerank评测。查询日志只记录请求ID、时间、索引版本、collection、过滤条件、结果数和耗时，不记录生成内容、模型私有推理或用户密钥。
+路径约束使用payload `chunk.source_path` 的正向匹配。当前Swin快照中其前缀为`data/raw/repositories/Swin-Transformer/configs/swin/`，而不是简写的`configs/swin/`；它解决“把Swin-T限定到标准配置目录”的场景，不能取代P3的BM25、RRF和rerank评测。查询日志只记录请求ID、时间、索引版本、collection、过滤条件、结果数和耗时，不记录生成内容、模型私有推理或用户密钥。
 
 ## 验收与非目标
 
 - Pydantic拒绝越界limit、未知collection、非法source type、空查询和路径穿越。
 - fake Qdrant／encoder测试验证filter映射、结果排序、最小来源定位和日志脱敏。
-- 集成测试用已发布索引证明：中文窗口大小查询仅加`config`过滤会出现不同变体；再加`configs/swin/`前缀时结果均在标准Swin配置目录。该检查不读取冻结gold答案，也不报告正确率。
+- 集成测试用已发布索引证明：中文窗口大小查询仅加`config`过滤会出现不同变体；再加`data/raw/repositories/Swin-Transformer/configs/swin/`前缀时结果均在标准Swin配置目录。该检查不读取冻结gold答案，也不报告正确率。
 - FastAPI TestClient覆盖200、422、503和空结果。
 - 无Agent循环、无LLM调用、无回答生成、无重排、无BM25、无用户上传与无多worker部署。
 
