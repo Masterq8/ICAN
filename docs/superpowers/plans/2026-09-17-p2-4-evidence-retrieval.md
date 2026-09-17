@@ -254,4 +254,4 @@ git commit -m "Document and verify P2.4 evidence retrieval"
 
 ## Execution result (2026-09-17)
 
-All four tasks completed. Real FastAPI validation used the immutable 3,959-point index and proved the Swin configuration path constraint. Targeted retrieval tests: 19 passed. Full suite: 97 passed, 1 skipped (Windows symbolic-link permission), with one third-party TestClient deprecation warning. P2.4 contains no Agent planning or generated answers.
+All four tasks completed. Real FastAPI validation used the immutable 3,959-point index and proved the Swin configuration path constraint. Targeted retrieval tests: 22 passed. Full suite: 101 passed, 1 skipped (Windows symbolic-link permission), with one third-party TestClient deprecation warning. P2.4 contains no Agent planning or generated answers.
