@@ -6,7 +6,7 @@
 ## 当前阶段
 P2：基础 RAG（进行中）
 
-**下一节点：P2.3 Embedding 与 Qdrant 持久化索引（pending）。** P2.2 已完成：Swin 1,602 块、QASPER 2,357 块，定位／覆盖与重建验收通过；PaperQA2 接入和问答仍留在后续节点。
+**下一节点：P2.4 只返回证据的检索接口（pending）。** P2.3已完成：固定BGE-M3，3959个向量进入3个collection，独立进程／真实tokenizer／重复运行验收通过；PaperQA2接入仍在P2.5。
 
 ## 复用主线与职责
 
@@ -59,7 +59,7 @@ P2：基础 RAG（进行中）
 - [x] P2.1：生成带页码、行号、版本和失败清单的 Swin 解析产物；20 项测试与重建哈希通过
 - [x] 准备隔离的 QASPER 外部样本：20 train／10 validation 论文，正文与答案分开保存
 - [x] P2.2：结构化分块；Swin 1,602／QASPER 2,357 块，60 项测试通过，定位覆盖与 12 个产物重建哈希一致（[使用说明](docs/p2-chunking-guide.md)）
-- [ ] P2.3：Embedding 与 Qdrant 持久化索引
+- [x] P2.3：固定BGE-M3与实际tokenizer；Swin／QASPER train／validation共3959点，3个持久化collection；79测试通过，独立进程验收及复用通过（[使用说明](docs/p2-indexing-guide.md)）
 - [ ] P2.4：只返回证据的检索接口
 - [ ] P2.5：PaperQA2 接入验证、针对性来源适配与带引用问答
 - [ ] P2.6：Swin 开发集基线、QASPER 外部结果和调用日志
@@ -71,7 +71,7 @@ P2：基础 RAG（进行中）
 |---|---|---|
 | **P2.2 结构化分块** | 从通过验收的 Swin 解析产物生成论文、代码、配置、文档块；QASPER 按原段落／caption 单独处理 | 分块配置、chunk 数据契约、可重建脚本、`chunks.jsonl`、`chunk_manifest.json`、`chunk_report.json`、定位抽查样本；每块能回溯 parent unit、原字符范围及页码／行号；重建稳定、无标签泄漏 |
 | P2.3 Embedding／索引 | 固定模型与 revision、记录 tokenizer／输入模板；Swin 和 QASPER 分别建立持久化 Qdrant collection | 建库脚本、索引 manifest、模型／维度／距离／输入哈希、重建说明；重启可查，旧索引与变化语料可区分 |
-| P2.4 检索 | 返回 chunk、原文位置、来源版本和分数；先 dense 基线，为 PaperQA2 证据入口准备稳定接口 | FastAPI 检索接口、请求／响应契约、查询日志和可定位样例；尚不生成答案 |
+| P2.4 检索 | 返回 chunk、原文位置、来源版本和分数；先dense基线，提供collection／类型／路径来源约束，避免近似模型变体混淆，为PaperQA2证据入口准备稳定接口 | FastAPI检索接口、请求／响应契约、查询日志和可定位样例；来源约束可验证，尚不生成答案 |
 | P2.5 PaperQA2 问答 | 固定库版本并检查依赖，核验已解析文本输入、外部检索／证据接入、引用元数据和调用记录；先跑固定流程，再改造论文／代码／配置引用 | 接入试验报告、PaperQA2 adapter、模型配置、问答接口、原版与改造版配置；样例答案能定位 PDF 页或代码行，来源版本保留；表格候选与证据不足状态明确 |
 | P2.6 基线 | 用12个Swin开发题调试与记录；QASPER train 调格式／参数，独立 validation 论文报告外部结果；比较 PaperQA2 原版与适配版时标明配置和语料差异 | 检索结果、答案／引用、正确性与必要证据覆盖、耗时、模型调用量／成本、失败案例；结果分开报告，8个冻结题不用于调参 |
 

@@ -114,3 +114,13 @@
 - Verifier从parent对照正文、来源、结构和上下文；仅正文相等不能发现伪造的表头或embedding prefix。原文覆盖验收证明与已保存解析文本一致，不替代表格与PDF语义人工核验。
 - 12个产物重建哈希稳定，11个输入／eval哈希未变；参数未使用冻结答案。独立QASPER保留split和段落／caption位置。
 - 详细数据契约、方法、参数、命令和边界见docs/p2-chunking-guide.md；下一节点P2.3，PaperQA2保持P2.5/P4模块复用目标。
+
+## 2026-09-17：P2.3本地Embedding与持久化验证
+
+- 选择固定revision的BGE-M3 dense-only：支持中英文，1024维、8192输入上限，原始查询无需额外指令。选择依据是输入兼容与本地可运行性，尚未证明本项目效果优于其他模型。
+- cl100k分块预算不等于模型token数；实际XLMRobertaTokenizer计数为55–1127，3959条输入全部无截断。模型加载前校验11个官方文件身份，同时拒绝未登记替代权重或配置。
+- 三个Qdrant collection隔离Swin、QASPER train／validation；完整chunk、来源定位、review标记和输入哈希随payload保存。配置、模型账本、输入快照与库版本决定索引版本；staging验收后原子发布。
+- RTX 5060 Laptop 8GB完成真实编码，构建及关闭重开核验93.382秒，不含下载和前置校验；PyTorch峰值allocated约1296MiB、reserved2152MiB，不代表总显存。
+- 新进程逐点对照3959个payload及向量，再复核真实tokenizer；重复构建复用。79测试通过／1权限跳过，61个原输入及eval哈希未变，冻结答案未用于调参。
+- dense功能查询暴露Swin配置变体混淆；config类型过滤不足以确定标准Swin-T／224。P2.4提供路径约束，P3评估BM25／混合检索；查询返回不等于准确率验收。
+- Qdrant local单进程持有目录锁，P2.4需单客户端／单worker；并发部署再切换server。完整契约、命令与证据见docs/p2-indexing-guide.md。

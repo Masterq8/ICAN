@@ -98,7 +98,7 @@
 ## 五问重启检查
 | 问题 | 答案 |
 |------|------|
-| 我在哪里？ | P2：基础 RAG，P2.2结构化分块已完成，下一节点P2.3索引 |
+| 我在哪里？ | P2：基础RAG，P2.3持久化索引已完成，下一节点P2.4证据检索接口 |
 | 我要去哪里？ | 基础 RAG → 改进 RAG → Agent → 网页 → 评测交付 |
 | 目标是什么？ | 9 月 30 日前交付可演示的计算机视觉科研 Agent |
 | 我学到了什么？ | 见 `findings.md` |
@@ -151,3 +151,14 @@
 - 初始提交ac298469f77c301dc854a9cb193f358a665987d0已推送main，origin/main已设为跟踪分支；本地Git历史额外备份于.git/ican-p2.2.bundle。
 - 复用Git Credential Manager设备登录解决私有仓库访问，访问token未写入项目；13个数据／配置提交blob与原文件字节一致，冻结集哈希未变。
 - 本次仅备份及文档完善，P2.3仍为下一开发节点。
+
+### 2026-09-17：P2.3 Embedding与Qdrant索引验收完成
+
+- 固定BAAI/bge-m3 revision `5617a9f61b028005a4858fdac845db406aefb181`，11个模型文件身份核验通过；模型账本纳入仓库，约2.29GB模型与索引保持忽略。
+- 实际tokenizer复核3959条输入，最长1127 tokens、0截断；RTX 5060 Laptop以float16编码，保存1024维float32归一化向量。
+- 建立swin_v1 1602点、qasper_train_v1 1659点、qasper_validation_v1 698点，版本指纹为`3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87`。
+- 持久化后重新打开逐点比较payload、向量、ID与集合；独立CLI复核实际tokenizer及两条功能查询通过。重复构建返回reused，未重新编码。
+- 79项pytest通过、1项Windows真实符号链接权限跳过；独立审查修正模型替代文件及eval完整性检查，最终无剩余重要发现。61个阶段前输入与eval文件哈希未变。
+- 新增docs/p2-indexing-guide.md及下载／构建／验收脚本，更新计划、路线、需求和问题日志。
+- 功能查询发现仅按config类型过滤会混入SwinV2／SwinMoE变体，待P2.4路径限制与P3混合检索处理；不报告gold正确率。
+- 下一节点P2.4：返回可回溯证据的检索接口；PaperQA2接入仍在P2.5/P4。

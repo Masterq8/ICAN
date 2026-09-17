@@ -1,0 +1,102 @@
+{
+  "backend": "sentence-transformers dense-only",
+  "dimension": 1024,
+  "files": {
+    "1_Pooling/config.json": {
+      "bytes": 191,
+      "sha256": "e54c164a07274f2eb45bb724f54a79d1efcc90c41573887cd9a29aeee0597352"
+    },
+    "README.md": {
+      "bytes": 15822,
+      "sha256": "0b81ccf9134e5874d620a86e6905062ea999e779c34eb1a7e65eaeb7fe00e450"
+    },
+    "config.json": {
+      "bytes": 687,
+      "sha256": "26159e7ad065073448460117eb24b7a4572f6f4e78eadff65dc0a11c052449fa"
+    },
+    "config_sentence_transformers.json": {
+      "bytes": 123,
+      "sha256": "1eef72430e7194a1e59680e635aed81ffa083f05668dbc5bb1c56c04c0999c38"
+    },
+    "modules.json": {
+      "bytes": 349,
+      "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+    },
+    "pytorch_model.bin": {
+      "bytes": 2271145830,
+      "sha256": "b5e0ce3470abf5ef3831aa1bd5553b486803e83251590ab7ff35a117cf6aad38"
+    },
+    "sentence_bert_config.json": {
+      "bytes": 54,
+      "sha256": "eb9b44b13c0f52a3b3685c3b1cbdea1ba8b04bea123b98f61610048940776eb1"
+    },
+    "sentencepiece.bpe.model": {
+      "bytes": 5069051,
+      "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865"
+    },
+    "special_tokens_map.json": {
+      "bytes": 964,
+      "sha256": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835"
+    },
+    "tokenizer.json": {
+      "bytes": 17098108,
+      "sha256": "21106b6d7dab2952c1d496fb21d5dc9db75c28ed361a05f5020bbba27810dd08"
+    },
+    "tokenizer_config.json": {
+      "bytes": 444,
+      "sha256": "a62b2b6784f990259fddef5f16388693a8043be4f69179e6a5257eeb3f9abac4"
+    }
+  },
+  "license": "MIT",
+  "local_path": "data/cache/embedding/bge-m3/5617a9f61b028005a4858fdac845db406aefb181",
+  "max_sequence_length": 8192,
+  "repository": "BAAI/bge-m3",
+  "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+  "source": "https://huggingface.co/BAAI/bge-m3/tree/5617a9f61b028005a4858fdac845db406aefb181",
+  "upstream_file_identity": {
+    "1_Pooling/config.json": {
+      "git_blob_sha1": "9bd85925f325e25246d94c4918dc02ab98f2a1b7",
+      "size": 191
+    },
+    "README.md": {
+      "git_blob_sha1": "e5a320176edd6ee1cfb256e68ee5ac0004de9447",
+      "size": 15822
+    },
+    "config.json": {
+      "git_blob_sha1": "e6eda1c72da8f9dc30fdd9b69c73d35af3b7a7ad",
+      "size": 687
+    },
+    "config_sentence_transformers.json": {
+      "git_blob_sha1": "1fba91c78a6c8e17227058ab6d4d3acb5d8630a9",
+      "size": 123
+    },
+    "modules.json": {
+      "git_blob_sha1": "952a9b81c0bfd99800fabf352f69c7ccd46c5e43",
+      "size": 349
+    },
+    "pytorch_model.bin": {
+      "sha256": "b5e0ce3470abf5ef3831aa1bd5553b486803e83251590ab7ff35a117cf6aad38",
+      "size": 2271145830
+    },
+    "sentence_bert_config.json": {
+      "git_blob_sha1": "0140ba1eac83a3c9b857d64baba91969d988624b",
+      "size": 54
+    },
+    "sentencepiece.bpe.model": {
+      "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+      "size": 5069051
+    },
+    "special_tokens_map.json": {
+      "git_blob_sha1": "b1879d702821e753ffe4245048eee415d54a9385",
+      "size": 964
+    },
+    "tokenizer.json": {
+      "sha256": "21106b6d7dab2952c1d496fb21d5dc9db75c28ed361a05f5020bbba27810dd08",
+      "size": 17098108
+    },
+    "tokenizer_config.json": {
+      "git_blob_sha1": "dc69ac559dcba2694012009aaa108c614541789a",
+      "size": 444
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "schema_version": "1",
+  "model": {
+    "repository": "BAAI/bge-m3",
+    "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+    "local_path": "data/cache/embedding/bge-m3/5617a9f61b028005a4858fdac845db406aefb181",
+    "ledger_path": "data/catalog/embedding-model-bge-m3.json",
+    "files": {
+      "1_Pooling/config.json": {
+        "size": 191,
+        "git_blob_sha1": "9bd85925f325e25246d94c4918dc02ab98f2a1b7"
+      },
+      "README.md": {
+        "size": 15822,
+        "git_blob_sha1": "e5a320176edd6ee1cfb256e68ee5ac0004de9447"
+      },
+      "config.json": {
+        "size": 687,
+        "git_blob_sha1": "e6eda1c72da8f9dc30fdd9b69c73d35af3b7a7ad"
+      },
+      "config_sentence_transformers.json": {
+        "size": 123,
+        "git_blob_sha1": "1fba91c78a6c8e17227058ab6d4d3acb5d8630a9"
+      },
+      "modules.json": {
+        "size": 349,
+        "git_blob_sha1": "952a9b81c0bfd99800fabf352f69c7ccd46c5e43"
+      },
+      "pytorch_model.bin": {
+        "size": 2271145830,
+        "sha256": "b5e0ce3470abf5ef3831aa1bd5553b486803e83251590ab7ff35a117cf6aad38"
+      },
+      "sentence_bert_config.json": {
+        "size": 54,
+        "git_blob_sha1": "0140ba1eac83a3c9b857d64baba91969d988624b"
+      },
+      "sentencepiece.bpe.model": {
+        "size": 5069051,
+        "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865"
+      },
+      "special_tokens_map.json": {
+        "size": 964,
+        "git_blob_sha1": "b1879d702821e753ffe4245048eee415d54a9385"
+      },
+      "tokenizer.json": {
+        "size": 17098108,
+        "sha256": "21106b6d7dab2952c1d496fb21d5dc9db75c28ed361a05f5020bbba27810dd08"
+      },
+      "tokenizer_config.json": {
+        "size": 444,
+        "git_blob_sha1": "dc69ac559dcba2694012009aaa108c614541789a"
+      }
+    },
+    "dimension": 1024,
+    "max_sequence_length": 8192,
+    "device": "cuda",
+    "precision": "float16",
+    "batch_size": 8
+  },
+  "chunk_config": "configs/chunking/v1.json",
+  "storage_root": "data/indexes/bge-m3/v1",
+  "document_template": "chunk.embedding_text",
+  "query_template": "raw_text",
+  "normalize_embeddings": true,
+  "distance": "Cosine",
+  "sources": [
+    {
+      "dataset_id": "swin_chunks_v1",
+      "directory": "data/processed/swin/chunks/v1",
+      "expected_manifest_sha256": "7e75b67d481b6128daf90c895684b8f0cad9368277f6e597f041c8f2454c170f",
+      "collections": {
+        "default": "swin_v1"
+      }
+    },
+    {
+      "dataset_id": "qasper_external_chunks_v1",
+      "directory": "data/processed/qasper_external/chunks/v1",
+      "expected_manifest_sha256": "e85143f4ebb1881a4447215a2e978340cc1f610af6f76f0aaccf4e8a414dd8bb",
+      "collections": {
+        "train": "qasper_train_v1",
+        "validation": "qasper_validation_v1"
+      }
+    }
+  ],
+  "evaluation_sha256": {
+    "data/eval/qasper_external/v1/train_questions.jsonl": "d16b5c02a93d2cd82e8632545a8d2122f5ef2091caab94cbf384b95194ac7065",
+    "data/eval/qasper_external/v1/validation_questions.jsonl": "21ecb3df1c226997c999e786882ae22b3620e405f324b5ac8e95de7562c3f761",
+    "data/eval/swin_candidates.jsonl": "d69a116828738464947114d01592d259462d2e99e6338a1d7b55135bf8976ff2",
+    "data/eval/swin_dev.jsonl": "c1849c4dd3e953e22145f7a67468536d11c96600d805d35839c8727fcdb2174c",
+    "data/eval/swin_eval_manifest.json": "0dfe424c849c2141cabc5b2b9c8be1c33798d3c3ad3edc6da441b0c839269d02",
+    "data/eval/swin_evidence.json": "a0fdb2448f70b3e6c5193ab779e383096d802d506087f458f8f04b5c9d4207b6",
+    "data/eval/swin_test.jsonl": "5b2db3539abd08fd52b1e2d6aab4b5b78a1398d3738e3ebce9764c35b55c74b2"
+  }
+}
