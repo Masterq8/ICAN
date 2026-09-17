@@ -339,6 +339,8 @@
 - **验证结果：** 管线与持久化验收通过；未作gold正确率结论。
 - **状态：** 待处理；关联P2.4／P3，不阻塞P2.3的持久化及完整性验收。
 
+**P2.4更新（2026-09-17）：** 已通过`source_type=config`加`data/raw/repositories/Swin-Transformer/configs/swin/`路径前缀验证，返回结果均被约束到标准Swin配置目录。变体混入的接口层控制已解决；dense排序、BM25／混合检索及更细粒度配置实体识别仍留P3评估。
+
 ```markdown
 ### P-YYYYMMDD-NN：问题标题
 

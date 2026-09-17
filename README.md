@@ -4,7 +4,7 @@
 
 ## 当前进度
 
-已完成 **P2.3：Embedding 与持久化索引**：
+已完成 **P2.4：只返回证据的检索接口**：
 
 - Swin 固定版本论文与官方仓库解析：97 个单元。
 - Swin 结构分块：1,602 块，保留物理页、代码行、来源版本与原文范围。
@@ -13,8 +13,9 @@
 - 实际tokenizer最长输入1,127 tokens，无截断；独立进程逐点核对与重复运行复用通过。
 - 79 项测试通过；1 项真实符号链接测试因 Windows 权限跳过。
 - 定位、原文覆盖、token 预算与重复重建哈希验收通过。
+- FastAPI `POST /v1/evidence/search` 支持collection、来源类型和安全路径前缀过滤，只返回可定位证据；真实Swin配置路径约束验证通过。
 
-下一节点为 **P2.4：只返回证据的检索接口**。PaperQA2在P2.5／P4接入并做论文、代码、配置证据适配。FastAPI检索、问答、Agent和网页尚未完成；现有功能查询不代表正式基准得分。
+下一节点为 **P2.5：PaperQA2接入验证与带引用问答**。进入Agent规划或回答生成前，先切换最高阶模型。网页尚未完成；现有功能查询不代表正式基准得分。
 
 ## 文档入口
 
@@ -26,6 +27,7 @@
 - [解析说明](docs/p2-parsing-guide.md)
 - [分块说明与验收](docs/p2-chunking-guide.md)
 - [Embedding与索引说明](docs/p2-indexing-guide.md)
+- [检索接口说明](docs/p2-retrieval-guide.md)
 - [环境说明](docs/environment-setup.md)
 
 ## 环境与测试
@@ -56,6 +58,7 @@ python scripts/check_chunk_rebuild.py
 python scripts/prepare_embedding_model.py
 python scripts/build_index.py
 python scripts/verify_index.py --smoke
+python scripts/verify_retrieval_api.py
 ```
 
 分块配置固定输入 manifest 哈希。若重新生成的解析输入与当前快照不一致，先核验差异，再建立新的配置／输出版本，不跳过校验。冻结测试文件不得用于调参；QASPER 原始 test 未下载。

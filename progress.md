@@ -162,3 +162,10 @@
 - 新增docs/p2-indexing-guide.md及下载／构建／验收脚本，更新计划、路线、需求和问题日志。
 - 功能查询发现仅按config类型过滤会混入SwinV2／SwinMoE变体，待P2.4路径限制与P3混合检索处理；不报告gold正确率。
 - 下一节点P2.4：返回可回溯证据的检索接口；PaperQA2接入仍在P2.5/P4。
+
+### 2026-09-17：P2.4检索证据接口完成
+
+- 新增只读FastAPI端点`POST /v1/evidence/search`，请求支持collection、来源类型和安全POSIX路径前缀；响应只含原始证据、来源版本、页码／行号、review标记与分数。
+- 服务惰性加载固定BGE-M3，先核验索引manifest和collection；无效请求／collection为422，索引不可用为不泄露内部路径的503。`GET /health`不加载模型。
+- 实际HTTP验证显示config类型过滤仍混入SwinV2／SwinMoE；加入真实快照路径前缀后5条结果均在标准`configs/swin/`目录。该结果只验证检索约束，不构成gold正确率。
+- P2.5前保留边界：不含回答、摘要、报告、Agent或PaperQA2。开始Agent规划或回答生成前提醒用户切换最高阶模型。

@@ -124,3 +124,10 @@
 - 新进程逐点对照3959个payload及向量，再复核真实tokenizer；重复构建复用。79测试通过／1权限跳过，61个原输入及eval哈希未变，冻结答案未用于调参。
 - dense功能查询暴露Swin配置变体混淆；config类型过滤不足以确定标准Swin-T／224。P2.4提供路径约束，P3评估BM25／混合检索；查询返回不等于准确率验收。
 - Qdrant local单进程持有目录锁，P2.4需单客户端／单worker；并发部署再切换server。完整契约、命令与证据见docs/p2-indexing-guide.md。
+
+## 2026-09-17：P2.4证据检索接口
+
+- 将P2.3的不可变索引封装为FastAPI只读接口，数据边界保持在chunk与来源定位：检索层不得生成或改写答案，方便后续分离检索、生成和Agent评测。
+- `source_path`是快照内的完整相对路径，不是仓库内简写路径。真实Swin路径前缀为`data/raw/repositories/Swin-Transformer/configs/swin/`；API严格拒绝绝对路径、反斜杠及`..`。
+- Qdrant的`MatchPrefix`可在local模式直接执行路径前缀约束。真实HTTP smoke表明它消除了SwinV2／SwinMoE目录混入，但不证明检索答案正确；P3仍需混合检索与实体约束评测。
+- 模型、Qdrant和数据库都按首次证据查询惰性加载；health不会触发。local Qdrant只能单worker，日志不记录查询文本或证据正文。

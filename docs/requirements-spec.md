@@ -301,6 +301,8 @@ flowchart LR
 
 **P2.3实现更新（2026-09-17，v0.6）：** 首版Embedding固定本地BAAI/bge-m3 revision `5617a9f61b028005a4858fdac845db406aefb181`，Sentence Transformers dense-only／CLS／1024维Cosine；实际tokenizer限长检查、模型与输入字节身份、来源payload和immutable索引版本已验收。Swin／QASPER train／validation分collection。本地Qdrant仅单进程访问；P2.4来源类型／路径约束用于处理近似变体，P3再评估混合检索，PaperQA2接入仍在P2.5。
 
+**P2.4实现更新（2026-09-17，v0.7）：** 提供只读FastAPI证据接口，使用固定BGE-M3查询编码，支持collection、来源类型和安全路径前缀约束，返回原始chunk、版本、位置、核验状态及分数。真实HTTP查询证实路径约束可排除SwinV2／SwinMoE目录；此为接口功能验证，不是回答正确率。端点不生成文本、不执行Agent，P2.5开始Agent规划或回答生成前切换最高阶模型。
+
 - 生成大模型和reranker的具体服务与预算；Embedding首版已固定BGE-M3，替换须形成独立版本与评测。
 - 是否在比赛版加入在线论文搜索，或仅展示精选库筛选。
 - PDF 导出采用前端打印方案还是后端排版生成。

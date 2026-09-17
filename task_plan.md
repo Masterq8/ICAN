@@ -6,7 +6,7 @@
 ## 当前阶段
 P2：基础 RAG（进行中）
 
-**下一节点：P2.4 只返回证据的检索接口（pending）。** P2.3已完成：固定BGE-M3，3959个向量进入3个collection，独立进程／真实tokenizer／重复运行验收通过；PaperQA2接入仍在P2.5。
+**下一节点：P2.5 PaperQA2接入验证与带引用问答（pending）。** P2.4已完成：FastAPI证据接口使用固定BGE-M3索引，支持collection／来源类型／安全路径前缀过滤并返回可定位证据。进入Agent规划或回答生成前，先提醒用户切换最高阶模型。
 
 ## 复用主线与职责
 
@@ -60,7 +60,7 @@ P2：基础 RAG（进行中）
 - [x] 准备隔离的 QASPER 外部样本：20 train／10 validation 论文，正文与答案分开保存
 - [x] P2.2：结构化分块；Swin 1,602／QASPER 2,357 块，60 项测试通过，定位覆盖与 12 个产物重建哈希一致（[使用说明](docs/p2-chunking-guide.md)）
 - [x] P2.3：固定BGE-M3与实际tokenizer；Swin／QASPER train／validation共3959点，3个持久化collection；79测试通过，独立进程验收及复用通过（[使用说明](docs/p2-indexing-guide.md)）
-- [ ] P2.4：只返回证据的检索接口
+- [x] P2.4：只返回证据的检索接口；FastAPI、请求／响应契约、安全路径约束、真实索引HTTP验证完成（不生成答案）
 - [ ] P2.5：PaperQA2 接入验证、针对性来源适配与带引用问答
 - [ ] P2.6：Swin 开发集基线、QASPER 外部结果和调用日志
 - **状态：** in_progress

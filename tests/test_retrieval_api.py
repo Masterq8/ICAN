@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 
 from ican.api.app import create_app
 from ican.retrieval.schema import SearchRequest, SearchResponse
-from ican.retrieval.service import IndexUnavailable
+from ican.retrieval.service import CollectionNotFound, IndexUnavailable
 
 
 class FakeEvidenceService:
@@ -40,6 +40,11 @@ class UnavailableEvidenceService:
         raise IndexUnavailable("local error detail must not be exposed")
 
 
+class UnknownCollectionEvidenceService:
+    def search(self, request: SearchRequest) -> SearchResponse:
+        raise CollectionNotFound("Unknown evidence collection")
+
+
 def test_health_does_not_require_evidence_service():
     response = TestClient(create_app()).get("/health")
 
@@ -70,6 +75,15 @@ def test_search_route_maps_unavailable_index_to_503_without_internal_detail():
 
     assert response.status_code == 503
     assert response.json() == {"detail": "Evidence index is unavailable"}
+
+
+def test_search_route_maps_unknown_collection_to_422():
+    response = TestClient(create_app(service=UnknownCollectionEvidenceService())).post(
+        "/v1/evidence/search", json={"query": "x", "collection": "not_real"}
+    )
+
+    assert response.status_code == 422
+    assert response.json() == {"detail": "Unknown evidence collection"}
 
 
 def test_search_route_returns_422_for_invalid_request():
