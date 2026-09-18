@@ -92,3 +92,24 @@ def test_search_route_returns_422_for_invalid_request():
     )
 
     assert response.status_code == 422
+
+
+def test_search_route_preserves_strategy_family_and_trace():
+    class CapturingService(FakeEvidenceService):
+        def search(self, request):
+            assert request.strategy == "hybrid_rerank"
+            assert request.family == "swin_v1"
+            response = super().search(request)
+            return response.model_copy(update={"trace": {"strategy": request.strategy}})
+
+    response = TestClient(create_app(service=CapturingService())).post(
+        "/v1/evidence/search",
+        json={
+            "query": "window",
+            "collection": "swin_v1",
+            "strategy": "hybrid_rerank",
+            "family": "swin_v1",
+        },
+    )
+    assert response.status_code == 200
+    assert response.json()["trace"] == {"strategy": "hybrid_rerank"}

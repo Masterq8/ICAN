@@ -1,0 +1,302 @@
+{
+  "original_run": "p3-qa-v1",
+  "latest_retrieval_run": "p3-final-v3",
+  "original_retrieval_sha256": "dd21999f0f84a89e35a287dc83c1d82125752bd22988d9ea206c8afec64cc560",
+  "original_journal_sha256": "d6123f21d609cad8b799b73670b0b4d21f2a9386bdbd77d13df38389ba6925e0",
+  "latest_retrieval_seal": {
+    "sha256": "1c2f9b7a287f96e3fba63c42fc4e2e8cccf9da7e2d7b30384edce4266ce591de",
+    "n": 282
+  },
+  "cases": 47,
+  "equal_prepared_input_n": 47,
+  "generation_calls": 0,
+  "bound_generation_identity": {
+    "model": "deepseek-flash",
+    "base_url": "https://api.deepseek.com"
+  },
+  "note": "Inputs compared under the same pinned adapter and generation identity; no new answer or semantic judgment is created.",
+  "comparisons": [
+    {
+      "case_key": "qasper/train/03fb4b31742820df58504575c562bee672e016be",
+      "original_input_sha256": "89a717050e5dba76810be4bf4b91dc282a2e0db8129cc1c3866f52a30a36f595",
+      "latest_input_sha256": "89a717050e5dba76810be4bf4b91dc282a2e0db8129cc1c3866f52a30a36f595",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/train/08333e4dd1da7d6b5e9b645d40ec9d502823f5d7",
+      "original_input_sha256": "60948521600e0c3af65435dd18685dcb1ce1d77d8026987431486d5ec770b469",
+      "latest_input_sha256": "60948521600e0c3af65435dd18685dcb1ce1d77d8026987431486d5ec770b469",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/train/085147cd32153d46dd9901ab0f9195bfdbff6a85",
+      "original_input_sha256": "35edfb11bf514345c17ee3a64416e7d6eb416a53b2f809f520296a8c26b9902e",
+      "latest_input_sha256": "35edfb11bf514345c17ee3a64416e7d6eb416a53b2f809f520296a8c26b9902e",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_01",
+      "original_input_sha256": "3010f8db4697a9cef331a7497b57f0231f617e22d0f52971dcef5d41b86fbdab",
+      "latest_input_sha256": "3010f8db4697a9cef331a7497b57f0231f617e22d0f52971dcef5d41b86fbdab",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_02",
+      "original_input_sha256": "ef2acc14fd82b6cfeb5697971d49acac6093c7ebcfc5f9f0230e34bf18e03733",
+      "latest_input_sha256": "ef2acc14fd82b6cfeb5697971d49acac6093c7ebcfc5f9f0230e34bf18e03733",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_03",
+      "original_input_sha256": "ec3a059a257cfa0ee386b60fb05d370935cd4c77033ed0e4be56e8091a1d57eb",
+      "latest_input_sha256": "ec3a059a257cfa0ee386b60fb05d370935cd4c77033ed0e4be56e8091a1d57eb",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_04",
+      "original_input_sha256": "e48a147422741a547412b93d3a7ec99aba9178252595ab33938a30a69424366a",
+      "latest_input_sha256": "e48a147422741a547412b93d3a7ec99aba9178252595ab33938a30a69424366a",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_05",
+      "original_input_sha256": "437c1ab2efff3b98372cff99bb0d401b57da80cece86578772785fad332a542a",
+      "latest_input_sha256": "437c1ab2efff3b98372cff99bb0d401b57da80cece86578772785fad332a542a",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_06",
+      "original_input_sha256": "a9dba860621c3aa919f44287c1ad2f85ae8c62a5d585146f80ab1f6b42deaf49",
+      "latest_input_sha256": "a9dba860621c3aa919f44287c1ad2f85ae8c62a5d585146f80ab1f6b42deaf49",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_07",
+      "original_input_sha256": "cfac69086607aff2824e68461ce9223255fb61a1667a28b97ada1dd61dbc083a",
+      "latest_input_sha256": "cfac69086607aff2824e68461ce9223255fb61a1667a28b97ada1dd61dbc083a",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_08",
+      "original_input_sha256": "353ba4ecc24a0144909dfe9d72ee22243ee6ceb5b348c6f5448b7bf4c11482c1",
+      "latest_input_sha256": "353ba4ecc24a0144909dfe9d72ee22243ee6ceb5b348c6f5448b7bf4c11482c1",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_09",
+      "original_input_sha256": "fc4f959aa1700e04305787b02448840d0a1029435edbdf647d2e38b0f7005477",
+      "latest_input_sha256": "fc4f959aa1700e04305787b02448840d0a1029435edbdf647d2e38b0f7005477",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_10",
+      "original_input_sha256": "c1fcf6ae81dcc34e3b36082e751d0552f55fab17c22c5ad27e5f885974eba35f",
+      "latest_input_sha256": "c1fcf6ae81dcc34e3b36082e751d0552f55fab17c22c5ad27e5f885974eba35f",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_11",
+      "original_input_sha256": "1c867eda47c0668d39bc419c43fa172e37f53879fcba7a6cea06242e989220a0",
+      "latest_input_sha256": "1c867eda47c0668d39bc419c43fa172e37f53879fcba7a6cea06242e989220a0",
+      "equal": true
+    },
+    {
+      "case_key": "swin/dev/swin_dev_12",
+      "original_input_sha256": "c6fc5c1fd37a7318b95f436603fa02af6f803ec2962f37d8f52fa1b935125f50",
+      "latest_input_sha256": "c6fc5c1fd37a7318b95f436603fa02af6f803ec2962f37d8f52fa1b935125f50",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/50be4a737dc0951b35d139f51075011095d77f2a",
+      "original_input_sha256": "70b70ec520091c3bfdd3d5ac6b53c929967413a0f85231d6250abaca076bbdff",
+      "latest_input_sha256": "70b70ec520091c3bfdd3d5ac6b53c929967413a0f85231d6250abaca076bbdff",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/6becff2967fe7c5256fe0b00231765be5b9db9f1",
+      "original_input_sha256": "39474c80a3621d026c068f50d4a553482806d38a93450d06b8e3a37355543f93",
+      "latest_input_sha256": "39474c80a3621d026c068f50d4a553482806d38a93450d06b8e3a37355543f93",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/76121e359dfe3f16c2a352bd35f28005f2a40da3",
+      "original_input_sha256": "cc224eff77ab6b5fdfe86cd648dd7552e84bfe81d52a769c1eacc12f6f34f307",
+      "latest_input_sha256": "cc224eff77ab6b5fdfe86cd648dd7552e84bfe81d52a769c1eacc12f6f34f307",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/02428a8fec9788f6dc3a86b5d5f3aa679935678d",
+      "original_input_sha256": "6b8f5f7e167f33904e5d24e54ec4b9ca6341c8f69ebdc047084fabe3035a0c7a",
+      "latest_input_sha256": "6b8f5f7e167f33904e5d24e54ec4b9ca6341c8f69ebdc047084fabe3035a0c7a",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/2cd37743bcc7ea3bd405ce6d91e79e5339d7642e",
+      "original_input_sha256": "d4a15d4e7b4d493b5021d10316947be4341d6ea8d1ccd251432aa854b38f5b91",
+      "latest_input_sha256": "d4a15d4e7b4d493b5021d10316947be4341d6ea8d1ccd251432aa854b38f5b91",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/eac9dae3492e17bc49c842fb566f464ff18c049b",
+      "original_input_sha256": "0de131f82ed5af701c209d565aa1ae91ed390c61196d676f216a6cc18fc0ff51",
+      "latest_input_sha256": "0de131f82ed5af701c209d565aa1ae91ed390c61196d676f216a6cc18fc0ff51",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/7697baf8d8d582c1f664a614f6332121061f87db",
+      "original_input_sha256": "22b507f808761f4097bdd2e0e747a511e0c11da9ea72f8d3b96ad8fc913b7b3a",
+      "latest_input_sha256": "22b507f808761f4097bdd2e0e747a511e0c11da9ea72f8d3b96ad8fc913b7b3a",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/1cb100182508cf55b3509283c0e2bbcd527d625e",
+      "original_input_sha256": "2a231759a7c666078fc2d65d6d9a7befc6d1a96f9e5c4f8c94d85e87ae5ecaef",
+      "latest_input_sha256": "2a231759a7c666078fc2d65d6d9a7befc6d1a96f9e5c4f8c94d85e87ae5ecaef",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/206739417251064b910ae9e5ff096e867ee10fb8",
+      "original_input_sha256": "71998f5afe67c3f8938e91ced65e5f77206b385c25cbe2924d5dda4acfd5a028",
+      "latest_input_sha256": "71998f5afe67c3f8938e91ced65e5f77206b385c25cbe2924d5dda4acfd5a028",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/d6401cece55a14d2a35ba797a0878dfe2deabedc",
+      "original_input_sha256": "80f0ff6c48f198812851a9504be0f437e97726f4ffc76a2a41cdacfa94b8fcb7",
+      "latest_input_sha256": "80f0ff6c48f198812851a9504be0f437e97726f4ffc76a2a41cdacfa94b8fcb7",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/6bf5620f295b5243230bc97b340fae6e92304595",
+      "original_input_sha256": "66c07e7816d11b246efa1f0a337d0de53f9f0d18da98535bc9f1181a70eb1596",
+      "latest_input_sha256": "66c07e7816d11b246efa1f0a337d0de53f9f0d18da98535bc9f1181a70eb1596",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/4986f420884f917d1f60d3cea04dc8e64d3b5bf1",
+      "original_input_sha256": "ffc72caccb0bbd865dbe01da0e33f63d62145b5568c82c0fa26e0e3ea759a6a2",
+      "latest_input_sha256": "ffc72caccb0bbd865dbe01da0e33f63d62145b5568c82c0fa26e0e3ea759a6a2",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/747b847d687f703cc20a87877c5b138f26ff137d",
+      "original_input_sha256": "f348dfa0e941c64be65e03423491cc409173d0abd56da8fe286dee8b0bc55199",
+      "latest_input_sha256": "f348dfa0e941c64be65e03423491cc409173d0abd56da8fe286dee8b0bc55199",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/111afb77cfbf4c98e0458606378fa63a0e965e36",
+      "original_input_sha256": "bba69a84a2a60dd7a02f0004b12c4c21fe8b95c24d89df88707f0c4d4bd761d0",
+      "latest_input_sha256": "bba69a84a2a60dd7a02f0004b12c4c21fe8b95c24d89df88707f0c4d4bd761d0",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/6568a31241167f618ef5ede939053feaa2fb0d7e",
+      "original_input_sha256": "2151c8a2d48628271d7007399a9040833174b429c3cbf4b0aa7034aa326d4437",
+      "latest_input_sha256": "2151c8a2d48628271d7007399a9040833174b429c3cbf4b0aa7034aa326d4437",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed",
+      "original_input_sha256": "6dd189f698ecc28747cf11c81d2d099cb2081c2fc1316282d2fef900f24828b8",
+      "latest_input_sha256": "6dd189f698ecc28747cf11c81d2d099cb2081c2fc1316282d2fef900f24828b8",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/0fc2b5bc2ead08a6fe0280fb3a47477c6df1587c",
+      "original_input_sha256": "431ff85d16dc89e53c23d0ddd6c525c588f8ec9a06d24ac1f231d6855931b807",
+      "latest_input_sha256": "431ff85d16dc89e53c23d0ddd6c525c588f8ec9a06d24ac1f231d6855931b807",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/6a633811019e9323dc8549ad540550d27aa6d972",
+      "original_input_sha256": "44c99844272468291a2002d2146c31191568fba2804d3a47752c481a45307837",
+      "latest_input_sha256": "44c99844272468291a2002d2146c31191568fba2804d3a47752c481a45307837",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/9cf070d6671ee4a6353f79a165aa648309e01295",
+      "original_input_sha256": "0d5a526271e74ed14c71c71866133b122a1bb88b461c1c6f0eaf192d09fc1b5c",
+      "latest_input_sha256": "0d5a526271e74ed14c71c71866133b122a1bb88b461c1c6f0eaf192d09fc1b5c",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/87bc6f83f7f90df3c6c37659139b92657c3f7a38",
+      "original_input_sha256": "75662e8a1b2e72f169038d9cfedfccf94d6bb6c8bc954a1647a49d2c62caaf1b",
+      "latest_input_sha256": "75662e8a1b2e72f169038d9cfedfccf94d6bb6c8bc954a1647a49d2c62caaf1b",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/455d4ef8611f62b1361be4f6387b222858bb5e56",
+      "original_input_sha256": "51d2627ebca34a60e39d7726fb35741efafc91f89fc1c597a6aafc5149634aee",
+      "latest_input_sha256": "51d2627ebca34a60e39d7726fb35741efafc91f89fc1c597a6aafc5149634aee",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/bc16ce6e9c61ae13d46970ebe6c4728a47f8f425",
+      "original_input_sha256": "14249721c34120c3933ad44206616c1c8dd3fa0627e0bdd8ba2e173281822042",
+      "latest_input_sha256": "14249721c34120c3933ad44206616c1c8dd3fa0627e0bdd8ba2e173281822042",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/c49ee6ac4dc812ff84d255886fd5aff794f53c39",
+      "original_input_sha256": "d9dffa7e24a3f4f3f70881a11f2e95f8090834954115c74ab4147836dc7bd878",
+      "latest_input_sha256": "d9dffa7e24a3f4f3f70881a11f2e95f8090834954115c74ab4147836dc7bd878",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/3f856097be2246bde8244add838e83a2c793bd17",
+      "original_input_sha256": "36c6f1dfb88bab05c349a9d7a34b87722eb6a026aa5a4dd078bcce15090d589e",
+      "latest_input_sha256": "36c6f1dfb88bab05c349a9d7a34b87722eb6a026aa5a4dd078bcce15090d589e",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/bf52c01bf82612d0c7bbf2e6a5bb2570c322936f",
+      "original_input_sha256": "4397b16e67c9d30660b7a5e66c314787a07ec0ad1dde4d8ede09a98f470fe10d",
+      "latest_input_sha256": "4397b16e67c9d30660b7a5e66c314787a07ec0ad1dde4d8ede09a98f470fe10d",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/74e866137b3452ec50fb6feaf5753c8637459e62",
+      "original_input_sha256": "922eb8ac0ab350f6324a25d754f98e075c62ff3d3b0cf13658759d2755edb3fa",
+      "latest_input_sha256": "922eb8ac0ab350f6324a25d754f98e075c62ff3d3b0cf13658759d2755edb3fa",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/184b0082e10ce191940c1d24785b631828a9f714",
+      "original_input_sha256": "70698cbd14ced1570321bc20ce27303fdb893562dd6af673f433f35b0c069e8c",
+      "latest_input_sha256": "70698cbd14ced1570321bc20ce27303fdb893562dd6af673f433f35b0c069e8c",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/784ce5a983c5f2cc95a2c60ce66f2a8a50f3636f",
+      "original_input_sha256": "7e3c4d1b255eebfebab49c9e3e8376ed3f2549b955ce1d7f662c31681d8483db",
+      "latest_input_sha256": "7e3c4d1b255eebfebab49c9e3e8376ed3f2549b955ce1d7f662c31681d8483db",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/7705dd04acedaefee30d8b2c9978537afb2040dc",
+      "original_input_sha256": "7cc228ee09e474f8a69df3a8a1e8e839f9b5b31a9e5c767077251eab0a8e6bb6",
+      "latest_input_sha256": "7cc228ee09e474f8a69df3a8a1e8e839f9b5b31a9e5c767077251eab0a8e6bb6",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/26327ccebc620a73ba37a95aabe968864e3392b2",
+      "original_input_sha256": "4e239d6ef532be99b10645cb9d871e19b4fd8b285c22135a897bb7e5004cd325",
+      "latest_input_sha256": "4e239d6ef532be99b10645cb9d871e19b4fd8b285c22135a897bb7e5004cd325",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/ababb79dd3c301f4541beafa181f6a6726839a10",
+      "original_input_sha256": "6e267b22e58a2dffb5220a65c54728dc5d97b2611dc7e9b9036942df25acf097",
+      "latest_input_sha256": "6e267b22e58a2dffb5220a65c54728dc5d97b2611dc7e9b9036942df25acf097",
+      "equal": true
+    },
+    {
+      "case_key": "qasper/validation/aefa333b2cf0a4000cd40566149816f5b36135e7",
+      "original_input_sha256": "783dee4bb0c9a130e4e06c2c4794a571267f9a0c19b4e2391883b8b8b40c927e",
+      "latest_input_sha256": "783dee4bb0c9a130e4e06c2c4794a571267f9a0c19b4e2391883b8b8b40c927e",
+      "equal": true
+    }
+  ]
+}

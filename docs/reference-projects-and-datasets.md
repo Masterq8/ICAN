@@ -4,6 +4,8 @@
 
 **2026-09-17实施状态：** P2.5已安装固定PaperQA2 2026.8.12，公开Context adapter与Docs.aquery实际接入；P2.6正式双版评测及助手审核完成。外部Qdrant继续独立，领域注册表保留论文／代码／配置位置及版本。Kotaemon仍留P3/P5，其他项目按原模块节点使用，详见[问答说明](p2-qa-guide.md)及下方评测更新。
 
+**2026-09-18 P3完成状态：** 已阅读Kotaemon固定commit `9ad3e4e49aa35b8acddd235918a5d9753c1cfdf9` 的 [VectorRetrieval](https://github.com/Cinnamon/kotaemon/blob/9ad3e4e49aa35b8acddd235918a5d9753c1cfdf9/libs/kotaemon/kotaemon/indices/vectorindex.py)，仅借鉴范围过滤、双路候选、重排再TopK的流程；未复制或安装模块。领域BM25／RRF／YAML BASE闭包／结构锚点自行实现。实际重排复用[BAAI/bge-reranker-v2-m3](https://huggingface.co/BAAI/bge-reranker-v2-m3)固定本地模型；PaperQA2继续使用既有公开接口adapter。282条检索消融、47次真实回答及新审核完成，Swin改善与外部回退分别记录，见[P3报告](p3-retrieval-report.md)。
+
 **P2.6复用更新：** 固定引入allenai/qasper-led-baseline官方evaluator commit afd0fb96bf78ce8cd8157639c6f6a6995e4f9089，保留Apache-2.0及source/hash；对QASPER多参考答案／证据实际调用evaluate，语义正确性由助手逐题审核。PaperQA2默认问答配置与领域版复用同一sealed检索快照，94次对照完成；默认serializer最多5sources与领域版8块、排序／prompt差异明确记录。未运行完整上游Agent基线。QASPER占位公式／caption与参考冲突保留边界，不修改gold。见[基线报告](p2-baseline-report.md)。
 
 ## 1. 结论与采用顺序

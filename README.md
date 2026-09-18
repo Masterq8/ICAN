@@ -37,6 +37,8 @@
 - [检索接口说明](docs/p2-retrieval-guide.md)
 - [PaperQA2问答配置、接口与验收](docs/p2-qa-guide.md)
 - [开发集与外部基线报告](docs/p2-baseline-report.md)
+- [混合检索与重排序使用说明](docs/p3-retrieval-guide.md)
+- [P3检索消融与回答对照](docs/p3-retrieval-report.md)
 - [环境说明](docs/environment-setup.md)
 
 ## 环境与测试

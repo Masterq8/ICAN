@@ -122,22 +122,51 @@ class EvidenceSearchService:
         return self.encoder
 
     def search(self, request: SearchRequest) -> SearchResponse:
+        return self._search(request, request.limit)
+
+    def candidates(
+        self, request: SearchRequest, limit: int, allowed_point_ids: list[str]
+    ) -> SearchResponse:
+        if not 1 <= limit <= 80:
+            raise ValueError("Internal candidate limit must be1..80")
+        return self._search(request, limit, allowed_point_ids)
+
+    def _search(
+        self,
+        request: SearchRequest,
+        limit: int,
+        allowed_point_ids: list[str] | None = None,
+    ) -> SearchResponse:
         started = time.perf_counter()
         request_id = str(uuid.uuid4())
         directory, manifest = self._load_index()
         if request.collection not in manifest["collections"]:
             raise CollectionNotFound("Unknown evidence collection")
+        if allowed_point_ids == []:
+            return SearchResponse(
+                index_fingerprint=directory.name,
+                collection=request.collection,
+                query=request.query,
+                filters=request.filters,
+                results=[],
+            )
         try:
             vector = self._encoder().encode([request.query])[0].tolist()
             with (
                 self._query_lock,
                 closing(self.client_factory(path=str(directory / "qdrant"))) as client,
             ):
+                query_filter = self._query_filter(request)
+                if allowed_point_ids is not None:
+                    conditions = [models.HasIdCondition(has_id=allowed_point_ids)]
+                    if query_filter is not None:
+                        conditions.append(query_filter)
+                    query_filter = models.Filter(must=conditions)
                 found = client.query_points(
                     collection_name=request.collection,
                     query=vector,
-                    query_filter=self._query_filter(request),
-                    limit=request.limit,
+                    query_filter=query_filter,
+                    limit=limit,
                     with_payload=True,
                     with_vectors=False,
                 ).points

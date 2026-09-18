@@ -38,7 +38,9 @@ def create_app(
         nonlocal evidence
         with initialization_lock:
             if evidence is None:
-                evidence = EvidenceSearchService(
+                from ican.retrieval.hybrid import HybridEvidenceSearchService
+
+                evidence = HybridEvidenceSearchService(
                     project_root, load_config(project_root)
                 )
         return evidence

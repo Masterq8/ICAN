@@ -89,10 +89,13 @@ def validate_reviews(reviews: list[dict], completed: dict, gold: dict) -> None:
                 raise ValueError("Swin scores must match the fixed rubric")
 
 
-def finalize(root: Path, directory: Path, review_directory: Path) -> dict:
-    binding = json.loads(
-        (review_directory / "p26-audit-manifest.json").read_text(encoding="utf-8")
-    )
+def finalize(
+    root: Path,
+    directory: Path,
+    review_directory: Path,
+    binding_name="p26-audit-manifest.json",
+) -> dict:
+    binding = json.loads((review_directory / binding_name).read_text(encoding="utf-8"))
     journal_path = directory / "journal.jsonl"
     if digest(journal_path) != binding["journal_sha256"]:
         raise ValueError("Judgments belong to a different generation journal")
@@ -225,9 +228,11 @@ def finalize(root: Path, directory: Path, review_directory: Path) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-dir", type=Path, required=True)
+    parser.add_argument("--review-dir", type=Path, default=ROOT / "docs/evaluation")
+    parser.add_argument("--audit-manifest", default="p26-audit-manifest.json")
     args = parser.parse_args()
     from filelock import FileLock
 
     with FileLock(args.run_dir.parent / f".{args.run_dir.name}.lock", timeout=0):
-        result = finalize(ROOT, args.run_dir, ROOT / "docs/evaluation")
+        result = finalize(ROOT, args.run_dir, args.review_dir, args.audit_manifest)
     print(json.dumps(result, ensure_ascii=False, indent=2))

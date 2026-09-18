@@ -1,0 +1,11 @@
+{
+  "version":"hybrid-v1",
+  "candidate_limit":40,
+  "rerank_limit":48,
+  "rrf_k":60,
+  "bm25_k1":1.5,
+  "bm25_b":0.75,
+  "structural_context":true,
+  "max_context_additions":3,
+  "reranker_config":"configs/reranking/v1.json"
+}

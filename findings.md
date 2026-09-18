@@ -175,3 +175,19 @@
 - 本机RTX5060 Laptop有8GiB显存，选BAAI/bge-reranker-v2-m3多语言模型，Apache-2.0；官方revision953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e，safetensors2271071852字节，推理FP16小batch。
 - 配置已按完整字段路径分块，但返回原文只有单行；BM25需要字段／结构名和路径，回答端需要解释实际覆盖关系，不能将补查上下文误称自动配置执行结果。
 - 读取不存在的retrieval/models.py已改为实际schema.py；Kotaemon GitHub main/raw路径404，接下来核对实际HEAD／默认分支再定向读取，不把失败当成已参考源码。
+
+## 2026-09-18：P3校准与可复现约束
+
+- 已实际阅读Kotaemon固定HEAD 9ad3e4e49aa35b8acddd235918a5d9753c1cfdf9的libs/kotaemon/kotaemon/indices/vectorindex.py，仅借鉴过滤→双路候选→重排→TopK流程，未复制／安装模块。RRF及领域范围、结构锚点由本项目实现。
+- BGE-reranker权重普通下载停滞，Range响应206及精确Content-Range可用；按32MiB并行4路续传，最终校验官方SHA和7个allowlist文件。缓存不进Git；FP16 batch2与BGE-M3同驻GPU已实际跑通。
+- 首轮机械补充同类方法会挤掉论文／默认值证据，故具名结构和显式YAML配置链优先于任意高排名类。规则来自query/固定术语与已入库metadata，允许dev/train校准，不使用冻结题、validation gold或社区回复作检索提示。
+- 即使每块正文/来源正确，跨索引恢复也会使消融不可信；manifest现在绑定实际验证的index fingerprint/identity/manifest SHA，所有恢复记录必须同指纹且匹配manifest；seal只能在完整282条时生成。
+
+## 2026-09-18：P3验收方法与边界
+
+- 将检索收益与答案收益分开：Swin必要定位80.56%不等于正确率；40/49评分点仍有额外归因错误，完整仅4/12。专用路径0/96混入不保证共享config里的SWIN_MLP分支正确归因。
+- 实际短HTTP查询补充开发集覆盖面：长题能保留具名YAML，不代表短题也能。修复要保留原失败查询，追加左右ASCII标识符边界回归，不能用更长的有利问题替换验收。
+- 代码修复后不应把旧审查直接搬到新答句。先用新检索重跑实际PaperQA2准备过程，比较context／system／qa／metadata rank与score／预算及包含ID；47题输入一致时记录等价证据，不重复生成，也不创造不存在的新答案。
+- 外部已观察validation只能做回归：P3召回与两个官方F1下降、语义完整19/32也低于原21/32。默认dense保留，按任务选策略应由新留出题验证，不能在这32题上反复调参后称盲测改善。
+- LLM有正确公式也会算错：dev06把0.001×2写成0.512。P4需要确定性计算及输入引用，不用增加重排序或更长prompt假装已经修复。
+- dev12对动机的部分拒答被旧regex漏识别。保持原P2.6协议公平对照，绑定新的语义审核另列差异；不回填journal改变旧评分。

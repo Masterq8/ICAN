@@ -48,6 +48,12 @@ class SearchRequest(BaseModel):
     collection: str = Field(min_length=1, max_length=128)
     limit: int = Field(default=5, ge=1, le=20)
     filters: SearchFilters = Field(default_factory=SearchFilters)
+    strategy: Literal["dense", "dense_scoped", "bm25", "hybrid", "hybrid_rerank"] = (
+        "dense"
+    )
+    family: Literal[
+        "auto", "all", "swin_v1", "swin_v2", "swin_mlp", "swin_moe", "simmim"
+    ] = "auto"
 
     @field_validator("query")
     @classmethod
@@ -87,3 +93,4 @@ class SearchResponse(BaseModel):
     query: str
     filters: SearchFilters
     results: list[EvidenceResult]
+    trace: dict = Field(default_factory=dict)
