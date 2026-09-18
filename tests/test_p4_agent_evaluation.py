@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
+from ican.agent.schema import AgentResponse, AgentUsage
 from ican.evaluation.data import Case
 
 
@@ -54,3 +57,77 @@ def test_manifest_rejects_an_identity_change(tmp_path):
         assert "identity changed" in str(error)
     else:
         raise AssertionError("the immutable manifest was overwritten")
+
+
+def test_planner_requires_typed_claims_for_execution_and_inference():
+    from ican.agent.prompts import PLANNER_SYSTEM
+
+    assert "code_execution" in PLANNER_SYSTEM
+    assert "inference" in PLANNER_SYSTEM
+
+
+class FakeAgent:
+    def __init__(self):
+        self.calls = []
+
+    async def run(self, request):
+        self.calls.append(request)
+        return AgentResponse(
+            task_id="task-1",
+            status="completed",
+            stop_reason="final_answer_generated",
+            planner_model="fake-planner",
+            answer_model="fake-answer",
+            usage=AgentUsage(paid_calls=1, planner_calls=1),
+        )
+
+
+@pytest.mark.asyncio
+async def test_started_case_is_never_retried(tmp_path):
+    from ican.agent.schema import AgentRequest
+    from ican.evaluation.p4_agent import P4AgentCase, P4AgentEvaluationRunner
+
+    case = P4AgentCase(
+        key="swin/dev/swin_dev_06",
+        request=AgentRequest(query="learning rate", collection="swin_v1"),
+    )
+    agent = FakeAgent()
+    runner = P4AgentEvaluationRunner(tmp_path, [case], {"version": "test"}, agent)
+
+    await runner.run_case(case)
+
+    with pytest.raises(ValueError, match="already recorded"):
+        await runner.run_case(case)
+    assert len(agent.calls) == 1
+
+
+@pytest.mark.asyncio
+async def test_audit_requires_shape_and_motivation_claim_states(tmp_path):
+    from ican.agent.schema import AgentRequest
+    from ican.evaluation.p4_agent import (
+        P4AgentCase,
+        P4AgentEvaluationRunner,
+        audit_run,
+    )
+
+    cases = [
+        P4AgentCase(
+            key="swin/dev/swin_dev_04",
+            request=AgentRequest(query="shape", collection="swin_v1"),
+            required_claim_status="blocked_by_precondition",
+        ),
+        P4AgentCase(
+            key="swin/dev/swin_dev_12",
+            request=AgentRequest(query="motivation", collection="swin_v1"),
+            required_claim_status="requires_review",
+        ),
+    ]
+    runner = P4AgentEvaluationRunner(tmp_path, cases, {"version": "test"}, FakeAgent())
+    for case in cases:
+        await runner.run_case(case)
+
+    report = audit_run(tmp_path, cases, {"version": "test"})
+
+    assert report["status"] == "failed"
+    assert "swin/dev/swin_dev_04:claim_status_missing" in report["failures"]
+    assert "swin/dev/swin_dev_12:claim_status_missing" in report["failures"]

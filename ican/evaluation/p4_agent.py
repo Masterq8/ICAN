@@ -6,8 +6,9 @@ import hashlib
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
-from ican.agent.schema import AgentRequest
+from ican.agent.schema import AgentRequest, AgentResponse
 
 from .data import Case, digest, load_inputs
 
@@ -106,3 +107,180 @@ def write_manifest(directory: Path, identity: dict) -> Path:
         return target
     target.write_text(content, encoding="utf-8", newline="\n")
     return target
+
+
+def _case_token(case: P4AgentCase) -> str:
+    return hashlib.sha256(case.key.encode("utf-8")).hexdigest()[:16]
+
+
+def _case_paths(directory: Path, case: P4AgentCase) -> tuple[Path, Path]:
+    token = _case_token(case)
+    return (
+        Path(directory) / f"{token}.started.json",
+        Path(directory) / f"{token}.response.json",
+    )
+
+
+class P4AgentEvaluationRunner:
+    """Persist each case before dispatching it once through an Agent service."""
+
+    def __init__(
+        self, directory: Path, cases: list[P4AgentCase], identity: dict, service
+    ):
+        self.directory = Path(directory)
+        self.cases = {case.key: case for case in cases}
+        self.identity = identity
+        self.service = service
+        write_manifest(self.directory, self.identity)
+
+    def _paths(self, case: P4AgentCase) -> tuple[Path, Path]:
+        return _case_paths(self.directory, case)
+
+    async def run_case(self, case: P4AgentCase) -> AgentResponse:
+        expected = self.cases.get(case.key)
+        if expected is None or expected.record() != case.record():
+            raise ValueError("P4.4 case is not present in the fixed manifest")
+        marker, output = self._paths(case)
+        if output.exists():
+            raise ValueError("P4.4 case already recorded; automatic retry is disabled")
+        if marker.exists():
+            raise ValueError("P4.4 case already started; inspect retained result")
+        marker.write_text(
+            json.dumps({"case": case.record()}, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        response = await self.service.run(case.request)
+        output.write_text(
+            json.dumps(
+                {"case": case.record(), "response": response.model_dump(mode="json")},
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        return response
+
+
+def _claim_statuses(response: AgentResponse) -> set[str]:
+    statuses = set()
+    for artifact in response.artifacts:
+        if artifact.get("kind") != "claim_verification":
+            continue
+        for verdict in artifact.get("verdicts", []):
+            status = verdict.get("status")
+            if isinstance(status, str):
+                statuses.add(status)
+    return statuses
+
+
+def _citation_scope_failures(case: P4AgentCase, response: AgentResponse) -> list[str]:
+    failures = []
+    prefixes = case.request.filters.path_prefixes
+    types = case.request.filters.source_types
+    if response.answer is None:
+        return failures
+    for citation in response.answer.citations:
+        source = citation.evidence.source
+        path = source.source_path.replace("\\", "/")
+        if prefixes and not any(path.startswith(prefix) for prefix in prefixes):
+            failures.append("citation_scope_path")
+        if types and source.source_type not in types:
+            failures.append("citation_scope_type")
+    return failures
+
+
+def _journal_failures(directory: Path, max_calls: int) -> tuple[list[str], int]:
+    path = Path(directory) / "paid-journal.jsonl"
+    if not path.exists():
+        return ["journal_missing"], 0
+    try:
+        rows = [
+            json.loads(line)
+            for line in path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+    except json.JSONDecodeError:
+        return ["journal_invalid_json"], 0
+    started = [row for row in rows if row.get("event") == "started"]
+    failures = []
+    if len(started) > max_calls:
+        failures.append("journal_budget_exceeded")
+    start_ids = {row.get("call_id") for row in started}
+    terminal = [row for row in rows if row.get("event") in {"completed", "error"}]
+    terminal_ids = [row.get("call_id") for row in terminal]
+    if len(terminal_ids) != len(set(terminal_ids)):
+        failures.append("journal_duplicate_terminal")
+    if set(terminal_ids) != start_ids:
+        failures.append("journal_unpaired_events")
+    return failures, len(started)
+
+
+def audit_run(
+    directory: Path,
+    cases: list[P4AgentCase],
+    identity: dict,
+    *,
+    max_calls: int = 32,
+) -> dict[str, Any]:
+    """Check run identity, no-retry records, evidence scope and required claims."""
+
+    directory = Path(directory)
+    failures: list[str] = []
+    manifest = directory / "manifest.json"
+    if not manifest.exists():
+        failures.append("manifest_missing")
+    else:
+        try:
+            if json.loads(manifest.read_text(encoding="utf-8")) != identity:
+                failures.append("manifest_identity_changed")
+        except json.JSONDecodeError:
+            failures.append("manifest_invalid_json")
+    results = []
+    for case in cases:
+        marker, output = _case_paths(directory, case)
+        if not marker.exists():
+            failures.append(f"{case.key}:start_missing")
+        if not output.exists():
+            failures.append(f"{case.key}:response_missing")
+            continue
+        try:
+            payload = json.loads(output.read_text(encoding="utf-8"))
+            if payload.get("case") != case.record():
+                failures.append(f"{case.key}:request_identity_changed")
+                continue
+            response = AgentResponse.model_validate(payload.get("response"))
+        except (json.JSONDecodeError, ValueError):
+            failures.append(f"{case.key}:response_invalid")
+            continue
+        if response.usage.paid_calls > 4:
+            failures.append(f"{case.key}:case_budget_exceeded")
+        if (
+            case.required_claim_status
+            and case.required_claim_status not in _claim_statuses(response)
+        ):
+            failures.append(f"{case.key}:claim_status_missing")
+        failures.extend(
+            f"{case.key}:{reason}"
+            for reason in _citation_scope_failures(case, response)
+        )
+        results.append(
+            {
+                "key": case.key,
+                "status": response.status,
+                "stop_reason": response.stop_reason,
+                "usage": response.usage.model_dump(mode="json"),
+                "claim_statuses": sorted(_claim_statuses(response)),
+            }
+        )
+    journal_failures, started = _journal_failures(directory, max_calls)
+    failures.extend(journal_failures)
+    return {
+        "status": "passed" if not failures else "failed",
+        "failures": sorted(set(failures)),
+        "journal_started_calls": started,
+        "max_calls": max_calls,
+        "cases": results,
+    }
