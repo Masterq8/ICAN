@@ -77,7 +77,9 @@ async def run_cases(args) -> int:
         directory, cases, identity, build_service(directory)
     )
     selected = (
-        cases if args.case == "all" else [case for case in cases if case.key == args.case]
+        cases
+        if args.case == "all"
+        else [case for case in cases if case.key == args.case]
     )
     if not selected:
         raise ValueError("Unknown fixed P4.4 case")
