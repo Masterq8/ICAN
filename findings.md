@@ -191,3 +191,15 @@
 - 外部已观察validation只能做回归：P3召回与两个官方F1下降、语义完整19/32也低于原21/32。默认dense保留，按任务选策略应由新留出题验证，不能在这32题上反复调参后称盲测改善。
 - LLM有正确公式也会算错：dev06把0.001×2写成0.512。P4需要确定性计算及输入引用，不用增加重排序或更长prompt假装已经修复。
 - dev12对动机的部分拒答被旧regex漏识别。保持原P2.6协议公平对照，绑定新的语义审核另列差异；不回填journal改变旧评分。
+
+## 2026-09-18：P4工具与Agent接入
+
+- 固定PaperQA2有PaperQAEnvironment.make_tools／make_initial_state／step扩展入口，实际经Aviary函数注入state并记录tool_history。上游run_agent会创建其它索引、做默认摘要且在超限后自动回答，故本项目只复用环境与证据问答，以显式SDK预算驱动原生工具调用；不是原样上游Agent基线。
+- 上游step默认handle_tool_exc=True，模型超时可变成工具字符串，不能只在外层捕获异常。gen_answer保存ModelTimeout类型，driver恢复timed_out；不能自动补答。
+- 自由文本与规划参数不是核验过的用户覆盖。API补user_overrides，生产工具逐值严格匹配，底层未核验参数仅partial／requires_review；同字段AST取值避免SWIN_MLP分支错引用。
+- Decimal精确计算只能保证表达式运算，不能保证模型选择的参数正确。首轮LR数值正确但缺默认5e-4来源，仍必须核对原始配置证明；允许config_path空串直接检查默认，避免模型猜配置名。
+- code/config型工具结果不生成假chunk，保留原始字符／行号及commit，工具artifact另记；最终保留的证据不覆盖artifact全部依据时不把该artifact送入模型。
+- 三次真实shape预算失败说明停止提示不可靠：单标量契约必须明确，最后一轮工具权限也需受状态约束。收尾只在预算内已有证据时开放gen_answer，不是预算后自动补答。
+- v5生成的shape回答仍将7//2=3当作实际执行，忽略已有PatchMerging偶数assert，还编造窗口整除断言。正确算术与原文ID不能保证结论；应先检查代码前置条件，再区分实际／假设计算，逐claim标支持或不足。
+- P4当前Pro／Flash关闭thinking。模型名记录与真实response一致，但未验证思考模式收益；后续若引入应单独设预算／版本，不改旧轨迹或将源码混合的开发案例拼准确率。
+- 本轮39调用、9真实任务，0.33249426USD仅当日高峰全cache-miss估算。保留3次budget_exhausted和动机状态漏判；不把执行completed作为语义通过。下一P4.3优先条件核查，外部Agent评测属P4.4。

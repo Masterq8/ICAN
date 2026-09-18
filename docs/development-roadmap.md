@@ -69,16 +69,22 @@
 
 ### M4：Agent 复现核查
 
+**P4.1–P4.2实现更新（2026-09-18）：** 实际扩展固定PaperQAEnvironment／Aviary工具执行、状态历史与Docs.aquery；Pro通过原生OpenAI tool calls规划，Flash回答。已接入`POST /v1/agent/run`，提供scoped检索、原块读取、静态配置链与Decimal算术。每任务5次规划／12工具／1回答，首轮累计40付费预约；同参工具缓存，预算和超时明确停止。筛选、结构化抽取、核查表及多论文报告尚属P4.3，扩展开发／外部评测属P4.4。见[使用说明](p4-agent-guide.md)与[实际验收报告](p4-agent-report.md)。
+
 以P2.5验证后的PaperQA2为主要问答／Agent复用目标，增加领域证据与工具adapter；LangGraph只在需要时管理筛选、抽取、核查、报告的外层业务状态。
 
 Agent 节点：理解任务、形成核查计划、检索证据、判断充分性、调用工具补查、生成核查项、校验引用、生成报告。
 
-最少工具：
+本节点实际工具：
 
-1. `search_papers`：查询精选论文库与元数据。
-2. `retrieve_evidence`：对论文和代码执行混合检索。
-3. `inspect_repository`：列目录、查标识符、读指定范围。
-4. `trace_config`：追踪默认值、继承、命令行覆盖和运行时计算。
+1. `search_evidence`：在固定collection、家族、路径和类型内检索。
+2. `read_evidence`：按原chunk ID或精确函数结构读取已入库材料。
+3. `trace_config`：静态追踪精确默认字段、BASE／YAML、结构化opts及部分CLI；不执行仓库。
+4. `calculate`：有界标量加减乘除、整数幂、整数整除及取模，不运行Python代码。
+5. `gen_answer`：一次PaperQA2证据回答，工具产物与引用原文分开。
+6. `complete`：依据真实回答状态结束。
+
+精选论文元数据筛选及多论文业务工具在P4.3扩展，不将现有全文检索称为完整论文筛选流程。
 
 安全与停止条件：限制最大循环次数、单次读取量、总 token 和失败重试次数；没有足够证据时返回待确认。
 

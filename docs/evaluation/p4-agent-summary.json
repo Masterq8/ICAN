@@ -1,0 +1,537 @@
+{
+  "version": "p4-agent-delivery-v1",
+  "date": "2026-09-18",
+  "scope": "P4.1/P4.2 implementation plus selected development acceptance; P4.3/P4.4 pending",
+  "review_authority": "assistant root inspection of actual answers and original evidence; not human review or independent benchmark",
+  "mixed_source_versions": true,
+  "paid_calls": 39,
+  "paid_cap": 40,
+  "remaining_paid_calls": 1,
+  "paid_journal_sha256": "5777bf5b9f28f6d5e392e996c5a523c80c64f0e390d0def47dc94d4215afb574",
+  "models": {
+    "deepseek-v4-pro": {
+      "calls": 33,
+      "prompt_tokens": 231904,
+      "completion_tokens": 5258,
+      "usage_missing_calls": 0,
+      "response_models": [
+        "deepseek-v4-pro"
+      ],
+      "estimated_peak_cache_miss_usd": 0.32693496
+    },
+    "deepseek-flash": {
+      "calls": 6,
+      "prompt_tokens": 14383,
+      "completion_tokens": 1037,
+      "usage_missing_calls": 0,
+      "response_models": [
+        "deepseek-flash"
+      ],
+      "estimated_peak_cache_miss_usd": 0.0055593
+    }
+  },
+  "actual_cost_usd": null,
+  "estimated_peak_cache_miss_usd": 0.33249426,
+  "pricing": {
+    "as_of": "2026-09-18",
+    "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "assumption": "peak rates, all prompt tokens treated as cache-miss; excludes cache/discounts; estimate is not actual bill"
+  },
+  "project_tests": {
+    "passed": 227,
+    "skipped": 1,
+    "agent_tests_passed": 49
+  },
+  "frozen_sha256": "5b2db3539abd08fd52b1e2d6aab4b5b78a1398d3738e3ebce9764c35b55c74b2",
+  "protected_input_count": 61,
+  "selected_cases": [
+    {
+      "case": "lr",
+      "run": "p4-acceptance-v2",
+      "task_id": "9323bb3540914720906ff89d2bc87ee5",
+      "task_record_sha256": "cd249fda400d5186390066e4820277fcce966274fc5a3f12be4ecd9e4f5a1d6d",
+      "run_manifest_sha256": "e8864dc9fbbe7d04c94f53430d976bc14958c56e77dbc901f9cf6faa68f74887",
+      "source_sha256": {
+        "ican/agent/__init__.py": "024e8768ff11550f1a34df607b5cd983f2b2c3a6e69d2152637c3339264b953a",
+        "ican/agent/calculation.py": "fcbfff1367418578b9ad6ae8a9772dc48ad2e0f2c695fd35a5751c376bf0f8c2",
+        "ican/agent/configuration.py": "bb861da93b461cec7c8add1533e16bf25eb9af0340cdbe93e27b05415f14f884",
+        "ican/agent/corpus.py": "d164386ed212efc5519320613418199c3e65a38775f24bd1ab361edc4e5918b8",
+        "ican/agent/environment.py": "3ac656a9a5f7b1bdf63974eca5b0fa8d59cc9d0c1ec073ea04aad49d363149fc",
+        "ican/agent/journal.py": "401151cbe8c4d81b15a60ae6ce0da2f940daaebb7dbc84c461ae06dda8353775",
+        "ican/agent/prompts.py": "eddf40bef130f66771c87951e00b6f35f7dc7c95cd5e86ffffebd8958cabff48",
+        "ican/agent/runtime.py": "a342e6c5582c1329764e5cb7eba4597e19fd7d8c9501c9758810f98d591117c5",
+        "ican/agent/schema.py": "ce70ec6acb2b4035e59fda507a40c4797362684cb48b28c79116bb5dda5ef017",
+        "ican/agent/service.py": "a5cec8de817782b7c838d813005eca321039749e5e010df4cd4cde20e9c1a15b",
+        "ican/qa/__init__.py": "f329c1ab06fac224a8cbad26eac72a1544e0cf7b406efb71dcb9a700286e401b",
+        "ican/qa/paperqa_adapter.py": "d8e4353169f46bfc200e9fbabfbc0ecf033d17f40552968a96233a71cd4da0c0",
+        "ican/qa/prompts.py": "41f25786882b29827a4c310d474997a938f8a19de1c4fc1f83e56d868e1f3306",
+        "ican/qa/runtime.py": "ff316505f5639054cad8e32a956ba4dfcc0e7349f5c80794dc985101b2793eec",
+        "ican/qa/schema.py": "5e18950ed14908f535af09252b4d6641b6ded9a84744821bad61f62968b38cf3",
+        "ican/qa/service.py": "bffe927ad0d950ab885359d9ec47b92be0e656ce791923cf07bc63d93b0e050c"
+      },
+      "execution_status": "completed",
+      "usage": {
+        "paid_calls": 4,
+        "planner_calls": 3,
+        "answer_calls": 1,
+        "prompt_tokens": 32164,
+        "completion_tokens": 561,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      },
+      "raw_answer": "根据 `main.py` 的线性缩放逻辑：`linear_scaled_lr = BASE_LR * BATCH_SIZE * world_size / 512.0`，并在 `ACCUMULATION_STEPS > 1` 时再乘该值 (pqac-78264816)。默认 `BASE_LR=5e-4` 见配置 (pqac-8f999738)。\n\n代入 5e-4 × 128 × 8 / 512 × 2 = **0.002**（静态追踪计算，未运行模型）。",
+      "citations_identity_verified": true,
+      "citations": [
+        {
+          "context_id": "pqac-78264816",
+          "chunk_id": "chunk:d4db76c774743d81cdccedfc21debded5ba2806bcdf224dfac9f4bbaf9b62a18",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:b10564ab7d2c520c",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/main.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 354,
+              "line_start": 300
+            }
+          },
+          "original_text_sha256": "bc8e0db7e8b74203467fa5f57edcc1c6213e75d6eab034972fabd9007b445a45"
+        },
+        {
+          "context_id": "pqac-8f999738",
+          "chunk_id": "chunk:8cf26791fa42ec189e7b22979378b23b6d7af767a99910b31e72958b522680ba",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:117426151e93a626",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/config.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 203,
+              "line_start": 132
+            }
+          },
+          "original_text_sha256": "302df84014c0c0aa73e04219180bfbb12d55fc00bbb2774dc36599869cca5932"
+        }
+      ],
+      "assistant_semantic_verdict": "core_numeric_result_supported",
+      "assistant_reason": "0.002与确定性计算一致，默认5e-4及运行时缩放公式有原文依据；未明确给出中间0.001，不判固定rubric全部覆盖。"
+    },
+    {
+      "case": "config",
+      "run": "p4-acceptance-v2",
+      "task_id": "c4637fcbc9784b4cab2dfc3d59fb4685",
+      "task_record_sha256": "dfa34af74984c0b4354d16b042a3380465fe1714fb3c08f2d465c5e4dfe4b391",
+      "run_manifest_sha256": "e8864dc9fbbe7d04c94f53430d976bc14958c56e77dbc901f9cf6faa68f74887",
+      "source_sha256": {
+        "ican/agent/__init__.py": "024e8768ff11550f1a34df607b5cd983f2b2c3a6e69d2152637c3339264b953a",
+        "ican/agent/calculation.py": "fcbfff1367418578b9ad6ae8a9772dc48ad2e0f2c695fd35a5751c376bf0f8c2",
+        "ican/agent/configuration.py": "bb861da93b461cec7c8add1533e16bf25eb9af0340cdbe93e27b05415f14f884",
+        "ican/agent/corpus.py": "d164386ed212efc5519320613418199c3e65a38775f24bd1ab361edc4e5918b8",
+        "ican/agent/environment.py": "3ac656a9a5f7b1bdf63974eca5b0fa8d59cc9d0c1ec073ea04aad49d363149fc",
+        "ican/agent/journal.py": "401151cbe8c4d81b15a60ae6ce0da2f940daaebb7dbc84c461ae06dda8353775",
+        "ican/agent/prompts.py": "eddf40bef130f66771c87951e00b6f35f7dc7c95cd5e86ffffebd8958cabff48",
+        "ican/agent/runtime.py": "a342e6c5582c1329764e5cb7eba4597e19fd7d8c9501c9758810f98d591117c5",
+        "ican/agent/schema.py": "ce70ec6acb2b4035e59fda507a40c4797362684cb48b28c79116bb5dda5ef017",
+        "ican/agent/service.py": "a5cec8de817782b7c838d813005eca321039749e5e010df4cd4cde20e9c1a15b",
+        "ican/qa/__init__.py": "f329c1ab06fac224a8cbad26eac72a1544e0cf7b406efb71dcb9a700286e401b",
+        "ican/qa/paperqa_adapter.py": "d8e4353169f46bfc200e9fbabfbc0ecf033d17f40552968a96233a71cd4da0c0",
+        "ican/qa/prompts.py": "41f25786882b29827a4c310d474997a938f8a19de1c4fc1f83e56d868e1f3306",
+        "ican/qa/runtime.py": "ff316505f5639054cad8e32a956ba4dfcc0e7349f5c80794dc985101b2793eec",
+        "ican/qa/schema.py": "5e18950ed14908f535af09252b4d6641b6ded9a84744821bad61f62968b38cf3",
+        "ican/qa/service.py": "bffe927ad0d950ab885359d9ec47b92be0e656ce791923cf07bc63d93b0e050c"
+      },
+      "execution_status": "completed",
+      "usage": {
+        "paid_calls": 3,
+        "planner_calls": 2,
+        "answer_calls": 1,
+        "prompt_tokens": 7806,
+        "completion_tokens": 376,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      },
+      "raw_answer": "最终值是 **0.2**（静态追踪配置链）。\n\n配置链（按覆盖顺序）：\n1. 默认值：`config.py` 中 `_C.MODEL.DROP_PATH_RATE = 0.1` (pqac-4bb8e907)。\n2. YAML 覆盖：`swin_tiny_patch4_window7_224.yaml` 中 `DROP_PATH_RATE: 0.2` (pqac-fb3d2abc)。\n\n由于 YAML 在默认值之后加载并覆盖，且无 `--opts` 或其他命令行再次覆盖，最终 `MODEL.DROP_PATH_RATE = 0.2`（根据所给参数计算，静态追踪）。",
+      "citations_identity_verified": true,
+      "citations": [
+        {
+          "context_id": "pqac-4bb8e907",
+          "chunk_id": "chunk:1233f6da28c34ac890fa91a71b94ce1a9081ba581a028729ce3aee6b5515053c",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:117426151e93a626",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/config.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 89,
+              "line_start": 1
+            }
+          },
+          "original_text_sha256": "40b677d84a99e7d366d8b6ec6e0634fc3289318c5d944148d3879218dd14f769"
+        },
+        {
+          "context_id": "pqac-fb3d2abc",
+          "chunk_id": "chunk:87ce06f44d6d11872c16aa6772981b87f3c62f7abd82bea1f0a5471bbaeb073b",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:83fa6a76f8de37d6",
+            "source_type": "config",
+            "source_path": "data/raw/repositories/Swin-Transformer/configs/swin/swin_tiny_patch4_window7_224.yaml",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 4,
+              "line_start": 4
+            }
+          },
+          "original_text_sha256": "c7b52d2be8ae32e02a1c241222e4b4d622b681b8c6f1f0aea4915b518fb823b3"
+        }
+      ],
+      "assistant_semantic_verdict": "static_chain_supported_with_citation_gap",
+      "assistant_reason": "默认0.1→具名YAML0.2有直接引用，静态产物正确；最终所选原块未包含merge实现，覆盖顺序引用仍需补全。"
+    },
+    {
+      "case": "motivation",
+      "run": "p4-acceptance-v2",
+      "task_id": "b0d9bb2c0b87499a917d8749f814fddd",
+      "task_record_sha256": "4d4a129ebc7d6ccfe03efdf729362f7d93a5f7f7e25ea709c0fea4d0b02499da",
+      "run_manifest_sha256": "e8864dc9fbbe7d04c94f53430d976bc14958c56e77dbc901f9cf6faa68f74887",
+      "source_sha256": {
+        "ican/agent/__init__.py": "024e8768ff11550f1a34df607b5cd983f2b2c3a6e69d2152637c3339264b953a",
+        "ican/agent/calculation.py": "fcbfff1367418578b9ad6ae8a9772dc48ad2e0f2c695fd35a5751c376bf0f8c2",
+        "ican/agent/configuration.py": "bb861da93b461cec7c8add1533e16bf25eb9af0340cdbe93e27b05415f14f884",
+        "ican/agent/corpus.py": "d164386ed212efc5519320613418199c3e65a38775f24bd1ab361edc4e5918b8",
+        "ican/agent/environment.py": "3ac656a9a5f7b1bdf63974eca5b0fa8d59cc9d0c1ec073ea04aad49d363149fc",
+        "ican/agent/journal.py": "401151cbe8c4d81b15a60ae6ce0da2f940daaebb7dbc84c461ae06dda8353775",
+        "ican/agent/prompts.py": "eddf40bef130f66771c87951e00b6f35f7dc7c95cd5e86ffffebd8958cabff48",
+        "ican/agent/runtime.py": "a342e6c5582c1329764e5cb7eba4597e19fd7d8c9501c9758810f98d591117c5",
+        "ican/agent/schema.py": "ce70ec6acb2b4035e59fda507a40c4797362684cb48b28c79116bb5dda5ef017",
+        "ican/agent/service.py": "a5cec8de817782b7c838d813005eca321039749e5e010df4cd4cde20e9c1a15b",
+        "ican/qa/__init__.py": "f329c1ab06fac224a8cbad26eac72a1544e0cf7b406efb71dcb9a700286e401b",
+        "ican/qa/paperqa_adapter.py": "d8e4353169f46bfc200e9fbabfbc0ecf033d17f40552968a96233a71cd4da0c0",
+        "ican/qa/prompts.py": "41f25786882b29827a4c310d474997a938f8a19de1c4fc1f83e56d868e1f3306",
+        "ican/qa/runtime.py": "ff316505f5639054cad8e32a956ba4dfcc0e7349f5c80794dc985101b2793eec",
+        "ican/qa/schema.py": "5e18950ed14908f535af09252b4d6641b6ded9a84744821bad61f62968b38cf3",
+        "ican/qa/service.py": "bffe927ad0d950ab885359d9ec47b92be0e656ce791923cf07bc63d93b0e050c"
+      },
+      "execution_status": "completed",
+      "usage": {
+        "paid_calls": 4,
+        "planner_calls": 3,
+        "answer_calls": 1,
+        "prompt_tokens": 32361,
+        "completion_tokens": 814,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      },
+      "raw_answer": "根据现有证据，**无法**给出作者明确的设计动机：\n\n- 论文只说明 Swin-T 先用 patch splitting 分块，再经 linear embedding 投到维度 C，并说明 patch size 为 4×4、每块原始特征 48 维 (pqac-6a453cc0)。论文此段并未解释投影后为何加 LayerNorm，也未陈述其目的。\n- 代码层面：PatchEmbed 在 `proj` 卷积后，若 `norm_layer` 非 None 则执行 `self.norm(x)`，即投影后接归一化 (pqac-21d28855)(pqac-9984d93b)。SwinTransformer 默认 `patch_norm=True`，且只有当 `patch_norm` 为真时才把 `norm_layer` 传入 PatchEmbed (pqac-3bef5a73)。\n- 配置层默认 `_C.MODEL.SWIN.PATCH_NORM = True`，`norm_layer` 默认 `nn.LayerNorm` (pqac-839c523a)(pqac-85ad36bb)。\n\n综上，证据仅能确认「默认开启该归一化」这一实现事实，未提供作者对其动机的说明，故动机无法由当前证据回答。",
+      "citations_identity_verified": true,
+      "citations": [
+        {
+          "context_id": "pqac-6a453cc0",
+          "chunk_id": "chunk:97ac02f20e8e19c445dfd2afd820a3a8d704b316dfdeff2e483811c24480408d",
+          "source": {
+            "source_id": "src:21e757794f07f8f043ac",
+            "source_type": "paper",
+            "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf",
+            "source_version": "arXiv:2103.14030v2 / ICCV 2021",
+            "location": {
+              "page": 3
+            }
+          },
+          "original_text_sha256": "27fe5760ab8cabbe131411dbcae19111fe523c77356e1ee1287e350c9f573c3e"
+        },
+        {
+          "context_id": "pqac-21d28855",
+          "chunk_id": "chunk:0f147af11e9a6ff4998760e94c3ac3788b3378c4171e6c0a8a7fea6f113d30db",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 465,
+              "line_start": 448
+            }
+          },
+          "original_text_sha256": "aa34fa8c3a2670a3eb847d779dc269c6eb20e970d40760e2066799265d5fba24"
+        },
+        {
+          "context_id": "pqac-9984d93b",
+          "chunk_id": "chunk:2cefb942b7528d2af811a6af15ca38bd2efdacc4e2bbbafd5650866e4f5a752e",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 475,
+              "line_start": 467
+            }
+          },
+          "original_text_sha256": "7eb335a35efc7afcb1d347ee39ddde523825a4a59b79f44f102f756723994be7"
+        },
+        {
+          "context_id": "pqac-3bef5a73",
+          "chunk_id": "chunk:a75612ae170b7a8096fde151c103c5a46099ac862695b02151073712cfa97765",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 569,
+              "line_start": 512
+            }
+          },
+          "original_text_sha256": "d744b3dde4ecfaf79bddf721bb665ab840a6ade6ae0d77555d9a932017509b1b"
+        },
+        {
+          "context_id": "pqac-839c523a",
+          "chunk_id": "chunk:000dbccc73ad65acc646ce3945a852b62dc07cd9e72853de6e010cc5470fa393",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:117426151e93a626",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/config.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 135,
+              "line_start": 83
+            }
+          },
+          "original_text_sha256": "29b178e721fcbc28378fd26f35e8521258f24f6963828202a41f511ef021b2d1"
+        },
+        {
+          "context_id": "pqac-85ad36bb",
+          "chunk_id": "chunk:c5dfa8a29db1388e5e09f93de5274526c6fb59a6e9251238a559e8c32b05bdcf",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 511,
+              "line_start": 485
+            }
+          },
+          "original_text_sha256": "869b558db2241c9ba13f9aa546845be2c094519dc4db148e3fd862156c293135"
+        }
+      ],
+      "assistant_semantic_verdict": "supported_implementation_insufficient_motivation_status_missed",
+      "assistant_reason": "实现事实引用SWIN分支而非SWIN_MLP，明确保留作者动机不足；原协议却返回completed／answered，记录状态漏识别。"
+    },
+    {
+      "case": "shape",
+      "run": "p4-acceptance-v5",
+      "task_id": "1db52f9732ae428fb8929f3e0d9a09f3",
+      "task_record_sha256": "fbe8dc55aaaddf6e8ebf9539d08cd04fe322b584beae446093455d4f781c1fea",
+      "run_manifest_sha256": "8801eb3c17c1516047413872cb206397ab317f8e0069d6c46d9bd060ce37b77c",
+      "source_sha256": {
+        "ican/agent/__init__.py": "024e8768ff11550f1a34df607b5cd983f2b2c3a6e69d2152637c3339264b953a",
+        "ican/agent/calculation.py": "9d06a2e4068beb899ab53a3df4d76003d96aa16c2587406c3fe67acf7e952ddb",
+        "ican/agent/configuration.py": "bb861da93b461cec7c8add1533e16bf25eb9af0340cdbe93e27b05415f14f884",
+        "ican/agent/corpus.py": "d164386ed212efc5519320613418199c3e65a38775f24bd1ab361edc4e5918b8",
+        "ican/agent/environment.py": "b5bdc4325c3e9d9ed7592b14cb7359cc7a96604ee86af54eed45c9af9da22c30",
+        "ican/agent/journal.py": "401151cbe8c4d81b15a60ae6ce0da2f940daaebb7dbc84c461ae06dda8353775",
+        "ican/agent/prompts.py": "eb9be34d5f3b2754e18081aa58c5c176081d058b664bef10d89b20cf0cc5f12a",
+        "ican/agent/runtime.py": "a342e6c5582c1329764e5cb7eba4597e19fd7d8c9501c9758810f98d591117c5",
+        "ican/agent/schema.py": "ce70ec6acb2b4035e59fda507a40c4797362684cb48b28c79116bb5dda5ef017",
+        "ican/agent/service.py": "dca39ac595e82cce35beee7cce53e2aadae8c7189f93696ef6747ba95581908e",
+        "ican/qa/__init__.py": "f329c1ab06fac224a8cbad26eac72a1544e0cf7b406efb71dcb9a700286e401b",
+        "ican/qa/paperqa_adapter.py": "d8e4353169f46bfc200e9fbabfbc0ecf033d17f40552968a96233a71cd4da0c0",
+        "ican/qa/prompts.py": "41f25786882b29827a4c310d474997a938f8a19de1c4fc1f83e56d868e1f3306",
+        "ican/qa/runtime.py": "ff316505f5639054cad8e32a956ba4dfcc0e7349f5c80794dc985101b2793eec",
+        "ican/qa/schema.py": "5e18950ed14908f535af09252b4d6641b6ded9a84744821bad61f62968b38cf3",
+        "ican/qa/service.py": "bffe927ad0d950ab885359d9ec47b92be0e656ce791923cf07bc63d93b0e050c"
+      },
+      "execution_status": "completed",
+      "usage": {
+        "paid_calls": 5,
+        "planner_calls": 4,
+        "answer_calls": 1,
+        "prompt_tokens": 26314,
+        "completion_tokens": 882,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      },
+      "raw_answer": "不能直接运行，会在第 4 个 stage 的 window attention 输入尺寸上失败。\n\n原因：`DATA.IMG_SIZE=112`、patch size=4 时，patch 分辨率为 112//4=28（工具计算，参数来自 pqac-21d28855）；Swin 四个 stage 每过一个 PatchMerging 分辨率减半（pqac-957d42ca），故依次为 28→14→7→3（工具计算）。到第 4 stage，特征图边长变为奇数 3，而 window attention 要求 `H % window_size == 0` 且 `W % window_size == 0`，window size=7 时 3 无法被 7 整除，触发断言失败。\n\n因此失败点在最后一个 stage 的窗口划分，而非 patch embedding 或 PatchMerging 本身（28→14→7 均合法，仅到 7→3 时出问题）。",
+      "citations_identity_verified": true,
+      "citations": [
+        {
+          "context_id": "pqac-21d28855",
+          "chunk_id": "chunk:0f147af11e9a6ff4998760e94c3ac3788b3378c4171e6c0a8a7fea6f113d30db",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 465,
+              "line_start": 448
+            }
+          },
+          "original_text_sha256": "aa34fa8c3a2670a3eb847d779dc269c6eb20e970d40760e2066799265d5fba24"
+        },
+        {
+          "context_id": "pqac-957d42ca",
+          "chunk_id": "chunk:3a345ff050583924611f5ed650c251769c521400e551fd9701ade11b670ec16e",
+          "source": {
+            "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+            "source_type": "code",
+            "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+            "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+            "location": {
+              "line_end": 352,
+              "line_start": 331
+            }
+          },
+          "original_text_sha256": "5f094c683d39849854477330db5c09d85f2563b459d90d30981aec3e8b7b6e0a"
+        }
+      ],
+      "assistant_semantic_verdict": "incorrect_failure_site",
+      "assistant_reason": "只支持不能直接运行的结论。原PatchMerging.forward要求H与W为偶数，实际28→14→7后在第三次下采样前断言失败；7//2=3是脱离前置条件的算术，回答却宣称第四stage窗口故障，且编造原文没有的窗口整除断言。"
+    }
+  ],
+  "all_retained_tasks": [
+    {
+      "task_id": "00a1ae9746c84b6e85777acb7bd3b09b",
+      "task_record_sha256": "9d142958595c0ea6fab86cb877dde6c9b3452a682a4feb010d3d7295022d30ed",
+      "status": "completed",
+      "stop_reason": "final_answer_generated",
+      "usage": {
+        "paid_calls": 4,
+        "planner_calls": 3,
+        "answer_calls": 1,
+        "prompt_tokens": 18291,
+        "completion_tokens": 522,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      }
+    },
+    {
+      "task_id": "1db52f9732ae428fb8929f3e0d9a09f3",
+      "task_record_sha256": "fbe8dc55aaaddf6e8ebf9539d08cd04fe322b584beae446093455d4f781c1fea",
+      "status": "completed",
+      "stop_reason": "final_answer_generated",
+      "usage": {
+        "paid_calls": 5,
+        "planner_calls": 4,
+        "answer_calls": 1,
+        "prompt_tokens": 26314,
+        "completion_tokens": 882,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      }
+    },
+    {
+      "task_id": "3321a382233f40738d4f23f15e967708",
+      "task_record_sha256": "305f13179f9f66148a0f6be9a066b64359187676ccd87b5ebc507883bcc2c043",
+      "status": "budget_exhausted",
+      "stop_reason": "planner_step_limit_no_automatic_answer",
+      "usage": {
+        "paid_calls": 5,
+        "planner_calls": 5,
+        "answer_calls": 0,
+        "prompt_tokens": 40725,
+        "completion_tokens": 801,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      }
+    },
+    {
+      "task_id": "6314ef7c7b2c45b78bad8055335915b0",
+      "task_record_sha256": "5ddaa0ae92b231aecab8a30282cfad4f40de5ffac2bfc1ba161428a5a51570bf",
+      "status": "completed",
+      "stop_reason": "final_answer_generated",
+      "usage": {
+        "paid_calls": 4,
+        "planner_calls": 3,
+        "answer_calls": 1,
+        "prompt_tokens": 16003,
+        "completion_tokens": 443,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      }
+    },
+    {
+      "task_id": "876efd2b13d24e7da132bac075dff534",
+      "task_record_sha256": "5ea66ef5b3f62cfd710f60c473a204027af7b40ebc3d2d169639c871bfcb54b1",
+      "status": "budget_exhausted",
+      "stop_reason": "planner_step_limit_no_automatic_answer",
+      "usage": {
+        "paid_calls": 5,
+        "planner_calls": 5,
+        "answer_calls": 0,
+        "prompt_tokens": 46700,
+        "completion_tokens": 878,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      }
+    },
+    {
+      "task_id": "8fac1f13582e4e32bacd38fd3702dc8d",
+      "task_record_sha256": "5f8c23a79652668365b84dad892da6a0772fcd75d34e142ad65f1b88dc4c1dbc",
+      "status": "budget_exhausted",
+      "stop_reason": "planner_step_limit_no_automatic_answer",
+      "usage": {
+        "paid_calls": 5,
+        "planner_calls": 5,
+        "answer_calls": 0,
+        "prompt_tokens": 25923,
+        "completion_tokens": 1018,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      }
+    },
+    {
+      "task_id": "9323bb3540914720906ff89d2bc87ee5",
+      "task_record_sha256": "cd249fda400d5186390066e4820277fcce966274fc5a3f12be4ecd9e4f5a1d6d",
+      "status": "completed",
+      "stop_reason": "final_answer_generated",
+      "usage": {
+        "paid_calls": 4,
+        "planner_calls": 3,
+        "answer_calls": 1,
+        "prompt_tokens": 32164,
+        "completion_tokens": 561,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      }
+    },
+    {
+      "task_id": "b0d9bb2c0b87499a917d8749f814fddd",
+      "task_record_sha256": "4d4a129ebc7d6ccfe03efdf729362f7d93a5f7f7e25ea709c0fea4d0b02499da",
+      "status": "completed",
+      "stop_reason": "final_answer_generated",
+      "usage": {
+        "paid_calls": 4,
+        "planner_calls": 3,
+        "answer_calls": 1,
+        "prompt_tokens": 32361,
+        "completion_tokens": 814,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      }
+    },
+    {
+      "task_id": "c4637fcbc9784b4cab2dfc3d59fb4685",
+      "task_record_sha256": "dfa34af74984c0b4354d16b042a3380465fe1714fb3c08f2d465c5e4dfe4b391",
+      "status": "completed",
+      "stop_reason": "final_answer_generated",
+      "usage": {
+        "paid_calls": 3,
+        "planner_calls": 2,
+        "answer_calls": 1,
+        "prompt_tokens": 7806,
+        "completion_tokens": 376,
+        "usage_missing_calls": 0,
+        "actual_cost_usd": null
+      }
+    }
+  ],
+  "limits": [
+    "No all12-dev or external Agent benchmark in this delivery",
+    "No frozen questions or answers accessed for tuning",
+    "Existing partial-refusal status recognition remains limited",
+    "Calculator does not validate correspondence of every operand to code preconditions",
+    "Latest shape answer is incorrect despite valid original citation IDs",
+    "Independent review resolved core important issues; final integer arithmetic/finalization changes self-reviewed and tested after reviewer follow-up unavailable"
+  ]
+}

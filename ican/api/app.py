@@ -5,6 +5,7 @@ from threading import RLock
 
 from fastapi import FastAPI, HTTPException
 
+from ican.agent.schema import AgentRequest, AgentResponse
 from ican.indexing.schema import IndexConfig
 from ican.qa.runtime import ModelTimeout, ModelUnavailable
 from ican.qa.schema import QARequest, QAResponse
@@ -27,11 +28,13 @@ def create_app(
     root: Path | None = None,
     service: EvidenceSearchService | None = None,
     qa_service=None,
+    agent_service=None,
 ) -> FastAPI:
     app = FastAPI(title="复现有据 Evidence API", version="0.1")
     project_root = (root or ROOT).resolve()
     evidence = service
     qa = qa_service
+    agent = agent_service
     initialization_lock = RLock()
 
     def get_service() -> EvidenceSearchService:
@@ -53,6 +56,17 @@ def create_app(
 
                 qa = QAService(project_root, get_service())
         return qa
+
+    def get_agent_service():
+        nonlocal agent
+        with initialization_lock:
+            if agent is None:
+                from ican.agent.service import AgentService
+
+                agent = AgentService(
+                    project_root, load_config(project_root), get_service()
+                )
+        return agent
 
     @app.get("/health")
     def health() -> dict[str, str]:
@@ -86,6 +100,17 @@ def create_app(
         except ModelTimeout:
             raise HTTPException(
                 status_code=504, detail="Generation timed out"
+            ) from None
+
+    @app.post("/v1/agent/run", response_model=AgentResponse)
+    async def run_agent(request: AgentRequest) -> AgentResponse:
+        try:
+            return await get_agent_service().run(request)
+        except CollectionNotFound:
+            raise HTTPException(status_code=422, detail="Unknown collection") from None
+        except IndexUnavailable:
+            raise HTTPException(
+                status_code=503, detail="Evidence index is unavailable"
             ) from None
 
     return app
