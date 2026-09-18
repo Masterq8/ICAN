@@ -4,9 +4,9 @@
 在 2026 年 9 月 30 日前交付一个可在线演示的计算机视觉论文调研与复现准备平台，完整体现 RAG 检索、Agent 工具调用、证据引用和可量化评测。
 
 ## 当前阶段
-P4：Agent规划与工具调用进行中；P3结果与基线已封存
+P4.5：必经核查与独立草稿控制离线已交付，两条真实验收失败；新补丁真实验证待完成，再恢复自动科研产品链路
 
-**P4.1–P4.4已实施；P4整体仍in_progress，等待真实Agent核查失败的修复决策。** 已实现静态配置／确定性计算／检索读取工具、PaperQA2原生工具环境、Pro规划／Flash回答任务API，以及逐条结论核查、可追加筛选／提取 revision 和研究报告。P4.4独立32次预算实际发送25次，固定4个Swin开发与4个QASPER外部回归案例；7×7与动机案例未产出强制Claim状态，审计failed且不重试。见[实际报告](docs/p4-agent-report.md)、[Agent说明](docs/p4-agent-guide.md)、[科研核查说明](docs/p4-research-guide.md)和[P4.4摘要](docs/evaluation/p4-agent-regression-summary.json)。网页留P5。P3报告与原基线封存。
+**P4整体仍in_progress；P4.5修复回答前必经核查，P4.6恢复自动筛选／提取／报告链路。** 已实现配置追踪、确定性计算、PaperQA2原生工具环境、Pro规划／Flash回答、逐条Claim核查和追加式科研记录。科研记录与Markdown渲染是基础设施，不能称自动科研报告已完成。P4.4实际25次调用，7×7与动机案例缺失所需Claim状态，原审计failed保留。P4.5使用新配置和独立最多8次预算验证两项修复；结果见[交付报告](docs/p4-verified-workflow-report.md)。网页留P5，P2/P3及旧P4轨迹封存。
 
 ## 复用主线与职责
 
@@ -101,7 +101,7 @@ P4：Agent规划与工具调用进行中；P3结果与基线已封存
 - [ ] 参考 OpenScholar／STORM 补充多论文证据归组、报告大纲、补查与引用归因，围绕同一主流程实现
 - [ ] 输出一致、差异、待确认三类核查结论
 - **交付：** PaperQA2领域工具与提示配置、任务状态／轨迹、配置覆盖核查结果、筛选与提取记录、带引用报告
-- **状态：** in_progress；P4.1／P4.2／P4.3工程基础complete，P4.4扩展验收pending；语义失败与局限如实保留。
+- **状态：** in_progress；P4.1／P4.2／P4.3工程基础complete，P4.4评测实施complete且审计failed；P4.5修复必经核查阶段，随后P4.6补齐自动科研流程。
 
 #### P4分节点与产物
 
@@ -110,14 +110,16 @@ P4：Agent规划与工具调用进行中；P3结果与基线已封存
 | P4.1 领域工具 | scoped检索／原文读取、静态精确配置链、Decimal标量及整数整除／取模、原文与产物分离 | complete |
 | P4.2 有界Agent | PaperQAEnvironment扩展、原生tool calls、Pro规划／Flash回答、任务API、预算journal／轨迹；选定开发验收含未通过项 | complete |
 | P4.3 科研业务核查与输出 | 前置assert、四类Claim状态、可追加筛选／提取revision、Markdown研究报告、Agent／API入口 | complete |
-| P4.4 扩展验收 | 新版本开发／外部回归、失败及成本对照，冻结集规则不变 | complete（审计failed，轨迹封存且不重试） |
+| P4.4 扩展验收 | 新版本开发／外部回归、失败及成本对照；审计failed，轨迹封存且不重试 | complete |
+| P4.5 必经核查调度 | 控制与255项回归已交付；新6次调用两条真实验收failed；类型分支schema及独立草稿上下文仅离线验证 | in_progress |
+| P4.6 自动科研流程 | 按用户条件产生筛选候选／理由、自动字段提取、多论文比较和研究报告；不等同于已有记录接口 | pending |
 
 ### P5：网页产品化
 - [ ] 实现 Vue 页面和 FastAPI 接口
 - [ ] 实现任务进度、证据定位、报告导出和错误反馈
 - [ ] 参考 Kotaemon 的引用高亮与证据面板，通过 Vue／FastAPI 显示原 PDF页、代码行与配置字段，不迁移整套 Gradio 页面
 - [ ] 展示可修改的论文筛选决策、信息提取表和 PaperQA2 改造后的核查／报告结果
-- [ ] 加入 Vision Mamba 作为第二个深度案例
+- [ ] 加入 Vision Mamba 基础材料，形成第二个可检索／比较案例；深度核查视主链路进度决定
 - **状态：** pending
 
 ### P6：评测与交付

@@ -270,3 +270,13 @@
 - 实际25次调用全部有terminal usage：19 Pro、6 Flash、107250输入／3277输出token，实际费用null。5题completed、1题insufficient_evidence、1题no_progress、1题budget_exhausted；6条生成答案的引用范围均符合原请求。
 - 审计failed：shape最后轮仅开放gen_answer但模型仍请求calculate／read，安全拒绝并停止，未出现blocked_by_precondition；动机最后轮继续search，未出现requires_review。保留全部轨迹和剩余7次预算，不为通过验收而重试或替换案例。
 - 完整244项目测试通过／1跳过；P4.4 runner、manifest、journal配对、范围和Claim缺失均有本地测试。下一步需单独设计强制Claim阶段的Agent调度修复，不能将本次失败称为P4.3真实Agent合规。
+
+### 2026-09-18：P4.5必经核查控制与两项失败验收
+
+- 新verified配置继续复用PaperQAEnvironment，严格submit_claims经ResearchService核查后才允许一次Docs.aquery；显式必需Claim类型、最终上下文引用守恒、review／不足状态传播与workflow_stages已实现。
+- 独立复核发现无证据收尾仍能调查，已修复并回归；最终轮只开放提交，单工具API明确指定名称。非法工具或非法草稿不会自动回答。
+- 两个既有开发案例各一次，新p4-v3独立8次预算实际6次Pro、0次Flash，68116输入／2175输出token，usage齐全、费用null，无重试。shape仍忽略命名提交工具，motivation提交inference带quote；均无核查产物／答案，真实验收failed。
+- 真实运行后以oneOf补齐类型分支schema，新增离线回归；补丁未实测，不改manifest／journal。末轮独立复核无重要或严重问题，29项Agent测试通过。
+- 最终草稿已与调查历史隔离，保留完整请求／原文／产物，不追加规划调用；原生回归与独立复核30项Agent测试通过，无重要发现。此补丁仍仅离线验证。
+- 全量255测试通过／1权限跳过，13文件Ruff与格式通过；61保护材料、冻结test SHA、5项P2/P3封存文件均不变，旧P4 journal仍39／25次。
+- 修正README、需求和主线的完成口径：自动筛选／字段提取／综合报告与网页仍待交付。P4.5整体in_progress，新补丁真实验证后接P4.6产品链路。详见docs/p4-verified-workflow-report.md。

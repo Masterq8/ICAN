@@ -9,6 +9,17 @@ from ican.qa.runtime import ModelTimeout, ModelUnavailable
 from .schema import BudgetExhausted
 
 
+def tool_options(tools):
+    if not tools:
+        return {}
+    choice = (
+        {"type": "function", "function": {"name": tools[0]["function"]["name"]}}
+        if len(tools) == 1
+        else "required"
+    )
+    return {"tools": tools, "tool_choice": choice}
+
+
 class DeepSeekRuntime:
     def __init__(self, root, config, journal, task_id):
         load_dotenv(root / ".env", override=False)
@@ -39,7 +50,7 @@ class DeepSeekRuntime:
             "status": "started",
         }
         self.records.append(record)
-        options = {"tools": tools, "tool_choice": "required"} if tools else {}
+        options = tool_options(tools)
         try:
             async with AsyncOpenAI(
                 api_key=self._key,

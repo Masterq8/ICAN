@@ -3,7 +3,7 @@ from __future__ import annotations
 import math
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from ican.qa.schema import QAResponse
 from ican.retrieval.schema import SearchRequest
@@ -11,7 +11,8 @@ from ican.retrieval.schema import SearchRequest
 
 class AgentConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    version: Literal["p4-agent-v1"] = "p4-agent-v1"
+    version: Literal["p4-agent-v1", "p4-agent-v2"] = "p4-agent-v1"
+    workflow_mode: Literal["tool_loop", "verified"] = "tool_loop"
     planner_model: Literal["deepseek-v4-pro", "deepseek-flash"] = "deepseek-v4-pro"
     answer_model: Literal["deepseek-flash", "deepseek-v4-pro"] = "deepseek-flash"
     max_planner_calls: int = Field(default=5, ge=1, le=8)
@@ -20,6 +21,14 @@ class AgentConfig(BaseModel):
     model_timeout_seconds: float = Field(default=60, gt=0, le=90)
     task_timeout_seconds: float = Field(default=180, gt=0, le=300)
     planner_max_tokens: int = Field(default=1536, ge=128, le=2048)
+
+    @model_validator(mode="after")
+    def reserve_submission_turn(self):
+        if self.workflow_mode == "verified" and self.max_planner_calls < 2:
+            raise ValueError(
+                "Verified workflow requires investigation and submission turns"
+            )
+        return self
 
 
 class UserOverrides(BaseModel):
@@ -61,6 +70,16 @@ class AgentRequest(SearchRequest):
         "hybrid_rerank"
     )
     user_overrides: UserOverrides = Field(default_factory=UserOverrides)
+    required_claim_kinds: list[
+        Literal["verbatim", "numeric", "code_execution", "inference"]
+    ] = Field(default_factory=list, max_length=4)
+
+    @field_validator("required_claim_kinds")
+    @classmethod
+    def unique_claim_kinds(cls, values):
+        if len(set(values)) != len(values):
+            raise ValueError("Required claim kinds must not repeat")
+        return values
 
 
 class AgentUsage(BaseModel):
@@ -78,6 +97,7 @@ class AgentResponse(BaseModel):
     status: Literal[
         "completed",
         "insufficient_evidence",
+        "review_required",
         "budget_exhausted",
         "no_progress",
         "failed",
@@ -87,6 +107,8 @@ class AgentResponse(BaseModel):
     answer: QAResponse | None = None
     artifacts: list[dict] = Field(default_factory=list)
     trajectory: list[dict] = Field(default_factory=list)
+    workflow_mode: Literal["tool_loop", "verified"] = "tool_loop"
+    workflow_stages: list[dict] = Field(default_factory=list)
     usage: AgentUsage = Field(default_factory=AgentUsage)
     index_fingerprint: str | None = None
     paperqa_version: str = "2026.8.12"

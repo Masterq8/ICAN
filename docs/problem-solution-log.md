@@ -559,4 +559,12 @@
 - **现象：** P4.4的7×7案例已读到`PatchMerging`，但最终轮仅开放`gen_answer`时仍请求`calculate`和`read_evidence`；动机案例继续搜索。服务拒绝未开放调用并安全停止，两题没有产生`claim_verification` artifact。
 - **解决方案：** 本轮不重试、不替换样本、不把P4.3直接API结果写回真实轨迹。离线审计将7×7的`blocked_by_precondition`和动机的`requires_review`设为必需状态，并以failed记录。后续需设计显式核查阶段和新的独立预算。
 - **验证结果：** 独立p4-v2 journal 25个started／25个completed事件配对，所有usage返回；8固定案例中仅上述两项Claim状态缺失，引用范围无失败。
-- **状态：** 已复现并封存；调度强制策略未实现，P4整体保持in_progress。
+- **状态：** P4.5已实现必经核查与命名收尾工具，离线通过；新真实验收仍失败，模型继续读取或提交非法草稿，无未经核查回答。原P4.4不追写，P4整体保持in_progress。详见[p4-verified-workflow-report.md](p4-verified-workflow-report.md)。
+
+### P-20260918-13：类型校验未完整体现在工具schema中
+
+- **分类：** Agent／结构化输出契约。
+- **现象：** P4.5动机任务提交inference同时附带quote，validator拒绝；原schema展示所有可选字段，没有展示互斥约束。其他verbatim包含省略号或改写，不能当作精确引文。
+- **解决方案：** schema用oneOf明确各类型允许字段与必需载荷，继续保留运行时校验；不自动丢掉quote或修饰提交。下一步分离调查历史与独立草稿阶段。
+- **验证结果：** 整体254通过／1跳过；补丁发生在原6次运行之后，未再次付费，不称真实验收已修复。
+- **状态：** schema歧义已离线修复；服务端收尾工具选择及精确引文生成仍待真实验证。

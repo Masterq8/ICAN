@@ -69,6 +69,8 @@
 
 ### M4：Agent 复现核查
 
+**计划复盘后的优先级（2026-09-18）：** P4.3只交付筛选／提取记录与Markdown渲染基础。P4.4实施完成但7×7和动机Claim缺失，不能称真实Agent可靠。当前P4.5采用明确调查／提交／程序核查／回答阶段；随后P4.6实现自动筛选、字段生成和比较报告，并与Vue页面交替开发。首版以Swin深度核查为主，第二模型先保证基础入库／比较，不扩大任意仓库运行或实时全网采集。
+
 **P4.1–P4.3实现更新（2026-09-18）：** 实际扩展固定PaperQAEnvironment／Aviary工具执行、状态历史与Docs.aquery；Pro通过原生OpenAI tool calls规划，Flash回答。已接入`POST /v1/agent/run`，提供scoped检索、原块读取、静态配置链与Decimal算术。P4.3新增四类结构化结论的静态核查、可追加筛选／提取revision和Markdown报告；真实Swin 7×7条件在`PatchMerging`偶数断言处被阻断。每任务5次规划／12工具／1回答，首轮累计40付费预约；同参工具缓存，预算和超时明确停止。P4.4进行新的模型预算、扩展开发与外部回归。见[Agent说明](p4-agent-guide.md)、[科研核查说明](p4-research-guide.md)与[实际验收报告](p4-agent-report.md)。
 
 以P2.5验证后的PaperQA2为主要问答／Agent复用目标，增加领域证据与工具adapter；LangGraph只在需要时管理筛选、抽取、核查、报告的外层业务状态。

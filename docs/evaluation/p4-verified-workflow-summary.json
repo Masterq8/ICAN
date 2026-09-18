@@ -1,0 +1,52 @@
+{
+  "node": "P4.5",
+  "run": "p4-v3",
+  "acceptance": "failed",
+  "date": "2026-09-18",
+  "budget_cap": 8,
+  "paid_calls": 6,
+  "planner_calls": 6,
+  "answer_calls": 0,
+  "prompt_tokens": 68116,
+  "completion_tokens": 2175,
+  "usage_missing_calls": 0,
+  "actual_cost_usd": null,
+  "automatic_retries": 0,
+  "manifest_sha256": "0d97dc0ebdc39515aed27cb6959638b144f162829812cb61368f031af9761bb5",
+  "journal_sha256": "09ffc5532a5ad1bf7b10a0b8b3f4eed5d2d61a15b90b0ed2cb50f592266d6dbb",
+  "results": [
+    {
+      "question_id": "swin_dev_04",
+      "task_id": "550a792eeb7f4f1f87a22e874eee5744",
+      "status": "no_progress",
+      "required_claim_kind": "code_execution",
+      "expected_claim_status": "blocked_by_precondition",
+      "observed_claim_status": null,
+      "answer_present": false,
+      "response_sha256": "740e462f7b87df6dde97c99a57e796a0d9375d8b23ee4115542db023ad803142"
+    },
+    {
+      "question_id": "swin_dev_12",
+      "task_id": "34dcfd8209504fddb87086bc59644d0b",
+      "status": "budget_exhausted",
+      "required_claim_kind": "inference",
+      "expected_claim_status": "requires_review",
+      "observed_claim_status": null,
+      "answer_present": false,
+      "response_sha256": "59f4dc084e4bfbe5ab9e503676b1df09a706d0a478b310264dfa0c99c0f2228d"
+    }
+  ],
+  "post_run_schema_patch": {
+    "offline_verified": true,
+    "live_verified": false,
+    "historical_manifest_unchanged": true
+  },
+  "post_run_draft_isolation_patch": {
+    "offline_verified": true,
+    "live_verified": false
+  },
+  "project_tests": {"passed": 255, "skipped": 1},
+  "frozen_test_semantic_access": false,
+  "protected_files_verified": 61,
+  "sealed_p2_p3_files_verified": 5
+}

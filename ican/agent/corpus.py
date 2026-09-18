@@ -112,7 +112,7 @@ class AgentCorpus:
 
     def search_request(self, query: str, source_types: list[str], strategy: str):
         request = SearchRequest.model_validate(
-            self.request.model_dump(exclude={"user_overrides"})
+            self.request.model_dump(include=set(SearchRequest.model_fields))
         )
         request.query = query
         request.family = self.family

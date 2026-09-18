@@ -13,7 +13,7 @@ from ican.retrieval.service import IndexUnavailable
 
 from .corpus import AgentCorpus
 from .journal import PaidJournal
-from .prompts import PLANNER_SYSTEM
+from .prompts import PLANNER_SYSTEM, WORKFLOW_PLANNER_SYSTEM
 from .runtime import DeepSeekRuntime
 from .schema import (
     AgentConfig,
@@ -22,6 +22,7 @@ from .schema import (
     BudgetExhausted,
     ToolInputError,
 )
+from .workflow import INVESTIGATION_TOOLS, draft_messages, submission_tool_schema
 
 
 class AgentService:
@@ -41,13 +42,22 @@ class AgentService:
             index_config,
             evidence_service,
         )
+        config_path = self.root / "configs/agent/v2.json"
+        if not config_path.exists():
+            config_path = self.root / "configs/agent/v1.json"
         self.config = config or AgentConfig.model_validate_json(
-            (self.root / "configs/agent/v1.json").read_text(encoding="utf-8")
+            config_path.read_text(encoding="utf-8")
         )
         self.corpus_factory = corpus_factory or AgentCorpus
         self.runtime_factory = runtime_factory or DeepSeekRuntime
+        self.task_directory = (
+            self.root
+            / "data/processed/agent"
+            / ("p4-v3" if self.config.workflow_mode == "verified" else "p4-v1")
+        )
         self.journal = journal or PaidJournal(
-            self.root / "data/processed/agent/p4-v1/paid-journal.jsonl", 40
+            self.task_directory / "paid-journal.jsonl",
+            32 if self.config.workflow_mode == "verified" else 40,
         )
         if research_service is None:
             from ican.research.service import ResearchService
@@ -74,6 +84,7 @@ class AgentService:
             stop_reason="not_started",
             planner_model=self.config.planner_model,
             answer_model=self.config.answer_model,
+            workflow_mode=self.config.workflow_mode,
         )
         runtime, env = None, None
         try:
@@ -96,13 +107,25 @@ class AgentService:
                 tools = [
                     t.model_dump(by_alias=True, exclude_none=True) for t in env.tools
                 ]
+                verified = self.config.workflow_mode == "verified"
+                if verified:
+                    tools = [
+                        t for t in tools if t["function"]["name"] in INVESTIGATION_TOOLS
+                    ]
                 for tool in tools:
+                    if tool["function"]["name"] == "submit_claims":
+                        tool["function"]["parameters"] = submission_tool_schema()
                     tool["function"]["parameters"]["additionalProperties"] = False
                 schemas = {
                     t["function"]["name"]: t["function"]["parameters"] for t in tools
                 }
                 messages = [
-                    {"role": "system", "content": PLANNER_SYSTEM},
+                    {
+                        "role": "system",
+                        "content": WORKFLOW_PLANNER_SYSTEM
+                        if verified
+                        else PLANNER_SYSTEM,
+                    },
                     {
                         "role": "user",
                         "content": request.query
@@ -116,6 +139,7 @@ class AgentService:
                                 "user_overrides": request.user_overrides.model_dump(),
                                 "planner_steps": self.config.max_planner_calls,
                                 "tool_budget": self.config.max_tool_calls,
+                                "required_claim_kinds": request.required_claim_kinds,
                             },
                             ensure_ascii=False,
                         ),
@@ -123,11 +147,12 @@ class AgentService:
                 ]
                 cache, tool_calls, repeats = {}, 0, 0
                 for turn in range(self.config.max_planner_calls):
-                    finalization = turn + 1 == self.config.max_planner_calls and bool(
-                        env.evidence_pool
+                    finalization = turn + 1 == self.config.max_planner_calls and (
+                        verified or bool(env.evidence_pool)
                     )
+                    final_tool = "submit_claims" if verified else "gen_answer"
                     available_tools = (
-                        [t for t in tools if t["function"]["name"] == "gen_answer"]
+                        [t for t in tools if t["function"]["name"] == final_tool]
                         if finalization
                         else tools
                     )
@@ -135,11 +160,20 @@ class AgentService:
                         messages.append(
                             {
                                 "role": "system",
-                                "content": "This is the reserved finalization turn within the existing budget. Only gen_answer is available: choose existing evidence IDs and report any missing support. No further investigation or automatic answer will follow.",
+                                "content": (
+                                    "This is the reserved submission turn. Only submit_claims is available: select retained evidence and typed claims, including required_claim_kinds. The program verifies them before one answer. No further investigation or retry is allowed."
+                                    if verified
+                                    else "This is the reserved finalization turn within the existing budget. Only gen_answer is available: choose existing evidence IDs and report any missing support. No further investigation or automatic answer will follow."
+                                ),
                             }
                         )
                     available_names = {t["function"]["name"] for t in available_tools}
-                    action = await runtime.plan(messages, available_tools)
+                    planning_messages = (
+                        draft_messages(request, env.evidence_pool, env.artifacts)
+                        if verified and finalization
+                        else messages
+                    )
+                    action = await runtime.plan(planning_messages, available_tools)
                     if (
                         not isinstance(action, dict)
                         or action.get("role") != "assistant"
@@ -244,6 +278,10 @@ class AgentService:
                                 response.status = "insufficient_evidence"
                             elif response.answer.status == "citation_invalid":
                                 response.status = "failed"
+                            elif (
+                                verified and response.answer.status == "review_required"
+                            ):
+                                response.status = "review_required"
                             else:
                                 response.status = "completed"
                             response.stop_reason = "final_answer_generated"
@@ -276,9 +314,9 @@ class AgentService:
                                     "remaining_tool_calls": self.config.max_tool_calls
                                     - tool_calls,
                                     "instruction": (
-                                        "The next turn is the last planner call. Prefer gen_answer using available evidence and explicitly state missing information."
+                                        f"The next turn is the last planner call. Use {final_tool} with retained evidence and explicitly state missing information."
                                         if turn + 2 == self.config.max_planner_calls
-                                        else "Reserve one tool call for gen_answer; stop investigating once necessary evidence is available."
+                                        else f"Reserve one tool call for {final_tool}; stop investigating once necessary evidence is available."
                                     ),
                                 }
                             ),
@@ -307,6 +345,7 @@ class AgentService:
         finally:
             if env is not None:
                 response.artifacts = env.artifacts
+                response.workflow_stages = env.workflow_stages
             if runtime is not None:
                 records = runtime.records
                 response.usage = AgentUsage(
@@ -321,7 +360,7 @@ class AgentService:
                     ),
                     usage_missing_calls=sum(r["usage"] is None for r in records),
                 )
-            directory = self.root / "data/processed/agent/p4-v1/tasks"
+            directory = self.task_directory / "tasks"
             directory.mkdir(parents=True, exist_ok=True)
             record = {
                 "request": request.model_dump(),
@@ -339,6 +378,7 @@ class AgentService:
                     for p in [
                         *sorted((self.root / "ican/agent").glob("*.py")),
                         *sorted((self.root / "ican/qa").glob("*.py")),
+                        *sorted((self.root / "ican/research").glob("*.py")),
                     ]
                 },
             }

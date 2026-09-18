@@ -25,7 +25,8 @@ from .calculation import calculate as arithmetic
 from .configuration import trace_config as configuration_trace
 from .prompts import ANSWER_EXTENSION
 from .runtime import AgentAnswerModel
-from .schema import ToolInputError
+from .schema import BudgetExhausted, ToolInputError
+from .workflow import AnswerSubmission
 
 
 class DomainEnvironment(PaperQAEnvironment):
@@ -52,23 +53,26 @@ class DomainEnvironment(PaperQAEnvironment):
         self.fatal_error = None
         self.answer_error = None
         self.research_service = research_service
+        self.verified_submission = None
+        self.claim_verdicts = []
+        self.workflow_stages = []
 
     def make_tools(self):
-        tools = [
-            Tool.from_function(fn, concurrency_safe=False)
-            for fn in [
-                self.search_evidence,
-                self.read_evidence,
-                self.trace_config,
-                self.calculate,
-                self.verify_claims,
-                self.record_screening,
-                self.record_extraction,
-                self.build_research_report,
-                self.gen_answer,
-                self.complete,
-            ]
+        functions = [
+            self.search_evidence,
+            self.read_evidence,
+            self.trace_config,
+            self.calculate,
+            self.verify_claims,
+            self.record_screening,
+            self.record_extraction,
+            self.build_research_report,
+            self.gen_answer,
+            self.complete,
         ]
+        if self.config.workflow_mode == "verified":
+            functions.append(self.submit_claims)
+        tools = [Tool.from_function(fn, concurrency_safe=False) for fn in functions]
         return tools
 
     def retain(self, items):
@@ -334,6 +338,11 @@ class DomainEnvironment(PaperQAEnvironment):
             evidence_ids: At most eight unique IDs from the current pool, ordered by necessity.
             state: PaperQA2 task state.
         """
+        if self.config.workflow_mode == "verified" and (
+            self.verified_submission is None
+            or self.verified_submission.evidence_ids != evidence_ids
+        ):
+            raise ToolInputError("Verified answers require a checked submission first")
         if self.answer_attempted:
             raise ToolInputError(
                 "An answer has already been attempted; no automatic retry"
@@ -358,6 +367,17 @@ class DomainEnvironment(PaperQAEnvironment):
         prepared.settings.prompts.system += ANSWER_EXTENSION
         original_serializer = prepared.settings.custom_context_serializer
         allowed = {e.chunk_id for e in prepared.registry.values()}
+        if self.verified_submission is not None:
+            required = {
+                cid
+                for claim in self.verified_submission.claims
+                for cid in claim.evidence_ids
+            }
+            if not required <= allowed:
+                self.fatal_error = "verified_claim_evidence_dropped"
+                raise ToolInputError(
+                    "Verified claim evidence does not fit the final context"
+                )
         artifacts = []
         for artifact in self.artifacts:
             references = artifact.get("chunk_ids", []) + [
@@ -386,7 +406,9 @@ class DomainEnvironment(PaperQAEnvironment):
             index_fingerprint=self.corpus.fingerprint,
             collection=self.request.collection,
             paperqa_version="2026.8.12",
-            prompt_version="p4-tools-evidence-v1",
+            prompt_version="p4-verified-evidence-v2"
+            if self.config.workflow_mode == "verified"
+            else "p4-tools-evidence-v1",
             model=self.runtime.config.answer_model,
             included_chunk_ids=[e.chunk_id for e in prepared.registry.values()],
             dropped_chunk_ids=prepared.dropped_chunk_ids,
@@ -444,6 +466,12 @@ class DomainEnvironment(PaperQAEnvironment):
             else:
                 response.status = "answered"
             state.docs, state.session = prepared.docs, session
+        if self.claim_verdicts and response.status in {"answered", "review_required"}:
+            statuses = {verdict.status for verdict in self.claim_verdicts}
+            if "insufficient_evidence" in statuses:
+                response.status = "insufficient_evidence"
+            elif "requires_review" in statuses:
+                response.status = "review_required"
         self.answer_response = response
         return json.dumps(
             {
@@ -453,6 +481,61 @@ class DomainEnvironment(PaperQAEnvironment):
             },
             ensure_ascii=False,
         )
+
+    async def submit_claims(
+        self, evidence_ids: list[str], claims: list[dict], state: EnvironmentState
+    ) -> str:
+        """Submit typed conclusions for mandatory verification and one cited answer.
+
+        Args:
+            evidence_ids: One to eight original IDs already retained for the final context.
+            claims: One to eight ClaimDraft objects with evidence, kind-specific fields and explicit limits.
+            state: PaperQA2 task state.
+        """
+        if (
+            self.config.workflow_mode != "verified"
+            or self.verified_submission is not None
+        ):
+            raise ToolInputError("A verified submission can be finalized only once")
+        submission = AnswerSubmission(evidence_ids=evidence_ids, claims=claims)
+        submission.validate_selection(
+            set(self.evidence_pool), self.request.required_claim_kinds
+        )
+        self.workflow_stages.append({"stage": "draft", "status": "accepted"})
+        verification = self._research().verify_with_corpus(
+            self.corpus, submission.claims, allowed_ids=set(self.evidence_pool)
+        )
+        self.verified_submission = submission
+        self.claim_verdicts = verification.verdicts
+        self.artifacts.append(
+            {
+                "kind": "claim_verification",
+                "chunk_ids": sorted(
+                    {cid for claim in submission.claims for cid in claim.evidence_ids}
+                ),
+                **verification.model_dump(mode="json"),
+            }
+        )
+        self.workflow_stages.append(
+            {
+                "stage": "verify",
+                "status": "completed",
+                "claim_statuses": [verdict.status for verdict in verification.verdicts],
+            }
+        )
+        try:
+            result = await self.gen_answer(submission.evidence_ids, state)
+        except (BudgetExhausted, ModelTimeout, ModelUnavailable) as error:
+            self.answer_error = error
+            self.workflow_stages.append({"stage": "answer", "status": "failed"})
+            raise
+        except BaseException:
+            self.workflow_stages.append({"stage": "answer", "status": "failed"})
+            raise
+        self.workflow_stages.append(
+            {"stage": "answer", "status": self.answer_response.status}
+        )
+        return result
 
     async def complete(
         self, has_successful_answer: bool, state: EnvironmentState

@@ -4,7 +4,9 @@
 
 ## 当前进度
 
-已完成 **P2：基础RAG、PaperQA2领域适配与双版基线评测**：
+**P2基础RAG、P3混合检索与重排序已完成；P4正在完善Agent科研工作流，网页进入P5。** 当前P4.5将结构化结论核查设为回答前的必经步骤。自动论文筛选、实验信息提取和多论文研究报告仍待P4.6；已实现的记录接口与Markdown渲染是这些功能的基础。
+
+以下保留P2节点的交付与验证记录：
 
 - Swin 固定版本论文与官方仓库解析：97 个单元。
 - Swin 结构分块：1,602 块，保留物理页、代码行、来源版本与原文范围。
@@ -20,7 +22,7 @@
 - DeepSeek真实功能样例已运行：配置题定位到YAML第6–9行，论文题定位到PDF第2、4页；保留首轮论文失败及prompt调整记录。
 - P2.5完整测试：123项通过，1项Windows符号链接权限跳过；独立审查确认引用清理漏洞修复。
 
-下一节点为 **P3：混合检索与重排序**。网页尚未完成；Agent工具规划进入P4。
+当前开发与真实验收结果见[任务计划](task_plan.md)、[Agent科研使用说明](docs/p4-research-guide.md)及[P4.5交付报告](docs/p4-verified-workflow-report.md)。P4.4原失败记录保留，不以新结果覆盖。
 
 **P2.6完成：** 47题检索、94次双版真实生成与94份助手语义审核。QASPER validation答案F1领域版16.95%／默认版8.42%；Swin评分点覆盖18/49／16/49，存在变体混入和配置链缺证据。语义审核未有人类独立复核；实际费用未知，按指定官方价格假设估算0.0779415美元。指标口径与逐题理由见[基线报告](docs/p2-baseline-report.md)及[审核记录](docs/evaluation/README.md)。
 
@@ -39,6 +41,8 @@
 - [开发集与外部基线报告](docs/p2-baseline-report.md)
 - [混合检索与重排序使用说明](docs/p3-retrieval-guide.md)
 - [P3检索消融与回答对照](docs/p3-retrieval-report.md)
+- [Agent科研使用说明](docs/p4-research-guide.md)
+- [P4.5必经核查工作流报告](docs/p4-verified-workflow-report.md)
 - [环境说明](docs/environment-setup.md)
 
 ## 环境与测试
