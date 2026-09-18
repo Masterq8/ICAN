@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import math
 import re
+from datetime import datetime
 from typing import Literal
+from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -14,6 +16,17 @@ ClaimStatus = Literal[
     "insufficient_evidence",
     "blocked_by_precondition",
     "requires_review",
+]
+ExtractionFieldName = Literal[
+    "task",
+    "model",
+    "dataset",
+    "input_setting",
+    "training",
+    "metric",
+    "result",
+    "limitation",
+    "code_availability",
 ]
 
 
@@ -116,3 +129,86 @@ class ClaimVerificationResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     verdicts: list[ClaimVerdict]
+
+
+class ScreeningDraft(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    subject_source_id: str = Field(min_length=1, max_length=256)
+    decision: Literal["include", "exclude", "hold"]
+    claims: list[ClaimDraft] = Field(min_length=1, max_length=12)
+    revision_of: UUID | None = None
+
+
+class ExtractionFieldDraft(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: ExtractionFieldName
+    value: str = Field(min_length=1, max_length=2000)
+    claims: list[ClaimDraft] = Field(min_length=1, max_length=8)
+
+
+class ExtractionDraft(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    subject_source_id: str = Field(min_length=1, max_length=256)
+    fields: list[ExtractionFieldDraft] = Field(min_length=1, max_length=9)
+    revision_of: UUID | None = None
+
+    @field_validator("fields")
+    @classmethod
+    def unique_field_names(cls, values):
+        if len({field.name for field in values}) != len(values):
+            raise ValueError("Extraction field names must not repeat")
+        return values
+
+
+class VerifiedExtractionField(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: ExtractionFieldName
+    value: str
+    claims: list[ClaimVerdict]
+
+
+class ResearchRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    record_id: UUID
+    created_at: datetime
+    record_type: Literal["screening", "extraction"]
+    subject_source_id: str
+    revision_of: UUID | None = None
+    decision: Literal["include", "exclude", "hold"] | None = None
+    claims: list[ClaimVerdict] = Field(default_factory=list)
+    fields: list[VerifiedExtractionField] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_record_type(self):
+        if self.record_type == "screening":
+            valid = self.decision is not None and bool(self.claims) and not self.fields
+        else:
+            valid = self.decision is None and not self.claims and bool(self.fields)
+        if not valid:
+            raise ValueError("Research record payload does not match record_type")
+        return self
+
+
+class ResearchReportRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    record_ids: list[UUID] = Field(min_length=1, max_length=10)
+
+    @field_validator("record_ids")
+    @classmethod
+    def unique_record_ids(cls, values):
+        if len(set(values)) != len(values):
+            raise ValueError("Report record IDs must not repeat")
+        return values
+
+
+class ResearchReport(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    record_ids: list[UUID]
+    markdown: str
