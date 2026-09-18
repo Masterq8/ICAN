@@ -8,6 +8,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from ican.agent.schema import AgentRequest
 from ican.retrieval.schema import EvidenceResult
 
 ClaimKind = Literal["verbatim", "numeric", "code_execution", "inference"]
@@ -212,3 +213,24 @@ class ResearchReport(BaseModel):
 
     record_ids: list[UUID]
     markdown: str
+
+
+class ClaimVerificationRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    scope: AgentRequest
+    claims: list[ClaimDraft] = Field(min_length=1, max_length=12)
+
+
+class ScreeningSubmissionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    scope: AgentRequest
+    draft: ScreeningDraft
+
+
+class ExtractionSubmissionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    scope: AgentRequest
+    draft: ExtractionDraft

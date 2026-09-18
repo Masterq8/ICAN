@@ -14,6 +14,12 @@ from ican.qa.prompts import INSUFFICIENT
 from ican.qa.runtime import ModelTimeout, ModelUnavailable
 from ican.qa.schema import Citation, QAConfig, QAResponse, Usage
 from ican.qa.service import CITATION_PATTERN, CapturedAnswerModel
+from ican.research.schema import (
+    ClaimDraft,
+    ExtractionDraft,
+    ResearchReportRequest,
+    ScreeningDraft,
+)
 
 from .calculation import calculate as arithmetic
 from .configuration import trace_config as configuration_trace
@@ -23,7 +29,7 @@ from .schema import ToolInputError
 
 
 class DomainEnvironment(PaperQAEnvironment):
-    def __init__(self, corpus, request, runtime, config):
+    def __init__(self, corpus, request, runtime, config, research_service=None):
         super().__init__(
             query=request.query,
             settings=Settings(parsing={"defer_embedding": True}),
@@ -45,6 +51,7 @@ class DomainEnvironment(PaperQAEnvironment):
         self.answer_attempted = False
         self.fatal_error = None
         self.answer_error = None
+        self.research_service = research_service
 
     def make_tools(self):
         tools = [
@@ -54,6 +61,10 @@ class DomainEnvironment(PaperQAEnvironment):
                 self.read_evidence,
                 self.trace_config,
                 self.calculate,
+                self.verify_claims,
+                self.record_screening,
+                self.record_extraction,
+                self.build_research_report,
                 self.gen_answer,
                 self.complete,
             ]
@@ -217,6 +228,105 @@ class DomainEnvironment(PaperQAEnvironment):
         self.artifacts.append(artifact)
         return json.dumps(artifact, ensure_ascii=False)
 
+    def _research(self):
+        if self.research_service is None:
+            raise ToolInputError("Research workflow service is unavailable")
+        return self.research_service
+
+    async def verify_claims(self, claims: list[dict], state: EnvironmentState) -> str:
+        """Verify typed candidate claims against currently retained original evidence.
+
+        Args:
+            claims: Up to twelve ClaimDraft objects. Inference claims remain review-required.
+            state: PaperQA2 task state.
+        """
+        if len(claims) > 12:
+            raise ToolInputError("At most twelve claims can be verified together")
+        drafts = [ClaimDraft.model_validate(claim) for claim in claims]
+        response = self._research().verify_with_corpus(
+            self.corpus, drafts, allowed_ids=set(self.evidence_pool)
+        )
+        artifact = {
+            "kind": "claim_verification",
+            "chunk_ids": sorted(
+                {chunk_id for claim in drafts for chunk_id in claim.evidence_ids}
+            ),
+            **response.model_dump(mode="json"),
+        }
+        self.artifacts.append(artifact)
+        return json.dumps(artifact, ensure_ascii=False)
+
+    async def record_screening(self, draft: dict, state: EnvironmentState) -> str:
+        """Create an append-only, evidence-checked paper screening revision.
+
+        Args:
+            draft: ScreeningDraft with subject source, decision, candidate claims and optional revision_of.
+            state: PaperQA2 task state.
+        """
+        record = self._research().submit_screening(
+            self.request,
+            ScreeningDraft.model_validate(draft),
+            corpus=self.corpus,
+            allowed_ids=set(self.evidence_pool),
+        )
+        artifact = {
+            "kind": "screening_record",
+            "record": record.model_dump(mode="json"),
+            "chunk_ids": sorted(
+                {
+                    evidence.chunk_id
+                    for verdict in record.claims
+                    for evidence in verdict.evidence
+                }
+            ),
+        }
+        self.artifacts.append(artifact)
+        return json.dumps(artifact, ensure_ascii=False)
+
+    async def record_extraction(self, draft: dict, state: EnvironmentState) -> str:
+        """Create an append-only structured extraction revision from retained evidence.
+
+        Args:
+            draft: ExtractionDraft with fixed fields, values, claims and optional revision_of.
+            state: PaperQA2 task state.
+        """
+        record = self._research().submit_extraction(
+            self.request,
+            ExtractionDraft.model_validate(draft),
+            corpus=self.corpus,
+            allowed_ids=set(self.evidence_pool),
+        )
+        artifact = {
+            "kind": "extraction_record",
+            "record": record.model_dump(mode="json"),
+            "chunk_ids": sorted(
+                {
+                    evidence.chunk_id
+                    for field in record.fields
+                    for verdict in field.claims
+                    for evidence in verdict.evidence
+                }
+            ),
+        }
+        self.artifacts.append(artifact)
+        return json.dumps(artifact, ensure_ascii=False)
+
+    async def build_research_report(
+        self, record_ids: list[str], state: EnvironmentState
+    ) -> str:
+        """Render a Markdown report from prior append-only research revisions.
+
+        Args:
+            record_ids: One to ten UUID revision IDs created by the research record tools.
+            state: PaperQA2 task state.
+        """
+        report = self._research().build_report(
+            ResearchReportRequest(record_ids=record_ids)
+        )
+        artifact = {"kind": "research_report", **report.model_dump(mode="json")}
+        self.artifacts.append(artifact)
+        return json.dumps(artifact, ensure_ascii=False)
+
     async def gen_answer(self, evidence_ids: list[str], state: EnvironmentState) -> str:
         """Generate the final cited answer once from chosen original evidence and tool results.
 
@@ -255,7 +365,7 @@ class DomainEnvironment(PaperQAEnvironment):
                 for step in artifact.get("chain", [])
                 for cid in step.get("chunk_ids", [])
             ]
-            if all(cid in allowed for cid in references):
+            if references and all(cid in allowed for cid in references):
                 artifacts.append(artifact)
 
         async def serializer(settings, contexts, question, pre_str=None):

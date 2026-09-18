@@ -97,6 +97,18 @@ SEARCH = action(
 )
 CALC = action("calculate", {"expression": "5e-4*128*8/512*2", "evidence_ids": ["lr"]})
 ANSWER = action("gen_answer", {"evidence_ids": ["lr"]})
+VERIFY_INFERENCE = action(
+    "verify_claims",
+    {
+        "claims": [
+            {
+                "statement": "This implementation is likely faster.",
+                "kind": "inference",
+                "evidence_ids": ["lr"],
+            }
+        ]
+    },
+)
 
 
 class FakeRuntime:
@@ -196,6 +208,42 @@ async def test_actual_paperqa_environment_multi_step_calculation_answer_and_hist
     assert (
         record["raw_answer"]
         and result.answer.citations[0].evidence.text == ROWS[0]["chunk"]["text"]
+    )
+
+
+@pytest.mark.asyncio
+async def test_native_research_claim_tool_uses_only_retained_evidence(tmp_path):
+    agent, _ = service(
+        tmp_path,
+        [SEARCH, VERIFY_INFERENCE, action("complete", {"has_successful_answer": True})],
+        AgentConfig(max_planner_calls=3),
+    )
+    result = await agent.run(REQUEST)
+    assert result.status == "budget_exhausted"
+    assert result.artifacts[0]["kind"] == "claim_verification"
+    assert result.artifacts[0]["verdicts"][0]["status"] == "requires_review"
+    assert result.trajectory[3]["name"] == "verify_claims"
+
+
+@pytest.mark.asyncio
+async def test_native_research_claim_tool_rejects_unretained_evidence(tmp_path):
+    bad = action(
+        "verify_claims",
+        {
+            "claims": [
+                {
+                    "statement": "An unsupported inference.",
+                    "kind": "inference",
+                    "evidence_ids": ["wrong"],
+                }
+            ]
+        },
+    )
+    agent, _ = service(tmp_path, [SEARCH, bad], AgentConfig(max_planner_calls=2))
+    result = await agent.run(REQUEST)
+    assert result.artifacts == []
+    assert result.trajectory[-1]["result"] == json.dumps(
+        {"error": "Invalid tool name, JSON or arguments"}
     )
 
 

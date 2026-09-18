@@ -190,4 +190,6 @@ class ResearchService:
                     for verdict in field.claims:
                         lines.extend(self._render_verdict(verdict))
             lines.append("")
+            if sum(len(line) + 1 for line in lines) > 200_000:
+                raise ToolInputError("Research report exceeds the bounded output size")
         return ResearchReport(record_ids=request.record_ids, markdown="\n".join(lines))

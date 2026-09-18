@@ -34,6 +34,7 @@ class AgentService:
         corpus_factory=None,
         runtime_factory=None,
         journal=None,
+        research_service=None,
     ):
         self.root, self.index_config, self.evidence_service = (
             Path(root),
@@ -48,6 +49,13 @@ class AgentService:
         self.journal = journal or PaidJournal(
             self.root / "data/processed/agent/p4-v1/paid-journal.jsonl", 40
         )
+        if research_service is None:
+            from ican.research.service import ResearchService
+
+            research_service = ResearchService(
+                self.root, self.index_config, self.evidence_service
+            )
+        self.research_service = research_service
 
     async def run(self, request):
         from aviary.core import ToolCall, ToolRequestMessage
@@ -81,7 +89,9 @@ class AgentService:
                 runtime = self.runtime_factory(
                     self.root, self.config, self.journal, task_id
                 )
-                env = DomainEnvironment(corpus, request, runtime, self.config)
+                env = DomainEnvironment(
+                    corpus, request, runtime, self.config, self.research_service
+                )
                 await env.reset()
                 tools = [
                     t.model_dump(by_alias=True, exclude_none=True) for t in env.tools
