@@ -263,3 +263,10 @@
 - 原始Swin `PatchMerging.forward`实测H=W=7：第337行L条件未绑定保留不足，第338行`H % 2 == 0 and W % 2 == 0`确定为假，因此“可继续合并”返回`blocked_by_precondition`。不执行仓库代码，未调用付费模型。
 - 新增UUID追加式筛选与结构化提取revision、Markdown报告，以及统一ResearchService的四个Agent工具／四个FastAPI入口。Agent仅可使用当前证据池；报告保留阻断和不足项目。
 - 完整239项项目测试通过、1项跳过；61项Agent／科研测试通过。Ruff及format检查通过；61项保护账本、冻结Swin测试、P2/P3五项封存产物与journal哈希均未变，暂存文件凭据扫描为零。P4付费journal仍为39/40。
+
+### 2026-09-18：P4.4独立Agent回归
+
+- 新建p4-v2独立journal，硬上限32次；固定4个Swin开发案例和4个按QASPER validation问题ID SHA排序的外部回归案例。冻结Swin test只核验SHA，未解析或评分；任何开始的案例不重试。
+- 实际25次调用全部有terminal usage：19 Pro、6 Flash、107250输入／3277输出token，实际费用null。5题completed、1题insufficient_evidence、1题no_progress、1题budget_exhausted；6条生成答案的引用范围均符合原请求。
+- 审计failed：shape最后轮仅开放gen_answer但模型仍请求calculate／read，安全拒绝并停止，未出现blocked_by_precondition；动机最后轮继续search，未出现requires_review。保留全部轨迹和剩余7次预算，不为通过验收而重试或替换案例。
+- 完整244项目测试通过／1跳过；P4.4 runner、manifest、journal配对、范围和Claim缺失均有本地测试。下一步需单独设计强制Claim阶段的Agent调度修复，不能将本次失败称为P4.3真实Agent合规。

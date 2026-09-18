@@ -16,7 +16,7 @@
 - Create: `ican/evaluation/p4_agent.py`
 - Create: `tests/test_p4_agent_evaluation.py`
 
-- [ ] **Step 1: Write failing case-selection tests**
+- [x] **Step 1: Write failing case-selection tests**
 
 ```python
 def test_cases_are_fixed_without_parsing_frozen_test(tmp_path, monkeypatch):
@@ -28,7 +28,7 @@ def test_cases_are_fixed_without_parsing_frozen_test(tmp_path, monkeypatch):
     assert len(cases) == 8 and identity["frozen_test_sha256"] == FROZEN_SHA256
 ```
 
-- [ ] **Step 2: Implement case selection and immutable manifest**
+- [x] **Step 2: Implement case selection and immutable manifest**
 
 ```python
 def build_p44_cases(root: Path) -> tuple[list[P4AgentCase], dict]:
@@ -40,7 +40,7 @@ def write_manifest(directory: Path, identity: dict) -> None:
     # Reject an existing unequal manifest; never overwrite a started run identity.
 ```
 
-- [ ] **Step 3: Run focused test and commit**
+- [x] **Step 3: Run focused test and commit**
 
 Run: `D:/CondaEnv/ican/python.exe -m pytest -q tests/test_p4_agent_evaluation.py`
 
@@ -56,7 +56,7 @@ git commit -m "feat(evaluation): define fixed P4.4 Agent cases"
 - Create: `scripts/evaluate_p4_agent.py`
 - Modify: `tests/test_p4_agent_evaluation.py`
 
-- [ ] **Step 1: Write failing no-retry and audit tests**
+- [x] **Step 1: Write failing no-retry and audit tests**
 
 ```python
 async def test_started_case_is_never_retried_and_shared_budget_is_32(tmp_path):
@@ -71,7 +71,7 @@ def test_audit_requires_shape_and_motivation_claim_states(tmp_path):
     assert "shape_claim_missing" in report["failures"]
 ```
 
-- [ ] **Step 2: Implement runner and audit**
+- [x] **Step 2: Implement runner and audit**
 
 ```python
 class P4AgentEvaluationRunner:
@@ -84,13 +84,13 @@ def audit_run(root: Path, directory: Path, cases: list[P4AgentCase]) -> dict:
     # citation ownership and required Claim statuses for the two Swin cases.
 ```
 
-- [ ] **Step 3: Add CLI modes and run focused tests**
+- [x] **Step 3: Add CLI modes and run focused tests**
 
 ```powershell
 D:/CondaEnv/ican/python.exe -m pytest -q tests/test_p4_agent_evaluation.py
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```powershell
 git add ican/evaluation/p4_agent.py scripts/evaluate_p4_agent.py tests/test_p4_agent_evaluation.py
@@ -107,7 +107,7 @@ git commit -m "feat(evaluation): add bounded P4.4 Agent runner"
 - Modify: `findings.md`
 - Modify: `docs/requirements-spec.md`
 
-- [ ] **Step 1: Run local full validation before spending budget**
+- [x] **Step 1: Run local full validation before spending budget**
 
 ```powershell
 D:/CondaEnv/ican/python.exe -m pytest -q
@@ -115,14 +115,14 @@ D:/CondaEnv/ican/python.exe -m ruff check ican/evaluation scripts/evaluate_p4_ag
 D:/CondaEnv/ican/python.exe -m ruff format --check ican/evaluation scripts/evaluate_p4_agent.py tests/test_p4_agent_evaluation.py
 ```
 
-- [ ] **Step 2: Execute each of the eight frozen-manifest cases once**
+- [x] **Step 2: Execute each of the eight frozen-manifest cases once**
 
 ```powershell
 D:/CondaEnv/ican/python.exe scripts/evaluate_p4_agent.py run --case all --run-dir data/processed/evaluation/p4-v2
 D:/CondaEnv/ican/python.exe scripts/evaluate_p4_agent.py audit --run-dir data/processed/evaluation/p4-v2
 ```
 
-- [ ] **Step 3: Record factual results and verify immutable inputs**
+- [x] **Step 3: Record factual results and verify immutable inputs**
 
 ```powershell
 D:/CondaEnv/ican/python.exe scripts/evaluate_p4_agent.py audit --run-dir data/processed/evaluation/p4-v2
@@ -131,7 +131,7 @@ git -c core.whitespace=cr-at-eol diff --check
 
 Record exactly the saved model calls, statuses, Claim states, citations and returned usage. Hash-check the protected ledger, frozen Swin file and P2/P3 seals; do not print secrets.
 
-- [ ] **Step 4: Commit delivery documents**
+- [x] **Step 4: Commit delivery documents**
 
 ```powershell
 git add docs task_plan.md progress.md findings.md

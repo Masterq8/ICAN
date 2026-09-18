@@ -52,3 +52,11 @@ P4.1／P4.2工程基础已交付；P4整体继续in_progress。P4.3已处理前�
 ## P4.3 补充（2026-09-18）
 
 已实现四类结论的确定性状态、静态 assert 条件求值、可追加筛选／提取 revision 和 Markdown 报告。真实 Swin 原始 `PatchMerging.forward` 验证显示 H=W=7 在第338行偶数断言被阻断；不会再将 `7//2=3` 当作实际进入下一 stage 的依据。筛选、提取和报告 API 均不需模型调用，Agent 工具仅可使用当前证据池。P4.4 仍负责新的付费验收和外部回归，详见[科研核查说明](p4-research-guide.md)。
+
+## P4.4 独立预算回归（2026-09-18）
+
+P4.4 建立独立`p4-v2` journal，32次发送前上限，不复用P4.2的39次记录。固定运行4个Swin开发案例与4个按QASPER validation问题ID SHA-256排序选取的外部回归案例；冻结Swin test仅复核SHA。每题至多3次Pro规划与1次Flash回答，无SDK重试或模型替代。
+
+实际发送25次：19次`deepseek-v4-pro`、6次`deepseek-flash`，107250输入token、3277输出token，所有usage返回，实际费用仍为null。5题completed、1题insufficient_evidence、1题no_progress、1题budget_exhausted；6题生成答案的引用范围审计无失败。
+
+但整体审计为**failed**。`swin_dev_04`的最后规划轮只允许`gen_answer`时仍提交计算／读取，服务拒绝后停止，未生成`blocked_by_precondition` Claim；`swin_dev_12`同样在最后轮继续检索，未生成`requires_review` Claim。两条轨迹均已保存，不使用剩余7次调用重试、改题或覆盖结果。因此本轮不报告准确率、泛化提升或“P4.3工作流已被真实Agent遵守”。完整数字见[P4.4摘要](evaluation/p4-agent-regression-summary.json)。

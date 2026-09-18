@@ -1,0 +1,43 @@
+{
+  "run": "p4-v2",
+  "date": "2026-09-18",
+  "budget": {
+    "max_paid_calls": 32,
+    "started_calls": 25,
+    "remaining_calls": 7,
+    "automatic_retries": 0
+  },
+  "models": {
+    "deepseek-v4-pro": 19,
+    "deepseek-flash": 6
+  },
+  "usage": {
+    "prompt_tokens": 107250,
+    "completion_tokens": 3277,
+    "usage_missing_calls": 0,
+    "actual_cost_usd": null
+  },
+  "cases": {
+    "total": 8,
+    "swin_development": 4,
+    "qasper_validation_regression": 4,
+    "completed": 5,
+    "insufficient_evidence": 1,
+    "no_progress": 1,
+    "budget_exhausted": 1
+  },
+  "audit": {
+    "status": "failed",
+    "failures": [
+      "swin/dev/swin_dev_04:claim_status_missing",
+      "swin/dev/swin_dev_12:claim_status_missing"
+    ],
+    "citation_scope_failures": 0,
+    "journal_event_pairs": "25 started / 25 completed"
+  },
+  "limits": [
+    "The four QASPER validation cases are an observed external regression, not a blind benchmark.",
+    "The frozen Swin test was SHA-checked only and was not parsed or scored.",
+    "No accuracy or generalization claim is made because two required structured-claim workflows failed."
+  ]
+}

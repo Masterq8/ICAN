@@ -552,3 +552,11 @@
 - **解决方案：** P4.3将结论声明为带类型、证据和数值绑定的Claim。对引用代码块内的`assert`做静态受限AST求值；任何可求值且失败的前置条件都返回`blocked_by_precondition`，引用不足、表达式不支持和推断分别保留为`insufficient_evidence`或`requires_review`。
 - **验证结果：** 以原始Swin源码的`PatchMerging`块、H=7、W=7运行核查，L相关断言因未绑定为不足，但第338行`H % 2 == 0 and W % 2 == 0`确定失败，结论为阻断。未执行仓库代码，未调用付费模型。
 - **状态：** 结构化代码执行结论已解决；旧P4.2回答不追写，P4.4再做模型生成结果的外部回归。
+
+### P-20260918-12：真实Agent忽略最终轮的Claim核查要求
+
+- **分类：** Agent／调度／结论核查。
+- **现象：** P4.4的7×7案例已读到`PatchMerging`，但最终轮仅开放`gen_answer`时仍请求`calculate`和`read_evidence`；动机案例继续搜索。服务拒绝未开放调用并安全停止，两题没有产生`claim_verification` artifact。
+- **解决方案：** 本轮不重试、不替换样本、不把P4.3直接API结果写回真实轨迹。离线审计将7×7的`blocked_by_precondition`和动机的`requires_review`设为必需状态，并以failed记录。后续需设计显式核查阶段和新的独立预算。
+- **验证结果：** 独立p4-v2 journal 25个started／25个completed事件配对，所有usage返回；8固定案例中仅上述两项Claim状态缺失，引用范围无失败。
+- **状态：** 已复现并封存；调度强制策略未实现，P4整体保持in_progress。

@@ -58,6 +58,18 @@ python scripts/serve_api.py
 
 返回 `trajectory`记录规划选择、原生工具参数、实际结果与缓存命中；`artifacts`单列配置／计算结果；`answer.citations`含原始来源与页码／行号／commit。工具结果的引用依据若被字符预算丢弃，该结果不会送入最终回答。不要将引用ID存在当作语义已验证。
 
+## P4.4 固定回归运行
+
+P4.4 使用独立 `data/processed/evaluation/p4-v2/` journal，最多32次调用；固定4个Swin开发案例与4个按QASPER validation问题ID哈希选择的外部回归案例。运行不会读取冻结Swin test内容，任何已写入`.started.json`或`.response.json`的案例都不会自动重试。
+
+```powershell
+conda activate ican
+python scripts/evaluate_p4_agent.py run --case all --run-dir data/processed/evaluation/p4-v2
+python scripts/evaluate_p4_agent.py audit --run-dir data/processed/evaluation/p4-v2
+```
+
+审计会检查输入／源码manifest、journal配对、预算、引用范围及两个强制Claim状态：7×7必须有`blocked_by_precondition`，作者动机必须有`requires_review`。本轮实际运行使用25/32次调用，但两个状态都缺失，结果为failed；保留轨迹而不重试。详见[P4.4摘要](evaluation/p4-agent-regression-summary.json)。
+
 `completed`表示任务执行到生成，不能代替答案正确性或人工核验。另有insufficient_evidence／budget_exhausted／no_progress／failed／timed_out；review_required继续保留在回答状态。旧拒答协议的语言限制未全部解决，部分回答与作者动机不足须人工检查。
 
 ## 模型、付费与恢复

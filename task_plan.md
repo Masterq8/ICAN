@@ -6,7 +6,7 @@
 ## 当前阶段
 P4：Agent规划与工具调用进行中；P3结果与基线已封存
 
-**P4.1–P4.3工程基础已交付；下一节点P4.4（pending）。** 已实现静态配置／确定性计算／检索读取工具、PaperQA2原生工具环境、Pro规划／Flash回答任务API，以及逐条结论核查、可追加筛选／提取 revision 和研究报告。239项目测试、51Agent／科研测试通过；既有9个真实开发任务仍为39/40付费调用。真实 Swin 静态核查已定位7×7在PatchMerging偶数断言处阻断；作者动机状态和配置merge原文仍应在P4.4扩展回归中验证。见[实际报告](docs/p4-agent-report.md)、[Agent说明](docs/p4-agent-guide.md)、[科研核查说明](docs/p4-research-guide.md)。P4.4负责新的模型预算、开发／外部回归，网页留P5。P3报告与原基线封存。
+**P4.1–P4.4已实施；P4整体仍in_progress，等待真实Agent核查失败的修复决策。** 已实现静态配置／确定性计算／检索读取工具、PaperQA2原生工具环境、Pro规划／Flash回答任务API，以及逐条结论核查、可追加筛选／提取 revision 和研究报告。P4.4独立32次预算实际发送25次，固定4个Swin开发与4个QASPER外部回归案例；7×7与动机案例未产出强制Claim状态，审计failed且不重试。见[实际报告](docs/p4-agent-report.md)、[Agent说明](docs/p4-agent-guide.md)、[科研核查说明](docs/p4-research-guide.md)和[P4.4摘要](docs/evaluation/p4-agent-regression-summary.json)。网页留P5。P3报告与原基线封存。
 
 ## 复用主线与职责
 
@@ -110,7 +110,7 @@ P4：Agent规划与工具调用进行中；P3结果与基线已封存
 | P4.1 领域工具 | scoped检索／原文读取、静态精确配置链、Decimal标量及整数整除／取模、原文与产物分离 | complete |
 | P4.2 有界Agent | PaperQAEnvironment扩展、原生tool calls、Pro规划／Flash回答、任务API、预算journal／轨迹；选定开发验收含未通过项 | complete |
 | P4.3 科研业务核查与输出 | 前置assert、四类Claim状态、可追加筛选／提取revision、Markdown研究报告、Agent／API入口 | complete |
-| P4.4 扩展验收 | 新版本开发／外部回归、失败及成本对照，冻结集规则不变 | pending |
+| P4.4 扩展验收 | 新版本开发／外部回归、失败及成本对照，冻结集规则不变 | complete（审计failed，轨迹封存且不重试） |
 
 ### P5：网页产品化
 - [ ] 实现 Vue 页面和 FastAPI 接口
