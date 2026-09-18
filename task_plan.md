@@ -6,7 +6,7 @@
 ## 当前阶段
 P4：Agent规划与工具调用进行中；P3结果与基线已封存
 
-**P4.1–P4.2工程基础已交付；下一节点P4.3（pending）。** 已实现静态配置／确定性计算／检索读取工具及PaperQA2原生工具环境、Pro规划／Flash回答和任务API。227项目测试、49Agent测试通过；9个真实开发任务累计39/40付费调用。学习率0.002有默认值及公式依据，配置静态值0.2正确但merge引用应补全；作者动机不足的状态漏识别、112跨stage答案错误均保留，不能将执行完成当语义验收。见[实际报告](docs/p4-agent-report.md)、[使用说明](docs/p4-agent-guide.md)与[执行计划](docs/superpowers/plans/2026-09-18-p4-agent-tools.md)。P4.3优先断言条件／逐claim支持状态，再做科研业务输出；P4.4扩展评测尚未开始，网页留P5。P3报告与原基线封存。
+**P4.1–P4.3工程基础已交付；下一节点P4.4（pending）。** 已实现静态配置／确定性计算／检索读取工具、PaperQA2原生工具环境、Pro规划／Flash回答任务API，以及逐条结论核查、可追加筛选／提取 revision 和研究报告。239项目测试、51Agent／科研测试通过；既有9个真实开发任务仍为39/40付费调用。真实 Swin 静态核查已定位7×7在PatchMerging偶数断言处阻断；作者动机状态和配置merge原文仍应在P4.4扩展回归中验证。见[实际报告](docs/p4-agent-report.md)、[Agent说明](docs/p4-agent-guide.md)、[科研核查说明](docs/p4-research-guide.md)。P4.4负责新的模型预算、开发／外部回归，网页留P5。P3报告与原基线封存。
 
 ## 复用主线与职责
 
@@ -17,7 +17,7 @@ P4：Agent规划与工具调用进行中；P3结果与基线已封存
 | 资源 | 复用方式 | 开发节点 | 当前状态／边界 |
 |---|---|---|---|
 | Docling＋PyMuPDF | 复用文档转换与位置数据，通过本项目 adapter 保留来源契约；失效位置从原 PDF 恢复 | P2.1；P2.2 消费既有结构 | 解析与结构分块已完成；10个表格产生15个待核验块 |
-| PaperQA2 | 实际复用公开Doc/Text/Context/PQASession、Docs.aadd_texts/aquery，扩展PaperQAEnvironment／EnvironmentState／Aviary工具执行 | P2.5 接入与问答；P2.6 基准；P4 Agent 改造 | 固定2026.8.12领域adapter及有界原生Agent已交付；未fork，未运行原样run_agent；业务输出待P4.3 |
+| PaperQA2 | 实际复用公开Doc/Text/Context/PQASession、Docs.aadd_texts/aquery，扩展PaperQAEnvironment／EnvironmentState／Aviary工具执行 | P2.5 接入与问答；P2.6 基准；P4 Agent 改造 | 固定2026.8.12领域adapter及有界原生Agent、科研核查输出已交付；未fork，未运行原样run_agent；P4.4做外部回归 |
 | Qdrant | 保留持久化检索组件，以外部Context证据入口对接PaperQA2 | P2.3–P2.5；P3 | 已验证现有collection可经adapter消费；没有将不同上游payload直接加载为Text |
 | Kotaemon | 借鉴混合检索／重排流程及 PDF 引用高亮体验，按需复用独立模块 | P3 检索；P5 界面 | 不迁移完整 Gradio 应用；Vue 页面继续消费 FastAPI 与统一证据数据 |
 | ASReview LAB | 借鉴人工修改筛选决策、主动学习排序与审计记录 | P4 筛选流程；P5 筛选界面 | 不作为全文问答／报告引擎；先交付精选库的可修改筛选记录 |
@@ -95,13 +95,13 @@ P4：Agent规划与工具调用进行中；P3结果与基线已封存
 - [x] 基于已验证的 PaperQA2 Agent／证据问答能力改造工具入口，不另写一套相同的论文问答循环
 - [x] 实现scoped论文／代码证据检索、原块／函数读取、静态配置追踪与标量计算工具；扩展函数／配置引用
 - [x] 实现有界补查与停止、预算内收尾、同参缓存及失败状态；已开始任务不自动重发
-- [ ] 实现前置断言与逐claim充分性／支持判断；优先修复shape错误及部分拒答状态，补全配置merge引用
+- [x] 实现前置断言与逐claim充分性／支持判断；7×7 shape错误由静态assert阻断，推断类结构化结论明确`requires_review`，旧P4.2动机状态漏判保留
 - [ ] 如使用 LangGraph，只编排筛选、抽取、核查、报告等外层业务状态；PaperQA2负责内部科研问答，验证是否需要双层编排
 - [ ] 参考 ASReview 实现可修改的筛选记录；参考 SciRIFF 设计方法／数据／实验等结构化提取输出
 - [ ] 参考 OpenScholar／STORM 补充多论文证据归组、报告大纲、补查与引用归因，围绕同一主流程实现
 - [ ] 输出一致、差异、待确认三类核查结论
 - **交付：** PaperQA2领域工具与提示配置、任务状态／轨迹、配置覆盖核查结果、筛选与提取记录、带引用报告
-- **状态：** in_progress；P4.1／P4.2工程基础complete，语义失败如实保留；P4.3业务核查／输出与P4.4扩展验收pending。
+- **状态：** in_progress；P4.1／P4.2／P4.3工程基础complete，P4.4扩展验收pending；语义失败与局限如实保留。
 
 #### P4分节点与产物
 
@@ -109,7 +109,7 @@ P4：Agent规划与工具调用进行中；P3结果与基线已封存
 |---|---|---|
 | P4.1 领域工具 | scoped检索／原文读取、静态精确配置链、Decimal标量及整数整除／取模、原文与产物分离 | complete |
 | P4.2 有界Agent | PaperQAEnvironment扩展、原生tool calls、Pro规划／Flash回答、任务API、预算journal／轨迹；选定开发验收含未通过项 | complete |
-| P4.3 科研业务核查与输出 | 首先核验前置断言、逐claim支持／不足与merge引用；随后筛选记录、结构化抽取及多论文报告 | pending |
+| P4.3 科研业务核查与输出 | 前置assert、四类Claim状态、可追加筛选／提取revision、Markdown研究报告、Agent／API入口 | complete |
 | P4.4 扩展验收 | 新版本开发／外部回归、失败及成本对照，冻结集规则不变 | pending |
 
 ### P5：网页产品化

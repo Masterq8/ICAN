@@ -2,7 +2,7 @@
 
 ## 已交付的能力
 
-在P3检索之上，模型通过真实OpenAI工具调用选择搜索、读取同函数片段、静态配置追踪及算术计算，再用现有PaperQA2生成带原文引用的回答。P4.3筛选／抽取／多论文报告尚未实现，Vue界面继续留P5。
+在P3检索之上，模型通过真实OpenAI工具调用选择搜索、读取同函数片段、静态配置追踪及算术计算，再用现有PaperQA2生成带原文引用的回答。P4.3 已加入结论核查、筛选 revision、结构化提取和 Markdown 研究报告；其输入、状态含义和 API 见[科研核查说明](p4-research-guide.md)。Vue 界面继续留 P5。
 
 实际复用固定paper-qa 2026.8.12的PaperQAEnvironment、EnvironmentState、Aviary Tool、上游step／工具执行及Docs.aquery。覆盖其工具注册并使用有界SDK驱动，不运行原样run_agent；默认内置索引、远程summary／embedding和超限自动答复没有进入本任务。
 
@@ -49,6 +49,10 @@ python scripts/serve_api.py
 | read_evidence | 按ID或精确structure读取同函数片段 | 返回已入库chunk，预览截断会标识，最终引用保留原文 |
 | trace_config | 默认→BASE→YAML→opts→特定CLI | 精确AST字段分支；标static_only，未知／不支持条件保留partial |
 | calculate | Decimal标量算术 | 加减乘除、有界整数幂、整数操作数的整除／取模；不支持tuple／list，不执行eval，参数来源仍需核验 |
+| verify_claims | 逐条核查候选结论 | 只处理当前证据池；代码结论静态检查引用范围内的assert，推断保持人工复核 |
+| record_screening | 保存论文筛选 revision | 决定与理由均须为 Claim；修改旧记录只创建新 UUID revision |
+| record_extraction | 保存固定字段提取 revision | task、model、dataset、训练、指标等字段各自保留 Claim 状态 |
+| build_research_report | 渲染已保存 revision | 报告同时显示已支持、阻断、不足和人工复核项 |
 | gen_answer | 一次PaperQA2回答 | 最多8块、18000原文字符，工具结果独立展示，不能伪造来源 |
 | complete | 根据实际答复结束 | 没有真实回答不能口头宣布完成 |
 

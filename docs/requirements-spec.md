@@ -298,12 +298,15 @@ flowchart LR
 | v0.5 | 2026-09-16 | P2.2已交付配置驱动结构分块；原文／embedding上下文分离，来源、连续字符范围、物理页／行、表格核验状态与QASPER段落位置保留 | 固定后续索引与PaperQA2 adapter的证据输入契约 | 建库与引用技术实现；cl100k仅预算计数，P2.3重新核验真实Embedding tokenizer；产品功能范围沿用 |
 | v0.12 | 2026-09-18 | P3完成范围过滤／混合检索／本地重排与结构证据、282条消融及47次新回答审核 | 记录Swin改善、外部回退、接口边界修复及实际预算 | P3可选策略验收；Agent和网页分别保留P4／P5 |
 | v0.13 | 2026-09-18 | P4.1领域工具、P4.2原生规划／任务API；Pro规划、Flash回答及持久化付费预算 | 让模型实际选择补查与计算，保留失败轨迹和原文引用 | 科研业务输出、扩展评测及网页分别留P4.3／P4.4／P5 |
+| v0.14 | 2026-09-18 | P4.3结论核查、筛选／提取revision和Markdown报告 | 修复引用存在但运行结论错误的问题，并交付可审计科研业务数据 | P4.4保留外部回归与新模型预算；P5提供网页操作界面 |
 
 ## 13. 待决策事项
 
 **P4.1–P4.2实现更新（2026-09-18，v0.13）：** 用户明确开始Agent并允许按需重复调用DeepSeek Flash／Pro。复用固定PaperQAEnvironment／EnvironmentState／Aviary工具执行和Docs.aquery，扩展有界原生OpenAI工具选择，Pro规划／Flash回答，不执行原样上游run_agent。新增scoped检索／原块读取、精确AST配置／BASE链和Decimal算术，工具产物与原文分离，最终prompt标p4-tools-evidence-v1。每任务最多5次规划／12工具／一次回答，累计40付费预约，SDK重试0，180秒总超时；POST /v1/agent/run及轨迹文件已接入。user_overrides结构化核对及有界标量输入禁止模型冒称用户参数；畸形工具和回答超时按明确状态停止。真实开发验收单独保留source SHA，P4.3筛选／抽取／多论文报告及P4.4扩展评测继续后续节点，详见[p4-agent-guide.md](p4-agent-guide.md)。
 
 **P4真实验收边界：** 9任务累计39调用，227项目／49Agent测试通过；原文身份核验不等于支持率。学习率0.002正确，配置0.2正确但覆盖顺序引用未全，作者动机部分拒答状态漏识别，112回答错误；P4.3先处理前置断言与逐claim支持状态。不同源码开发演示不合并为准确率，冻结题未用于调参，外部Agent评测留P4.4。见[p4-agent-report.md](p4-agent-report.md)。
+
+**P4.3实现更新（2026-09-18，v0.14）：** 提供verbatim、numeric、code_execution、inference四类结构化结论。原始证据范围、精确quote、有界算术及引用代码范围内的静态assert分别核查；状态只允许supported、blocked_by_precondition、insufficient_evidence、requires_review。筛选与提取保存 UUID revision，不覆盖旧记录；报告保留非支持项和来源位置。真实Swin代码验证7×7会被PatchMerging偶数断言阻断。该核查不执行仓库代码，也不自动证明自由文本语义；P4.4再设模型预算与外部评测。详见[p4-research-guide.md](p4-research-guide.md)。
 
 **P3验收更新（2026-09-18，v0.12）：** 282条六组检索、47次新adapter生成及47份SHA绑定助手审核完成，实付未知，150081输入／7048输出tokens，沿用9月17日价格假设估算0.0534819美元。Swin定位召回80.56%、评分点40/49；QASPER Answer F1由16.95%降至11.79%，保留默认dense，不称全面提升。最后接口／代码复核修复具名字段被挤出与英文后缀误匹配；47题实际PaperQA2输入与已生成快照一致，无重复付费。P2.6快照及冻结题不变；助手判断不替代人类复核。Agent、数值验证工具及跨分支归因留P4。
 

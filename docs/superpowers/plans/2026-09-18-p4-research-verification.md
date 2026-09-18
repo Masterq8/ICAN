@@ -18,7 +18,7 @@
 - Create: `ican/research/claims.py`
 - Create: `tests/test_research_claims.py`
 
-- [ ] **Step 1: Write failing claim tests**
+- [x] **Step 1: Write failing claim tests**
 
 ```python
 def test_even_grid_assert_blocks_execution_claim(corpus):
@@ -33,7 +33,7 @@ def test_even_grid_assert_blocks_execution_claim(corpus):
 
 Run: `D:/CondaEnv/ican/python.exe -m pytest -q tests/test_research_claims.py`
 
-- [ ] **Step 2: Implement strict schema and safe AST evaluation**
+- [x] **Step 2: Implement strict schema and safe AST evaluation**
 
 ```python
 class ClaimDraft(BaseModel):
@@ -46,7 +46,7 @@ def evaluate_assert(expression: ast.expr, bindings: dict[str, Decimal]) -> bool:
     # raise ConditionUnsupported for calls, attributes, subscripts and unknown names
 ```
 
-- [ ] **Step 3: Add negative and provenance tests**
+- [x] **Step 3: Add negative and provenance tests**
 
 ```python
 assert verify_claim(corpus, missing_quote).status == "insufficient_evidence"
@@ -55,7 +55,7 @@ assert verify_claim(corpus, bad_binding).status == "insufficient_evidence"
 assert verify_claim(corpus, numeric).calculation.result == "0.002"
 ```
 
-- [ ] **Step 4: Run scoped tests and commit**
+- [x] **Step 4: Run scoped tests and commit**
 
 Run: `D:/CondaEnv/ican/python.exe -m pytest -q tests/test_research_claims.py`
 
@@ -71,7 +71,7 @@ git commit -m "feat(research): verify typed evidence claims"
 - Create: `ican/research/service.py`
 - Create: `tests/test_research_service.py`
 
-- [ ] **Step 1: Write failing revision and report tests**
+- [x] **Step 1: Write failing revision and report tests**
 
 ```python
 first = await service.submit_screening(request, screening)
@@ -81,7 +81,7 @@ assert service.store.load(second.record_id).revision_of == first.record_id
 assert "blocked_by_precondition" in service.build_report([second.record_id]).markdown
 ```
 
-- [ ] **Step 2: Implement append-only UUID records under the ignored research directory**
+- [x] **Step 2: Implement append-only UUID records under the ignored research directory**
 
 ```python
 def append(self, record: ResearchRecord) -> ResearchRecord:
@@ -93,7 +93,7 @@ def append(self, record: ResearchRecord) -> ResearchRecord:
     return record
 ```
 
-- [ ] **Step 3: Implement submissions and deterministic Markdown output**
+- [x] **Step 3: Implement submissions and deterministic Markdown output**
 
 ```python
 def render_report(records: list[ResearchRecord]) -> str:
@@ -101,7 +101,7 @@ def render_report(records: list[ResearchRecord]) -> str:
     # never omit non-supported fields or invent cross-paper rankings
 ```
 
-- [ ] **Step 4: Run scoped tests and commit**
+- [x] **Step 4: Run scoped tests and commit**
 
 Run: `D:/CondaEnv/ican/python.exe -m pytest -q tests/test_research_service.py`
 
@@ -121,7 +121,7 @@ git commit -m "feat(research): store auditable screening and extraction revision
 - Modify: `tests/test_agent_api.py`
 - Create: `tests/test_research_api.py`
 
-- [ ] **Step 1: Write failing environment/API tests**
+- [x] **Step 1: Write failing environment/API tests**
 
 ```python
 result = await env.verify_claims([claim.model_dump()], state)
@@ -130,7 +130,7 @@ assert TestClient(app).post("/v1/research/report", json={"record_ids": [record_i
 assert TestClient(app).post("/v1/research/report", json={"record_ids": ["../x"]}).status_code == 422
 ```
 
-- [ ] **Step 2: Register four scoped tools and delegate through one service**
+- [x] **Step 2: Register four scoped tools and delegate through one service**
 
 ```python
 for fn in [self.verify_claims, self.record_screening, self.record_extraction, self.build_research_report]:
@@ -139,7 +139,7 @@ for fn in [self.verify_claims, self.record_screening, self.record_extraction, se
 
 Each tool accepts only evidence IDs already in `evidence_pool`; report creation only accepts IDs created by the service. Add planner instructions that non-supported verdicts cannot be stated as confirmed results.
 
-- [ ] **Step 3: Add lazy research endpoints**
+- [x] **Step 3: Add lazy research endpoints**
 
 ```python
 @app.post("/v1/research/verify-claims", response_model=ClaimVerificationResponse)
@@ -149,7 +149,7 @@ def verify_claims(request: ClaimVerificationRequest):
 
 Add equivalent screening, extraction and report endpoints. Preserve `/health` lazy behavior and map validation failures to 422.
 
-- [ ] **Step 4: Run Agent/API tests and commit**
+- [x] **Step 4: Run Agent/API tests and commit**
 
 Run: `D:/CondaEnv/ican/python.exe -m pytest -q tests/test_agent_service.py tests/test_agent_api.py tests/test_research_api.py`
 
@@ -169,7 +169,7 @@ git commit -m "feat(agent): add audited research workflow tools"
 - Modify: `findings.md`
 - Modify: `docs/requirements-spec.md`
 
-- [ ] **Step 1: Document API requests and claim-status limits**
+- [x] **Step 1: Document API requests and claim-status limits**
 
 ```json
 {
@@ -180,7 +180,7 @@ git commit -m "feat(agent): add audited research workflow tools"
 
 State that no status proves unconstrained execution or free-form semantic entailment.
 
-- [ ] **Step 2: Run final local verification**
+- [x] **Step 2: Run final local verification**
 
 Run: `D:/CondaEnv/ican/python.exe -m pytest -q`
 
@@ -188,7 +188,7 @@ Run: `D:/CondaEnv/ican/python.exe -m ruff check ican/research ican/agent ican/ap
 
 Run: `D:/CondaEnv/ican/python.exe -m ruff format --check ican/research ican/agent ican/api tests/test_research_claims.py tests/test_research_service.py tests/test_research_api.py`
 
-- [ ] **Step 3: Verify immutable inputs and credentials before final commit**
+- [x] **Step 3: Verify immutable inputs and credentials before final commit**
 
 ```powershell
 git -c core.whitespace=cr-at-eol diff --check
@@ -197,7 +197,7 @@ git status --short
 
 Verify the existing protected ledger and frozen Swin test SHA with a local hash script. Scan staged files for credential-like patterns without printing contents.
 
-- [ ] **Step 4: Commit final documentation**
+- [x] **Step 4: Commit final documentation**
 
 ```powershell
 git add docs task_plan.md progress.md findings.md

@@ -256,3 +256,10 @@
 - 新实际答句／引用逐条助手核查，原文及source身份与固定chunk一致；摘要绑定任务、源码、manifest及journal SHA，保留混合版本标记。未跑全12dev／外部Agent评测，不使用冻结题或旧审核替代。
 - 完整227测试通过／1权限跳过、49Agent回归通过，15个改动范围源码文件Ruff／format通过；61受保护材料、P2.6和P3原retrieval／journal及282条sealed检索哈希均不变。
 - 核心独立审查重要发现已修复；最终整除／收尾变更自查及回归通过，后续独立审查器触及额度，未取得第三轮结论。文档明确工程基础complete，P4整体in_progress；P4.3先断言／逐claim核查，再科研业务输出，P4.4扩展评测与P5网页pending。
+
+### 2026-09-18：P4.3科研结论核查与审计记录
+
+- 完成四类结构化Claim：精确引文、Decimal算术、静态代码前置条件与推断。只允许`supported`、`blocked_by_precondition`、`insufficient_evidence`、`requires_review`四种状态；不把引用存在当作自由文本语义已证明。
+- 原始Swin `PatchMerging.forward`实测H=W=7：第337行L条件未绑定保留不足，第338行`H % 2 == 0 and W % 2 == 0`确定为假，因此“可继续合并”返回`blocked_by_precondition`。不执行仓库代码，未调用付费模型。
+- 新增UUID追加式筛选与结构化提取revision、Markdown报告，以及统一ResearchService的四个Agent工具／四个FastAPI入口。Agent仅可使用当前证据池；报告保留阻断和不足项目。
+- 完整239项项目测试通过、1项跳过；61项Agent／科研测试通过。Ruff及format检查通过；61项保护账本、冻结Swin测试、P2/P3五项封存产物与journal哈希均未变，暂存文件凭据扫描为零。P4付费journal仍为39/40。
