@@ -1,0 +1,108 @@
+"""Fixed-case inputs and immutable manifests for P4.4 Agent evaluation."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from dataclasses import dataclass
+from pathlib import Path
+
+from ican.agent.schema import AgentRequest
+
+from .data import Case, digest, load_inputs
+
+SWIN_CASE_IDS = (
+    "swin_dev_06",
+    "swin_dev_05",
+    "swin_dev_04",
+    "swin_dev_12",
+)
+FROZEN_SHA256 = "5b2db3539abd08fd52b1e2d6aab4b5b78a1398d3738e3ebce9764c35b55c74b2"
+
+
+@dataclass(frozen=True)
+class P4AgentCase:
+    """A fixed, query-only P4.4 request and its audit requirements."""
+
+    key: str
+    request: AgentRequest
+    required_claim_status: str | None = None
+
+    def record(self) -> dict:
+        return {
+            "key": self.key,
+            "request": self.request.model_dump(mode="json"),
+            "required_claim_status": self.required_claim_status,
+        }
+
+
+def _external_order(case: Case) -> str:
+    return hashlib.sha256(case.id.encode("utf-8")).hexdigest()
+
+
+def build_p44_cases(root: Path) -> tuple[list[P4AgentCase], dict]:
+    """Return fixed development and external cases without accessing frozen records."""
+
+    inputs, _, fixed = load_inputs(Path(root))
+    by_key = {case.key: case for case in inputs}
+    selected: list[P4AgentCase] = []
+    requirements = {
+        "swin_dev_04": "blocked_by_precondition",
+        "swin_dev_12": "requires_review",
+    }
+    for case_id in SWIN_CASE_IDS:
+        case = by_key.get(f"swin/dev/{case_id}")
+        if case is None:
+            raise ValueError(f"Required P4.4 development case is absent: {case_id}")
+        selected.append(
+            P4AgentCase(
+                key=case.key,
+                request=AgentRequest(
+                    **case.request(), strategy="hybrid_rerank", family="swin_v1"
+                ),
+                required_claim_status=requirements.get(case_id),
+            )
+        )
+    external = sorted(
+        (
+            case
+            for case in inputs
+            if case.dataset == "qasper" and case.split == "validation"
+        ),
+        key=_external_order,
+    )[:4]
+    if len(external) != 4:
+        raise ValueError("Expected at least four fixed QASPER validation cases")
+    selected.extend(
+        P4AgentCase(
+            key=case.key,
+            request=AgentRequest(**case.request(), strategy="dense"),
+        )
+        for case in external
+    )
+    frozen = digest(Path(root) / "data/eval/swin_test.jsonl")
+    if frozen != FROZEN_SHA256:
+        raise ValueError("Frozen test bytes changed")
+    identity = {
+        "version": "p4-agent-evaluation-v2",
+        "fixed_input_sha256": fixed,
+        "frozen_test_sha256": frozen,
+        "cases": [case.record() for case in selected],
+    }
+    return selected, identity
+
+
+def write_manifest(directory: Path, identity: dict) -> Path:
+    """Persist one canonical identity and reject any future replacement."""
+
+    directory = Path(directory)
+    directory.mkdir(parents=True, exist_ok=True)
+    target = directory / "manifest.json"
+    content = json.dumps(identity, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    if target.exists():
+        existing = target.read_text(encoding="utf-8")
+        if existing != content:
+            raise ValueError("P4.4 evaluation manifest identity changed")
+        return target
+    target.write_text(content, encoding="utf-8", newline="\n")
+    return target
