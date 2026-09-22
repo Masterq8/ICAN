@@ -176,6 +176,7 @@ class ResearchRecord(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     record_id: UUID
+    card_id: UUID | None = None
     created_at: datetime
     record_type: Literal["screening", "extraction"]
     subject_source_id: str

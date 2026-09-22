@@ -1,7 +1,9 @@
+import pytest
 from fastapi.testclient import TestClient
 
-from ican.agent.schema import AgentResponse
+from ican.agent.schema import AgentResponse, BudgetExhausted
 from ican.api.app import create_app
+from ican.qa.runtime import ModelTimeout, ModelUnavailable
 from ican.retrieval.service import CollectionNotFound
 
 
@@ -81,3 +83,25 @@ def test_unknown_collection_and_invalid_paths_return_422(tmp_path):
         ).status_code
         == 422
     )
+
+
+@pytest.mark.parametrize(
+    ("error", "status"),
+    [
+        (BudgetExhausted("limit"), 429),
+        (ModelUnavailable("missing"), 503),
+        (ModelTimeout("timeout"), 504),
+    ],
+)
+def test_agent_provider_failures_have_explicit_http_status(tmp_path, error, status):
+    class Failing:
+        async def run(self, request):
+            raise error
+
+    client = TestClient(create_app(root=tmp_path, agent_service=Failing()))
+    response = client.post(
+        "/v1/agent/run", json={"query": "q", "collection": "swin_v1"}
+    )
+    assert response.status_code == status
+    assert response.headers["content-type"].startswith("application/json")
+    assert response.json()["detail"]

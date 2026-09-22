@@ -50,3 +50,36 @@ class ResearchStore:
             raise ToolInputError("Research record is absent") from error
         except (OSError, ValueError, json.JSONDecodeError) as error:
             raise ToolInputError("Research record is invalid") from error
+
+    def latest_for_subject(self, subject_source_id: str, record_type: str):
+        latest = None
+        for path in self.directory.glob("*.json"):
+            record = self.load(path.stem)
+            if (
+                record.subject_source_id == subject_source_id
+                and record.record_type == record_type
+                and (
+                    latest is None
+                    or (record.created_at, str(record.record_id))
+                    > (latest.created_at, str(latest.record_id))
+                )
+            ):
+                latest = record
+        return latest
+
+    def latest_for_card(self, subject_source_id: str, record_type: str, card_id):
+        latest = None
+        for path in self.directory.glob("*.json"):
+            record = self.load(path.stem)
+            if (
+                record.subject_source_id == subject_source_id
+                and record.record_type == record_type
+                and record.card_id == card_id
+                and (
+                    latest is None
+                    or (record.created_at, str(record.record_id))
+                    > (latest.created_at, str(latest.record_id))
+                )
+            ):
+                latest = record
+        return latest

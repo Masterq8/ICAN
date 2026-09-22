@@ -67,7 +67,7 @@ class ResearchService:
 
     def _validate_revision(self, record_type, subject_source_id, revision_of):
         if revision_of is None:
-            return
+            return None
         try:
             previous = self.store.load(revision_of)
         except ToolInputError as error:
@@ -79,19 +79,33 @@ class ResearchService:
             raise ToolInputError(
                 "Research revision must retain record type and subject"
             )
+        return previous
 
     def submit_screening(
-        self, request, draft: ScreeningDraft, *, corpus=None, allowed_ids=None
+        self,
+        request,
+        draft: ScreeningDraft,
+        *,
+        corpus=None,
+        allowed_ids=None,
+        card_id=None,
     ):
         corpus = corpus or self.corpus(request)
         verdicts = self.verify_with_corpus(
             corpus, draft.claims, allowed_ids=allowed_ids
         ).verdicts
         self._subject_is_cited(draft.subject_source_id, verdicts)
-        self._validate_revision("screening", draft.subject_source_id, draft.revision_of)
+        previous = self._validate_revision(
+            "screening", draft.subject_source_id, draft.revision_of
+        )
+        if previous is not None:
+            if card_id is not None and previous.card_id != card_id:
+                raise ToolInputError("Research revision must retain card identity")
+            card_id = previous.card_id
         return self.store.append(
             ResearchRecord(
                 record_id=uuid4(),
+                card_id=card_id,
                 created_at=datetime.now(timezone.utc),
                 record_type="screening",
                 subject_source_id=draft.subject_source_id,
@@ -102,7 +116,13 @@ class ResearchService:
         )
 
     def submit_extraction(
-        self, request, draft: ExtractionDraft, *, corpus=None, allowed_ids=None
+        self,
+        request,
+        draft: ExtractionDraft,
+        *,
+        corpus=None,
+        allowed_ids=None,
+        card_id=None,
     ):
         corpus = corpus or self.corpus(request)
         fields = []
@@ -118,12 +138,17 @@ class ResearchService:
                 )
             )
         self._subject_is_cited(draft.subject_source_id, all_verdicts)
-        self._validate_revision(
+        previous = self._validate_revision(
             "extraction", draft.subject_source_id, draft.revision_of
         )
+        if previous is not None:
+            if card_id is not None and previous.card_id != card_id:
+                raise ToolInputError("Research revision must retain card identity")
+            card_id = previous.card_id
         return self.store.append(
             ResearchRecord(
                 record_id=uuid4(),
+                card_id=card_id,
                 created_at=datetime.now(timezone.utc),
                 record_type="extraction",
                 subject_source_id=draft.subject_source_id,
@@ -139,6 +164,13 @@ class ResearchService:
             return f"{evidence.source.source_path}:{location['line_start']}"
         if "page" in location:
             return f"{evidence.source.source_path}:p.{location['page']}"
+        if "section_index" in location:
+            section = int(location["section_index"]) + 1
+            paragraph = location.get("paragraph_index")
+            suffix = f"§{section}"
+            if paragraph is not None:
+                suffix += f"¶{int(paragraph) + 1}"
+            return f"{evidence.source.source_path}:{suffix}"
         return evidence.source.source_path
 
     @classmethod

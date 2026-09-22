@@ -1,0 +1,394 @@
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue'
+import DOMPurify from 'dompurify'
+import MarkdownIt from 'markdown-it'
+import {
+  AlertCircle,
+  ArrowDownToLine,
+  BookOpenText,
+  Check,
+  CheckCheck,
+  ClipboardList,
+  ExternalLink,
+  FileSearch,
+  FileText,
+  FolderOpen,
+  GitCompareArrows,
+  LoaderCircle,
+  PencilLine,
+  Search,
+  Save,
+  ShieldCheck,
+  X,
+} from '@lucide/vue'
+import { compareCards, discover, generateCard, loadCard, reviseExtraction, reviseScreening, runAgent } from './api'
+import type { AgentResponse, Candidate, CardResponse, ClaimStatus, Collection, ComparisonResponse, Evidence } from './types'
+
+const markdown = new MarkdownIt({ html: false, linkify: true, breaks: true })
+const collection = ref<Collection>('swin_v1')
+const query = ref('视觉模型如何处理不同输入分辨率？')
+const candidates = ref<Candidate[]>([])
+const selected = ref<string[]>([])
+const activeId = ref<string | null>(null)
+const cards = ref<Record<string, CardResponse>>({})
+const report = ref<ComparisonResponse | null>(null)
+const proof = ref<Evidence | null>(null)
+const agentQuery = ref('')
+const agentClaimKind = ref('code_execution')
+const agentResult = ref<AgentResponse | null>(null)
+const busy = ref<'search' | 'card' | 'load' | 'compare' | 'agent' | 'screening' | 'extraction' | null>(null)
+const error = ref('')
+const serviceOnline = ref<boolean | null>(null)
+const editingScreening = ref(false)
+const editingExtraction = ref(false)
+const screeningDecision = ref<'include' | 'exclude' | 'hold'>('hold')
+const screeningReason = ref('')
+const editFields = ref<Record<string, string>>({})
+
+const fields = [
+  ['task', '任务'], ['model', '模型'], ['dataset', '数据集'], ['input_setting', '输入设置'],
+  ['training', '训练'], ['metric', '指标'], ['result', '结果'], ['limitation', '限制'],
+  ['code_availability', '代码入口'],
+] as const
+
+const active = computed(() => candidates.value.find(item => item.source_id === activeId.value) ?? null)
+const activeCard = computed(() => activeId.value ? cards.value[activeId.value] : null)
+const comparisonIds = computed(() => selected.value
+  .map(id => cards.value[id]?.extraction?.record_id)
+  .filter((id): id is string => Boolean(id)))
+const reportHtml = computed(() => report.value ? DOMPurify.sanitize(markdown.render(report.value.markdown)) : '')
+
+watch(collection, next => {
+  query.value = next === 'swin_v1'
+    ? '视觉模型如何处理不同输入分辨率？'
+    : 'question answering model evaluation dataset and result'
+  candidates.value = []
+  selected.value = []
+  activeId.value = null
+  proof.value = null
+  report.value = null
+  cards.value = {}
+  editingScreening.value = false
+  editingExtraction.value = false
+  error.value = ''
+})
+
+watch(activeId, () => {
+  editingScreening.value = false
+  editingExtraction.value = false
+})
+
+onMounted(async () => {
+  try {
+    const result = await fetch('/health')
+    serviceOnline.value = result.ok
+  } catch {
+    serviceOnline.value = false
+  }
+})
+
+function issue(message: string) {
+  error.value = message
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+async function searchPapers() {
+  if (!query.value.trim()) return issue('请输入研究问题。')
+  busy.value = 'search'
+  error.value = ''
+  report.value = null
+  cards.value = {}
+  try {
+    const result = await discover(query.value.trim(), collection.value)
+    candidates.value = result.candidates
+    selected.value = result.candidates.length ? [result.candidates[0].source_id] : []
+    activeId.value = result.candidates[0]?.source_id ?? null
+    proof.value = result.candidates[0]?.evidence[0] ?? null
+  } catch (cause) {
+    issue(cause instanceof Error ? cause.message : '检索失败。')
+  } finally {
+    busy.value = null
+  }
+}
+
+function toggleCandidate(candidate: Candidate) {
+  activeId.value = candidate.source_id
+  proof.value = candidate.evidence[0] ?? null
+  if (selected.value.includes(candidate.source_id)) {
+    selected.value = selected.value.filter(id => id !== candidate.source_id)
+  } else if (selected.value.length < 4) {
+    selected.value = [...selected.value, candidate.source_id]
+  } else {
+    error.value = '一次最多选择 4 篇论文。'
+  }
+}
+
+async function createCard() {
+  if (!active.value) return
+  busy.value = 'card'
+  error.value = ''
+  try {
+    const result = await generateCard(query.value.trim(), active.value.collection, active.value.source_id)
+    cards.value = { ...cards.value, [active.value.source_id]: result }
+    editingScreening.value = false
+    editingExtraction.value = false
+    proof.value = result.extraction?.fields[0]?.claims[0]?.evidence[0] ?? active.value.evidence[0] ?? null
+  } catch (cause) {
+    issue(cause instanceof Error ? cause.message : '信息卡生成失败。')
+  } finally {
+    busy.value = null
+  }
+}
+
+async function restoreCard() {
+  if (!active.value) return
+  busy.value = 'load'
+  error.value = ''
+  try {
+    const result = await loadCard(query.value.trim(), active.value.collection, active.value.source_id)
+    cards.value = { ...cards.value, [active.value.source_id]: result }
+    proof.value = result.extraction?.fields[0]?.claims[0]?.evidence[0] ?? active.value.evidence[0] ?? null
+    editingScreening.value = false
+    editingExtraction.value = false
+  } catch (cause) {
+    issue(cause instanceof Error ? cause.message : '读取已保存信息卡失败。')
+  } finally {
+    busy.value = null
+  }
+}
+
+function beginScreeningEdit() {
+  if (!activeCard.value) return
+  screeningDecision.value = activeCard.value.screening.decision ?? 'hold'
+  screeningReason.value = activeCard.value.screening.claims[0]?.claim.statement ?? ''
+  editingScreening.value = true
+  editingExtraction.value = false
+}
+
+async function saveScreening() {
+  const paper = active.value
+  const card = activeCard.value
+  if (!paper || !card) return
+  const reason = screeningReason.value.trim()
+  if (!reason) return issue('请填写筛选理由。')
+  const evidenceId = card.screening.claims[0]?.evidence[0]?.chunk_id ?? card.candidate.evidence[0]?.chunk_id
+  if (!evidenceId) return issue('当前记录没有可引用的论文证据。')
+  busy.value = 'screening'
+  error.value = ''
+  try {
+    const screening = await reviseScreening(query.value.trim(), paper, card.screening.record_id, screeningDecision.value, reason, evidenceId)
+    cards.value = { ...cards.value, [paper.source_id]: { ...card, screening } }
+    editingScreening.value = false
+    report.value = null
+  } catch (cause) {
+    issue(cause instanceof Error ? cause.message : '筛选修订失败。')
+  } finally {
+    busy.value = null
+  }
+}
+
+function beginExtractionEdit() {
+  const extracted = activeCard.value?.extraction
+  if (!extracted) return
+  editFields.value = Object.fromEntries(fields.map(([name]) => [name, extracted.fields.find(field => field.name === name)?.value ?? '']))
+  editingExtraction.value = true
+  editingScreening.value = false
+}
+
+async function saveExtraction() {
+  const paper = active.value
+  const card = activeCard.value
+  if (!paper || !card?.extraction) return
+  const revised = fields.flatMap(([name]) => {
+    const value = (editFields.value[name] ?? '').trim()
+    if (!value) return []
+    const prior = card.extraction?.fields.find(field => field.name === name)
+    const evidence = prior?.claims[0]?.evidence[0] ?? card.candidate.evidence[0]
+    if (!evidence) return []
+    const verbatim = value.length <= 1000 && evidence.text.includes(value)
+    return [{
+      name,
+      value,
+      claim: verbatim
+        ? { statement: value, kind: 'verbatim' as const, evidence_ids: [evidence.chunk_id], quote: value }
+        : { statement: value, kind: 'inference' as const, evidence_ids: [evidence.chunk_id] },
+    }]
+  })
+  if (!revised.length) return issue('至少保留一个字段，并为它关联论文证据。')
+  busy.value = 'extraction'
+  error.value = ''
+  try {
+    const extraction = await reviseExtraction(query.value.trim(), paper, card.extraction.record_id, revised)
+    cards.value = { ...cards.value, [paper.source_id]: { ...card, extraction } }
+    editingExtraction.value = false
+    report.value = null
+  } catch (cause) {
+    issue(cause instanceof Error ? cause.message : '字段修订失败。')
+  } finally {
+    busy.value = null
+  }
+}
+
+async function makeComparison() {
+  if (comparisonIds.value.length < 2) return issue('请先为至少两篇已选论文生成实验信息卡。')
+  busy.value = 'compare'
+  error.value = ''
+  try {
+    report.value = await compareCards(comparisonIds.value)
+  } catch (cause) {
+    issue(cause instanceof Error ? cause.message : '对照报告生成失败。')
+  } finally {
+    busy.value = null
+  }
+}
+
+async function checkReproduction() {
+  if (!agentQuery.value.trim()) return issue('请输入需要核查的代码或配置问题。')
+  busy.value = 'agent'
+  error.value = ''
+  agentResult.value = null
+  try {
+    agentResult.value = await runAgent(agentQuery.value.trim(), [agentClaimKind.value])
+  } catch (cause) {
+    issue(cause instanceof Error ? cause.message : '复现核查失败。')
+  } finally {
+    busy.value = null
+  }
+}
+
+function sourceLabel(item: Evidence): string {
+  const location = item.source.location
+  if (location.page) return `第 ${location.page} 页`
+  if (location.line_start) return `第 ${location.line_start}–${location.line_end ?? location.line_start} 行`
+  if (location.section_index !== undefined) return `章节 ${Number(location.section_index) + 1} · 段落 ${Number(location.paragraph_index ?? 0) + 1}`
+  return '正文位置'
+}
+
+function paperUrl(sourceId: string): string | null {
+  if (sourceId.startsWith('qasper:')) return `https://arxiv.org/abs/${sourceId.slice(7)}`
+  if (sourceId === 'src:21e757794f07f8f043ac') return 'https://arxiv.org/abs/2103.14030v2'
+  return null
+}
+
+function statusText(status: ClaimStatus): string {
+  return {
+    supported: '原文匹配',
+    requires_review: '待人工复核',
+    insufficient_evidence: '证据不足',
+    blocked_by_precondition: '前置条件阻断',
+  }[status]
+}
+
+function saveReport() {
+  if (!report.value) return
+  const file = new Blob([report.value.markdown], { type: 'text/markdown;charset=utf-8' })
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(file)
+  link.download = '复现有据-对照报告.md'
+  link.click()
+  URL.revokeObjectURL(link.href)
+}
+</script>
+
+<template>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#top" aria-label="复现有据首页">
+        <BookOpenText :size="30" :stroke-width="1.65" />
+        <span><strong>复现有据</strong><small>让研究结论有据可循</small></span>
+      </a>
+      <nav aria-label="工作区导航">
+        <a href="#papers" class="nav-link"><FileSearch :size="19" />论文筛选</a>
+        <a href="#card" class="nav-link"><ClipboardList :size="19" />实验信息卡</a>
+        <a href="#comparison" class="nav-link"><GitCompareArrows :size="19" />对照报告</a>
+        <a href="#reproduction" class="nav-link"><ShieldCheck :size="19" />复现核查</a>
+      </nav>
+      <p class="sidebar-foot">基于原文证据<br />支持可复核的研究</p>
+    </aside>
+
+    <main id="top" class="main-area">
+      <header class="page-header">
+        <div>
+          <h1>从问题到可核查的研究结论</h1>
+          <p>检索相关论文，提取实验信息，基于原文证据进行对照与核查。</p>
+        </div>
+        <div class="connection" :class="{ offline: serviceOnline === false }">
+          <span class="connection-dot" />{{ serviceOnline === null ? '检查服务中' : serviceOnline ? '服务已连接' : '服务未连接' }}
+        </div>
+      </header>
+
+      <div v-if="error" class="error-banner" role="alert"><AlertCircle :size="18" />{{ error }}<button type="button" aria-label="关闭错误" @click="error = ''"><X :size="16" /></button></div>
+
+      <div class="workspace-grid">
+        <div class="content-column">
+          <section id="papers" class="search-section" aria-labelledby="papers-title">
+            <div class="section-heading"><div><p class="section-number">01 / 论文筛选</p><h2 id="papers-title">找到值得细读的论文</h2></div><span>来源限定在已建索引语料</span></div>
+            <form class="search-form" @submit.prevent="searchPapers">
+              <label class="search-input"><Search :size="19" /><input v-model="query" maxlength="1000" aria-label="研究问题" placeholder="输入研究问题或筛选条件" /></label>
+              <label class="collection-select"><span class="sr-only">语料库</span><select v-model="collection"><option value="swin_v1">Swin 视觉论文</option><option value="qasper_train_v1">QASPER train · 方法示例</option></select></label>
+              <button class="primary-button" type="submit" :disabled="busy !== null"><LoaderCircle v-if="busy === 'search'" class="spin" :size="18" /><Search v-else :size="18" />{{ busy === 'search' ? '检索中' : '检索论文' }}</button>
+            </form>
+            <p class="collection-note">{{ collection === 'swin_v1' ? 'Swin 固定论文版本，用于视觉模型深度核查。' : 'QASPER train 提供多论文方法演示；这些论文不代表视觉论文库。' }}</p>
+            <div v-if="!candidates.length" class="empty-result"><FileSearch :size="25" /><p>输入问题并检索，候选论文将在这里出现。</p></div>
+            <div v-else class="candidate-list">
+              <div class="result-caption">找到 {{ candidates.length }} 篇候选论文 <span>选择论文后生成可核查的信息卡</span></div>
+              <article v-for="candidate in candidates" :key="candidate.source_id" class="candidate-row" :class="{ active: activeId === candidate.source_id }">
+                <label class="candidate-choice"><input type="checkbox" :checked="selected.includes(candidate.source_id)" @change="toggleCandidate(candidate)" /><span class="checkmark"><Check :size="13" /></span><span class="sr-only">选择 {{ candidate.title }}</span></label>
+                <button type="button" class="candidate-main" @click="activeId = candidate.source_id; proof = candidate.evidence[0] ?? null">
+                  <strong>{{ candidate.title }}</strong><small>{{ candidate.source_id }} · {{ candidate.source_version }}</small>
+                  <span>{{ candidate.evidence[0]?.text.slice(0, 175) || '暂无摘要片段' }}{{ candidate.evidence[0]?.text.length > 175 ? '…' : '' }}</span>
+                </button>
+                <button type="button" class="text-button evidence-action" @click="proof = candidate.evidence[0] ?? null">查看证据 <ExternalLink :size="15" /></button>
+              </article>
+            </div>
+          </section>
+
+          <section id="card" class="paper-panel card-section" aria-labelledby="card-title">
+            <div class="panel-header"><div><p class="section-number">02 / 实验信息卡</p><h2 id="card-title">{{ active?.title || '选择论文后整理信息' }}</h2></div><div class="panel-actions"><button class="text-button" type="button" :disabled="!active || busy !== null" @click="restoreCard"><LoaderCircle v-if="busy === 'load'" class="spin" :size="16" /><FolderOpen v-else :size="16" />{{ busy === 'load' ? '读取中' : '读取已存卡' }}</button><button class="secondary-button" type="button" :disabled="!active || busy !== null" @click="createCard"><LoaderCircle v-if="busy === 'card'" class="spin" :size="17" /><FileText v-else :size="17" />{{ busy === 'card' ? '生成中' : '从原文生成' }}</button></div></div>
+            <div v-if="activeCard" class="screening-line"><span>筛选决定：{{ activeCard.screening.decision === 'include' ? '纳入' : activeCard.screening.decision === 'exclude' ? '排除' : '待定' }}</span><span>理由：{{ activeCard.screening.claims[0]?.claim.statement }}</span><em>待人工复核</em></div>
+            <div v-if="activeCard" class="card-usage"><span v-if="activeCard.usage.paid_calls">本次生成：{{ activeCard.usage.paid_calls }} 次模型调用 · {{ activeCard.usage.prompt_tokens }} 输入 token · {{ activeCard.usage.completion_tokens }} 输出 token · 实际费用未提供</span><span v-else>读取已存记录：本次未调用模型</span></div>
+            <div v-if="activeCard" class="revision-actions"><span>当前筛选版本 {{ activeCard.screening.record_id.slice(0, 8) }}{{ activeCard.extraction ? ` · 字段版本 ${activeCard.extraction.record_id.slice(0, 8)}` : '' }}</span><button type="button" class="text-button" :disabled="busy !== null" @click="beginScreeningEdit"><PencilLine :size="15" />修订筛选</button><button type="button" class="text-button" :disabled="!activeCard.extraction || busy !== null" @click="beginExtractionEdit"><PencilLine :size="15" />修订字段</button></div>
+            <form v-if="editingScreening" class="revision-form" @submit.prevent="saveScreening"><strong>筛选人工修订</strong><p>新记录会引用当前论文证据，并保留上一版本；筛选理由仍标记为待人工复核。</p><label>决定<select v-model="screeningDecision"><option value="include">纳入</option><option value="exclude">排除</option><option value="hold">待定</option></select></label><label>理由<textarea v-model="screeningReason" maxlength="2000" rows="3" /></label><div class="revision-buttons"><button type="button" class="text-button" @click="editingScreening = false">取消</button><button type="submit" class="secondary-button" :disabled="busy !== null"><Save :size="15" />{{ busy === 'screening' ? '保存中' : '保存新版本' }}</button></div></form>
+            <div class="field-table" role="table" aria-label="实验信息卡">
+              <div class="field-head" role="row"><span>信息项</span><span>内容与来源</span><span>核查状态</span></div>
+              <div v-for="[name, label] in fields" :key="name" class="field-row" role="row">
+                <strong>{{ label }}</strong>
+                <div v-if="activeCard?.extraction?.fields.find(field => field.name === name)" class="field-value">
+                  {{ activeCard.extraction.fields.find(field => field.name === name)?.value }}
+                  <button type="button" class="inline-proof" @click="proof = activeCard.extraction?.fields.find(field => field.name === name)?.claims[0]?.evidence[0] ?? null">查看证据</button>
+                </div>
+                <div v-else class="muted">{{ activeCard ? '未提取' : '待生成' }}</div>
+                <span v-if="activeCard?.extraction?.fields.find(field => field.name === name)" class="claim-status" :class="activeCard.extraction.fields.find(field => field.name === name)?.claims[0]?.status">
+                  {{ statusText(activeCard.extraction.fields.find(field => field.name === name)!.claims[0].status) }}
+                </span>
+                <span v-else class="muted">—</span>
+              </div>
+            </div>
+            <form v-if="editingExtraction" class="revision-form" @submit.prevent="saveExtraction"><strong>实验字段人工修订</strong><p>留空可移除字段。新增或改写内容若不在所引原文中，将标记为待人工复核；保存后生成新的字段版本。</p><div class="revision-fields"><label v-for="[name, label] in fields" :key="name">{{ label }}<input v-model="editFields[name]" maxlength="2000" :aria-label="`修订${label}`" /></label></div><div class="revision-buttons"><button type="button" class="text-button" @click="editingExtraction = false">取消</button><button type="submit" class="secondary-button" :disabled="busy !== null"><Save :size="15" />{{ busy === 'extraction' ? '保存中' : '保存新版本' }}</button></div></form>
+            <p class="panel-note">“原文匹配”只表示所引文字在原文中；字段归类与研究解释须人工核对。</p>
+          </section>
+
+          <section id="comparison" class="paper-panel comparison-section" aria-labelledby="comparison-title">
+            <div class="panel-header"><div><p class="section-number">03 / 对照报告</p><h2 id="comparison-title">比较实验设置，保留不可比条件</h2></div><button class="secondary-button" type="button" :disabled="comparisonIds.length < 2 || busy !== null" @click="makeComparison"><LoaderCircle v-if="busy === 'compare'" class="spin" :size="17" /><GitCompareArrows v-else :size="17" />生成对照报告</button></div>
+            <p class="comparison-hint">已选择 {{ selected.length }} 篇论文，其中 {{ comparisonIds.length }} 篇已有信息卡。需要至少两张卡片才能比较。</p>
+            <div v-if="report" class="report-box"><div class="report-toolbar"><span>{{ report.comparable ? '关键条件字面一致，仍不自动排名' : '数据集、指标或输入条件不完整，不自动排名' }}</span><button type="button" class="text-button" @click="saveReport"><ArrowDownToLine :size="17" />下载 Markdown</button></div><div class="markdown-body" v-html="reportHtml" /></div>
+            <div v-else class="report-empty"><GitCompareArrows :size="23" /><p>为两篇以上论文生成实验卡后，这里会显示带原文位置的对照报告。</p></div>
+          </section>
+
+          <section id="reproduction" class="paper-panel reproduction-section" aria-labelledby="reproduction-title">
+            <div class="panel-header"><div><p class="section-number">04 / 复现核查</p><h2 id="reproduction-title">对代码条件做证据核查</h2></div><ShieldCheck :size="22" /></div>
+            <p>限定 Swin 官方固定版本。Agent 会检索、提交结构化结论，程序核查后再生成引用回答；一次任务可能产生付费模型调用。</p>
+            <div class="agent-form"><textarea v-model="agentQuery" maxlength="4096" placeholder="例如：给定 PatchMerging.forward 的 H=8、W=8、L=64，前置断言是否通过？" aria-label="复现核查问题" /><div><select v-model="agentClaimKind" aria-label="核查类型"><option value="code_execution">代码前置条件</option><option value="inference">研究推断</option><option value="numeric">数值计算</option><option value="verbatim">原文引文</option></select><button class="primary-button" type="button" :disabled="busy !== null" @click="checkReproduction"><LoaderCircle v-if="busy === 'agent'" class="spin" :size="17" /><ShieldCheck v-else :size="17" />{{ busy === 'agent' ? '核查中' : '运行核查' }}</button></div></div>
+            <div v-if="agentResult" class="agent-result"><div class="agent-result-head"><strong>任务状态：{{ agentResult.status }}</strong><span>{{ agentResult.usage.paid_calls }} 次模型调用 · {{ agentResult.usage.actual_cost_usd === null ? '实际费用未提供' : agentResult.usage.actual_cost_usd }}</span></div><p v-if="agentResult.workflow_stages.length">{{ agentResult.workflow_stages.map(stage => `${stage.stage}: ${stage.status}`).join(' → ') }}</p><div v-if="agentResult.answer" class="answer-text">{{ agentResult.answer.answer }}</div><p v-else>未生成回答：{{ agentResult.stop_reason }}</p><div v-for="artifact in agentResult.artifacts" :key="artifact.kind"><div v-for="verdict in artifact.verdicts || []" :key="verdict.claim.statement" class="verdict-row"><span :class="verdict.status">{{ statusText(verdict.status) }}</span><span>{{ verdict.claim.statement }}</span><button v-if="verdict.evidence[0]" type="button" class="inline-proof" @click="proof = verdict.evidence[0]">原文</button></div></div></div>
+          </section>
+        </div>
+
+        <aside class="evidence-panel" aria-label="原文证据"><div class="evidence-title"><div><p class="section-number">原文证据</p><h2>当前选中来源</h2></div><button type="button" :disabled="!proof" aria-label="关闭证据" @click="proof = null"><X :size="18" /></button></div>
+          <div v-if="proof" class="proof-content"><p class="proof-id">{{ proof.source.source_id }}</p><dl><dt>路径</dt><dd>{{ proof.source.source_path }}</dd><dt>版本</dt><dd>{{ proof.source.source_version }}</dd><dt>位置</dt><dd>{{ sourceLabel(proof) }}</dd></dl><blockquote>{{ proof.text }}</blockquote><a v-if="paperUrl(proof.source.source_id)" :href="paperUrl(proof.source.source_id)!" target="_blank" rel="noopener noreferrer" class="source-link">打开论文来源 <ExternalLink :size="16" /></a><p v-else class="proof-note">已记录原始文件路径与行号；请在项目语料中核对。</p></div>
+          <div v-else class="proof-empty"><BookOpenText :size="26" /><p>点击候选或字段旁的“查看证据”，在这里阅读原文、位置与版本。</p></div>
+          <div class="inspector-foot"><CheckCheck :size="16" /> 检索与引文只使用当前限定的语料版本</div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</template>

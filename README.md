@@ -4,7 +4,7 @@
 
 ## 当前进度
 
-**P2基础RAG、P3混合检索与重排序已完成；P4正在完善Agent科研工作流，网页进入P5。** 当前P4.5将结构化结论核查设为回答前的必经步骤。自动论文筛选、实验信息提取和多论文研究报告仍待P4.6；已实现的记录接口与Markdown渲染是这些功能的基础。
+**P2 基础 RAG、P3 混合检索与重排序已完成；P4/P5 已有可操作的本地首版。** 网页支持限定语料检索、自动实验信息卡、人工追加修订、已存卡恢复、来源证据查看、多论文可比性报告与 Swin Agent 核查。P4.5 真实流程完成结构化提交和逐条核查，但独立新题仍因证据不足未通过答案质量验收；P4.6 首轮 3 例自动卡失败，后续 3 个独立样本成功。原文匹配不等于字段归类正确，模型稳定性与准确性仍在验证。
 
 以下保留P2节点的交付与验证记录：
 
@@ -23,6 +23,20 @@
 - P2.5完整测试：123项通过，1项Windows符号链接权限跳过；独立审查确认引用清理漏洞修复。
 
 当前开发与真实验收结果见[任务计划](task_plan.md)、[Agent科研使用说明](docs/p4-research-guide.md)及[P4.5交付报告](docs/p4-verified-workflow-report.md)。P4.4原失败记录保留，不以新结果覆盖。
+
+## 本地网页演示
+
+先按[环境说明](docs/environment-setup.md)恢复原始语料和索引，并在本机 `.env` 配置 DeepSeek 凭据。查询论文与查看证据不消耗付费模型；生成实验卡或运行 Agent 会消耗模型调用。网页只开放 Swin 固定论文与 QASPER train 方法示例，不读取冻结测试答案或 QASPER validation 标注。
+
+```powershell
+cd frontend
+npm install
+npm run build
+cd ..
+python scripts/serve_api.py --host 127.0.0.1 --port 8000
+```
+
+浏览器打开 `http://127.0.0.1:8000`。输入问题并选择语料，勾选候选论文后点击“从原文生成”；已有记录可用“读取已存卡”恢复，不消耗模型调用。筛选决定和字段可人工修订，新版本保留旧记录。至少两篇已有信息卡时可生成对照报告并下载 Markdown。右侧证据面板显示原文、路径、版本与位置。报告遇到任务、数据集、指标或输入条件不同或缺失时不自动排名。
 
 **P2.6完成：** 47题检索、94次双版真实生成与94份助手语义审核。QASPER validation答案F1领域版16.95%／默认版8.42%；Swin评分点覆盖18/49／16/49，存在变体混入和配置链缺证据。语义审核未有人类独立复核；实际费用未知，按指定官方价格假设估算0.0779415美元。指标口径与逐题理由见[基线报告](docs/p2-baseline-report.md)及[审核记录](docs/evaluation/README.md)。
 
@@ -43,6 +57,8 @@
 - [P3检索消融与回答对照](docs/p3-retrieval-report.md)
 - [Agent科研使用说明](docs/p4-research-guide.md)
 - [P4.5必经核查工作流报告](docs/p4-verified-workflow-report.md)
+- [P4.6/P5 科研工作台使用说明](docs/p46-web-guide.md)
+- [P4.6 与 P5 设计及验收顺序](docs/superpowers/plans/2026-09-19-research-product-sequence.md)
 - [环境说明](docs/environment-setup.md)
 
 ## 环境与测试

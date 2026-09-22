@@ -15,7 +15,6 @@ from langgraph.graph import END, START, StateGraph
 from qdrant_client import QdrantClient, models
 from rank_bm25 import BM25Okapi
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 

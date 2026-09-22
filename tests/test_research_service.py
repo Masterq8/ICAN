@@ -165,6 +165,24 @@ def test_invalid_revision_and_unknown_report_id_are_rejected(tmp_path):
         raise AssertionError("unknown report ID must fail")
 
 
+def test_qasper_report_location_keeps_section_and_paragraph():
+    evidence = EvidenceResult(
+        rank=1,
+        score=0,
+        chunk_id="qasper-chunk",
+        text="A paragraph.",
+        review_required=False,
+        source=EvidenceSource(
+            source_id="qasper:1603.00968",
+            source_type="paper",
+            source_path="qasper/1603.00968",
+            source_version="train-snapshot",
+            location={"section_index": 7, "paragraph_index": 0},
+        ),
+    )
+    assert ResearchService._location(evidence) == "qasper/1603.00968:§8¶1"
+
+
 def test_store_does_not_allow_path_like_record_ids(tmp_path):
     store = ResearchStore(tmp_path / "records")
     try:

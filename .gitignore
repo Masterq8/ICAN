@@ -12,3 +12,5 @@ data/cache/
 data/catalog/*install*.json
 data/catalog/docling-installed.json
 *.log
+frontend/node_modules/
+frontend/dist/

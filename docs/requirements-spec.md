@@ -301,10 +301,13 @@ flowchart LR
 | v0.14 | 2026-09-18 | P4.3结论核查、筛选／提取revision和Markdown报告 | 修复引用存在但运行结论错误的问题，并交付可审计科研业务数据 | P4.4保留外部回归与新模型预算；P5提供网页操作界面 |
 | v0.15 | 2026-09-18 | P4.4独立预算的固定开发／外部Agent回归与离线审计 | 记录真实轨迹、预算、引用范围和强制Claim状态失败，不掩盖未合规的工作流 | 后续单独设计强制Claim调度修复；P5提供网页操作界面 |
 | v0.16 | 2026-09-18 | 计划复盘；P4.5明确提交／核查／回答阶段，P4.6补齐自动科研工作流 | 恢复用户能筛选、提取、比较和得到报告的产品主线；记录接口不等同于自动能力 | 验证mandatory Claim模式后开始P4.6，并与P5页面交替开发 |
+| v0.17 | 2026-09-19 | P4.5独立协议和新题验收；P4.6自动卡与对照；P5本地网页首版 | 完成可核查科研产品链路，支持人工追加修订与已存卡恢复；保留证据不足、语义误归类及模型失败 | 工程贯通，模型质量、第二视觉案例和部署待完成 |
 
 ## 13. 待决策事项
 
 **复盘后新增执行契约（v0.16）：** 新Agent入口默认verified模式。调查后必须提交包含所选证据与类型化Claim的草稿，再由程序核查和生成一次引用回答；请求可指定`required_claim_kinds`。任何Claim证据无法放入最终上下文时，生成前停止。推断／待复核传递为review_required，证据不足传递为insufficient_evidence。此模式核验类型化条件，不自动证明自由文本每个句子的语义。筛选、提取记录和Markdown渲染只算基础，完整自动筛选／字段生成／多论文综合仍是P4.6交付目标。
+
+**P4.5–P5 实施更新（2026-09-19，v0.17）：** 已实现 `POST /v1/research/discover`、`/v1/research/auto-card`、`/v1/research/load-card`、`/v1/research/compare`，限定 Swin 固定论文及 QASPER train 方法样本；模型每篇至多调用一次 `submit_research_card`，证据限于所选论文，筛选理由标为人工复核，字段仅作原文子串匹配核查。比较表保留各字段来源与位置；任务、数据集、指标或输入设置不一致／缺失时不排名。Vue 3 网页提供检索、选择、自动卡、人工修订、已存卡恢复、证据面板、比较报告、Markdown 下载与 Swin Agent 核查。人工筛选／字段编辑经原 ResearchService 核查后追加 revision，不覆盖模型记录；刷新后可读最新版本。PDF 导出、在线部署和第二个视觉模型案例仍未交付。P4.5 新真实题虽完成提交／核查／回答，但整体证据不足；P4.6 首轮模型 smoke 3 例失败，之后 3 个独立 train 样本成功，不能推断可靠率。完整轨迹见[P4.5验收报告](p4-verified-workflow-report.md)与[产品顺序计划](superpowers/plans/2026-09-19-research-product-sequence.md)。
 
 **P4.1–P4.2实现更新（2026-09-18，v0.13）：** 用户明确开始Agent并允许按需重复调用DeepSeek Flash／Pro。复用固定PaperQAEnvironment／EnvironmentState／Aviary工具执行和Docs.aquery，扩展有界原生OpenAI工具选择，Pro规划／Flash回答，不执行原样上游run_agent。新增scoped检索／原块读取、精确AST配置／BASE链和Decimal算术，工具产物与原文分离，最终prompt标p4-tools-evidence-v1。每任务最多5次规划／12工具／一次回答，累计40付费预约，SDK重试0，180秒总超时；POST /v1/agent/run及轨迹文件已接入。user_overrides结构化核对及有界标量输入禁止模型冒称用户参数；畸形工具和回答超时按明确状态停止。真实开发验收单独保留source SHA，P4.3筛选／抽取／多论文报告及P4.4扩展评测继续后续节点，详见[p4-agent-guide.md](p4-agent-guide.md)。
 
