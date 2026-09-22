@@ -1,0 +1,686 @@
+{
+  "version": "p46-quality-v1",
+  "model": "deepseek-flash",
+  "max_paid_calls": 8,
+  "source_sha256": {
+    "configs/evaluation/p46-quality-v1.json": "f6cc926ed19c261ad62166f43c55753bb0b8cc45f8cd41893ec43e157718414b",
+    "configs/agent/v2.json": "5efa772033b4bfe48679b663581f6693c47b24c8ffc573758da4e4506b516fc0",
+    "ican/research/auto_schema.py": "6a68fc8d0f2d6bf92c5da66baf3e57e3ced4eb6d217388bd7c748a3285244bd8",
+    "ican/research/auto_service.py": "5f76b00c751a7882c3a6253d58e9b858e924ca8e9a9b8cf92d30b88e80d18864",
+    "ican/research/field_rules.py": "b68574776ac1034d64b481c11844a025c2a956ec4cd6d2f7aa1d4090f97f05fc",
+    "ican/research/submission.py": "5432c401dc2ca046fbc3259652c1c510b0e6b0dc4df1a1520fe1880a6ee07e6a",
+    "ican/evaluation/research_card.py": "a61dceec72ee83c845da9ad6bf3517686a4be78e8d7a211cf8e4cc1191ade4dc",
+    "scripts/evaluate_research_cards.py": "e26e96a56e22b7177cbd51e8ba9087460a314ac45b5a6c07b7ead7534f08cdac"
+  },
+  "cases": {
+    "ontology_parser": {
+      "request": {
+        "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+        "collection": "qasper_train_v1",
+        "source_id": "qasper:1601.00901"
+      },
+      "title": "Joint learning of ontology and semantic parser from text",
+      "source_path": "qasper/1601.00901",
+      "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+      "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+      "evidence": [
+        {
+          "chunk_id": "chunk:9fda358c34472ba60aa331b618b7809818f955e614848845cdf7f369f6b4025d",
+          "source_id": "qasper:1601.00901",
+          "source_path": "qasper/1601.00901",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.00901",
+            "paragraph_index": 1,
+            "section_index": 11
+          },
+          "text_sha256": "b9ffb845af554cbe91a427894ebf86a1a0d689b04e87cf52f22e06be61e7e44e"
+        },
+        {
+          "chunk_id": "chunk:01cbef48e9c45a524bf96e25f36a5dced7f172cb47c856074ef86ff1e4d8c6e7",
+          "source_id": "qasper:1601.00901",
+          "source_path": "qasper/1601.00901",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 10,
+            "paper_id": "1601.00901"
+          },
+          "text_sha256": "f8d9a08ab32f7e559c35a9f0b64d45c30601a3a16236a72df9424a5f0067e3f6"
+        },
+        {
+          "chunk_id": "chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba",
+          "source_id": "qasper:1601.00901",
+          "source_path": "qasper/1601.00901",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.00901",
+            "paragraph_index": 0,
+            "section_index": 12
+          },
+          "text_sha256": "1a2c76ac3a26e6e548fd2eec56f6267e21f4d85d9061be7af033827421ade19b"
+        },
+        {
+          "chunk_id": "chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283",
+          "source_id": "qasper:1601.00901",
+          "source_path": "qasper/1601.00901",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.00901",
+            "paragraph_index": 3,
+            "section_index": 0
+          },
+          "text_sha256": "1182f89a30324070a0574fc4114730c90c37baf5b69a868643e801675f99b3cd"
+        },
+        {
+          "chunk_id": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
+          "source_id": "qasper:1601.00901",
+          "source_path": "qasper/1601.00901",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.00901",
+            "paragraph_index": 2,
+            "section_index": 12
+          },
+          "text_sha256": "79041c04305b7abf20757c7f139fc1a7e181bcc3829a49fea5ca09521c582fae"
+        },
+        {
+          "chunk_id": "chunk:377506fd2b16a1a8f9e1d81d15c0746542de28f766e19c2e777f52c778f392f3",
+          "source_id": "qasper:1601.00901",
+          "source_path": "qasper/1601.00901",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 9,
+            "paper_id": "1601.00901"
+          },
+          "text_sha256": "50482bc852c53e827d3f907d17e965da00f6b76a9e7bfee81d42c1077b624654"
+        }
+      ]
+    },
+    "speech_recognition": {
+      "request": {
+        "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+        "collection": "qasper_train_v1",
+        "source_id": "qasper:1601.02543"
+      },
+      "title": "Evaluating the Performance of a Speech Recognition based System",
+      "source_path": "qasper/1601.02543",
+      "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+      "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+      "evidence": [
+        {
+          "chunk_id": "chunk:e2631ae8ae10b636bf04ee68a092cdb37fcd4e62ef0393004a4368ab46ef43bf",
+          "source_id": "qasper:1601.02543",
+          "source_path": "qasper/1601.02543",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 1,
+            "paper_id": "1601.02543"
+          },
+          "text_sha256": "ccf2dd0d7a135dcc6f6b227aeb1ccbfba5ec218bb48d34466e89547b25fbe4c9"
+        },
+        {
+          "chunk_id": "chunk:6f1f53f00e859a74b3c15801ee2edaddf06553369036f6a5cef5754094160983",
+          "source_id": "qasper:1601.02543",
+          "source_path": "qasper/1601.02543",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 4,
+            "paper_id": "1601.02543"
+          },
+          "text_sha256": "af10d26c8c13117b12c804d5b063fac7bbde5a5c0f2869ba6bd2cd5137f78676"
+        },
+        {
+          "chunk_id": "chunk:97a8626a0be6b2ca77651607edce6bc63aa909b77fa4c16c2adc8bde5e331283",
+          "source_id": "qasper:1601.02543",
+          "source_path": "qasper/1601.02543",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 3,
+            "paper_id": "1601.02543"
+          },
+          "text_sha256": "2f43efdb71f7e4000028e1bdbd23a78a4fd67c3365c874606b996d56321ed39e"
+        },
+        {
+          "chunk_id": "chunk:7d1da55010ca6a9ee84ab2823c103214603a17faf153ce6910f55046207bddf5",
+          "source_id": "qasper:1601.02543",
+          "source_path": "qasper/1601.02543",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 0,
+            "paper_id": "1601.02543"
+          },
+          "text_sha256": "f67ce7d33596a056da464ec4bab7974095bc4aa387eb7d003ce3545d39f24ce0"
+        },
+        {
+          "chunk_id": "chunk:b5281efedc62a91cddd13af231e5aa55a18181a7ae72ed1d97c585acd3d09383",
+          "source_id": "qasper:1601.02543",
+          "source_path": "qasper/1601.02543",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 2,
+            "paper_id": "1601.02543"
+          },
+          "text_sha256": "a35a678f2440162a5de72909b8a5d56bdef31b008049624ee8f0b48c7d89f554"
+        },
+        {
+          "chunk_id": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9",
+          "source_id": "qasper:1601.02543",
+          "source_path": "qasper/1601.02543",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.02543",
+            "paragraph_index": 6,
+            "section_index": 2
+          },
+          "text_sha256": "d702a31bba2a110c02691e0cb4a835f0d2ab9058f31e290a9402880102b57330"
+        }
+      ]
+    },
+    "event_extraction": {
+      "request": {
+        "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+        "collection": "qasper_train_v1",
+        "source_id": "qasper:1601.04012"
+      },
+      "title": "Detecting and Extracting Events from Text Documents",
+      "source_path": "qasper/1601.04012",
+      "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+      "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+      "evidence": [
+        {
+          "chunk_id": "chunk:865e26540412ac75e8cff86418d81ac462e444caad86463bc7da15be334d9572",
+          "source_id": "qasper:1601.04012",
+          "source_path": "qasper/1601.04012",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 11,
+            "paper_id": "1601.04012"
+          },
+          "text_sha256": "57613e348cfeb38075a913f6758aa961ee92d9ce84369915408f88ab379115f7"
+        },
+        {
+          "chunk_id": "chunk:199740b984854bbf21407a446ed8713e8114a648b63dccbcde2e3de24ce4962d",
+          "source_id": "qasper:1601.04012",
+          "source_path": "qasper/1601.04012",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.04012",
+            "paragraph_index": 3,
+            "section_index": 21
+          },
+          "text_sha256": "ad93baf3ca8a5d63dd50702f1bea5565b1e32276d22be2c31f69bc898a1631f3"
+        },
+        {
+          "chunk_id": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582",
+          "source_id": "qasper:1601.04012",
+          "source_path": "qasper/1601.04012",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.04012",
+            "paragraph_index": 27,
+            "section_index": 20
+          },
+          "text_sha256": "d31cbc48a16481864560b769f315c4e25c1f8e26ceb91e040d66b584c9b7e731"
+        },
+        {
+          "chunk_id": "chunk:84ad68a362300332e93f141fe4824b8ccc7e22ff35c2bde207620ad4fbb256d1",
+          "source_id": "qasper:1601.04012",
+          "source_path": "qasper/1601.04012",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.04012",
+            "paragraph_index": 17,
+            "section_index": 20
+          },
+          "text_sha256": "2bdcb87566f3ea34acc1c9ca3c61b5cf68ec1191c2e7ecd740fa4c4704f85560"
+        },
+        {
+          "chunk_id": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f",
+          "source_id": "qasper:1601.04012",
+          "source_path": "qasper/1601.04012",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.04012",
+            "paragraph_index": 17,
+            "section_index": 19
+          },
+          "text_sha256": "ad6c879cb142d3ba0c610f40adebf9587e002f731be3043c0911f8a05c343b4f"
+        },
+        {
+          "chunk_id": "chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4",
+          "source_id": "qasper:1601.04012",
+          "source_path": "qasper/1601.04012",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.04012",
+            "paragraph_index": 34,
+            "section_index": 19
+          },
+          "text_sha256": "50410b13ec1c87ebe3dbc669d9510f9a0042de07e3cafb9763214eeeb2fef397"
+        }
+      ]
+    },
+    "mobile_robot": {
+      "request": {
+        "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+        "collection": "qasper_train_v1",
+        "source_id": "qasper:1602.01208"
+      },
+      "title": "Spatial Concept Acquisition for a Mobile Robot that Integrates Self-Localization and Unsupervised Word Discovery from Spoken Sentences",
+      "source_path": "qasper/1602.01208",
+      "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+      "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+      "evidence": [
+        {
+          "chunk_id": "chunk:91b85481ac236bc04036f2a318dad34a9e9a453f521ada048b2ff02a4f6207cb",
+          "source_id": "qasper:1602.01208",
+          "source_path": "qasper/1602.01208",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.01208",
+            "paragraph_index": 1,
+            "section_index": 14
+          },
+          "text_sha256": "a618bad9d698a526b8ed5160e88eb1ac94218fe736f65f34c25a03d17b469e8a"
+        },
+        {
+          "chunk_id": "chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80",
+          "source_id": "qasper:1602.01208",
+          "source_path": "qasper/1602.01208",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.01208",
+            "paragraph_index": 0,
+            "section_index": 14
+          },
+          "text_sha256": "16ca131440b601dccd35dc84ae95924dfc93b4ec273d261f4c2c3c54a84e810b"
+        },
+        {
+          "chunk_id": "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7",
+          "source_id": "qasper:1602.01208",
+          "source_path": "qasper/1602.01208",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.01208",
+            "paragraph_index": 13,
+            "section_index": 6
+          },
+          "text_sha256": "b5f7ee1539457c49a5ffad0c67e32c931f960a1163c4b84d2aae8f87ef6a2816"
+        },
+        {
+          "chunk_id": "chunk:fbc1f7243593c148c351f8c6792133add9c159c5329875ce4668a69f3a2025e8",
+          "source_id": "qasper:1602.01208",
+          "source_path": "qasper/1602.01208",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 4,
+            "paper_id": "1602.01208"
+          },
+          "text_sha256": "1c9533efc28c01694140b2e1b6629d259d2ddaa68e54c8025b958f7fa4b2bdf2"
+        },
+        {
+          "chunk_id": "chunk:248ac0bc61fec175948974cc9ed08b9656a34407aa053ed9e01ea02d50520206",
+          "source_id": "qasper:1602.01208",
+          "source_path": "qasper/1602.01208",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 6,
+            "paper_id": "1602.01208"
+          },
+          "text_sha256": "047280928917a32347060cd0e15f3cb1bd76db76a2b78133d3327393926b4710"
+        },
+        {
+          "chunk_id": "chunk:db7a9f79979ff526d9d30da25ff736f6a0099886e1181c57afce4ed21e6a144b",
+          "source_id": "qasper:1602.01208",
+          "source_path": "qasper/1602.01208",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 14,
+            "paper_id": "1602.01208"
+          },
+          "text_sha256": "a068791aefd1153b2f00e8a0a4868539276a393d08826e793cc4622e791c746e"
+        }
+      ]
+    },
+    "many_languages_parser": {
+      "request": {
+        "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+        "collection": "qasper_train_v1",
+        "source_id": "qasper:1602.01595"
+      },
+      "title": "Many Languages, One Parser",
+      "source_path": "qasper/1602.01595",
+      "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+      "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+      "evidence": [
+        {
+          "chunk_id": "chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2",
+          "source_id": "qasper:1602.01595",
+          "source_path": "qasper/1602.01595",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.01595",
+            "paragraph_index": 16,
+            "section_index": 10
+          },
+          "text_sha256": "61ad03e38d523ac1914caa5b8674558a369ad383c3fda4f6d5c884321954f093"
+        },
+        {
+          "chunk_id": "chunk:0fbe23c4f1508f79aba39fc3fbeebf860ed902fdadb1ce4daba15e2205450638",
+          "source_id": "qasper:1602.01595",
+          "source_path": "qasper/1602.01595",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.01595",
+            "paragraph_index": 2,
+            "section_index": 11
+          },
+          "text_sha256": "e213d5ac3be20446380da339897c8aabbc3eff4c07aa35f0606a075d60fc9489"
+        },
+        {
+          "chunk_id": "chunk:e70125330830e4f5309e2cc2014d6a4c43e5eec0601e351d6659f612f1680874",
+          "source_id": "qasper:1602.01595",
+          "source_path": "qasper/1602.01595",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.01595",
+            "paragraph_index": 0,
+            "section_index": 0
+          },
+          "text_sha256": "9d7a1c825e8b351f4937cba47cf09612e28e8907866095deb2c73fa8037592d8"
+        },
+        {
+          "chunk_id": "chunk:d401d30013c7242819c2ae9e70c246edac7914515909871b77a9c1ffa74b8f09",
+          "source_id": "qasper:1602.01595",
+          "source_path": "qasper/1602.01595",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.01595",
+            "paragraph_index": 1,
+            "section_index": 11
+          },
+          "text_sha256": "9bb1dcc22ef1bd57d0599814d1f9e358874cc486f2f1c15f94a3bea57879c83d"
+        },
+        {
+          "chunk_id": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
+          "source_id": "qasper:1602.01595",
+          "source_path": "qasper/1602.01595",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.01595",
+            "paragraph_index": 0,
+            "section_index": 13
+          },
+          "text_sha256": "d18e935c17faec0eabc3c1aea8753bdba66ec6dbb6d6045769401c8b271c3fb1"
+        },
+        {
+          "chunk_id": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae",
+          "source_id": "qasper:1602.01595",
+          "source_path": "qasper/1602.01595",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.01595",
+            "paragraph_index": 9,
+            "section_index": 10
+          },
+          "text_sha256": "b2bf61a979881678f82728de4aa14829cdbb7ba52b368a18cb458c7bec95897e"
+        }
+      ]
+    },
+    "contextual_lstm": {
+      "request": {
+        "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+        "collection": "qasper_train_v1",
+        "source_id": "qasper:1602.06291"
+      },
+      "title": "Contextual LSTM (CLSTM) models for Large scale NLP tasks",
+      "source_path": "qasper/1602.06291",
+      "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+      "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+      "evidence": [
+        {
+          "chunk_id": "chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574",
+          "source_id": "qasper:1602.06291",
+          "source_path": "qasper/1602.06291",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.06291",
+            "paragraph_index": 5,
+            "section_index": 5
+          },
+          "text_sha256": "e7b14fddf564afbaa823ae86183d35b23287da090fb38d99d29f10387c646051"
+        },
+        {
+          "chunk_id": "chunk:edbd3050496d35ced5e7681f5b6e91ec0ff3233284c6b25e86fe0ae2a017dce5",
+          "source_id": "qasper:1602.06291",
+          "source_path": "qasper/1602.06291",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.06291",
+            "paragraph_index": 0,
+            "section_index": 2
+          },
+          "text_sha256": "d7144db84a7e66b738f0ad71dc5ba24757c51f919443650ecf50f2e148fb0e48"
+        },
+        {
+          "chunk_id": "chunk:9b70cf96aae829bcd048161cc955fe52cc1b7613572c19f89d3b7e8b1eff615f",
+          "source_id": "qasper:1602.06291",
+          "source_path": "qasper/1602.06291",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.06291",
+            "paragraph_index": 7,
+            "section_index": 5
+          },
+          "text_sha256": "b31139251ce9e0d415ca4dfb3dc79ebc108fa11add0894253b8fd5e6b5551847"
+        },
+        {
+          "chunk_id": "chunk:90d72bc5d815517b673fbab16aef3f4e0d5e9614b0d50d62ab9db2818e932867",
+          "source_id": "qasper:1602.06291",
+          "source_path": "qasper/1602.06291",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.06291",
+            "paragraph_index": 0,
+            "section_index": 14
+          },
+          "text_sha256": "f8c1b0b0a177c6ff18703b802074f9572f65e7ea20e41c7f683edf1c04acee12"
+        },
+        {
+          "chunk_id": "chunk:2b3e32cbaa2c01ab8f65256b76ef76249ba85d2a4f709c2dd89faad955bf28c5",
+          "source_id": "qasper:1602.06291",
+          "source_path": "qasper/1602.06291",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.06291",
+            "paragraph_index": 6,
+            "section_index": 5
+          },
+          "text_sha256": "f8d4b39460c103a5bd6131eba412c07b1cb3144e7d07b687b423dce79c83118d"
+        },
+        {
+          "chunk_id": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
+          "source_id": "qasper:1602.06291",
+          "source_path": "qasper/1602.06291",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.06291",
+            "paragraph_index": 12,
+            "section_index": 5
+          },
+          "text_sha256": "b0e292ec126675487a6ea864a2145eb881f5681d637db85bfbcea66fb5a417f8"
+        }
+      ]
+    },
+    "russian_twitter": {
+      "request": {
+        "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+        "collection": "qasper_train_v1",
+        "source_id": "qasper:1602.08741"
+      },
+      "title": "Gibberish Semantics: How Good is Russian Twitter in Word Semantic Similarity Task?",
+      "source_path": "qasper/1602.08741",
+      "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+      "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+      "evidence": [
+        {
+          "chunk_id": "chunk:51251d9d96299342452459d868fdffdeba70d68ee5a855a06ff97eeed791e5fe",
+          "source_id": "qasper:1602.08741",
+          "source_path": "qasper/1602.08741",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.08741",
+            "paragraph_index": 0,
+            "section_index": 7
+          },
+          "text_sha256": "8bd86c307e4bd198b31222b9a434f398929917b7537aaa424b24b585b145a2ca"
+        },
+        {
+          "chunk_id": "chunk:97aa3f51084fa6e16b17b735c4116277e6b50d010daa0003cba3f34a61ea533c",
+          "source_id": "qasper:1602.08741",
+          "source_path": "qasper/1602.08741",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 4,
+            "paper_id": "1602.08741"
+          },
+          "text_sha256": "de32e38cfcda430370c69b8159793bc09d919b36441ee7192aa764be02743150"
+        },
+        {
+          "chunk_id": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f",
+          "source_id": "qasper:1602.08741",
+          "source_path": "qasper/1602.08741",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.08741",
+            "paragraph_index": 1,
+            "section_index": 6
+          },
+          "text_sha256": "74e05d043d10e4c898c4351622237b86a30055f12e31960f8b2d76b95483cc69"
+        },
+        {
+          "chunk_id": "chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc",
+          "source_id": "qasper:1602.08741",
+          "source_path": "qasper/1602.08741",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.08741",
+            "paragraph_index": 0,
+            "section_index": 6
+          },
+          "text_sha256": "f2df5b8943477d5869fbfad5a40a55bc76ea612899368ca31518ab4f419aed77"
+        },
+        {
+          "chunk_id": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03",
+          "source_id": "qasper:1602.08741",
+          "source_path": "qasper/1602.08741",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.08741",
+            "paragraph_index": 0,
+            "section_index": 9
+          },
+          "text_sha256": "2352252a5e19d23486b88f014cb4da8c842eb661f95f5fce384822d58fe9115f"
+        },
+        {
+          "chunk_id": "chunk:72366a903d6fb4afa1e0c1e7fc0a611a00e3ee49ecd8c8b581a10666da629788",
+          "source_id": "qasper:1602.08741",
+          "source_path": "qasper/1602.08741",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.08741",
+            "paragraph_index": 1,
+            "section_index": 9
+          },
+          "text_sha256": "8214da9dd2d1beb65d1dd6f76590e1c00e8b11782ca68cdad9a4cca21468accb"
+        }
+      ]
+    },
+    "entity_coreference": {
+      "request": {
+        "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+        "collection": "qasper_train_v1",
+        "source_id": "qasper:1603.04553"
+      },
+      "title": "Unsupervised Ranking Model for Entity Coreference Resolution",
+      "source_path": "qasper/1603.04553",
+      "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+      "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+      "evidence": [
+        {
+          "chunk_id": "chunk:de09a5eed4ccdd12a35d3368f3e91ab1e675d7f07d01b7207ee5f3a2338ae077",
+          "source_id": "qasper:1603.04553",
+          "source_path": "qasper/1603.04553",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1603.04553",
+            "paragraph_index": 1,
+            "section_index": 7
+          },
+          "text_sha256": "545b0bc00e88dcca311f39f2160b5824f6abd73b2b527d1543e7dc9276f33e6c"
+        },
+        {
+          "chunk_id": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6",
+          "source_id": "qasper:1603.04553",
+          "source_path": "qasper/1603.04553",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1603.04553",
+            "paragraph_index": 0,
+            "section_index": 7
+          },
+          "text_sha256": "db7da9d5dd42498256d7b5c42f62fa08d2bcf16b7e142edc7364c9bc658f4e09"
+        },
+        {
+          "chunk_id": "chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6",
+          "source_id": "qasper:1603.04553",
+          "source_path": "qasper/1603.04553",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1603.04553",
+            "paragraph_index": 0,
+            "section_index": 9
+          },
+          "text_sha256": "b937ed0ba32d7cd9be229aed934d3c5087bb5ff7a7b56570db4665233ca1b527"
+        },
+        {
+          "chunk_id": "chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10",
+          "source_id": "qasper:1603.04553",
+          "source_path": "qasper/1603.04553",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1603.04553",
+            "paragraph_index": 0,
+            "section_index": 8
+          },
+          "text_sha256": "5353c39dc55b7245197ae8cb2faab26aee8e1e4c57c33f6698a3b7e49c7fb11d"
+        },
+        {
+          "chunk_id": "chunk:cbfe5c1a60cbda1815804692bbd12a99e451ecff5c9202ff6f6a2766bebc55c8",
+          "source_id": "qasper:1603.04553",
+          "source_path": "qasper/1603.04553",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 2,
+            "paper_id": "1603.04553"
+          },
+          "text_sha256": "6c05a0177bf335c20f6a2cd8a8d220b12878e68e68e8cf2a1f9572c621c4dc1f"
+        },
+        {
+          "chunk_id": "chunk:dfc76850a461df7ac45bc0252ac7a0d641375e44b1d9ad433b2479992f8d5c23",
+          "source_id": "qasper:1603.04553",
+          "source_path": "qasper/1603.04553",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1603.04553",
+            "paragraph_index": 7,
+            "section_index": 10
+          },
+          "text_sha256": "7574e7a85f6880848956b3c95c39012db35d59f7a066853cb56cb1956031c29e"
+        }
+      ]
+    }
+  },
+  "full_manifest_sha256": "3a39f41a3cdcbcfc8b6eb051f3712c9fccccffff25297e2785e3df38a4fa26b3",
+  "contains_source_text": false
+}

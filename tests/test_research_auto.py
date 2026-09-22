@@ -255,12 +255,16 @@ async def test_empty_card_is_rejected_without_replacing_prior_complete_card(tmp_
 async def test_malformed_model_tool_call_is_a_bounded_input_error(tmp_path):
     auto = build(tmp_path, [])
     auto.runtime_factory = lambda root, config, journal, task_id: MalformedRuntime()
-    with pytest.raises(ToolInputError, match="did not submit"):
+    with pytest.raises(ToolInputError, match="malformed_tool_call"):
         await auto.auto_card(
             AutoCardRequest(
                 query="image models", collection="swin_v1", source_id="paper-a"
             )
         )
+    traces = list((tmp_path / "data/processed/research/p4-v2/tasks").glob("*.json"))
+    assert len(traces) == 1
+    trace = json.loads(traces[0].read_text(encoding="utf-8"))
+    assert trace["submission_diagnostic"]["code"] == "malformed_tool_call"
 
 
 @pytest.mark.asyncio

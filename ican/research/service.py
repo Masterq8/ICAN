@@ -10,6 +10,7 @@ from ican.agent.corpus import AgentCorpus
 from ican.agent.schema import ToolInputError
 
 from .claims import verify_claim
+from .field_rules import diagnose_field_assignment
 from .schema import (
     ClaimDraft,
     ClaimVerificationResponse,
@@ -134,7 +135,21 @@ class ResearchService:
             all_verdicts.extend(verdicts)
             fields.append(
                 VerifiedExtractionField(
-                    name=field.name, value=field.value, claims=verdicts
+                    name=field.name,
+                    value=field.value,
+                    claims=verdicts,
+                    semantic_diagnostics=diagnose_field_assignment(
+                        field.name,
+                        field.value,
+                        next(
+                            (
+                                claim.quote
+                                for claim in field.claims
+                                if claim.quote is not None
+                            ),
+                            None,
+                        ),
+                    ),
                 )
             )
         self._subject_is_cited(draft.subject_source_id, all_verdicts)

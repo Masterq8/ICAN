@@ -1,0 +1,56 @@
+{
+  "version": "p46-quality-v1",
+  "collection": "qasper_train_v1",
+  "model": "deepseek-flash",
+  "max_paid_calls": 8,
+  "cases": [
+    {
+      "key": "ontology_parser",
+      "source_id": "qasper:1601.00901",
+      "title": "Joint learning of ontology and semantic parser from text",
+      "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "speech_recognition",
+      "source_id": "qasper:1601.02543",
+      "title": "Evaluating the Performance of a Speech Recognition based System",
+      "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "event_extraction",
+      "source_id": "qasper:1601.04012",
+      "title": "Detecting and Extracting Events from Text Documents",
+      "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "mobile_robot",
+      "source_id": "qasper:1602.01208",
+      "title": "Spatial Concept Acquisition for a Mobile Robot that Integrates Self-Localization and Unsupervised Word Discovery from Spoken Sentences",
+      "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "many_languages_parser",
+      "source_id": "qasper:1602.01595",
+      "title": "Many Languages, One Parser",
+      "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "contextual_lstm",
+      "source_id": "qasper:1602.06291",
+      "title": "Contextual LSTM (CLSTM) models for Large scale NLP tasks",
+      "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "russian_twitter",
+      "source_id": "qasper:1602.08741",
+      "title": "Gibberish Semantics: How Good is Russian Twitter in Word Semantic Similarity Task?",
+      "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "entity_coreference",
+      "source_id": "qasper:1603.04553",
+      "title": "Unsupervised Ranking Model for Entity Coreference Resolution",
+      "query": "What task, model, datasets, training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    }
+  ]
+}

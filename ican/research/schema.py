@@ -11,6 +11,8 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 from ican.agent.schema import AgentRequest
 from ican.retrieval.schema import EvidenceResult
 
+from .field_rules import FieldSemanticDiagnostic
+
 ClaimKind = Literal["verbatim", "numeric", "code_execution", "inference"]
 ClaimStatus = Literal[
     "supported",
@@ -170,6 +172,7 @@ class VerifiedExtractionField(BaseModel):
     name: ExtractionFieldName
     value: str
     claims: list[ClaimVerdict]
+    semantic_diagnostics: list[FieldSemanticDiagnostic] = Field(default_factory=list)
 
 
 class ResearchRecord(BaseModel):

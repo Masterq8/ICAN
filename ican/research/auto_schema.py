@@ -53,7 +53,14 @@ class AutoCardRequest(BaseModel):
 class CardFieldDraft(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    name: ExtractionFieldName
+    name: ExtractionFieldName = Field(
+        description=(
+            "task=research task; model=method/system; dataset=named corpus or benchmark; "
+            "input_setting=input/preprocessing; training=optimization setup; "
+            "metric=measurement name without score; result=measured value or comparative "
+            "finding; limitation=stated constraint; code_availability=code/repository status"
+        )
+    )
     value: str = Field(min_length=1, max_length=1200)
     quote: str = Field(min_length=1, max_length=1000)
     evidence_id: str = Field(min_length=1, max_length=256)

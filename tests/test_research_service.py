@@ -191,3 +191,21 @@ def test_store_does_not_allow_path_like_record_ids(tmp_path):
         pass
     else:
         raise AssertionError("unsafe ID must fail")
+
+
+def test_extraction_keeps_deterministic_field_semantic_diagnostics(tmp_path):
+    research = service(tmp_path)
+    record = research.submit_extraction(
+        request(),
+        ExtractionDraft(
+            subject_source_id="paper-source",
+            fields=[
+                ExtractionFieldDraft(
+                    name="dataset", value="F1 score", claims=[verbatim_claim()]
+                )
+            ],
+        ),
+    )
+    assert [item.code for item in record.fields[0].semantic_diagnostics] == [
+        "dataset_is_metric"
+    ]
