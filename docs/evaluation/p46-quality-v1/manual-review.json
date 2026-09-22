@@ -1,0 +1,752 @@
+{
+  "version": "p46-quality-v1-manual-review",
+  "reviewer": "Codex assistant evidence audit",
+  "review_scope": "Exact supplied text (each evidence text[:2200]); assistant labels pending human confirmation",
+  "reviewed_at": "2026-09-23",
+  "cases": {
+    "ontology_parser": {
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result"
+      ],
+      "fields": [
+        {
+          "name": "task",
+          "evidence_supported": false,
+          "type_correct": true,
+          "correct_type": "task",
+          "note": "The quoted title does not occur in the cited evidence chunk.",
+          "occurrence": 0,
+          "raw_field_sha256": "ceb5b4d1fbab438c92dbf4bf22faec42399f26182648defbc45c21067cdfa95a"
+        },
+        {
+          "name": "model",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "note": "The automaton model appears verbatim in the figure caption.",
+          "occurrence": 1,
+          "raw_field_sha256": "f5e8537c1ee1dd3878823d6ed51a4918770b604de3748a2d145ecce8b7fb4ff6"
+        },
+        {
+          "name": "dataset",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "note": "Wikipedia first sentences are explicitly called a dataset.",
+          "occurrence": 2,
+          "raw_field_sha256": "36258906dd69c4035fb36a6a77e84b85fc4023de33f4d3e8941afff56cd5cbca"
+        },
+        {
+          "name": "input_setting",
+          "evidence_supported": true,
+          "type_correct": false,
+          "correct_type": "training",
+          "note": "Grammar induction on 10,000 sentences is a training setup rather than an input setting.",
+          "occurrence": 3,
+          "raw_field_sha256": "012074b60d4b6a18c41c818986714ad295f1c367abed239a4005465da5129c80"
+        },
+        {
+          "name": "training",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "training",
+          "note": "Manual property assignment is part of induction setup.",
+          "occurrence": 4,
+          "raw_field_sha256": "2f367dd4b5d58381c8eb42973d17c2e896dc9608c852c998c62de47d1cdd965d"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "Average parsing time is a measured result.",
+          "occurrence": 5,
+          "raw_field_sha256": "a56eaf5325619827d0256e0d99eb5805ecc6787cfd0026e6f5c37c44b792555f"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "Fully parsed fraction is a reported result; this duplicate field caused schema rejection.",
+          "occurrence": 6,
+          "raw_field_sha256": "5a9b66b724a76236fc1ba4ad774bd1db769a849dab8ccc9075c7567654b4ba21"
+        }
+      ],
+      "omitted_present_fields": [
+        "metric"
+      ],
+      "note": "Schema rejected two result entries; metric names such as coverage and parsing time were not separated from results.",
+      "presence_evidence_ids": {
+        "task": "chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283",
+        "model": "chunk:01cbef48e9c45a524bf96e25f36a5dced7f172cb47c856074ef86ff1e4d8c6e7",
+        "dataset": "chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283",
+        "input_setting": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
+        "training": "chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba",
+        "metric": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
+        "result": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9"
+      },
+      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+    },
+    "speech_recognition": {
+      "expected_present_fields": [
+        "task",
+        "model",
+        "metric",
+        "result",
+        "limitation"
+      ],
+      "fields": [
+        {
+          "name": "limitation",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "note": "The excerpt explicitly defers further experimental results.",
+          "occurrence": 0,
+          "raw_field_sha256": "97f8b972817b9740ee8893d27c98f12542b35567bcc0afa273d6f82b15e188d9"
+        },
+        {
+          "name": "model",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "note": "The menu-based ASR system is stated in the cited caption.",
+          "occurrence": 1,
+          "raw_field_sha256": "ccb104a6301a6414347335d28b4f703d3c16c747bf149871fbd85cf10abc3555"
+        }
+      ],
+      "omitted_present_fields": [
+        "task",
+        "metric",
+        "result"
+      ],
+      "note": "The evidence names speech recognition, transaction completion rate, and a significant improvement, but the card omitted those task/metric/result fields.",
+      "presence_evidence_ids": {
+        "task": "chunk:e2631ae8ae10b636bf04ee68a092cdb37fcd4e62ef0393004a4368ab46ef43bf",
+        "model": "chunk:7d1da55010ca6a9ee84ab2823c103214603a17faf153ce6910f55046207bddf5",
+        "metric": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9",
+        "result": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9",
+        "limitation": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9"
+      },
+      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+    },
+    "event_extraction": {
+      "expected_present_fields": [
+        "task",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result",
+        "model"
+      ],
+      "fields": [
+        {
+          "name": "task",
+          "evidence_supported": false,
+          "type_correct": true,
+          "correct_type": "task",
+          "note": "The submitted title is not a contiguous quote in the cited table caption.",
+          "occurrence": 0,
+          "raw_field_sha256": "da90a238ef58a540005f48c6666c70280f68bf8ec402b233a7e385797e67c3c7"
+        },
+        {
+          "name": "dataset",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "note": "ECB+ is explicitly identified as the dataset.",
+          "occurrence": 1,
+          "raw_field_sha256": "0484e1a336fad492def100940a9621af69f2c29277e998d7104fa1e325da56ae"
+        },
+        {
+          "name": "metric",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "note": "The cited paragraph lists coreference metrics.",
+          "occurrence": 2,
+          "raw_field_sha256": "fda93ee2060c2005371fbc988eea3b4a8cc8fab63d6b5c7439b8a9a3e77e2868"
+        },
+        {
+          "name": "metric",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "note": "The second metric list is valid, but duplicates the metric field.",
+          "occurrence": 3,
+          "raw_field_sha256": "beb74779c42bf7b5290d7e15d14af531926dca1c32bae5b2ef5653c66d05b063"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "ACE value 22.3% is a quantitative result.",
+          "occurrence": 4,
+          "raw_field_sha256": "ff6b1f1eca7b7e245ff58be73d5b26ae9680e22ad556ad1f3504e0e1acfbf908"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "Improvement for every metric is a comparative result.",
+          "occurrence": 5,
+          "raw_field_sha256": "58cddc197dfd7fdf25fded7438a628dda72b68ee1b739799d8b85cf6fa309792"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "Top-ten placement is an experimental result.",
+          "occurrence": 6,
+          "raw_field_sha256": "a48f9e87c7c820fba5237b070be35679ee19e8d7eed3770000293534f8878473"
+        },
+        {
+          "name": "limitation",
+          "evidence_supported": true,
+          "type_correct": false,
+          "correct_type": "result",
+          "note": "Low but comparable performance interprets a result rather than stating a study limitation.",
+          "occurrence": 7,
+          "raw_field_sha256": "7bf4371449477c0b87e3a88d824350f3e0879676509b493ced881766f5d24119"
+        },
+        {
+          "name": "input_setting",
+          "evidence_supported": false,
+          "type_correct": false,
+          "correct_type": "training",
+          "note": "The draft changes two dimensions to three and describes model training/submission, not an input setting.",
+          "occurrence": 8,
+          "raw_field_sha256": "149e5fe3c62bb1e03ca273eac800e8b5860281ca68b729fb294154d91090ac01"
+        }
+      ],
+      "omitted_present_fields": [
+        "training",
+        "model"
+      ],
+      "note": "Duplicate metric/result fields caused rejection; field #9 changes the value from two to three dimensions while its quote is exact. ATT systems are named but the model field is omitted.",
+      "presence_evidence_ids": {
+        "task": "chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4",
+        "model": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f",
+        "dataset": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582",
+        "input_setting": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f",
+        "training": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f",
+        "metric": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582",
+        "result": "chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4"
+      },
+      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+    },
+    "mobile_robot": {
+      "expected_present_fields": [
+        "task",
+        "model",
+        "input_setting",
+        "training",
+        "result"
+      ],
+      "fields": [
+        {
+          "name": "task",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "task",
+          "note": "Learning spatial concepts is explicit.",
+          "occurrence": 0,
+          "raw_field_sha256": "844bbbd1d2264718b7a120d440376bfd65b171d6258d669e3459a36819b80e32"
+        },
+        {
+          "name": "model",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "note": "TurtleBot 2 is the experimental system/platform.",
+          "occurrence": 1,
+          "raw_field_sha256": "3d897807c2c0f305fc77fbdd16b76600d6d16c1cf564a718fa0c1b7cc3fccefa"
+        },
+        {
+          "name": "input_setting",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "note": "The experiment is explicitly conducted in a real environment.",
+          "occurrence": 2,
+          "raw_field_sha256": "dd5b922bd2cd3be450dbc8cd2ffc2b117965d07a1875d6be3a63033218865d42"
+        },
+        {
+          "name": "training",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "training",
+          "note": "Gibbs sampling and parameter initialization occur in the learning procedure.",
+          "occurrence": 3,
+          "raw_field_sha256": "92038a69a53bc7c6ae5bed7e6efe2bf7efa93d6a17939aee6d8addfeecd1f03a"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "The figure caption describes the learned position-distribution output.",
+          "occurrence": 4,
+          "raw_field_sha256": "b6c4de4a2babb2aa7e2b338655187d69f92404dd17bb855c0291203a3f155453"
+        }
+      ],
+      "omitted_present_fields": [],
+      "note": "All fields are text-supported; result is qualitative rather than a performance score.",
+      "presence_evidence_ids": {
+        "task": "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7",
+        "model": "chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80",
+        "input_setting": "chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80",
+        "training": "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7",
+        "result": "chunk:fbc1f7243593c148c351f8c6792133add9c159c5329875ce4668a69f3a2025e8"
+      },
+      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+    },
+    "many_languages_parser": {
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result",
+        "limitation"
+      ],
+      "fields": [
+        {
+          "name": "task",
+          "evidence_supported": true,
+          "type_correct": false,
+          "correct_type": "model",
+          "note": "A single multilingual parser describes the model, not the parsing task.",
+          "occurrence": 0,
+          "raw_field_sha256": "0294afbf20d4b59dc5d73ec359af8f97f9604e7974a96aad400a382e1c0354e6"
+        },
+        {
+          "name": "task",
+          "evidence_supported": true,
+          "type_correct": false,
+          "correct_type": "dataset",
+          "note": "A multilingual set of treebanks is dataset information and duplicates task.",
+          "occurrence": 1,
+          "raw_field_sha256": "4e218e1e8bc8c91a70481f46a59a11209ca647f32f218ac301b324b501a5eecf"
+        },
+        {
+          "name": "training",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "training",
+          "note": "Embedding training data and dimensionality are training setup.",
+          "occurrence": 2,
+          "raw_field_sha256": "e838b6a9d7004ffe8cd57a378d5ae040d5c65ab82eaac08a3800c99b16101879"
+        },
+        {
+          "name": "model",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "note": "Robust-projection multilingual embeddings are a model component.",
+          "occurrence": 3,
+          "raw_field_sha256": "80079e40849bdb9f99704fbef77cc1d838c6a31db41322ae03ec9b21bf9d0599"
+        },
+        {
+          "name": "metric",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "note": "Parsing accuracy is an evaluation metric.",
+          "occurrence": 4,
+          "raw_field_sha256": "f13b5b20f97b66203e612dc97b6d84b20b28942cd83cefb2a8778f02f87089ed"
+        },
+        {
+          "name": "input_setting",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "note": "Gold language ID and POS tags at test time define the input/evaluation setting.",
+          "occurrence": 5,
+          "raw_field_sha256": "79a3325770e39e248f00f65969fe63bbc3b054d0e2d549a1afde02d9675b3d30"
+        },
+        {
+          "name": "limitation",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "note": "The paper calls the gold-input assumption unrealistic.",
+          "occurrence": 6,
+          "raw_field_sha256": "b235be04831f307616b81c0650a10c5dbc2baceab823f1b66705222621f6d292"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "Outperformance over monolingual parsers is a comparative result.",
+          "occurrence": 7,
+          "raw_field_sha256": "51d3c3f9e69b7add2e202ef50c759f33fbf5c2a1bb34f3dc0837eed2c7564e02"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "Outperformance over transfer baselines is another result and duplicates the field.",
+          "occurrence": 8,
+          "raw_field_sha256": "e3faad1f2f8a166c4cdb5b714f0750aed78fa3b7e20abfe3d782550fdc4a6c2d"
+        }
+      ],
+      "omitted_present_fields": [
+        "dataset"
+      ],
+      "note": "Duplicate task/result fields caused rejection; the two task entries were also semantically misclassified.",
+      "presence_evidence_ids": {
+        "task": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
+        "model": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
+        "dataset": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
+        "input_setting": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae",
+        "training": "chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2",
+        "metric": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae",
+        "result": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
+        "limitation": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae"
+      },
+      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+    },
+    "contextual_lstm": {
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result",
+        "limitation"
+      ],
+      "fields": [
+        {
+          "name": "task",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "task",
+          "note": "Next-word prediction is explicit.",
+          "occurrence": 0,
+          "raw_field_sha256": "0724810e3507052ec77af270771aa298b4e2e0e7c71eddbe4240a5ca773a4c45"
+        },
+        {
+          "name": "dataset",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "note": "Wikipedia corpus is a dataset.",
+          "occurrence": 1,
+          "raw_field_sha256": "79a73942e2f5ea1667476799ddf4e04645b16ddc5f504a3a72629a5b14cf1752"
+        },
+        {
+          "name": "dataset",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "note": "Google News corpus is another dataset and duplicates the field.",
+          "occurrence": 2,
+          "raw_field_sha256": "401ff54ab1b4096871a833c59316f82abcce7c3e79917fa8c810b35a6201e86f"
+        },
+        {
+          "name": "input_setting",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "note": "Vocabulary filtering is an input preprocessing setting.",
+          "occurrence": 3,
+          "raw_field_sha256": "638c7a5d7f233d01179eb47f7ea134cd30cc74881846dbea186f4ecbdbb4fbe0"
+        },
+        {
+          "name": "training",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "training",
+          "note": "Train/validation/test split is experimental setup.",
+          "occurrence": 4,
+          "raw_field_sha256": "9e227c14ba2a9d1a591e7730f9510e1ab1e6ba5b72036df353f6aa0133004c8c"
+        },
+        {
+          "name": "metric",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "note": "Perplexity is the metric.",
+          "occurrence": 5,
+          "raw_field_sha256": "c7bfd0f2bb1478fc7526ae9a23be1e3b205120b5f1864f3f3f2e75c7f300c9c3"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "Perplexity near 80 is a result.",
+          "occurrence": 6,
+          "raw_field_sha256": "751ae00cb4944ead7401864a26a569d749a0e20f7968d6bc1c65f5e111d16e97"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "Perplexity 74 is another result and duplicates the field.",
+          "occurrence": 7,
+          "raw_field_sha256": "b4812c7a5a3c3bfb4696fe6d3c0de356925485195373accd64d6f29811001bfc"
+        },
+        {
+          "name": "limitation",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "note": "The missing KN Wikipedia experiment is an explicit limitation of the comparison.",
+          "occurrence": 8,
+          "raw_field_sha256": "583d6ed2e26be3f5aabb035f07bba264716563b51e5e2c3fbda3f61fa7b83ce8"
+        }
+      ],
+      "omitted_present_fields": [
+        "model"
+      ],
+      "note": "Duplicate dataset/result fields caused rejection; the evidence names distributed n-gram baselines but no model field was submitted.",
+      "presence_evidence_ids": {
+        "task": "chunk:edbd3050496d35ced5e7681f5b6e91ec0ff3233284c6b25e86fe0ae2a017dce5",
+        "model": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
+        "dataset": "chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574",
+        "input_setting": "chunk:2b3e32cbaa2c01ab8f65256b76ef76249ba85d2a4f709c2dd89faad955bf28c5",
+        "training": "chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574",
+        "metric": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
+        "result": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
+        "limitation": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6"
+      },
+      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+    },
+    "russian_twitter": {
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result",
+        "limitation"
+      ],
+      "fields": [
+        {
+          "name": "task",
+          "evidence_supported": false,
+          "type_correct": true,
+          "correct_type": "task",
+          "note": "The cited quote discusses Word2Vec but does not contain the submitted task phrase.",
+          "occurrence": 0,
+          "raw_field_sha256": "5ce567883d8e7ca63f574b10325c2430c0f0b3eff515ebe5c9e21f817a8041ac"
+        },
+        {
+          "name": "model",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "note": "Skip-gram is explicit.",
+          "occurrence": 1,
+          "raw_field_sha256": "902cacaaa221ea09bbcbede736d3e5bd97c05c2de9d895765f5528ab6d1aaa13"
+        },
+        {
+          "name": "dataset",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "note": "HJ-dataset is explicit.",
+          "occurrence": 2,
+          "raw_field_sha256": "ac357bcef84ebab4ef160d6ea5d26b8aa5aaddb9a29dbaa8520a99b7c51fff88"
+        },
+        {
+          "name": "input_setting",
+          "evidence_supported": true,
+          "type_correct": false,
+          "correct_type": "training",
+          "note": "The 1/7/15-day training-corpus comparison is training setup, consistently with the ontology induction-data label; actual line-by-line input preprocessing is separately present.",
+          "occurrence": 3,
+          "raw_field_sha256": "c3e0cf603260fec1a38c278689906724a3a28323f059b1eff6e7b85d480a211f"
+        },
+        {
+          "name": "training",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "training",
+          "note": "Vector size, frequency, context and downsampling parameters are training setup.",
+          "occurrence": 4,
+          "raw_field_sha256": "0290078b9aef99730b87e8fa2346470d958827a8fbb4f9eabab58c4183c9c32c"
+        },
+        {
+          "name": "metric",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "note": "Spearman coefficient is explicit.",
+          "occurrence": 5,
+          "raw_field_sha256": "dcb11e8130f7d57596570a2b89f2b7aa0c8ffaf654956c936894870e1d18c072"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "0.56 and 0.55 correlations are results.",
+          "occurrence": 6,
+          "raw_field_sha256": "3cd4e705cb0bbfb4e72ed47276dc5cb800d94e420abfc29c44d2a5cfe4e5a904"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "0.59 is another result and duplicates the field.",
+          "occurrence": 7,
+          "raw_field_sha256": "f9a602ca77922b8ccc46d07091a606dbfcd8f1f1d55e15d5d112660fe8442c19"
+        },
+        {
+          "name": "limitation",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "note": "The need for larger corpus and vectors is a stated constraint/recommendation.",
+          "occurrence": 8,
+          "raw_field_sha256": "68aff74cdc5f1b9af9ad2df44f10509c728690428ab7dd68b84dc06bb8645c86"
+        }
+      ],
+      "omitted_present_fields": [],
+      "note": "Duplicate result fields caused rejection; the task value itself is not present in its cited quote.",
+      "presence_evidence_ids": {
+        "task": "chunk:72366a903d6fb4afa1e0c1e7fc0a611a00e3ee49ecd8c8b581a10666da629788",
+        "model": "chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc",
+        "dataset": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f",
+        "input_setting": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f",
+        "training": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03",
+        "metric": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f",
+        "result": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03",
+        "limitation": "chunk:72366a903d6fb4afa1e0c1e7fc0a611a00e3ee49ecd8c8b581a10666da629788"
+      },
+      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+    },
+    "entity_coreference": {
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result"
+      ],
+      "fields": [
+        {
+          "name": "task",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "task",
+          "note": "Entity coreference resolution is explicit.",
+          "occurrence": 0,
+          "raw_field_sha256": "3df58ecc545af96deddb101b63e2b01c0c92d36b118afbcda96b0af5038677fb"
+        },
+        {
+          "name": "model",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "note": "The generative unsupervised ranking model is explicit.",
+          "occurrence": 1,
+          "raw_field_sha256": "9f1f88b8b409007be901f2fb548576f187d3a8785c136f15ccccc450842b5024"
+        },
+        {
+          "name": "dataset",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "note": "Gigaword APW/NYT is training data.",
+          "occurrence": 2,
+          "raw_field_sha256": "0b39883aac4ff5239d6f66635986bb3df76f7c63ee22981f922752a7170fb790"
+        },
+        {
+          "name": "dataset",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "note": "CoNLL-2012/OntoNotes is evaluation data and duplicates the field.",
+          "occurrence": 3,
+          "raw_field_sha256": "89b8d377f29594e9633fd25a3f50cdc84a98525c2975e1f3e48cea526ea97fed"
+        },
+        {
+          "name": "training",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "training",
+          "note": "Training corpus selection and document filtering are explicit.",
+          "occurrence": 4,
+          "raw_field_sha256": "5e929202b2bd800de11840cda5a6bcbd78f3445a119963617747152826833da2"
+        },
+        {
+          "name": "input_setting",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "note": "Automatic mentions and predicted preprocessing define evaluation input.",
+          "occurrence": 5,
+          "raw_field_sha256": "5bb31165846dabf6eebdfda01940f46fc5478cfa6d4e3dae1d86caf738570c6e"
+        },
+        {
+          "name": "metric",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "note": "MUC/B3/CEAF metrics are explicit.",
+          "occurrence": 6,
+          "raw_field_sha256": "1117affedfdc3878f03154a837926c5effd062474a20f15bb12e31c6443106bf"
+        },
+        {
+          "name": "metric",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "note": "CoNLL F1 is a metric and duplicates the field.",
+          "occurrence": 7,
+          "raw_field_sha256": "d0e712f53c9e4bb9032181612f527ea032782c390f6cdb723b790ce041a2e94b"
+        },
+        {
+          "name": "result",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "note": "Reported percentage improvements over three baselines are results.",
+          "occurrence": 8,
+          "raw_field_sha256": "880e983d7ca70072ac692c6dcb827fe3e77d85e23b5cc9caefe9c254f1728b6a"
+        }
+      ],
+      "omitted_present_fields": [],
+      "note": "Duplicate dataset/metric fields caused rejection; the remaining assignments are supported and correctly typed.",
+      "presence_evidence_ids": {
+        "task": "chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6",
+        "model": "chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6",
+        "dataset": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6",
+        "input_setting": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6",
+        "training": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6",
+        "metric": "chunk:de09a5eed4ccdd12a35d3368f3e91ab1e675d7f07d01b7207ee5f3a2338ae077",
+        "result": "chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10"
+      },
+      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+    }
+  },
+  "reviewer_type": "assistant",
+  "human_review_status": "pending"
+}

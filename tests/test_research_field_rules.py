@@ -44,3 +44,21 @@ def test_strong_cross_type_conflicts_have_actionable_diagnostics(
 
 def test_other_field_types_are_outside_the_deterministic_rule_scope():
     assert diagnose_field_assignment("model", "accuracy") == []
+
+
+@pytest.mark.parametrize("name", ["dataset", "metric"])
+def test_measured_score_is_result_even_without_achievement_verb(name):
+    assert (
+        diagnose_field_assignment(name, "92.4% accuracy")[0].suggested_field == "result"
+    )
+
+
+def test_quote_context_does_not_reclassify_a_numeric_result():
+    assert (
+        diagnose_field_assignment("result", "22.3%", "22.3% on the ECB dataset") == []
+    )
+    assert diagnose_field_assignment("metric", "MUC", "MUC on the dataset") == []
+    assert diagnose_field_assignment("metric", "F1 score") == []
+    assert (
+        diagnose_field_assignment("result", "runtime is 3 seconds on this corpus") == []
+    )

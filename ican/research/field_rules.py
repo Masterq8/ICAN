@@ -59,11 +59,15 @@ def diagnose_field_assignment(
     if name not in {"dataset", "metric", "result"}:
         return []
     text = " ".join(value.split())
-    context = " ".join(part for part in (text, quote or "") if part)
     metric_only = bool(METRIC_ONLY.fullmatch(text.strip(" .:;")))
-    dataset_cue = bool(DATASET.search(context))
+    dataset_cue = bool(DATASET.search(text))
     result_cue = bool(RESULT.search(text))
-    scored_result = result_cue and bool(NUMBER.search(text))
+    # F1, BLEU-4 and dataset versions contain digits but are not measured scores.
+    metric_without_names = re.sub(r"\b(?:F1|BLEU-\d+)\b", "", text, flags=re.IGNORECASE)
+    measured_score = bool(METRIC.search(text)) and bool(
+        re.search(r"(?<![\w-])\d+(?:\.\d+)?(?:%|\b)", metric_without_names)
+    )
+    scored_result = result_cue or measured_score
 
     if name == "dataset":
         if metric_only:
@@ -71,13 +75,22 @@ def diagnose_field_assignment(
         if scored_result:
             return [_diagnostic("dataset_is_result", "dataset", "result")]
     elif name == "metric":
-        if result_cue and (NUMBER.search(text) or not METRIC.search(text)):
+        if scored_result and not metric_only:
             return [_diagnostic("metric_is_result", "metric", "result")]
-        if dataset_cue and not METRIC.search(context):
+        if dataset_cue and not METRIC.search(text):
             return [_diagnostic("metric_is_dataset", "metric", "dataset")]
     elif name == "result":
         if metric_only:
             return [_diagnostic("result_is_metric", "result", "metric")]
-        if dataset_cue and not result_cue and not METRIC.search(text):
+        if (
+            dataset_cue
+            and not result_cue
+            and not METRIC.search(text)
+            and re.fullmatch(
+                r"(?:the )?[\w+.-]+(?: benchmark)? (?:dataset|corpus|benchmark)",
+                text,
+                re.IGNORECASE,
+            )
+        ):
             return [_diagnostic("result_is_dataset", "result", "dataset")]
     return []

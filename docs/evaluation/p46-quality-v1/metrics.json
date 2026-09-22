@@ -1,0 +1,1015 @@
+{
+  "predeclared_metrics": {
+    "tool_submission_success": {
+      "numerator": 2,
+      "denominator": 8,
+      "rate": 0.25
+    },
+    "evidence_support_rate": {
+      "numerator": 7,
+      "denominator": 7,
+      "rate": 1.0
+    },
+    "field_classification_accuracy": {
+      "numerator": 7,
+      "denominator": 7,
+      "rate": 1.0
+    },
+    "missing_field_identification_rate": {
+      "numerator": 8,
+      "denominator": 8,
+      "rate": 1.0
+    },
+    "present_field_recall": {
+      "numerator": 7,
+      "denominator": 10,
+      "rate": 0.7
+    },
+    "confusions": {},
+    "field_metrics_successful_cases_only": true
+  },
+  "supplementary_raw_draft_metrics": {
+    "tool_submission_success": {
+      "numerator": 2,
+      "denominator": 8,
+      "rate": 0.25
+    },
+    "evidence_support_rate": {
+      "numerator": 55,
+      "denominator": 59,
+      "rate": 0.9322033898305084
+    },
+    "field_classification_accuracy": {
+      "numerator": 53,
+      "denominator": 59,
+      "rate": 0.8983050847457628
+    },
+    "missing_field_identification_rate": {
+      "numerator": 16,
+      "denominator": 17,
+      "rate": 0.9411764705882353
+    },
+    "present_field_recall": {
+      "numerator": 47,
+      "denominator": 55,
+      "rate": 0.8545454545454545
+    },
+    "confusions": {
+      "input_setting->training": 3,
+      "limitation->result": 1,
+      "task->dataset": 1,
+      "task->model": 1
+    },
+    "field_metric_scope": "all_parseable_raw_drafts"
+  },
+  "reviewer_type": "assistant",
+  "human_review_status": "pending",
+  "usage": {
+    "paid_calls": 8,
+    "prompt_tokens": 15508,
+    "completion_tokens": 8724,
+    "actual_cost_usd": null
+  },
+  "audit_inputs": {
+    "review_sha256": "0adc663c55ebbd3b18a7f514dfee39acfff1448a390141979aa98abd4c8cceb9",
+    "run_seal_sha256": "0a9345432e52b8ee0de5558514c94215781c650ac2d045c6a18841e3dde53096",
+    "scorer_sha256": "988ad8eedc23236d7715a115f47718e592e0eea0a1e0190f02f0e09727e205d7"
+  },
+  "cases": {
+    "ontology_parser": {
+      "tool_success": false,
+      "diagnosis": {
+        "status": "rejected",
+        "code": "schema_invalid",
+        "issues": [
+          {
+            "code": "schema_invalid",
+            "path": [
+              "fields"
+            ],
+            "message": "Value error, Experiment field names must not repeat"
+          }
+        ],
+        "referenced_evidence_ids": [],
+        "unknown_evidence_ids": []
+      },
+      "submitted_fields": [],
+      "raw_submitted_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "result",
+        "result"
+      ],
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "Joint learning of ontology and semantic parser from text",
+          "quote": "Joint learning of ontology and semantic parser from text",
+          "evidence_id": "chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba"
+        },
+        {
+          "name": "model",
+          "value": "the automaton model for institution relation",
+          "quote": "Figure 6. The automaton model for institution relation.",
+          "evidence_id": "chunk:01cbef48e9c45a524bf96e25f36a5dced7f172cb47c856074ef86ff1e4d8c6e7"
+        },
+        {
+          "name": "dataset",
+          "value": "first sentences of Wikipedia pages describing people are taken as a dataset",
+          "quote": "For experimentation, first sentences of Wikipedia pages describing people are taken as a dataset.",
+          "evidence_id": "chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283"
+        },
+        {
+          "name": "input_setting",
+          "value": "The grammar was induced on 10.000 random sentences taken from the dataset",
+          "quote": "The grammar was induced on 10.000 random sentences taken from the dataset described in Section \"Datasets\" .",
+          "evidence_id": "chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba"
+        },
+        {
+          "name": "training",
+          "value": "The property assignment was done by the authors.",
+          "quote": "The property assignment was done by the authors.",
+          "evidence_id": "chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba"
+        },
+        {
+          "name": "result",
+          "value": "time spend for parsing a sentence, which is on average 0.16ms",
+          "quote": "It is highly correlated with the time spend for parsing a sentence, which is on average 0.16ms.",
+          "evidence_id": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9"
+        },
+        {
+          "name": "result",
+          "value": "More than a quarter of sentences were fully parsed",
+          "quote": "More than a quarter of sentences were fully parsed, meaning that they do not have any null leaf nodes.",
+          "evidence_id": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9"
+        }
+      ],
+      "run_status": "failed",
+      "semantic_diagnostics": [
+        {
+          "occurrence": 1,
+          "name": "task",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 2,
+          "name": "model",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 3,
+          "name": "dataset",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 4,
+          "name": "input_setting",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 5,
+          "name": "training",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 6,
+          "name": "result",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 7,
+          "name": "result",
+          "diagnostics": []
+        }
+      ],
+      "accepted_semantic_diagnostics": {}
+    },
+    "speech_recognition": {
+      "tool_success": true,
+      "diagnosis": {
+        "status": "accepted",
+        "code": "accepted",
+        "issues": [],
+        "referenced_evidence_ids": [
+          "chunk:7d1da55010ca6a9ee84ab2823c103214603a17faf153ce6910f55046207bddf5",
+          "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9",
+          "chunk:e2631ae8ae10b636bf04ee68a092cdb37fcd4e62ef0393004a4368ab46ef43bf"
+        ],
+        "unknown_evidence_ids": []
+      },
+      "submitted_fields": [
+        "limitation",
+        "model"
+      ],
+      "raw_submitted_fields": [
+        "limitation",
+        "model"
+      ],
+      "raw_fields": [
+        {
+          "name": "limitation",
+          "value": "We will present more experimental results in the final paper.",
+          "quote": "We will present more experimental results in the final paper.",
+          "evidence_id": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9"
+        },
+        {
+          "name": "model",
+          "value": "a typical menu based ASR system",
+          "quote": "Fig. 1. Schematic of a typical menu based ASR system (Wn is spoken word).",
+          "evidence_id": "chunk:7d1da55010ca6a9ee84ab2823c103214603a17faf153ce6910f55046207bddf5"
+        }
+      ],
+      "run_status": "completed",
+      "semantic_diagnostics": [
+        {
+          "occurrence": 1,
+          "name": "limitation",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 2,
+          "name": "model",
+          "diagnostics": []
+        }
+      ],
+      "accepted_semantic_diagnostics": {
+        "limitation": [],
+        "model": []
+      }
+    },
+    "event_extraction": {
+      "tool_success": false,
+      "diagnosis": {
+        "status": "rejected",
+        "code": "schema_invalid",
+        "issues": [
+          {
+            "code": "schema_invalid",
+            "path": [
+              "fields"
+            ],
+            "message": "Value error, Experiment field names must not repeat"
+          }
+        ],
+        "referenced_evidence_ids": [],
+        "unknown_evidence_ids": []
+      },
+      "submitted_fields": [],
+      "raw_submitted_fields": [
+        "task",
+        "dataset",
+        "metric",
+        "metric",
+        "result",
+        "result",
+        "result",
+        "limitation",
+        "input_setting"
+      ],
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "Detecting and Extracting Events from Text Documents",
+          "quote": "Detecting and Extracting Events from Text Documents",
+          "evidence_id": "chunk:865e26540412ac75e8cff86418d81ac462e444caad86463bc7da15be334d9572"
+        },
+        {
+          "name": "dataset",
+          "value": "ECB+",
+          "quote": "Cybulska and Vossen use the ECB+ dataset BIBREF191 . The ECB+ corpus contains a new corpus component, consisting of 502 texts, describing different instances of event types.",
+          "evidence_id": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582"
+        },
+        {
+          "name": "metric",
+          "value": "recall, precision and F-score, MUC, B3, mention-based CEAF, BLANC, and CoNLL F1",
+          "quote": "They provide results in terms of several metrics: recall, precision and F-score, MUC BIBREF192 , B3 BIBREF184 , mention-based CEAF BIBREF185 , BLANC BIBREF193 , and CoNLL F1 BIBREF194 , and find that the introduction of the granularity concept into similarity computation improves results for every metric.",
+          "evidence_id": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582"
+        },
+        {
+          "name": "metric",
+          "value": "recall (R), precision (P), and F-score (F)",
+          "quote": "They report results in terms of recall (R), precision (P), and F-score (F) by employing the mention-based B3 metric BIBREF184 , the entity-based CEAF metric BIBREF185 , and the pairwise F1 (PW) metric.",
+          "evidence_id": "chunk:84ad68a362300332e93f141fe4824b8ccc7e22ff35c2bde207620ad4fbb256d1"
+        },
+        {
+          "name": "result",
+          "value": "ACE value score of 22.3%",
+          "quote": "Overall, using the best learned classifiers for the various subtasks, they achieve an ACE value score of 22.3%, where the maximum score is 100%. The value is low, but other systems at the time had comparable performance.",
+          "evidence_id": "chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4"
+        },
+        {
+          "name": "result",
+          "value": "the introduction of the granularity concept into similarity computation improves results for every metric",
+          "quote": "and find that the introduction of the granularity concept into similarity computation improves results for every metric.",
+          "evidence_id": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582"
+        },
+        {
+          "name": "result",
+          "value": "of these three performed among the top ten in TempEval-3 Competition",
+          "quote": "Inspired by such work, in building the ATT systems, the creators intended to systematically investigate the performance of various models and for each task, they trained twelve models exploring these two dimensions, three of which we submitted for TempEval-3, and of these three performed among the top ten in TempEval-3 Competition.",
+          "evidence_id": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f"
+        },
+        {
+          "name": "limitation",
+          "value": "The value is low, but other systems at the time had comparable performance.",
+          "quote": "The value is low, but other systems at the time had comparable performance.",
+          "evidence_id": "chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4"
+        },
+        {
+          "name": "input_setting",
+          "value": "three dimensions, three of which we submitted for TempEval-3",
+          "quote": "for each task, they trained twelve models exploring these two dimensions, three of which we submitted for TempEval-3",
+          "evidence_id": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f"
+        }
+      ],
+      "run_status": "failed",
+      "semantic_diagnostics": [
+        {
+          "occurrence": 1,
+          "name": "task",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 2,
+          "name": "dataset",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 3,
+          "name": "metric",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 4,
+          "name": "metric",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 5,
+          "name": "result",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 6,
+          "name": "result",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 7,
+          "name": "result",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 8,
+          "name": "limitation",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 9,
+          "name": "input_setting",
+          "diagnostics": []
+        }
+      ],
+      "accepted_semantic_diagnostics": {}
+    },
+    "mobile_robot": {
+      "tool_success": true,
+      "diagnosis": {
+        "status": "accepted",
+        "code": "accepted",
+        "issues": [],
+        "referenced_evidence_ids": [
+          "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7",
+          "chunk:91b85481ac236bc04036f2a318dad34a9e9a453f521ada048b2ff02a4f6207cb",
+          "chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80",
+          "chunk:fbc1f7243593c148c351f8c6792133add9c159c5329875ce4668a69f3a2025e8"
+        ],
+        "unknown_evidence_ids": []
+      },
+      "submitted_fields": [
+        "task",
+        "model",
+        "input_setting",
+        "training",
+        "result"
+      ],
+      "raw_submitted_fields": [
+        "task",
+        "model",
+        "input_setting",
+        "training",
+        "result"
+      ],
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "Learning of spatial concepts",
+          "quote": "Learning of spatial concepts",
+          "evidence_id": "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7"
+        },
+        {
+          "name": "model",
+          "value": "an autonomous mobile robot TurtleBot 2",
+          "quote": "the effectiveness of the proposed method was tested by using an autonomous mobile robot TurtleBot 2 in a real environment",
+          "evidence_id": "chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80"
+        },
+        {
+          "name": "input_setting",
+          "value": "in a real environment",
+          "quote": "in a real environment",
+          "evidence_id": "chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80"
+        },
+        {
+          "name": "training",
+          "value": "Gibbs sampling Initialize parameters",
+          "quote": "Gibbs sampling Initialize parameters",
+          "evidence_id": "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7"
+        },
+        {
+          "name": "result",
+          "value": "A point group of each color to represent each position distribution is drawn on an map of the considered environment",
+          "quote": "A point group of each color to represent each position distribution is drawn on an map of the considered environment",
+          "evidence_id": "chunk:fbc1f7243593c148c351f8c6792133add9c159c5329875ce4668a69f3a2025e8"
+        }
+      ],
+      "run_status": "completed",
+      "semantic_diagnostics": [
+        {
+          "occurrence": 1,
+          "name": "task",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 2,
+          "name": "model",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 3,
+          "name": "input_setting",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 4,
+          "name": "training",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 5,
+          "name": "result",
+          "diagnostics": []
+        }
+      ],
+      "accepted_semantic_diagnostics": {
+        "task": [],
+        "model": [],
+        "input_setting": [],
+        "training": [],
+        "result": []
+      }
+    },
+    "many_languages_parser": {
+      "tool_success": false,
+      "diagnosis": {
+        "status": "rejected",
+        "code": "schema_invalid",
+        "issues": [
+          {
+            "code": "schema_invalid",
+            "path": [
+              "fields"
+            ],
+            "message": "Value error, Experiment field names must not repeat"
+          }
+        ],
+        "referenced_evidence_ids": [],
+        "unknown_evidence_ids": []
+      },
+      "submitted_fields": [],
+      "raw_submitted_fields": [
+        "task",
+        "task",
+        "training",
+        "model",
+        "metric",
+        "input_setting",
+        "limitation",
+        "result",
+        "result"
+      ],
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "a single parser trained on a multilingual set of treebanks",
+          "quote": "We presented MaLOPa, a single parser trained on a multilingual set of treebanks.",
+          "evidence_id": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63"
+        },
+        {
+          "name": "task",
+          "value": "multilingual set of treebanks",
+          "quote": "We presented MaLOPa, a single parser trained on a multilingual set of treebanks.",
+          "evidence_id": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63"
+        },
+        {
+          "name": "training",
+          "value": "All embeddings are trained on the same data and use the same number of dimensions (100).",
+          "quote": "All embeddings are trained on the same data and use the same number of dimensions (100).",
+          "evidence_id": "chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2"
+        },
+        {
+          "name": "model",
+          "value": "the robust projection multilingual embeddings",
+          "quote": "Aside from Table 6 , in this paper, we exclusively use the robust projection multilingual embeddings trained in guo:16.",
+          "evidence_id": "chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2"
+        },
+        {
+          "name": "metric",
+          "value": "parsing accuracy",
+          "quote": "Here, we quantify the degradation in parsing accuracy when language ID and POS tags are only given at training time, but must be predicted at test time.",
+          "evidence_id": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae"
+        },
+        {
+          "name": "input_setting",
+          "value": "both gold language ID of the input language and gold POS tags are given at test time",
+          "quote": "In Table 3 , we assume that both gold language ID of the input language and gold POS tags are given at test time. However, this assumption is not realistic in practical applications.",
+          "evidence_id": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae"
+        },
+        {
+          "name": "limitation",
+          "value": "this assumption is not realistic in practical applications",
+          "quote": "However, this assumption is not realistic in practical applications.",
+          "evidence_id": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae"
+        },
+        {
+          "name": "result",
+          "value": "on average outperforms monolingually-trained parsers for target languages with a treebank",
+          "quote": "We showed that this parser, equipped with language embeddings and fine-grained POS embeddings, on average outperforms monolingually-trained parsers for target languages with a treebank.",
+          "evidence_id": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63"
+        },
+        {
+          "name": "result",
+          "value": "our parser outperforms previous cross-lingual multi-source model transfer methods",
+          "quote": "The value of this sharing is more pronounced in scenarios where the target language's training treebank is small or non-existent, where our parser outperforms previous cross-lingual multi-source model transfer methods.",
+          "evidence_id": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63"
+        }
+      ],
+      "run_status": "failed",
+      "semantic_diagnostics": [
+        {
+          "occurrence": 1,
+          "name": "task",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 2,
+          "name": "task",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 3,
+          "name": "training",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 4,
+          "name": "model",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 5,
+          "name": "metric",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 6,
+          "name": "input_setting",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 7,
+          "name": "limitation",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 8,
+          "name": "result",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 9,
+          "name": "result",
+          "diagnostics": []
+        }
+      ],
+      "accepted_semantic_diagnostics": {}
+    },
+    "contextual_lstm": {
+      "tool_success": false,
+      "diagnosis": {
+        "status": "rejected",
+        "code": "schema_invalid",
+        "issues": [
+          {
+            "code": "schema_invalid",
+            "path": [
+              "fields"
+            ],
+            "message": "Value error, Experiment field names must not repeat"
+          }
+        ],
+        "referenced_evidence_ids": [],
+        "unknown_evidence_ids": []
+      },
+      "submitted_fields": [],
+      "raw_submitted_fields": [
+        "task",
+        "dataset",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result",
+        "result",
+        "limitation"
+      ],
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "word prediction task, where the goal is to predict the next word in a sentence given the words and context (captured via topic) seen previously",
+          "quote": "we focus first on the word prediction task, where the goal is to predict the next word in a sentence given the words and context (captured via topic) seen previously.",
+          "evidence_id": "chunk:edbd3050496d35ced5e7681f5b6e91ec0ff3233284c6b25e86fe0ae2a017dce5"
+        },
+        {
+          "name": "dataset",
+          "value": "whole English corpus from Wikipedia (snapshot from 2014/09/17)",
+          "quote": "we used the whole English corpus from Wikipedia (snapshot from 2014/09/17). There were 4.7 million documents in the Wikipedia dataset",
+          "evidence_id": "chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574"
+        },
+        {
+          "name": "dataset",
+          "value": "internal Google News English corpus",
+          "quote": "We also ran experiments on a sample of documents taken from a recent (2015/07/06) snapshot of the internal Google News English corpus.",
+          "evidence_id": "chunk:90d72bc5d815517b673fbab16aef3f4e0d5e9614b0d50d62ab9db2818e932867"
+        },
+        {
+          "name": "input_setting",
+          "value": "We created the vocabulary from the words in the training data, filtering out words that occurred less than a particular threshold count in the total dataset (threshold was 200 for Wikipedia). This resulted in a vocabulary with 129K unique terms",
+          "quote": "We created the vocabulary from the words in the training data, filtering out words that occurred less than a particular threshold count in the total dataset (threshold was 200 for Wikipedia). This resulted in a vocabulary with 129K unique terms, giving us an out-of-vocabulary rate of 3% on the validation dataset.",
+          "evidence_id": "chunk:2b3e32cbaa2c01ab8f65256b76ef76249ba85d2a4f709c2dd89faad955bf28c5"
+        },
+        {
+          "name": "training",
+          "value": "80% was used as train, 10% as validation and 10% as test set",
+          "quote": "which we randomly divided into 3 parts: 80% was used as train, 10% as validation and 10% as test set.",
+          "evidence_id": "chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574"
+        },
+        {
+          "name": "metric",
+          "value": "perplexity",
+          "quote": "it gave a perplexity of $\\approx $ 80 on the validation set",
+          "evidence_id": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6"
+        },
+        {
+          "name": "result",
+          "value": "a distributed n-gram model with “stupid backoff” smoothing BIBREF45 on the Wikipedia dataset, and it gave a perplexity of $\\approx $ 80 on the validation set",
+          "quote": "we also trained a distributed n-gram model with “stupid backoff” smoothing BIBREF45 on the Wikipedia dataset, and it gave a perplexity of $\\approx $ 80 on the validation set.",
+          "evidence_id": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6"
+        },
+        {
+          "name": "result",
+          "value": "on the Google News data (from a particular snapshot) the KN smoothed n-gram model gave a perplexity of 74 (using 5-grams)",
+          "quote": "on the Google News data (from a particular snapshot) the KN smoothed n-gram model gave a perplexity of 74 (using 5-grams).",
+          "evidence_id": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6"
+        },
+        {
+          "name": "limitation",
+          "value": "We did not train a n-gram model with Knesner-Ney (KN) smoothing on the Wikipedia data",
+          "quote": "We did not train a n-gram model with Knesner-Ney (KN) smoothing on the Wikipedia data",
+          "evidence_id": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6"
+        }
+      ],
+      "run_status": "failed",
+      "semantic_diagnostics": [
+        {
+          "occurrence": 1,
+          "name": "task",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 2,
+          "name": "dataset",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 3,
+          "name": "dataset",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 4,
+          "name": "input_setting",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 5,
+          "name": "training",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 6,
+          "name": "metric",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 7,
+          "name": "result",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 8,
+          "name": "result",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 9,
+          "name": "limitation",
+          "diagnostics": []
+        }
+      ],
+      "accepted_semantic_diagnostics": {}
+    },
+    "russian_twitter": {
+      "tool_success": false,
+      "diagnosis": {
+        "status": "rejected",
+        "code": "schema_invalid",
+        "issues": [
+          {
+            "code": "schema_invalid",
+            "path": [
+              "fields"
+            ],
+            "message": "Value error, Experiment field names must not repeat"
+          }
+        ],
+        "referenced_evidence_ids": [],
+        "unknown_evidence_ids": []
+      },
+      "submitted_fields": [],
+      "raw_submitted_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result",
+        "result",
+        "limitation"
+      ],
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "word semantic similarity task",
+          "quote": "We use Word2Vec to obtain word vectors from Twitter corpus.",
+          "evidence_id": "chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc"
+        },
+        {
+          "name": "model",
+          "value": "Skip-gram",
+          "quote": "In our study CBOW always performs worse than Skip-gram, hence we describe only results with Skip-gram model.",
+          "evidence_id": "chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc"
+        },
+        {
+          "name": "dataset",
+          "value": "HJ-dataset",
+          "quote": "It produces the set of vectors, which we then query to obtain similarity between word vectors, in order to compute the correlation with HJ-dataset.",
+          "evidence_id": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f"
+        },
+        {
+          "name": "input_setting",
+          "value": "We train our model subsequently with 1, 7 and 15 days of Twitter data",
+          "quote": "We train our model subsequently with 1, 7 and 15 days of Twitter data (each starting with 07/21 and followed by subsequent days) .",
+          "evidence_id": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03"
+        },
+        {
+          "name": "training",
+          "value": "vector size of 300, min-freq of 40, context size of 5 and downsampling of 1e-3",
+          "quote": "We fix parameters for the model with following values: vector size of 300, min-freq of 40, context size of 5 and downsampling of 1e-3.",
+          "evidence_id": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03"
+        },
+        {
+          "name": "metric",
+          "value": "Spearman coefficient",
+          "quote": "To compute correlation we use Spearman coefficient, since it was used as accuracy measure in RUSSE BIBREF4 .",
+          "evidence_id": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f"
+        },
+        {
+          "name": "result",
+          "value": "the best result belongs to 7-day corpus with 0.56 correlation with HJ-dataset, and 15-day corpus has a little less, 0.55",
+          "quote": "In this experiment the best result belongs to 7-day corpus with 0.56 correlation with HJ-dataset, and 15-day corpus has a little less, 0.55.",
+          "evidence_id": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03"
+        },
+        {
+          "name": "result",
+          "value": "training model with vector size of 600 on full Twitter corpus (15 days) shows the best result of 0.59",
+          "quote": "Indeed, training model with vector size of 600 on full Twitter corpus (15 days) shows the best result of 0.59.",
+          "evidence_id": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03"
+        },
+        {
+          "name": "limitation",
+          "value": "in order to achieve better results with Word2Vec one should increase both corpus and vector sizes",
+          "quote": "This can be explained by following: in order to achieve better results with Word2Vec one should increase both corpus and vector sizes.",
+          "evidence_id": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03"
+        }
+      ],
+      "run_status": "failed",
+      "semantic_diagnostics": [
+        {
+          "occurrence": 1,
+          "name": "task",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 2,
+          "name": "model",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 3,
+          "name": "dataset",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 4,
+          "name": "input_setting",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 5,
+          "name": "training",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 6,
+          "name": "metric",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 7,
+          "name": "result",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 8,
+          "name": "result",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 9,
+          "name": "limitation",
+          "diagnostics": []
+        }
+      ],
+      "accepted_semantic_diagnostics": {}
+    },
+    "entity_coreference": {
+      "tool_success": false,
+      "diagnosis": {
+        "status": "rejected",
+        "code": "schema_invalid",
+        "issues": [
+          {
+            "code": "schema_invalid",
+            "path": [
+              "fields"
+            ],
+            "message": "Value error, Experiment field names must not repeat"
+          }
+        ],
+        "referenced_evidence_ids": [],
+        "unknown_evidence_ids": []
+      },
+      "submitted_fields": [],
+      "raw_submitted_fields": [
+        "task",
+        "model",
+        "dataset",
+        "dataset",
+        "training",
+        "input_setting",
+        "metric",
+        "metric",
+        "result"
+      ],
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "entity coreference resolution",
+          "quote": "We proposed a new generative, unsupervised ranking model for entity coreference resolution",
+          "evidence_id": "chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6"
+        },
+        {
+          "name": "model",
+          "value": "a new generative, unsupervised ranking model for entity coreference resolution",
+          "quote": "We proposed a new generative, unsupervised ranking model for entity coreference resolution into which we introduced resolution mode variables to distinguish mentions resolved by different categories of information.",
+          "evidence_id": "chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6"
+        },
+        {
+          "name": "dataset",
+          "value": "APW and NYT sections of Gigaword Corpus",
+          "quote": "we select the APW and NYT sections of Gigaword Corpus (years 1994-2010) BIBREF20 to train the model",
+          "evidence_id": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6"
+        },
+        {
+          "name": "dataset",
+          "value": "CoNLL-2012 shared task",
+          "quote": "The development and test data are the English data from the CoNLL-2012 shared task BIBREF0 , which is derived from the OntoNotes corpus BIBREF21",
+          "evidence_id": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6"
+        },
+        {
+          "name": "training",
+          "value": "we select the APW and NYT sections of Gigaword Corpus (years 1994-2010) BIBREF20 to train the model",
+          "quote": "Due to the availability of readily parsed data, we select the APW and NYT sections of Gigaword Corpus (years 1994-2010) BIBREF20 to train the model. Following previous work BIBREF3 , we remove duplicated documents and the documents which include fewer than 3 sentences.",
+          "evidence_id": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6"
+        },
+        {
+          "name": "input_setting",
+          "value": "Our system is evaluated with automatically extracted mentions on the version of the data with automatic preprocessing information",
+          "quote": "Our system is evaluated with automatically extracted mentions on the version of the data with automatic preprocessing information (e.g., predicted parse trees).",
+          "evidence_id": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6"
+        },
+        {
+          "name": "metric",
+          "value": "MUC BIBREF22 , B $^{3}$ BIBREF23 , and Entity-based CEAF (CEAF $_e$ )",
+          "quote": "We evaluate our model on three measures widely used in the literature: MUC BIBREF22 , B $^{3}$ BIBREF23 , and Entity-based CEAF (CEAF $_e$ ) BIBREF24 . In addition, we also report results on another two popular metrics: Mention-based CEAF (CEAF $_m$ ) and BLANC BIBREF25 .",
+          "evidence_id": "chunk:de09a5eed4ccdd12a35d3368f3e91ab1e675d7f07d01b7207ee5f3a2338ae077"
+        },
+        {
+          "name": "metric",
+          "value": "CoNLL F1 score",
+          "quote": "our model achieves improvements of 2.93% and 3.01% on CoNLL F1 score over the Stanford system",
+          "evidence_id": "chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10"
+        },
+        {
+          "name": "result",
+          "value": "improvements of 2.93% and 3.01% on CoNLL F1 score over the Stanford system",
+          "quote": "our model achieves improvements of 2.93% and 3.01% on CoNLL F1 score over the Stanford system, the winner of the CoNLL 2011 shared task, on the CoNLL 2012 development and test sets, respectively. The improvements on CoNLL F1 score over the Multigraph model are 1.41% and 1.77% on the development and test sets, respectively. Comparing with the MIR model, we obtain significant improvements of 2.62% and 3.02% on CoNLL F1 score.",
+          "evidence_id": "chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10"
+        }
+      ],
+      "run_status": "failed",
+      "semantic_diagnostics": [
+        {
+          "occurrence": 1,
+          "name": "task",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 2,
+          "name": "model",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 3,
+          "name": "dataset",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 4,
+          "name": "dataset",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 5,
+          "name": "training",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 6,
+          "name": "input_setting",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 7,
+          "name": "metric",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 8,
+          "name": "metric",
+          "diagnostics": []
+        },
+        {
+          "occurrence": 9,
+          "name": "result",
+          "diagnostics": []
+        }
+      ],
+      "accepted_semantic_diagnostics": {}
+    }
+  }
+}
