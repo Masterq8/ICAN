@@ -1,0 +1,1272 @@
+{
+  "version": "p46-quality-v2-ai-review-v1",
+  "reviewer_type": "ai",
+  "reviewer": "Codex GPT-6",
+  "ai_review_status": "completed",
+  "human_review_status": "pending",
+  "scope": "all_parseable_raw_occurrences_and_all_72_field_presence_slots",
+  "seal_sha256": "f76a40870923094c80b497e687fd30a3e7ffa299de660588f9d532ba96b14533",
+  "review_input_sha256": "35afc7e7cbfd738762a577d8a91213bd2568917a399b3c3704a9ac5ab931ef80",
+  "cases": {
+    "gaussian_priors": {
+      "source_id": "qasper:1601.02166",
+      "run_status": "failed",
+      "tool_diagnostic": "runtime_error",
+      "fields": [],
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result",
+        "limitation"
+      ],
+      "presence_evidence_ids": {
+        "task": "chunk:66ae4e3ae90ca8f81b2609008b13dda040acb8acd6b6b879ca52e7d395cecf77",
+        "model": "chunk:5636b7b69a8034b5c7122162c626544c9b3efb93f81ea355355c4985bdaf06fb",
+        "dataset": "chunk:22cf4f3f2d9e099b91f1d751ad18868edaf6bbb27f1e06535c8ab1c76f823e89",
+        "input_setting": "chunk:66ae4e3ae90ca8f81b2609008b13dda040acb8acd6b6b879ca52e7d395cecf77",
+        "training": "chunk:c7e427d98c44e8ed4bec174e50df9100dcc964cf449d0a33e7a14e2b273a8f3e",
+        "metric": "chunk:9db63691548fcc99a71ec45402c407ecbd6a2a291b76db88bf7c8d3046b747b5",
+        "result": "chunk:9db63691548fcc99a71ec45402c407ecbd6a2a291b76db88bf7c8d3046b747b5",
+        "limitation": "chunk:c7e427d98c44e8ed4bec174e50df9100dcc964cf449d0a33e7a14e2b273a8f3e"
+      },
+      "omitted_present_fields": [
+        "dataset",
+        "input_setting",
+        "limitation",
+        "metric",
+        "model",
+        "result",
+        "task",
+        "training"
+      ],
+      "presence_decisions": {
+        "task": {
+          "present": true,
+          "evidence_id": "chunk:66ae4e3ae90ca8f81b2609008b13dda040acb8acd6b6b879ca52e7d395cecf77",
+          "reason": "冻结证据中有明确的 task 信息。"
+        },
+        "model": {
+          "present": true,
+          "evidence_id": "chunk:5636b7b69a8034b5c7122162c626544c9b3efb93f81ea355355c4985bdaf06fb",
+          "reason": "冻结证据中有明确的 model 信息。"
+        },
+        "dataset": {
+          "present": true,
+          "evidence_id": "chunk:22cf4f3f2d9e099b91f1d751ad18868edaf6bbb27f1e06535c8ab1c76f823e89",
+          "reason": "冻结证据中有明确的 dataset 信息。"
+        },
+        "input_setting": {
+          "present": true,
+          "evidence_id": "chunk:66ae4e3ae90ca8f81b2609008b13dda040acb8acd6b6b879ca52e7d395cecf77",
+          "reason": "冻结证据中有明确的 input_setting 信息。"
+        },
+        "training": {
+          "present": true,
+          "evidence_id": "chunk:c7e427d98c44e8ed4bec174e50df9100dcc964cf449d0a33e7a14e2b273a8f3e",
+          "reason": "冻结证据中有明确的 training 信息。"
+        },
+        "metric": {
+          "present": true,
+          "evidence_id": "chunk:9db63691548fcc99a71ec45402c407ecbd6a2a291b76db88bf7c8d3046b747b5",
+          "reason": "冻结证据中有明确的 metric 信息。"
+        },
+        "result": {
+          "present": true,
+          "evidence_id": "chunk:9db63691548fcc99a71ec45402c407ecbd6a2a291b76db88bf7c8d3046b747b5",
+          "reason": "冻结证据中有明确的 result 信息。"
+        },
+        "limitation": {
+          "present": true,
+          "evidence_id": "chunk:c7e427d98c44e8ed4bec174e50df9100dcc964cf449d0a33e7a14e2b273a8f3e",
+          "reason": "冻结证据中有明确的 limitation 信息。"
+        },
+        "code_availability": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 code_availability 信息。"
+        }
+      }
+    },
+    "urban_legends": {
+      "source_id": "qasper:1601.06081",
+      "run_status": "completed",
+      "tool_diagnostic": "accepted",
+      "fields": [
+        {
+          "occurrence": 0,
+          "name": "task",
+          "raw_field_sha256": "ddc3482edeab550de5909912b92b6df95513611595395e0f64d91a287b9e5b29",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "task",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 task 的语义。"
+        },
+        {
+          "occurrence": 1,
+          "name": "task",
+          "raw_field_sha256": "ded33c9ed59eae2d892c87586e4f4342d9b745e434e7f58dca33e3fe3fe78913",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "task",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 task 的语义。"
+        },
+        {
+          "occurrence": 2,
+          "name": "model",
+          "raw_field_sha256": "ff496787f71f0fb9327dfc60be660c3004fc5beb894c9018ceca70e8a7be764c",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 model 的语义。"
+        },
+        {
+          "occurrence": 3,
+          "name": "dataset",
+          "raw_field_sha256": "f6618a0c275178d59446bde9c4eba68103d284967acdee42572318ee1e6000ab",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 dataset 的语义。"
+        },
+        {
+          "occurrence": 4,
+          "name": "dataset",
+          "raw_field_sha256": "c80dd510fbc155e50d32719b72b62faa8182a336f5b9105d71c1fac8173b55dc",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 dataset 的语义。"
+        },
+        {
+          "occurrence": 5,
+          "name": "input_setting",
+          "raw_field_sha256": "406440fc30dfdb6dd4f4ec41f76fc75d11102bab6760857a94e9424e1776f424",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 input_setting 的语义。"
+        },
+        {
+          "occurrence": 6,
+          "name": "input_setting",
+          "raw_field_sha256": "c9e9f638168d18f86db3a9c0b09036b4ff4692dac6fc521f3f40dcfc3dbde080",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 input_setting 的语义。"
+        },
+        {
+          "occurrence": 7,
+          "name": "training",
+          "raw_field_sha256": "d531a77758a471f853577834f71240e9083d6f53fccd2f330d54bcef116e8ef0",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "training",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 training 的语义。"
+        },
+        {
+          "occurrence": 8,
+          "name": "training",
+          "raw_field_sha256": "d06a82672269ebe4748d52513098dab7e3365c56ef01cc23d90e36b376273e48",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "training",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 training 的语义。"
+        },
+        {
+          "occurrence": 9,
+          "name": "metric",
+          "raw_field_sha256": "006ec4fa26830657ec1ab9e1648c0efcc32c1b8802d63dbaf6456cc5e53f7cb8",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 metric 的语义。"
+        },
+        {
+          "occurrence": 10,
+          "name": "metric",
+          "raw_field_sha256": "22ab4937d3ca67dcbbc6a56818a79b2779a35efc00ccccbff9b1310c87f239b7",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 metric 的语义。"
+        },
+        {
+          "occurrence": 11,
+          "name": "metric",
+          "raw_field_sha256": "bd4f47d2d896c51c4eb4ea35d592f42633e39b88f95c2a5d3e7b2fc41121ff7c",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 metric 的语义。"
+        },
+        {
+          "occurrence": 12,
+          "name": "metric",
+          "raw_field_sha256": "d7e8657630823106c19d92c60b33524bdb24bd275f5e920a206f4a749d232b3a",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 metric 的语义。"
+        },
+        {
+          "occurrence": 13,
+          "name": "result",
+          "raw_field_sha256": "7421e08ec80341a74f0fd023b4f91a9d35cff5e435aef8adf8f3910d84da274b",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 14,
+          "name": "result",
+          "raw_field_sha256": "77470f23c2c4ae8e100263c0a86f726fb5965df9cf84fa80c8900589a97975a1",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 15,
+          "name": "result",
+          "raw_field_sha256": "328a0a0f55d7be0c1ec6299bb8fcd554ad96b348a2a81247af22ac5c2124f6cb",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 16,
+          "name": "result",
+          "raw_field_sha256": "e32aae1b1a25c03765feb43aac8ca9e44727f9b3eef537834a0a30d4907a5ef1",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        }
+      ],
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result"
+      ],
+      "presence_evidence_ids": {
+        "task": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "model": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "dataset": "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3",
+        "input_setting": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "training": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "metric": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+        "result": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7"
+      },
+      "omitted_present_fields": [],
+      "presence_decisions": {
+        "task": {
+          "present": true,
+          "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+          "reason": "冻结证据中有明确的 task 信息。"
+        },
+        "model": {
+          "present": true,
+          "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+          "reason": "冻结证据中有明确的 model 信息。"
+        },
+        "dataset": {
+          "present": true,
+          "evidence_id": "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3",
+          "reason": "冻结证据中有明确的 dataset 信息。"
+        },
+        "input_setting": {
+          "present": true,
+          "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+          "reason": "冻结证据中有明确的 input_setting 信息。"
+        },
+        "training": {
+          "present": true,
+          "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+          "reason": "冻结证据中有明确的 training 信息。"
+        },
+        "metric": {
+          "present": true,
+          "evidence_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+          "reason": "冻结证据中有明确的 metric 信息。"
+        },
+        "result": {
+          "present": true,
+          "evidence_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+          "reason": "冻结证据中有明确的 result 信息。"
+        },
+        "limitation": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 limitation 信息。"
+        },
+        "code_availability": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 code_availability 信息。"
+        }
+      }
+    },
+    "linguistic_hedges": {
+      "source_id": "qasper:1601.06738",
+      "run_status": "completed",
+      "tool_diagnostic": "accepted",
+      "fields": [
+        {
+          "occurrence": 0,
+          "name": "task",
+          "raw_field_sha256": "501d34c90a35c8d9ed636f91b2fe51398a2531f1742f4ce1890ae5cebe82a5ff",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "task",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 task 的语义。"
+        },
+        {
+          "occurrence": 1,
+          "name": "model",
+          "raw_field_sha256": "ce27eb635195eaeab6181e8ee99333e478bcdd0f9d9e26047cf6d2e3c4354962",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 model 的语义。"
+        },
+        {
+          "occurrence": 2,
+          "name": "model",
+          "raw_field_sha256": "a772524832648f3f8e20ad60ee7744d364f78dab322fe1486ba05142a2c02376",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 model 的语义。"
+        },
+        {
+          "occurrence": 3,
+          "name": "result",
+          "raw_field_sha256": "557c1216ff2969fa55cbaa98e8a5d6f36010288180d62ce620dc97dc5c1c74d0",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 4,
+          "name": "result",
+          "raw_field_sha256": "c00fea56ca1cb4c9f5d6e1e5bd5be87c9869160e56801ff11fb43a7037424a04",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 5,
+          "name": "result",
+          "raw_field_sha256": "d0e8632ba98d564081870b4f8d1c1031970e8aaf0f63a771cad9d57cb6a2113e",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 6,
+          "name": "limitation",
+          "raw_field_sha256": "89d7257e5244ae926f0668995c62f2ca90ac867fced7b3266871066ab6d9c603",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 limitation 的语义。"
+        }
+      ],
+      "expected_present_fields": [
+        "task",
+        "model",
+        "result",
+        "limitation"
+      ],
+      "presence_evidence_ids": {
+        "task": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+        "model": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+        "result": "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+        "limitation": "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2"
+      },
+      "omitted_present_fields": [],
+      "presence_decisions": {
+        "task": {
+          "present": true,
+          "evidence_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+          "reason": "冻结证据中有明确的 task 信息。"
+        },
+        "model": {
+          "present": true,
+          "evidence_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+          "reason": "冻结证据中有明确的 model 信息。"
+        },
+        "dataset": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 dataset 信息。"
+        },
+        "input_setting": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 input_setting 信息。"
+        },
+        "training": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 training 信息。"
+        },
+        "metric": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 metric 信息。"
+        },
+        "result": {
+          "present": true,
+          "evidence_id": "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+          "reason": "冻结证据中有明确的 result 信息。"
+        },
+        "limitation": {
+          "present": true,
+          "evidence_id": "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2",
+          "reason": "冻结证据中有明确的 limitation 信息。"
+        },
+        "code_availability": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 code_availability 信息。"
+        }
+      }
+    },
+    "grail_prover": {
+      "source_id": "qasper:1602.00812",
+      "run_status": "completed",
+      "tool_diagnostic": "accepted",
+      "fields": [
+        {
+          "occurrence": 0,
+          "name": "task",
+          "raw_field_sha256": "70d9ba2f1ae89d28aaeb049a1c5ac713b897d96e905bc23dd51e04e0dfd493d9",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "task",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 task 的语义。"
+        },
+        {
+          "occurrence": 1,
+          "name": "model",
+          "raw_field_sha256": "e030b5549621672ba8366c1110af1a84b42975f8dcfc5059074b90b10843f682",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 model 的语义。"
+        },
+        {
+          "occurrence": 2,
+          "name": "model",
+          "raw_field_sha256": "5eb3d40c9811225892913e30d0044701534bad1a052eb3942a51ad5aa34203e0",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 model 的语义。"
+        },
+        {
+          "occurrence": 3,
+          "name": "input_setting",
+          "raw_field_sha256": "4fb5c731f6874beafb5436fab6335edb642f022980c7dd25a764b847c0907178",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 input_setting 的语义。"
+        },
+        {
+          "occurrence": 4,
+          "name": "input_setting",
+          "raw_field_sha256": "12a458c815a16cdac153747aa77bf6330e71b00b87b9a3ec1c4e0d370e041965",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 input_setting 的语义。"
+        },
+        {
+          "occurrence": 5,
+          "name": "input_setting",
+          "raw_field_sha256": "8029c032ead7206b60e21909ac2b53f21ec6b5507d42cad79dc08e0ba5342f15",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 input_setting 的语义。"
+        },
+        {
+          "occurrence": 6,
+          "name": "input_setting",
+          "raw_field_sha256": "5617ca217325d5dcbce651a3960359f09124130b0e90651262084c77c8bd0712",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 input_setting 的语义。"
+        },
+        {
+          "occurrence": 7,
+          "name": "dataset",
+          "raw_field_sha256": "0222973435b2b4751822b35b90423975f73250b09b977948e6d4cf528659b0c5",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 dataset 的语义。"
+        },
+        {
+          "occurrence": 8,
+          "name": "dataset",
+          "raw_field_sha256": "627e42a5117754b6f1fe545cb0854af82815db6e6285a678c2a26f3ab676cd02",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 dataset 的语义。"
+        },
+        {
+          "occurrence": 9,
+          "name": "result",
+          "raw_field_sha256": "89e5176844f4d74c6dc3e03ef5723b626ca71c0a0eaa39f02c71ea5cbc5472ad",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 10,
+          "name": "result",
+          "raw_field_sha256": "77256a203869eedae2c3aeb99f011ee2f8908b0bab85b1d6081ac9a6f526e591",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 11,
+          "name": "limitation",
+          "raw_field_sha256": "ff19bf4273a0aa063f438330aa3abe25789953b07cc104c25a163dec2d0ed34a",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 limitation 的语义。"
+        },
+        {
+          "occurrence": 12,
+          "name": "limitation",
+          "raw_field_sha256": "434957ae72fd40d5525de58bdb506fa812e3ebb1adce9f274488c4b875c48417",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 limitation 的语义。"
+        },
+        {
+          "occurrence": 13,
+          "name": "limitation",
+          "raw_field_sha256": "37c675adbebfb8c856ea1607e6ca9d02e3b6400c47c9580ab8288e2f8bc68be8",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 limitation 的语义。"
+        }
+      ],
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "result",
+        "limitation"
+      ],
+      "presence_evidence_ids": {
+        "task": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9",
+        "model": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "dataset": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "input_setting": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+        "result": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "limitation": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9"
+      },
+      "omitted_present_fields": [],
+      "presence_decisions": {
+        "task": {
+          "present": true,
+          "evidence_id": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9",
+          "reason": "冻结证据中有明确的 task 信息。"
+        },
+        "model": {
+          "present": true,
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+          "reason": "冻结证据中有明确的 model 信息。"
+        },
+        "dataset": {
+          "present": true,
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+          "reason": "冻结证据中有明确的 dataset 信息。"
+        },
+        "input_setting": {
+          "present": true,
+          "evidence_id": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+          "reason": "冻结证据中有明确的 input_setting 信息。"
+        },
+        "training": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 training 信息。"
+        },
+        "metric": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 metric 信息。"
+        },
+        "result": {
+          "present": true,
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+          "reason": "冻结证据中有明确的 result 信息。"
+        },
+        "limitation": {
+          "present": true,
+          "evidence_id": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9",
+          "reason": "冻结证据中有明确的 limitation 信息。"
+        },
+        "code_availability": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 code_availability 信息。"
+        }
+      }
+    },
+    "syntactic_structures": {
+      "source_id": "qasper:1602.03661",
+      "run_status": "completed",
+      "tool_diagnostic": "accepted",
+      "fields": [
+        {
+          "occurrence": 0,
+          "name": "task",
+          "raw_field_sha256": "ee3301d45a03e3505d8e91edafbd4073590b1e2db2830d8fb7c774a80bb17b95",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "task",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 task 的语义。"
+        },
+        {
+          "occurrence": 1,
+          "name": "model",
+          "raw_field_sha256": "18642d39ebb841b28ed50e0519673ec8bfd46c2c66c2e6d7ef5c74ce74176f30",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 model 的语义。"
+        },
+        {
+          "occurrence": 2,
+          "name": "dataset",
+          "raw_field_sha256": "7f30734dd77488878b393ad4f19a3773debba3bc0fff964340ab9906d2cfa3fb",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 dataset 的语义。"
+        },
+        {
+          "occurrence": 3,
+          "name": "dataset",
+          "raw_field_sha256": "7a78c7664066f240fc40206697d4ba3cc258a3f269d3bb097c1c216e04fe8291",
+          "evidence_supported": false,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "evidence_reason": "引文不是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 dataset 的语义。"
+        },
+        {
+          "occurrence": 4,
+          "name": "metric",
+          "raw_field_sha256": "9025ed979053631aed61b9e14603705efd1e2545324accc817016c9f0fd2eb9e",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 metric 的语义。"
+        },
+        {
+          "occurrence": 5,
+          "name": "metric",
+          "raw_field_sha256": "9f463a4c4ce6d40d9330e376b5c0c0d8ee0b038659555a29e0b7f4576341b01c",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 metric 的语义。"
+        },
+        {
+          "occurrence": 6,
+          "name": "metric",
+          "raw_field_sha256": "8117154faa96d50b1b209757caf6ead94fd083143bb53226f2cbbb89d4190be7",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "metric",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 metric 的语义。"
+        },
+        {
+          "occurrence": 7,
+          "name": "training",
+          "raw_field_sha256": "5fd846df4351122f691c9b501c446c05ec97ea16721743113dac72785f0469f3",
+          "evidence_supported": true,
+          "type_correct": false,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "该值应归入 input_setting，不符合 training 的字段契约。"
+        },
+        {
+          "occurrence": 8,
+          "name": "result",
+          "raw_field_sha256": "f8c96314f76cf082bd9e0ad8469f7254dfc1ed38e276193d1f17741713dac656",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 9,
+          "name": "result",
+          "raw_field_sha256": "57434a3bb13e0c5ff3acad682bbb46d0fffef1d5da35557dd2fa6ac5040d8744",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 10,
+          "name": "limitation",
+          "raw_field_sha256": "81221eebdfac209339696478b8c4098d5135ed0f68d5655323f750e71fda0570",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 limitation 的语义。"
+        },
+        {
+          "occurrence": 11,
+          "name": "limitation",
+          "raw_field_sha256": "9108f3400bdba89027b0d6af9f640f97908faf69692db26891813c40be911237",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 limitation 的语义。"
+        }
+      ],
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "metric",
+        "result",
+        "limitation"
+      ],
+      "presence_evidence_ids": {
+        "task": "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340",
+        "model": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+        "dataset": "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230",
+        "input_setting": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+        "metric": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+        "result": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+        "limitation": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+      },
+      "omitted_present_fields": [
+        "input_setting"
+      ],
+      "presence_decisions": {
+        "task": {
+          "present": true,
+          "evidence_id": "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340",
+          "reason": "冻结证据中有明确的 task 信息。"
+        },
+        "model": {
+          "present": true,
+          "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+          "reason": "冻结证据中有明确的 model 信息。"
+        },
+        "dataset": {
+          "present": true,
+          "evidence_id": "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230",
+          "reason": "冻结证据中有明确的 dataset 信息。"
+        },
+        "input_setting": {
+          "present": true,
+          "evidence_id": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+          "reason": "冻结证据中有明确的 input_setting 信息。"
+        },
+        "training": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 training 信息。"
+        },
+        "metric": {
+          "present": true,
+          "evidence_id": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+          "reason": "冻结证据中有明确的 metric 信息。"
+        },
+        "result": {
+          "present": true,
+          "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+          "reason": "冻结证据中有明确的 result 信息。"
+        },
+        "limitation": {
+          "present": true,
+          "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+          "reason": "冻结证据中有明确的 limitation 信息。"
+        },
+        "code_availability": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 code_availability 信息。"
+        }
+      }
+    },
+    "rnn_domain_adaptation": {
+      "source_id": "qasper:1604.00117",
+      "run_status": "failed",
+      "tool_diagnostic": "runtime_error",
+      "fields": [],
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "result",
+        "limitation"
+      ],
+      "presence_evidence_ids": {
+        "task": "chunk:f2747de3f7dec34115d84855fb2cbd288f4aa4f26e0a128ae9fdad8d4adf07b4",
+        "model": "chunk:3352b8064fa2f88bd18a7b88f7624cea84a9703920e9e1eef83e17c16dd050b6",
+        "dataset": "chunk:5dd6882f450a8e31a58f89d0a27134aa8d6f97448011a53ad63ca41e4d305482",
+        "input_setting": "chunk:5dd6882f450a8e31a58f89d0a27134aa8d6f97448011a53ad63ca41e4d305482",
+        "training": "chunk:84c9fae81a24161b125c40472c4a2d608795df48286034e0d0cedd6c5817d3c8",
+        "result": "chunk:6aecf55c2c39c8e9b609967710d1f4a81d1dad9807c1fae63474c6e2ea4050ca",
+        "limitation": "chunk:f2747de3f7dec34115d84855fb2cbd288f4aa4f26e0a128ae9fdad8d4adf07b4"
+      },
+      "omitted_present_fields": [
+        "dataset",
+        "input_setting",
+        "limitation",
+        "model",
+        "result",
+        "task",
+        "training"
+      ],
+      "presence_decisions": {
+        "task": {
+          "present": true,
+          "evidence_id": "chunk:f2747de3f7dec34115d84855fb2cbd288f4aa4f26e0a128ae9fdad8d4adf07b4",
+          "reason": "冻结证据中有明确的 task 信息。"
+        },
+        "model": {
+          "present": true,
+          "evidence_id": "chunk:3352b8064fa2f88bd18a7b88f7624cea84a9703920e9e1eef83e17c16dd050b6",
+          "reason": "冻结证据中有明确的 model 信息。"
+        },
+        "dataset": {
+          "present": true,
+          "evidence_id": "chunk:5dd6882f450a8e31a58f89d0a27134aa8d6f97448011a53ad63ca41e4d305482",
+          "reason": "冻结证据中有明确的 dataset 信息。"
+        },
+        "input_setting": {
+          "present": true,
+          "evidence_id": "chunk:5dd6882f450a8e31a58f89d0a27134aa8d6f97448011a53ad63ca41e4d305482",
+          "reason": "冻结证据中有明确的 input_setting 信息。"
+        },
+        "training": {
+          "present": true,
+          "evidence_id": "chunk:84c9fae81a24161b125c40472c4a2d608795df48286034e0d0cedd6c5817d3c8",
+          "reason": "冻结证据中有明确的 training 信息。"
+        },
+        "metric": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 metric 信息。"
+        },
+        "result": {
+          "present": true,
+          "evidence_id": "chunk:6aecf55c2c39c8e9b609967710d1f4a81d1dad9807c1fae63474c6e2ea4050ca",
+          "reason": "冻结证据中有明确的 result 信息。"
+        },
+        "limitation": {
+          "present": true,
+          "evidence_id": "chunk:f2747de3f7dec34115d84855fb2cbd288f4aa4f26e0a128ae9fdad8d4adf07b4",
+          "reason": "冻结证据中有明确的 limitation 信息。"
+        },
+        "code_availability": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 code_availability 信息。"
+        }
+      }
+    },
+    "attsum": {
+      "source_id": "qasper:1604.00125",
+      "run_status": "failed",
+      "tool_diagnostic": "runtime_error",
+      "fields": [],
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result",
+        "limitation"
+      ],
+      "presence_evidence_ids": {
+        "task": "chunk:06f3cf50ade552b6457050cab0e903f362c4cd57a4bd8aaeb43dbc201d3757f1",
+        "model": "chunk:c9fa2e376599ba33e30bfde628d90113a0b2a3123e3e2d86b4c4a19ff4e443ca",
+        "dataset": "chunk:06f3cf50ade552b6457050cab0e903f362c4cd57a4bd8aaeb43dbc201d3757f1",
+        "input_setting": "chunk:06f3cf50ade552b6457050cab0e903f362c4cd57a4bd8aaeb43dbc201d3757f1",
+        "training": "chunk:07873a4f272e0a34a4e3790c27ba57d6283503ee9e31c3d319e4430d4abe49f7",
+        "metric": "chunk:9690acd353250bf7507a06827bf90a28c7bd5b43ac61034100a1a881d0108e6e",
+        "result": "chunk:c9fa2e376599ba33e30bfde628d90113a0b2a3123e3e2d86b4c4a19ff4e443ca",
+        "limitation": "chunk:c9fa2e376599ba33e30bfde628d90113a0b2a3123e3e2d86b4c4a19ff4e443ca"
+      },
+      "omitted_present_fields": [
+        "dataset",
+        "input_setting",
+        "limitation",
+        "metric",
+        "model",
+        "result",
+        "task",
+        "training"
+      ],
+      "presence_decisions": {
+        "task": {
+          "present": true,
+          "evidence_id": "chunk:06f3cf50ade552b6457050cab0e903f362c4cd57a4bd8aaeb43dbc201d3757f1",
+          "reason": "冻结证据中有明确的 task 信息。"
+        },
+        "model": {
+          "present": true,
+          "evidence_id": "chunk:c9fa2e376599ba33e30bfde628d90113a0b2a3123e3e2d86b4c4a19ff4e443ca",
+          "reason": "冻结证据中有明确的 model 信息。"
+        },
+        "dataset": {
+          "present": true,
+          "evidence_id": "chunk:06f3cf50ade552b6457050cab0e903f362c4cd57a4bd8aaeb43dbc201d3757f1",
+          "reason": "冻结证据中有明确的 dataset 信息。"
+        },
+        "input_setting": {
+          "present": true,
+          "evidence_id": "chunk:06f3cf50ade552b6457050cab0e903f362c4cd57a4bd8aaeb43dbc201d3757f1",
+          "reason": "冻结证据中有明确的 input_setting 信息。"
+        },
+        "training": {
+          "present": true,
+          "evidence_id": "chunk:07873a4f272e0a34a4e3790c27ba57d6283503ee9e31c3d319e4430d4abe49f7",
+          "reason": "冻结证据中有明确的 training 信息。"
+        },
+        "metric": {
+          "present": true,
+          "evidence_id": "chunk:9690acd353250bf7507a06827bf90a28c7bd5b43ac61034100a1a881d0108e6e",
+          "reason": "冻结证据中有明确的 metric 信息。"
+        },
+        "result": {
+          "present": true,
+          "evidence_id": "chunk:c9fa2e376599ba33e30bfde628d90113a0b2a3123e3e2d86b4c4a19ff4e443ca",
+          "reason": "冻结证据中有明确的 result 信息。"
+        },
+        "limitation": {
+          "present": true,
+          "evidence_id": "chunk:c9fa2e376599ba33e30bfde628d90113a0b2a3123e3e2d86b4c4a19ff4e443ca",
+          "reason": "冻结证据中有明确的 limitation 信息。"
+        },
+        "code_availability": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 code_availability 信息。"
+        }
+      }
+    },
+    "causal_statements": {
+      "source_id": "qasper:1604.05781",
+      "run_status": "completed",
+      "tool_diagnostic": "accepted",
+      "fields": [
+        {
+          "occurrence": 0,
+          "name": "task",
+          "raw_field_sha256": "a086dab8bada2de70eb184d2d4bc56a2c7e0049dd11d2705e124a58d85836919",
+          "evidence_supported": false,
+          "type_correct": true,
+          "correct_type": "task",
+          "evidence_reason": "引文不是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 task 的语义。"
+        },
+        {
+          "occurrence": 1,
+          "name": "dataset",
+          "raw_field_sha256": "670bb354e23f4a5f230471d8e867e14aecb1e82ac8b1ec67160b24752efe2135",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "dataset",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 dataset 的语义。"
+        },
+        {
+          "occurrence": 2,
+          "name": "dataset",
+          "raw_field_sha256": "b638d8dceb897d4a306085be3513522fc97df4dd78a91dd0dd2472126bde7757",
+          "evidence_supported": true,
+          "type_correct": false,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "该值应归入 result，不符合 dataset 的字段契约。"
+        },
+        {
+          "occurrence": 3,
+          "name": "input_setting",
+          "raw_field_sha256": "eece40ea90d0ea289fd3fdf8046ae119e37debaf32536708db37ce6a4d8ecc95",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 input_setting 的语义。"
+        },
+        {
+          "occurrence": 4,
+          "name": "input_setting",
+          "raw_field_sha256": "8c41cd0a6044b5a8e669832476b3860c602f7e6cb55f7ae06bddfc1133d288db",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 input_setting 的语义。"
+        },
+        {
+          "occurrence": 5,
+          "name": "input_setting",
+          "raw_field_sha256": "a164a6247a5ef723edb3d99efdab4762f0e0fd2416135ea5e8b334546197881c",
+          "evidence_supported": false,
+          "type_correct": true,
+          "correct_type": "input_setting",
+          "evidence_reason": "引文不是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 input_setting 的语义。"
+        },
+        {
+          "occurrence": 6,
+          "name": "model",
+          "raw_field_sha256": "1d471376b53aaf14a25197000e0f87e95fdc712e4a9c4566b8a2aaa377ff8296",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 model 的语义。"
+        },
+        {
+          "occurrence": 7,
+          "name": "model",
+          "raw_field_sha256": "2b7bb01021cebb520b93a070ca4f07c0096ed968283c0167fce841e1c765cad6",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 model 的语义。"
+        },
+        {
+          "occurrence": 8,
+          "name": "model",
+          "raw_field_sha256": "ef2de341a62bf31b84cf38065fff16f6894ba2408b0162fe607cd360315e300a",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "model",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 model 的语义。"
+        },
+        {
+          "occurrence": 9,
+          "name": "result",
+          "raw_field_sha256": "3b2f6e33dc7178a9f6dc69595f40ae6227817368d800fa131293c8c78a46d727",
+          "evidence_supported": false,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文不是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 10,
+          "name": "result",
+          "raw_field_sha256": "07b1872544c3d145256bd8da688723222674ada1ac51b8a758e2e3af577c80bf",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 11,
+          "name": "result",
+          "raw_field_sha256": "f3a1f552dd9957bac4a3bb55aba60901c7589de1704881f32f8c41aa8d6c2082",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "result",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 result 的语义。"
+        },
+        {
+          "occurrence": 12,
+          "name": "limitation",
+          "raw_field_sha256": "bcaa9474b23db82ce5480a8173fe2141d881e44c0f1ae4928089060f53f86f2f",
+          "evidence_supported": false,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "evidence_reason": "引文不是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 limitation 的语义。"
+        },
+        {
+          "occurrence": 13,
+          "name": "limitation",
+          "raw_field_sha256": "356ac665ab63d3c4b8d8bb6e281f6df6a9e31ae3f2e50eba6a91162a054342d9",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 limitation 的语义。"
+        },
+        {
+          "occurrence": 14,
+          "name": "limitation",
+          "raw_field_sha256": "45cb7594992ecd7284e47246929b070a12dbcffcd516e810d8ce1fb898acd011",
+          "evidence_supported": true,
+          "type_correct": true,
+          "correct_type": "limitation",
+          "evidence_reason": "引文是所绑定证据片段中的连续原文。",
+          "type_reason": "字段值符合 limitation 的语义。"
+        }
+      ],
+      "expected_present_fields": [
+        "task",
+        "model",
+        "dataset",
+        "input_setting",
+        "training",
+        "metric",
+        "result",
+        "limitation"
+      ],
+      "presence_evidence_ids": {
+        "task": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614",
+        "model": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+        "dataset": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614",
+        "input_setting": "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+        "training": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+        "metric": "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6",
+        "result": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+        "limitation": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+      },
+      "omitted_present_fields": [
+        "metric",
+        "training"
+      ],
+      "presence_decisions": {
+        "task": {
+          "present": true,
+          "evidence_id": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614",
+          "reason": "冻结证据中有明确的 task 信息。"
+        },
+        "model": {
+          "present": true,
+          "evidence_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+          "reason": "冻结证据中有明确的 model 信息。"
+        },
+        "dataset": {
+          "present": true,
+          "evidence_id": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614",
+          "reason": "冻结证据中有明确的 dataset 信息。"
+        },
+        "input_setting": {
+          "present": true,
+          "evidence_id": "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+          "reason": "冻结证据中有明确的 input_setting 信息。"
+        },
+        "training": {
+          "present": true,
+          "evidence_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+          "reason": "冻结证据中有明确的 training 信息。"
+        },
+        "metric": {
+          "present": true,
+          "evidence_id": "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6",
+          "reason": "冻结证据中有明确的 metric 信息。"
+        },
+        "result": {
+          "present": true,
+          "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+          "reason": "冻结证据中有明确的 result 信息。"
+        },
+        "limitation": {
+          "present": true,
+          "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+          "reason": "冻结证据中有明确的 limitation 信息。"
+        },
+        "code_availability": {
+          "present": false,
+          "evidence_id": null,
+          "reason": "六条冻结证据没有明确的 code_availability 信息。"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "trace": "48404c163f574ff087e5bc42b10622f3.json",
+  "trace_sha256": "94e9093866fe6a0b322c1be93fdf6dde00f3ad37c9764d428815f22b4bca5938",
+  "usage": {
+    "paid_calls": 1,
+    "prompt_tokens": 2077,
+    "completion_tokens": 1754,
+    "actual_cost_usd": null
+  },
+  "response_id": "a9caf738-a4a9-4f4b-8f85-4af926f45878",
+  "tool_diagnosis": {
+    "status": "accepted",
+    "code": "accepted",
+    "issues": [],
+    "referenced_evidence_ids": [
+      "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+      "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+      "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+      "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+      "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3"
+    ],
+    "unknown_evidence_ids": []
+  },
+  "source_id": "qasper:1601.06081",
+  "request_sha256": "0ed7481e0b045ca9050ddb6b8b9b44b7258d8c34279bb4d9cb1eeb521119af6b",
+  "raw_action_path": "raw-actions/urban_legends.json",
+  "raw_action_sha256": "3790b105755aaa6a7ae340f368054ad5811c0dd6cf22713f45aafd48646bffb7"
+}

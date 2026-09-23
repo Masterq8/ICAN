@@ -1,0 +1,65 @@
+{
+  "task_id": "283f1abf3c704817b0c18d071f3d76e2",
+  "request": {
+    "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+    "collection": "qasper_train_v1",
+    "source_id": "qasper:1601.06738"
+  },
+  "selected_evidence_ids": [
+    "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+    "chunk:0ab431fb8c9af9a261a5910f1ade24597a282474108249f9edf39b980e24993c",
+    "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2",
+    "chunk:4fa9e81b1d3afe20d1939f9847389b03d5fdfc275a8d8c2d62b3eed7ed2a8c4c",
+    "chunk:c167a3f360d53472bd11e9477f3c64ce04269204fdd8fff98a36a454fc6f59e0",
+    "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107"
+  ],
+  "model_action": {
+    "content": "",
+    "role": "assistant",
+    "tool_calls": [
+      {
+        "id": "call_00_Lnp9YBVu8WZTpBNqFQ0C5242",
+        "function": {
+          "arguments": "{\"decision\": \"include\", \"reason\": \"The paper proposes a label semantics approach to linguistic hedges (e.g. 'very', 'quite') grounded in conceptual spaces and prototype theory, defining formulae for hedged concepts and examining limiting behaviour of repeated application. This is a theoretical modeling paper with explicit definitions of the task/model and results, though it contains no empirical datasets or quantitative evaluation metrics.\", \"reason_evidence_ids\": [\"chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107\", \"chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f\"], \"fields\": [{\"name\": \"task\", \"value\": \"linguistic hedges modeling\", \"quote\": \"we give formulations of the hedges `very' and `quite'\", \"evidence_id\": \"chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107\"}, {\"name\": \"model\", \"value\": \"label semantics framework\", \"quote\": \"Our account of linguistic hedges uses the label semantics framework to model concepts\", \"evidence_id\": \"chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107\"}, {\"name\": \"model\", \"value\": \"prototype and threshold\", \"quote\": \"a formalisation of concepts as based on a prototype and a threshold, located in a conceptual space\", \"evidence_id\": \"chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107\"}, {\"name\": \"result\", \"value\": \"crisp set in the limit\", \"quote\": \"in the limit, the result of applying dilation or contraction modifiers multiple times is to create a crisp set\", \"evidence_id\": \"chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f\"}, {\"name\": \"result\", \"value\": \"dilation includes whole support; contraction reduces to prototype\", \"quote\": \"In the case of dilation, the crisp set includes the whole support of the fuzzy set associated with the original label, whereas in the case of contraction, the concept reduces to include only its prototype\", \"evidence_id\": \"chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f\"}, {\"name\": \"result\", \"value\": \"most general result applies when epsilon2 <= f(epsilon1) or epsilon2 >= f(epsilon1)\", \"quote\": \"the formula still applies when $\\\\varepsilon _2 \\\\le f(\\\\varepsilon _1)$ , or $\\\\varepsilon _2 \\\\ge f(\\\\varepsilon _1)$\", \"evidence_id\": \"chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2\"}, {\"name\": \"limitation\", \"value\": \"simplicity of the original result is lost with additional parameters\", \"quote\": \"In this case we have introduced additional parameters, so the simplicity of the original result is lost\", \"evidence_id\": \"chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2\"}]}",
+          "name": "submit_research_card"
+        },
+        "type": "function",
+        "index": 0
+      }
+    ]
+  },
+  "model_records": [
+    {
+      "role": "answer",
+      "requested_model": "deepseek-v4-pro",
+      "call_id": "de5a33b16b7c4c8bbb71dbfe058f6c46",
+      "usage": {
+        "completion_tokens": 896,
+        "prompt_tokens": 2338,
+        "total_tokens": 3234,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 1442
+      },
+      "status": "completed",
+      "response_model": "deepseek-v4-pro",
+      "response_id": "41797f10-8892-43e7-bd0e-43e80fac2a83"
+    }
+  ],
+  "submission_diagnostic": {
+    "status": "accepted",
+    "code": "accepted",
+    "issues": [],
+    "referenced_evidence_ids": [
+      "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+      "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2",
+      "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107"
+    ],
+    "unknown_evidence_ids": []
+  }
+}

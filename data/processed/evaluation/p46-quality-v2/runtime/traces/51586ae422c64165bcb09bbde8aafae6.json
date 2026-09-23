@@ -1,0 +1,65 @@
+{
+  "task_id": "51586ae422c64165bcb09bbde8aafae6",
+  "request": {
+    "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+    "collection": "qasper_train_v1",
+    "source_id": "qasper:1602.00812"
+  },
+  "selected_evidence_ids": [
+    "chunk:474288f851e7591e9825bd5ff65f370eef330fd3c6bd55fdfc61d14d21007bd1",
+    "chunk:8ae32a7d1f94d188393ada8e8c2b7f00dc8261bfcc70eea528c7c008ba72604f",
+    "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+    "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+    "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9",
+    "chunk:f701de87bc6d585f6f4e5a917e2deb8034441a313b810559fda34ce74befcfae"
+  ],
+  "model_action": {
+    "content": "",
+    "role": "assistant",
+    "tool_calls": [
+      {
+        "id": "call_00_i6YNc9D6RnYUV8zp2oSp3122",
+        "function": {
+          "arguments": "{\"decision\": \"include\", \"reason\": \"The paper explicitly describes the Grail theorem prover for type-logical grammars, including its proof search strategy, proof net process, and evaluation on random and corpus-extracted multimodal statements. It reports task, method, algorithmic setup, evaluation results, and limitations, warranting inclusion for extraction.\", \"reason_evidence_ids\": [\"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\", \"chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699\", \"chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9\"], \"fields\": [{\"name\": \"task\", \"value\": \"automated theorem proving for type-logical grammars\", \"quote\": \"This is where automated theorem provers are useful\", \"evidence_id\": \"chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9\"}, {\"name\": \"model\", \"value\": \"Grail\", \"quote\": \"the proof search strategy used by Grail\", \"evidence_id\": \"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\"}, {\"name\": \"model\", \"value\": \"dancing links algorithm\", \"quote\": \"it is an instance of the “dancing links” algorithm\", \"evidence_id\": \"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\"}, {\"name\": \"input_setting\", \"value\": \"four step process: lexical lookup, unfolding, identification of atoms, graph rewriting\", \"quote\": \"theorem proving using proof nets is a four step process, which in the current situation looks as follows: 1) lexical lookup, 2) unfolding, 3) identification of atoms, 4) graph rewriting\", \"evidence_id\": \"chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699\"}, {\"name\": \"input_setting\", \"value\": \"link a formula which has the least possibilities\", \"quote\": \"we always link a formula which has the least possibilities\", \"evidence_id\": \"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\"}, {\"name\": \"input_setting\", \"value\": \"rewrite the abstract proof structures only once a fully linked proof structure has been produced\", \"quote\": \"we rewrite the abstract proof structures only once a fully linked proof structure has been produced\", \"evidence_id\": \"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\"}, {\"name\": \"input_setting\", \"value\": \"graph rewriting only once all atoms have been connected\", \"quote\": \"The current implementation does graph rewriting only once all atoms have been connected\", \"evidence_id\": \"chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699\"}, {\"name\": \"dataset\", \"value\": \"randomly generated statements\", \"quote\": \"evaluation both on randomly generated statements\", \"evidence_id\": \"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\"}, {\"name\": \"dataset\", \"value\": \"multimodal statements extracted from corpora\", \"quote\": \"on multimodal statements extracted from corpora\", \"evidence_id\": \"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\"}, {\"name\": \"result\", \"value\": \"the resulting algorithm performs more than well enough\", \"quote\": \"the resulting algorithm performs more than well enough\", \"evidence_id\": \"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\"}, {\"name\": \"result\", \"value\": \"the parser is not extremely fast\", \"quote\": \"Though the parser is not extremely fast\", \"evidence_id\": \"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\"}, {\"name\": \"limitation\", \"value\": \"parser is not extremely fast\", \"quote\": \"Though the parser is not extremely fast\", \"evidence_id\": \"chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976\"}, {\"name\": \"limitation\", \"value\": \"when a proof isn't found because of a programming error this can be hard to detect\", \"quote\": \"when a proof isn't found because of a programming error this can be hard to detect\", \"evidence_id\": \"chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9\"}, {\"name\": \"limitation\", \"value\": \"not a priori clear which strategy is optimal for which set of structural rules\", \"quote\": \"it is not a priori clear which strategy is optimal for which set of structural rules\", \"evidence_id\": \"chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699\"}]}",
+          "name": "submit_research_card"
+        },
+        "type": "function",
+        "index": 0
+      }
+    ]
+  },
+  "model_records": [
+    {
+      "role": "answer",
+      "requested_model": "deepseek-v4-pro",
+      "call_id": "092c80f1ce0d48f69344070e89628044",
+      "usage": {
+        "completion_tokens": 1407,
+        "prompt_tokens": 2041,
+        "total_tokens": 3448,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 1145
+      },
+      "status": "completed",
+      "response_model": "deepseek-v4-pro",
+      "response_id": "179814c5-6dd1-4347-9e39-eb5a29b7e03f"
+    }
+  ],
+  "submission_diagnostic": {
+    "status": "accepted",
+    "code": "accepted",
+    "issues": [],
+    "referenced_evidence_ids": [
+      "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+      "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+      "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9"
+    ],
+    "unknown_evidence_ids": []
+  }
+}

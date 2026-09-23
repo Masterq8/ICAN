@@ -1,0 +1,37 @@
+{
+  "status": "failed",
+  "trace": "4c15a65150a84fd0b81feb75085b8871.json",
+  "trace_sha256": "977c6a1814a670e568ae4f0279524beef646bd1bf68df9590cba5746e703b2f4",
+  "usage": {
+    "completion_tokens": 2048,
+    "prompt_tokens": 2216,
+    "total_tokens": 4264,
+    "completion_tokens_details": null,
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cache_write_tokens": null,
+      "cached_tokens": 896
+    },
+    "prompt_cache_hit_tokens": 896,
+    "prompt_cache_miss_tokens": 1320
+  },
+  "response_id": "8b4da70b-0a16-40de-8d29-e69e946d3cec",
+  "tool_diagnosis": {
+    "status": "rejected",
+    "code": "runtime_error",
+    "issues": [
+      {
+        "code": "runtime_error",
+        "path": [],
+        "message": "ModelUnavailable"
+      }
+    ]
+  },
+  "error_category": "provider_or_payload",
+  "error_type": "ModelUnavailable",
+  "error": "Agent model returned an incomplete response",
+  "source_id": "qasper:1604.00125",
+  "request_sha256": "bec9adb660d5effcfbc5e33d9a79ca592af9ae884ab8271d5c33aebda166083a",
+  "raw_action_path": null,
+  "raw_action_sha256": null
+}

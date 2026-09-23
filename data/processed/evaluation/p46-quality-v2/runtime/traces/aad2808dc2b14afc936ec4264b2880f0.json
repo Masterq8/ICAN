@@ -1,0 +1,68 @@
+{
+  "task_id": "aad2808dc2b14afc936ec4264b2880f0",
+  "request": {
+    "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+    "collection": "qasper_train_v1",
+    "source_id": "qasper:1604.05781"
+  },
+  "selected_evidence_ids": [
+    "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d",
+    "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+    "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+    "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6",
+    "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+    "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614"
+  ],
+  "model_action": {
+    "content": "",
+    "role": "assistant",
+    "tool_calls": [
+      {
+        "id": "call_00_x1yuVfdCPJZbqUeo3gzp6867",
+        "function": {
+          "arguments": "{\"decision\": \"include\", \"reason\": \"论文报告了因果陈述分析的具体任务、使用的NLP工具(LDA、POS tagger、NER tagger)以及明确的数据集(2013年Twitter Gardenhose样本,965,560因果文档与965,560对照文档)、文本预处理和POS鲁棒性数值结果，符合信息卡提取要求。\", \"reason_evidence_ids\": [\"chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614\", \"chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484\", \"chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6\"], \"fields\": [{\"name\": \"task\", \"value\": \"analysis of features of causal statements in large-scale social discourse\", \"quote\": \"Features of causal statements across large-scale social discourse\", \"evidence_id\": \"chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839\"}, {\"name\": \"dataset\", \"value\": \"10% uniform sample of Twitter posts during 2013 (Gardenhose API)\", \"quote\": \"Data was collected from a 10% uniform sample of Twitter posts made during 2013, specifically the Gardenhose API\", \"evidence_id\": \"chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614\"}, {\"name\": \"dataset\", \"value\": \"965,560 causal and 965,560 control documents\", \"quote\": \"The end result of this procedure identified 965,560 causal and 965,560 control documents\", \"evidence_id\": \"chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484\"}, {\"name\": \"input_setting\", \"value\": \"only English-language tweets; tweets matching more English stopwords than any other language\", \"quote\": \"We considered only English-language tweets for this study\", \"evidence_id\": \"chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614\"}, {\"name\": \"input_setting\", \"value\": \"punctuation, XML characters, hyperlinks, at-mentions, hashtags removed; unigram tokenization; casing retained\", \"quote\": \"Punctuation, XML characters, and hyperlinks were removed, as were Twitter-specific \\u201cat-mentions\\u201d and \\u201chashtags\\u201d\", \"evidence_id\": \"chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839\"}, {\"name\": \"input_setting\", \"value\": \"causal documents contain one occurrence of 'caused', 'causing', or 'causes'\", \"quote\": \"Causal documents were chosen to contain one occurrence only of the exact unigrams: \\u2018caused\\u2019, \\u2018causing\\u2019, or \\u2018causes\\u2019\", \"evidence_id\": \"chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484\"}, {\"name\": \"model\", \"value\": \"Latent Dirichlet Allocation (LDA)\", \"quote\": \"We used the popular topic modeling method Latent Dirichlet Allocation (LDA)\", \"evidence_id\": \"chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d\"}, {\"name\": \"model\", \"value\": \"NLTK v3.1 averaged perceptron POS tagger trained on Brown Corpus\", \"quote\": \"POS tagging was done using NLTK v3.1 BIBREF29 which implements an averaged perceptron classifier BIBREF32 trained on the Brown Corpus\", \"evidence_id\": \"chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d\"}, {\"name\": \"model\", \"value\": \"Stanford CoreNLP v3.6.0 4-class NER tagger using conditional random field\", \"quote\": \"Named Entity Recognition (NER) was performed using the 4-class, distributional similarity tagger provided as part of the Stanford CoreNLP v3.6.0 toolkit\", \"evidence_id\": \"chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d\"}, {\"name\": \"result\", \"value\": \"caused 38.2%, causes 35.0%, causing 26.8% of causal documents\", \"quote\": \"Each of the three \\u201ccause-words\\u201d, \\u2018caused\\u2019, \\u2018causes\\u2019, and \\u2018causing\\u2019 appeared in 38.2%, 35.0%, and 26.8% of causal documents, respectively\", \"evidence_id\": \"chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484\"}, {\"name\": \"result\", \"value\": \"10-topic LDA model discovered meaningful topics\", \"quote\": \"Inspecting these unigrams we found that a 10-topic model discovered meaningful topics\", \"evidence_id\": \"chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d\"}, {\"name\": \"result\", \"value\": \"Odds Ratio correlation with/without punctuation rho=0.71, with/without casing rho=0.80\", \"quote\": \"including casing and without casing ( $\\\\rho = 0.71$ and $0.80$ , respectively)\", \"evidence_id\": \"chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6\"}, {\"name\": \"limitation\", \"value\": \"word 'cause' excluded due to use as contraction for 'because'\", \"quote\": \"The word \\u2018cause\\u2019 was not included due to its use as a popular contraction for \\u2018because\\u2019\", \"evidence_id\": \"chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484\"}, {\"name\": \"limitation\", \"value\": \"did not consider additional synonyms of cause words\", \"quote\": \"We also did not consider additional synonyms of these cause words, although that could be pursued for future work\", \"evidence_id\": \"chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484\"}, {\"name\": \"limitation\", \"value\": \"taggers have potential ambiguity in written text\", \"quote\": \"there is always potential ambiguity in written text and improving upon these methods remains an active area of research\", \"evidence_id\": \"chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d\"}]}",
+          "name": "submit_research_card"
+        },
+        "type": "function",
+        "index": 0
+      }
+    ]
+  },
+  "model_records": [
+    {
+      "role": "answer",
+      "requested_model": "deepseek-v4-pro",
+      "call_id": "0fcd13c718404c47b3714c3f39c12f99",
+      "usage": {
+        "completion_tokens": 1822,
+        "prompt_tokens": 2482,
+        "total_tokens": 4304,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 1586
+      },
+      "status": "completed",
+      "response_model": "deepseek-v4-pro",
+      "response_id": "400c551f-652d-4851-b8b4-b018b6cb986d"
+    }
+  ],
+  "submission_diagnostic": {
+    "status": "accepted",
+    "code": "accepted",
+    "issues": [],
+    "referenced_evidence_ids": [
+      "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d",
+      "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+      "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+      "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6",
+      "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+      "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614"
+    ],
+    "unknown_evidence_ids": []
+  }
+}

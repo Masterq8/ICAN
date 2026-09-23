@@ -1,0 +1,88 @@
+{
+  "record_id": "a3e973bb-e20b-4dcf-b915-0f3f298753d7",
+  "card_id": "32730d2a-fec5-4933-beb0-b50ad48aebac",
+  "created_at": "2026-09-23T07:44:19.538604Z",
+  "record_type": "screening",
+  "subject_source_id": "qasper:1601.06081",
+  "revision_of": null,
+  "decision": "include",
+  "claims": [
+    {
+      "claim": {
+        "statement": "The paper reports a classification task (assigning texts to urban legend vs factual datasets, and a three-class task), explicitly describes the model (SVM/libSVM), datasets (WWN/NYT scraped corpora), input features, training setup (ten-fold cross-validation, downsampling, z-score normalization), evaluation metrics (precision, recall, F1, MCC), quantitative results, limitations, and mentions code availability status. This matches the user query which asks for these explicitly reported elements.",
+        "kind": "inference",
+        "evidence_ids": [
+          "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+          "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+          "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f"
+        ],
+        "quote": null,
+        "calculation": null,
+        "conditions": []
+      },
+      "status": "requires_review",
+      "evidence": [
+        {
+          "rank": 1,
+          "score": 0.0,
+          "chunk_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+          "text": "The goal of our experiments is to understand to what extent it is possible to assign a text to one of the aforementioned classes using just the prototypical characteristics (features) discussed above, and whether there is a subset of features that stands out among the others in this classification task. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. We always randomly downsampled the majority class in order to make the dataset balanced, i.e. 50% of positive examples and 50% of negative examples; this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings. Results are reported in Table 6 ; all significance tests discussed below are computed using an approximate randomization test BIBREF38 .",
+          "review_required": false,
+          "source": {
+            "source_id": "qasper:1601.06081",
+            "source_type": "paper",
+            "source_path": "qasper/1601.06081",
+            "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+            "location": {
+              "paper_id": "1601.06081",
+              "paragraph_index": 0,
+              "section_index": 5
+            }
+          }
+        },
+        {
+          "rank": 1,
+          "score": 0.0,
+          "chunk_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+          "text": "Urban Legends vs News. In the UL vs. GN classification task, while all the features together performed well (F1 = 0.833), improving over all other subgroups of features ( $p<0.001$ ), no single group of features performed so well, apart from READ (F1 = 0.763, $p<0.001$ ). Particularly, the temporal features (TIMEX) performed worse than AFF and NE ( $p<0.001$ ). Still, all features improved over the baseline ( $p<0.001$ ).",
+          "review_required": false,
+          "source": {
+            "source_id": "qasper:1601.06081",
+            "source_type": "paper",
+            "source_path": "qasper/1601.06081",
+            "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+            "location": {
+              "paper_id": "1601.06081",
+              "paragraph_index": 1,
+              "section_index": 5
+            }
+          }
+        },
+        {
+          "rank": 1,
+          "score": 0.0,
+          "chunk_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+          "text": "Three Class Classification. Finally we also tested feature predictivity on a three class classification task (UL vs GN vs FT). Since in this case we did not performed downsampling, we use the ZeroR classifier as a baseline. For the sake of interpretability of results, along with precision, recall and F1 we also provide the Matthews Correlation Coefficient (MCC) which is useful for unbalanced datasets, as presented in BIBREF39 for the multiclass case. MCC returns a value between -1 and +1, where +1 represents a perfect prediction, 0 no better than random and -1 indicates total disagreement. Results are consistent with previous experiments. In Table 8 , all feature configurations show an improvement over the baseline ( $p<0.001$ ) but the temporal features (TIMEX) have far lower discriminative power as compared to others groups of features (MCC=0.339).",
+          "review_required": false,
+          "source": {
+            "source_id": "qasper:1601.06081",
+            "source_type": "paper",
+            "source_path": "qasper/1601.06081",
+            "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+            "location": {
+              "paper_id": "1601.06081",
+              "paragraph_index": 5,
+              "section_index": 5
+            }
+          }
+        }
+      ],
+      "conditions": [],
+      "calculation": null,
+      "diagnostics": [
+        "Inference claims require human semantic review"
+      ]
+    }
+  ],
+  "fields": []
+}

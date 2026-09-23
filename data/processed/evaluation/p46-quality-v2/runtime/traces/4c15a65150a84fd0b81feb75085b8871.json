@@ -1,0 +1,50 @@
+{
+  "task_id": "4c15a65150a84fd0b81feb75085b8871",
+  "request": {
+    "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+    "collection": "qasper_train_v1",
+    "source_id": "qasper:1604.00125"
+  },
+  "selected_evidence_ids": [
+    "chunk:06f3cf50ade552b6457050cab0e903f362c4cd57a4bd8aaeb43dbc201d3757f1",
+    "chunk:07873a4f272e0a34a4e3790c27ba57d6283503ee9e31c3d319e4430d4abe49f7",
+    "chunk:5bf2d4089a562a1df4c976a3b36fe420373b11567c7ea375c7a80f690c07527c",
+    "chunk:61010dc2fd4009656982c144e11adcd0e4321b25f7d56e4c33cc862eb6416bba",
+    "chunk:9690acd353250bf7507a06827bf90a28c7bd5b43ac61034100a1a881d0108e6e",
+    "chunk:c9fa2e376599ba33e30bfde628d90113a0b2a3123e3e2d86b4c4a19ff4e443ca"
+  ],
+  "model_records": [
+    {
+      "role": "answer",
+      "requested_model": "deepseek-v4-pro",
+      "call_id": "0a635ca2dfca466dbdf9d9f22893666a",
+      "usage": {
+        "completion_tokens": 2048,
+        "prompt_tokens": 2216,
+        "total_tokens": 4264,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 1320
+      },
+      "status": "error",
+      "response_model": "deepseek-v4-pro",
+      "response_id": "8b4da70b-0a16-40de-8d29-e69e946d3cec"
+    }
+  ],
+  "submission_diagnostic": {
+    "status": "rejected",
+    "code": "runtime_error",
+    "issues": [
+      {
+        "code": "runtime_error",
+        "path": [],
+        "message": "ModelUnavailable"
+      }
+    ]
+  }
+}

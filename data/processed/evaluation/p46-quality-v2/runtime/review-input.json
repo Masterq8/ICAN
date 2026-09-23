@@ -1,0 +1,1588 @@
+{
+  "gaussian_priors": {
+    "source_id": "qasper:1601.02166",
+    "title": "Empirical Gaussian priors for cross-lingual transfer learning",
+    "status": "failed",
+    "diagnostic": "runtime_error",
+    "fields": [],
+    "evidence": [
+      {
+        "rank": 1,
+        "score": -4.83203125,
+        "chunk_id": "chunk:daf295e2af35bd972a916e9326828054af47ba5149c873ca9f95ae0276e9c786",
+        "text": "[1] $T=\\lbrace  \\langle \\mathbf {x}^1,\\mathbf {y}^1\\rangle ,\\ldots ,\\langle \\mathbf {x}_n,\\mathbf {y}_n\\rangle \\rbrace \\text{~w.~}\\mathbf {x}_i=\\langle v_1,\\ldots \\rangle \\text{ and }v_k=\\langle f_1,\\ldots ,f_m\\rangle , \\mathbf {w}^0=\\langle w_1:\\hat{\\mu _1},\\ldots , w_m:\\hat{\\mu _m}\\rangle $ $i\\le I\\times |T|$ $j\\le n$ $\\mathbf {g}\\leftarrow \\mathbf {sample}(\\mathcal {N}(1,\\sigma _1),\\ldots ,\\mathcal {N}(1,\\sigma _m))$ $\\hat{\\mathbf {y}}\\leftarrow \\arg \\max _{\\mathbf {y}}\\mathbf {w}^i \\cdot \\mathbf {g}$ $\\mathbf {w}^{i+1}\\leftarrow \\mathbf {w}^i+\\Phi (\\mathbf {x}_j,\\mathbf {y}_j)\\cdot \\mathbf {g}-\\Phi (\\mathbf {x}_j,\\hat{\\mathbf {y}})\\cdot \\mathbf {g}$ Averaged structured perceptron with empirical Gaussian noise ",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.02166",
+          "source_type": "paper",
+          "source_path": "qasper/1601.02166",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.02166",
+            "paragraph_index": 1,
+            "section_index": 2
+          }
+        }
+      },
+      {
+        "rank": 2,
+        "score": -4.87890625,
+        "chunk_id": "chunk:5636b7b69a8034b5c7122162c626544c9b3efb93f81ea355355c4985bdaf06fb",
+        "text": "We will apply empirical Gaussian priors to linear-chain conditional random fields (CRFs; BIBREF3 ) and averaged structured perceptrons BIBREF4 . Linear-chain CRFs are trained by maximising the conditional log-likelihood of labeled sequences $LL(\\mathbf {w},\\mathcal {D})=\\sum _{\\langle \\mathbf {x},\\mathbf {y}\\rangle \\in \\mathcal {D}}\\log P(\\mathbf {y}|\\mathbf {x})$ with $\\mathbf {w}\\in \\mathbb {R}^m$ and $\\mathcal {D}$ a dataset consisting of sequences of discrete input symbols $\\mathbf {x}=x_1,\\ldots ,x_n$ associated with sequences of discrete labels $\\mathbf {y}=y_1,\\ldots ,y_n$ . L $k$ -regularized CRFs maximize $LL(\\mathbf {w},\\mathcal {D})-|\\mathbf {w}|^k$ with typically $k\\in \\lbrace 0,1,2,\\infty \\rbrace $ , which all introduce costant-width, zero-mean regularizers. We refer to L $k$ -regularized CRFs as L2-CRF. L $k$ regularizers are parametric priors where the only parameter is the width of the bounding shape. The L2-regularizer is a Gaussian prior with zero mean, for example. The regularised log-likelihood with a Gaussian prior is $\\mathbf {w}\\in \\mathbb {R}^m$0 . For practical reasons, hyper-parameters $\\mathbf {w}\\in \\mathbb {R}^m$1 and $\\mathbf {w}\\in \\mathbb {R}^m$2 are typically assumed to be constant for all values of $\\mathbf {w}\\in \\mathbb {R}^m$3 . This also holds for recent work on parametric noise injection, e.g., BIBREF5 . If these parameters are assumed to be constant, the above objective becomes equivalent to L2-regularization. However, you can also try to learn these parameters. In empirical Bayes BIBREF6 , the parameters are learned from $\\mathbf {w}\\in \\mathbb {R}^m$4 itself. BIBREF7 suggest learning the parameters from a validation set. In our set-up, we do not assume that we can learn the priors from training data (which is noisy) or validation data (which is generally not available in cross-lingual learning scenarios). Instead we estimate these parameters directly from source language models.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.02166",
+          "source_type": "paper",
+          "source_path": "qasper/1601.02166",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.02166",
+            "paragraph_index": 0,
+            "section_index": 1
+          }
+        }
+      },
+      {
+        "rank": 3,
+        "score": -5.15234375,
+        "chunk_id": "chunk:9db63691548fcc99a71ec45402c407ecbd6a2a291b76db88bf7c8d3046b747b5",
+        "text": "We make the following additional observations: (i) Following the procedure in BIBREF11 , we can compute the Rademacher complexity of our models, i.e., their ability to learn noise in the labels (overfit). Sampling POS tags randomly from a uniform distribution, chance complexity is 0.083. With small sample sizes, L2-CRFs actually begin to learn patterns with Rademacher complexity rising to 0.086, whereas both L2-Prior and EmpGauss never learn a better fit than chance. (ii) BIBREF2 present a simple approach to explicitly studying bias-variance trade-offs during learning. They draw subsamples of $l< m$ training data points $\\mathcal {D}_1, \\ldots , \\mathcal {D}_k$ and use a validation dataset of $m^{\\prime }$ data points to define the integrated variance of our methods. Again, we see that using empirical Gaussian priors lead to less integrated variance. (iii) An empirical Gaussian prior effectively limits us to hypotheses in $\\mathcal {H}$ in a ellipsoid around the average source model. When inference is exact, and our loss function is convex, we learn the model with the smallest loss on the training data within this ellipsoid. Model interpolation of (some weighting of) the average source model and the unregularized target model can potentially result in the same model, but since model interpolation is limited to the hyperplane connecting the two models, the probability of this to happen is infinitely small ( $\\frac{1}{\\infty }$ ). Since for any effective regularization parameter value (such that the regularized model is different from the unregularized model), the empirical Gaussian prior can be expected to have the same Rademacher complexity as model interpolation, we conclude that using empirical Gaussian priors is superior to model interpolation (and data concatenation).",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.02166",
+          "source_type": "paper",
+          "source_path": "qasper/1601.02166",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.02166",
+            "paragraph_index": 0,
+            "section_index": 3
+          }
+        }
+      },
+      {
+        "rank": 4,
+        "score": -6.22265625,
+        "chunk_id": "chunk:66ae4e3ae90ca8f81b2609008b13dda040acb8acd6b6b879ca52e7d395cecf77",
+        "text": "Annotation projection refers to transferring annotation from one or more source languages to the target language (for which no labeled data is otherwise available), typically through word alignments. In our experiments below, we use an unsupervised word alignment algorithm to align $15\\times 12$ language pairs. For 15 languages, we have predicted POS tags for each word in our multi-parallel corpus. For each word in one of our 12 target language training datasets, we thus have up to 15 votes for each word token, possibly weighted by the confidence of the word alignment algorithm. In this paper, we simply use the majority votes. This is the set-up assumed throughout in this paper (see §3 for more details):",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.02166",
+          "source_type": "paper",
+          "source_path": "qasper/1601.02166",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.02166",
+            "paragraph_index": 3,
+            "section_index": 0
+          }
+        }
+      },
+      {
+        "rank": 5,
+        "score": -6.23046875,
+        "chunk_id": "chunk:22cf4f3f2d9e099b91f1d751ad18868edaf6bbb27f1e06535c8ab1c76f823e89",
+        "text": "What can we do for all the languages for which no training data is available? Unsupervised POS induction algorithms have methodological problems (in-sample evaluation, community-wide hyper-parameter tuning, etc.), and performance is prohibitive of downstream applications. Some work on unsupervised POS tagging has assumed other resources such as tag dictionaries BIBREF0 , but such resources are also only available for a limited number of languages. In our experiments, we assume that no training data or tag dictionaries are available. Our only assumption is a bit of text translated into multiple languages, specifically, fragments of the Bible. We will use Bible data for annotation projection, as well as for learning cross-lingual word embeddings (§3).",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.02166",
+          "source_type": "paper",
+          "source_path": "qasper/1601.02166",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.02166",
+            "paragraph_index": 1,
+            "section_index": 0
+          }
+        }
+      },
+      {
+        "rank": 6,
+        "score": -6.234375,
+        "chunk_id": "chunk:c7e427d98c44e8ed4bec174e50df9100dcc964cf449d0a33e7a14e2b273a8f3e",
+        "text": "When we estimate Gaussian priors from source language models, we will learn which features are invariant across languages, and which are not. We thereby introduce an ellipsoid regularizer whose centre is the average source model. In our experiments, we consider both the case where variance is assumed to be constant – which we call L2-regularization with priors (L2-Prior) — and the case where both variances and means are learned – which we call empirical Gaussian priors (EmpGauss). L2-Prior is the L2-CRF objective with $\\sigma ^2_j=C$ with $C$ a regularization parameter, and $\\mu _j=\\hat{\\mu _j}$ the average value of the corresponding parameter in the observed source models. EmpGauss replaces the above objective with $LL(\\lambda )+\\sum _j\\log \\frac{1}{\\sigma \\sqrt{2\\pi }}e^{-\\frac{(\\lambda _j-\\mu _j)^2}{2\\sigma ^2}}$ , which, assuming model parameters are mutually independent, is the same as jointly optimising model probability and likelihood of the data. Note that minimizing the squared weights is equivalent to maximizing the log probability of the weights under a zero-mean Gaussian prior, and in the same way, this is equivalent to minimising the above objective with empirically estimated parameters $\\hat{\\mu _j}$ and $\\sigma {\\mu _j}$ . In other words, empirical Gaussian priors are bounding ellipsoids on the hypothesis space with learned widths and centres. Also, note that in single-source cross-lingual transfer learning, observed variance is zero, and we therefore replace this with a regularization parameter $C$ shared with the baseline. In the single-source set-up, L2-Prior is thus equivalent to EmpGauss. We use L-BFGS to maximize our baseline L2-regularized objectives, as well as our empirical Gaussian prior objectives.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.02166",
+          "source_type": "paper",
+          "source_path": "qasper/1601.02166",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.02166",
+            "paragraph_index": 1,
+            "section_index": 1
+          }
+        }
+      }
+    ]
+  },
+  "urban_legends": {
+    "source_id": "qasper:1601.06081",
+    "title": "Why Do Urban Legends Go Viral?",
+    "status": "completed",
+    "diagnostic": "accepted",
+    "fields": [
+      {
+        "occurrence": 0,
+        "name": "task",
+        "value": "classification of text into urban legend vs factual news",
+        "quote": "Urban Legends vs News. In the UL vs. GN classification task",
+        "evidence_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+        "quote_exact": true,
+        "raw_field_sha256": "ddc3482edeab550de5909912b92b6df95513611595395e0f64d91a287b9e5b29",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 1,
+        "name": "task",
+        "value": "three class classification task (UL vs GN vs FT)",
+        "quote": "we also tested feature predictivity on a three class classification task (UL vs GN vs FT)",
+        "evidence_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+        "quote_exact": true,
+        "raw_field_sha256": "ded33c9ed59eae2d892c87586e4f4342d9b745e434e7f58dca33e3fe3fe78913",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 2,
+        "name": "model",
+        "value": "SVM using libSVM",
+        "quote": "Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings",
+        "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "quote_exact": true,
+        "raw_field_sha256": "ff496787f71f0fb9327dfc60be660c3004fc5beb894c9018ceca70e8a7be764c",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 3,
+        "name": "dataset",
+        "value": "New York Times stories",
+        "quote": "randomly selected an equal amount of stories from the NYT",
+        "evidence_id": "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3",
+        "quote_exact": true,
+        "raw_field_sha256": "f6618a0c275178d59446bde9c4eba68103d284967acdee42572318ee1e6000ab",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 4,
+        "name": "dataset",
+        "value": "Weekly World News stories (225)",
+        "quote": "We scraped the WWN for a total of 225 stories",
+        "evidence_id": "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3",
+        "quote_exact": true,
+        "raw_field_sha256": "c80dd510fbc155e50d32719b72b62faa8182a336f5b9105d71c1fac8173b55dc",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 5,
+        "name": "input_setting",
+        "value": "prototypical characteristics features",
+        "quote": "using just the prototypical characteristics (features) discussed above",
+        "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "quote_exact": true,
+        "raw_field_sha256": "406440fc30dfdb6dd4f4ec41f76fc75d11102bab6760857a94e9424e1776f424",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 6,
+        "name": "input_setting",
+        "value": "z-score normalization of features",
+        "quote": "We also normalized all features according to z-score",
+        "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "quote_exact": true,
+        "raw_field_sha256": "c9e9f638168d18f86db3a9c0b09036b4ff4692dac6fc521f3f40dcfc3dbde080",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 7,
+        "name": "training",
+        "value": "ten-fold cross validation",
+        "quote": "For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset",
+        "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "quote_exact": true,
+        "raw_field_sha256": "d531a77758a471f853577834f71240e9083d6f53fccd2f330d54bcef116e8ef0",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 8,
+        "name": "training",
+        "value": "random downsampling of majority class to balance dataset",
+        "quote": "We always randomly downsampled the majority class in order to make the dataset balanced",
+        "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "quote_exact": true,
+        "raw_field_sha256": "d06a82672269ebe4748d52513098dab7e3365c56ef01cc23d90e36b376273e48",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 9,
+        "name": "metric",
+        "value": "precision",
+        "quote": "in term of precision, recall and F1 over the single classes",
+        "evidence_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+        "quote_exact": true,
+        "raw_field_sha256": "006ec4fa26830657ec1ab9e1648c0efcc32c1b8802d63dbaf6456cc5e53f7cb8",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 10,
+        "name": "metric",
+        "value": "recall",
+        "quote": "in term of precision, recall and F1 over the single classes",
+        "evidence_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+        "quote_exact": true,
+        "raw_field_sha256": "22ab4937d3ca67dcbbc6a56818a79b2779a35efc00ccccbff9b1310c87f239b7",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 11,
+        "name": "metric",
+        "value": "F1",
+        "quote": "in term of precision, recall and F1 over the single classes",
+        "evidence_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+        "quote_exact": true,
+        "raw_field_sha256": "bd4f47d2d896c51c4eb4ea35d592f42633e39b88f95c2a5d3e7b2fc41121ff7c",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 12,
+        "name": "metric",
+        "value": "Matthews Correlation Coefficient (MCC)",
+        "quote": "we also provide the Matthews Correlation Coefficient (MCC)",
+        "evidence_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+        "quote_exact": true,
+        "raw_field_sha256": "d7e8657630823106c19d92c60b33524bdb24bd275f5e920a206f4a749d232b3a",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 13,
+        "name": "result",
+        "value": "all features F1 = 0.833 in UL vs GN",
+        "quote": "all the features together performed well (F1 = 0.833)",
+        "evidence_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+        "quote_exact": true,
+        "raw_field_sha256": "7421e08ec80341a74f0fd023b4f91a9d35cff5e435aef8adf8f3910d84da274b",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 14,
+        "name": "result",
+        "value": "READ F1 = 0.763 in UL vs GN",
+        "quote": "apart from READ (F1 = 0.763, $p<0.001$ )",
+        "evidence_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+        "quote_exact": true,
+        "raw_field_sha256": "77470f23c2c4ae8e100263c0a86f726fb5965df9cf84fa80c8900589a97975a1",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 15,
+        "name": "result",
+        "value": "TIMEX MCC=0.339 in three class task",
+        "quote": "the temporal features (TIMEX) have far lower discriminative power as compared to others groups of features (MCC=0.339)",
+        "evidence_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+        "quote_exact": true,
+        "raw_field_sha256": "328a0a0f55d7be0c1ec6299bb8fcd554ad96b348a2a81247af22ac5c2124f6cb",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 16,
+        "name": "result",
+        "value": "slightly higher precision than recall for UL",
+        "quote": "the classifiers had slightly higher precision than recall for UL, while the contrary holds for FT and GN",
+        "evidence_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+        "quote_exact": true,
+        "raw_field_sha256": "e32aae1b1a25c03765feb43aac8ca9e44727f9b3eef537834a0a30d4907a5ef1",
+        "rule_diagnostics": []
+      }
+    ],
+    "evidence": [
+      {
+        "rank": 1,
+        "score": -3.8359375,
+        "chunk_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+        "text": "In Table 7 we report the performances of the various classification tasks in term of precision, recall and F1 over the single classes. Interestingly, for almost all feature combinations the classifiers had slightly higher precision than recall for UL, while the contrary holds for FT and GN.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06081",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06081",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06081",
+            "paragraph_index": 3,
+            "section_index": 5
+          }
+        }
+      },
+      {
+        "rank": 2,
+        "score": -3.904296875,
+        "chunk_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+        "text": "The goal of our experiments is to understand to what extent it is possible to assign a text to one of the aforementioned classes using just the prototypical characteristics (features) discussed above, and whether there is a subset of features that stands out among the others in this classification task. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. We always randomly downsampled the majority class in order to make the dataset balanced, i.e. 50% of positive examples and 50% of negative examples; this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings. Results are reported in Table 6 ; all significance tests discussed below are computed using an approximate randomization test BIBREF38 .",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06081",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06081",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06081",
+            "paragraph_index": 0,
+            "section_index": 5
+          }
+        }
+      },
+      {
+        "rank": 3,
+        "score": -4.21875,
+        "chunk_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+        "text": "Urban Legends vs News. In the UL vs. GN classification task, while all the features together performed well (F1 = 0.833), improving over all other subgroups of features ( $p<0.001$ ), no single group of features performed so well, apart from READ (F1 = 0.763, $p<0.001$ ). Particularly, the temporal features (TIMEX) performed worse than AFF and NE ( $p<0.001$ ). Still, all features improved over the baseline ( $p<0.001$ ).",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06081",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06081",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06081",
+            "paragraph_index": 1,
+            "section_index": 5
+          }
+        }
+      },
+      {
+        "rank": 4,
+        "score": -4.35546875,
+        "chunk_id": "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3",
+        "text": "We scraped the WWN for a total of 225 stories, and then randomly selected an equal amount of stories from the NYT. For both datasets we extracted the same set of features discussed in the previous sections. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. Since the dataset is balanced, this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Results are reported in Table 9 .",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06081",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06081",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06081",
+            "paragraph_index": 1,
+            "section_index": 7
+          }
+        }
+      },
+      {
+        "rank": 5,
+        "score": -4.68359375,
+        "chunk_id": "chunk:4ecae0dbb2c9b48b3abfac09a07316027b46a5a58e90dd6906544a386d5d19c1",
+        "text": "All differences in the means reported in the tables are statistically significant (Student's t-test, $p<0.001$ ) apart from TIME, between UL and FT, and DURATION, between UL and GN, (signalled with * in Table 3 ).",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06081",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06081",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06081",
+            "paragraph_index": 4,
+            "section_index": 4
+          }
+        }
+      },
+      {
+        "rank": 6,
+        "score": -4.80859375,
+        "chunk_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+        "text": "Three Class Classification. Finally we also tested feature predictivity on a three class classification task (UL vs GN vs FT). Since in this case we did not performed downsampling, we use the ZeroR classifier as a baseline. For the sake of interpretability of results, along with precision, recall and F1 we also provide the Matthews Correlation Coefficient (MCC) which is useful for unbalanced datasets, as presented in BIBREF39 for the multiclass case. MCC returns a value between -1 and +1, where +1 represents a perfect prediction, 0 no better than random and -1 indicates total disagreement. Results are consistent with previous experiments. In Table 8 , all feature configurations show an improvement over the baseline ( $p<0.001$ ) but the temporal features (TIMEX) have far lower discriminative power as compared to others groups of features (MCC=0.339).",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06081",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06081",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06081",
+            "paragraph_index": 5,
+            "section_index": 5
+          }
+        }
+      }
+    ]
+  },
+  "linguistic_hedges": {
+    "source_id": "qasper:1601.06738",
+    "title": "A Label Semantics Approach to Linguistic Hedges",
+    "status": "completed",
+    "diagnostic": "accepted",
+    "fields": [
+      {
+        "occurrence": 0,
+        "name": "task",
+        "value": "linguistic hedges modeling",
+        "quote": "we give formulations of the hedges `very' and `quite'",
+        "evidence_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+        "quote_exact": true,
+        "raw_field_sha256": "501d34c90a35c8d9ed636f91b2fe51398a2531f1742f4ce1890ae5cebe82a5ff",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 1,
+        "name": "model",
+        "value": "label semantics framework",
+        "quote": "Our account of linguistic hedges uses the label semantics framework to model concepts",
+        "evidence_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+        "quote_exact": true,
+        "raw_field_sha256": "ce27eb635195eaeab6181e8ee99333e478bcdd0f9d9e26047cf6d2e3c4354962",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 2,
+        "name": "model",
+        "value": "prototype and threshold",
+        "quote": "a formalisation of concepts as based on a prototype and a threshold, located in a conceptual space",
+        "evidence_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+        "quote_exact": true,
+        "raw_field_sha256": "a772524832648f3f8e20ad60ee7744d364f78dab322fe1486ba05142a2c02376",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 3,
+        "name": "result",
+        "value": "crisp set in the limit",
+        "quote": "in the limit, the result of applying dilation or contraction modifiers multiple times is to create a crisp set",
+        "evidence_id": "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+        "quote_exact": true,
+        "raw_field_sha256": "557c1216ff2969fa55cbaa98e8a5d6f36010288180d62ce620dc97dc5c1c74d0",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 4,
+        "name": "result",
+        "value": "dilation includes whole support; contraction reduces to prototype",
+        "quote": "In the case of dilation, the crisp set includes the whole support of the fuzzy set associated with the original label, whereas in the case of contraction, the concept reduces to include only its prototype",
+        "evidence_id": "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+        "quote_exact": true,
+        "raw_field_sha256": "c00fea56ca1cb4c9f5d6e1e5bd5be87c9869160e56801ff11fb43a7037424a04",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 5,
+        "name": "result",
+        "value": "most general result applies when epsilon2 <= f(epsilon1) or epsilon2 >= f(epsilon1)",
+        "quote": "the formula still applies when $\\varepsilon _2 \\le f(\\varepsilon _1)$ , or $\\varepsilon _2 \\ge f(\\varepsilon _1)$",
+        "evidence_id": "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2",
+        "quote_exact": true,
+        "raw_field_sha256": "d0e8632ba98d564081870b4f8d1c1031970e8aaf0f63a771cad9d57cb6a2113e",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 6,
+        "name": "limitation",
+        "value": "simplicity of the original result is lost with additional parameters",
+        "quote": "In this case we have introduced additional parameters, so the simplicity of the original result is lost",
+        "evidence_id": "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2",
+        "quote_exact": true,
+        "raw_field_sha256": "89d7257e5244ae926f0668995c62f2ca90ac867fced7b3266871066ab6d9c603",
+        "rule_diagnostics": []
+      }
+    ],
+    "evidence": [
+      {
+        "rank": 1,
+        "score": -6.5390625,
+        "chunk_id": "chunk:c167a3f360d53472bd11e9477f3c64ce04269204fdd8fff98a36a454fc6f59e0",
+        "text": "Example 21 Suppose $f(\\varepsilon ) = 0.5\\varepsilon $ . Applying this hedge multiple times will result in $\\mu _{L_n}(x) = \\Delta _1(2^n d(x,P))$ . As $n\\rightarrow \\infty $ , $2^n d(x,P) \\rightarrow \\infty $ , except where $d(x,P)=0$ . Therefore, $\n\\mu _{L_\\infty }(x) = \\left\\lbrace \n\\begin{array}{l l}\n0 & \\quad d(x,P) > 0\\\\\n1 & \\quad d(x,P) = 0\\\\\n\\end{array} \\right.\n$ ",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06738",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06738",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06738",
+            "paragraph_index": 10,
+            "section_index": 11
+          }
+        }
+      },
+      {
+        "rank": 2,
+        "score": -6.7265625,
+        "chunk_id": "chunk:4fa9e81b1d3afe20d1939f9847389b03d5fdfc275a8d8c2d62b3eed7ed2a8c4c",
+        "text": "The following results examine the behaviour of $\\mu _{L_n}(x)$ as $n \\rightarrow \\infty $ ",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06738",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06738",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06738",
+            "paragraph_index": 0,
+            "section_index": 11
+          }
+        }
+      },
+      {
+        "rank": 3,
+        "score": -6.80859375,
+        "chunk_id": "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+        "text": "We have shown here that in the limit, the result of applying dilation or contraction modifiers multiple times is to create a crisp set. In the case of dilation, the crisp set includes the whole support of the fuzzy set associated with the original label, whereas in the case of contraction, the concept reduces to include only its prototype.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06738",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06738",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06738",
+            "paragraph_index": 8,
+            "section_index": 11
+          }
+        }
+      },
+      {
+        "rank": 4,
+        "score": -6.828125,
+        "chunk_id": "chunk:0ab431fb8c9af9a261a5910f1ade24597a282474108249f9edf39b980e24993c",
+        "text": "Example 14 Suppose that the conceptual space $\\Omega = \\mathbb {R}$ and that a label $L$ has prototype $P = 5$ and threshold $\\varepsilon \\sim $ Uniform $[1, 2]$ . Then $\n\\mu _{L}(x) =\n{\\left\\lbrace \\begin{array}{ll}\n1 & \\text{ if } |x - 5| < 1\\\\\n2 - |x - 5| & \\text{ if } |x - 5| \\in [1,2]\\\\\n0 & otherwise\n\\end{array}\\right.}•\n$ ",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06738",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06738",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06738",
+            "paragraph_index": 9,
+            "section_index": 9
+          }
+        }
+      },
+      {
+        "rank": 5,
+        "score": -7.0234375,
+        "chunk_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+        "text": "In the following we provide an account of linguistic hedges that is both functional, and semantically grounded. In its most basic formulation, the operation requires no additional parameters, although we also show that the formulae can be generalised if necessary. Our account of linguistic hedges uses the label semantics framework to model concepts BIBREF12 . This is a random set approach which quantifies an agent's subjective uncertainty about the extent of application of a concept. We refer to this uncertainty as semantic uncertainty BIBREF13 to emphasise that it concerns the definition of concepts and categories, in contrast to stochastic uncertainty which concerns the state of the world. In BIBREF13 the label semantics approach is combined with conceptual spaces BIBREF14 and prototype theory BIBREF15 , to give a formalisation of concepts as based on a prototype and a threshold, located in a conceptual space. This approach is discussed in detail in section \"Conceptual Spaces\" . An outline of the paper is then as follows: section \"Approaches to linguistic hedges\" discusses different approaches to linguistic hedges from the literature, and compares these with our model. Subsequently, in section \"Label semantics approach to linguistic hedges\" , we give formulations of the hedges `very' and `quite'. These are formed by considering the dependence of the threshold of a hedged concept on the threshold of the original concept. We give a basic model and two generalisations, show that the models can be composed and investigate the behaviour in the limit of composition. Section \"Discussion\" compares our results to those in the literature and proposes further lines of research.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06738",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06738",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06738",
+            "paragraph_index": 3,
+            "section_index": 0
+          }
+        }
+      },
+      {
+        "rank": 6,
+        "score": -7.0546875,
+        "chunk_id": "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2",
+        "text": "The most general result (section \"Functions of thresholds\" ) shows that the formula still applies when $\\varepsilon _2 \\le f(\\varepsilon _1)$ , or $\\varepsilon _2 \\ge f(\\varepsilon _1)$ . Combined with a distribution $\\delta $ such that the lower bound of the distribution is not zero, the core and support of the fuzzy set are modified. With the condition $\\varepsilon _2 = f(\\varepsilon _1)$ , we are able to recreate the result given in BIBREF25 for linear membership functions, and show how the model proposed by BIBREF23 has strong similarities to our own. In this case we have introduced additional parameters, so the simplicity of the original result is lost. However, the further parameters introduced are no more than those introduced by BIBREF25 , and arguably fewer than those introduced by BIBREF23 , who require that a resemblance relation be specified, using two additional parameters, and also, that a $T$ -norm or fuzzy implication need to be specified. There are various choices of operator that could be used for either of these, and it is not obvious that any one is better than the others.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1601.06738",
+          "source_type": "paper",
+          "source_path": "qasper/1601.06738",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1601.06738",
+            "paragraph_index": 2,
+            "section_index": 12
+          }
+        }
+      }
+    ]
+  },
+  "grail_prover": {
+    "source_id": "qasper:1602.00812",
+    "title": "The Grail theorem prover: Type theory for syntax and semantics",
+    "status": "completed",
+    "diagnostic": "accepted",
+    "fields": [
+      {
+        "occurrence": 0,
+        "name": "task",
+        "value": "automated theorem proving for type-logical grammars",
+        "quote": "This is where automated theorem provers are useful",
+        "evidence_id": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9",
+        "quote_exact": true,
+        "raw_field_sha256": "70d9ba2f1ae89d28aaeb049a1c5ac713b897d96e905bc23dd51e04e0dfd493d9",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 1,
+        "name": "model",
+        "value": "Grail",
+        "quote": "the proof search strategy used by Grail",
+        "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "quote_exact": true,
+        "raw_field_sha256": "e030b5549621672ba8366c1110af1a84b42975f8dcfc5059074b90b10843f682",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 2,
+        "name": "model",
+        "value": "dancing links algorithm",
+        "quote": "it is an instance of the “dancing links” algorithm",
+        "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "quote_exact": true,
+        "raw_field_sha256": "5eb3d40c9811225892913e30d0044701534bad1a052eb3942a51ad5aa34203e0",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 3,
+        "name": "input_setting",
+        "value": "four step process: lexical lookup, unfolding, identification of atoms, graph rewriting",
+        "quote": "theorem proving using proof nets is a four step process, which in the current situation looks as follows: 1) lexical lookup, 2) unfolding, 3) identification of atoms, 4) graph rewriting",
+        "evidence_id": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+        "quote_exact": true,
+        "raw_field_sha256": "4fb5c731f6874beafb5436fab6335edb642f022980c7dd25a764b847c0907178",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 4,
+        "name": "input_setting",
+        "value": "link a formula which has the least possibilities",
+        "quote": "we always link a formula which has the least possibilities",
+        "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "quote_exact": true,
+        "raw_field_sha256": "12a458c815a16cdac153747aa77bf6330e71b00b87b9a3ec1c4e0d370e041965",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 5,
+        "name": "input_setting",
+        "value": "rewrite the abstract proof structures only once a fully linked proof structure has been produced",
+        "quote": "we rewrite the abstract proof structures only once a fully linked proof structure has been produced",
+        "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "quote_exact": true,
+        "raw_field_sha256": "8029c032ead7206b60e21909ac2b53f21ec6b5507d42cad79dc08e0ba5342f15",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 6,
+        "name": "input_setting",
+        "value": "graph rewriting only once all atoms have been connected",
+        "quote": "The current implementation does graph rewriting only once all atoms have been connected",
+        "evidence_id": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+        "quote_exact": true,
+        "raw_field_sha256": "5617ca217325d5dcbce651a3960359f09124130b0e90651262084c77c8bd0712",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 7,
+        "name": "dataset",
+        "value": "randomly generated statements",
+        "quote": "evaluation both on randomly generated statements",
+        "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "quote_exact": true,
+        "raw_field_sha256": "0222973435b2b4751822b35b90423975f73250b09b977948e6d4cf528659b0c5",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 8,
+        "name": "dataset",
+        "value": "multimodal statements extracted from corpora",
+        "quote": "on multimodal statements extracted from corpora",
+        "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "quote_exact": true,
+        "raw_field_sha256": "627e42a5117754b6f1fe545cb0854af82815db6e6285a678c2a26f3ab676cd02",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 9,
+        "name": "result",
+        "value": "the resulting algorithm performs more than well enough",
+        "quote": "the resulting algorithm performs more than well enough",
+        "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "quote_exact": true,
+        "raw_field_sha256": "89e5176844f4d74c6dc3e03ef5723b626ca71c0a0eaa39f02c71ea5cbc5472ad",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 10,
+        "name": "result",
+        "value": "the parser is not extremely fast",
+        "quote": "Though the parser is not extremely fast",
+        "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "quote_exact": true,
+        "raw_field_sha256": "77256a203869eedae2c3aeb99f011ee2f8908b0bab85b1d6081ac9a6f526e591",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 11,
+        "name": "limitation",
+        "value": "parser is not extremely fast",
+        "quote": "Though the parser is not extremely fast",
+        "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "quote_exact": true,
+        "raw_field_sha256": "ff19bf4273a0aa063f438330aa3abe25789953b07cc104c25a163dec2d0ed34a",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 12,
+        "name": "limitation",
+        "value": "when a proof isn't found because of a programming error this can be hard to detect",
+        "quote": "when a proof isn't found because of a programming error this can be hard to detect",
+        "evidence_id": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9",
+        "quote_exact": true,
+        "raw_field_sha256": "434957ae72fd40d5525de58bdb506fa812e3ebb1adce9f274488c4b875c48417",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 13,
+        "name": "limitation",
+        "value": "not a priori clear which strategy is optimal for which set of structural rules",
+        "quote": "it is not a priori clear which strategy is optimal for which set of structural rules",
+        "evidence_id": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+        "quote_exact": true,
+        "raw_field_sha256": "37c675adbebfb8c856ea1607e6ca9d02e3b6400c47c9580ab8288e2f8bc68be8",
+        "rule_diagnostics": []
+      }
+    ],
+    "evidence": [
+      {
+        "rank": 1,
+        "score": -7.4765625,
+        "chunk_id": "chunk:474288f851e7591e9825bd5ff65f370eef330fd3c6bd55fdfc61d14d21007bd1",
+        "text": "Figure 7 therefore shows, on the right, a proof structure for $a/_a b, b/_a c\n\\vdash a/_a c$ . However, is it also a proof net, that is, does it correspond to a proof? In a multimodal logic, the answer depends on the available structural rules. For example, if no structural rules are applicable to mode $a$ then $a/_a b, b/_a c\n\\vdash a/_a c$ is underivable, but if mode $a$ is associative, then it is derivable.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.00812",
+          "source_type": "paper",
+          "source_path": "qasper/1602.00812",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.00812",
+            "paragraph_index": 9,
+            "section_index": 10
+          }
+        }
+      },
+      {
+        "rank": 2,
+        "score": -7.71484375,
+        "chunk_id": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9",
+        "text": "When looking at the rules and examples for the different logics, the reader may have wondered: how do we actually find proofs for type-logical grammars? This question becomes especially urgent once our grammars become more complex and the consequences of our lexical entries, given our logic, become hard to oversee. Though pen and paper generally suffice to show that a given sentence is derivable for the desired reading, it is generally much more laborious to show that a given sentence is underivable or that it has only the desired readings. This is where automated theorem provers are useful: they allow more extensive and intensive testing of your grammars, producing results more quickly and with less errors (though we should be careful about too naively assuming the implementation we are using is correct: when a proof is found it is generally easy to verify its correctness by hand, but when a proof isn't found because of a programming error this can be hard to detect).",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.00812",
+          "source_type": "paper",
+          "source_path": "qasper/1602.00812",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.00812",
+            "paragraph_index": 0,
+            "section_index": 9
+          }
+        }
+      },
+      {
+        "rank": 3,
+        "score": -7.875,
+        "chunk_id": "chunk:f701de87bc6d585f6f4e5a917e2deb8034441a313b810559fda34ce74befcfae",
+        "text": "This lambda term represents the more readable higher-order logic formula. $\n\\forall x. [\\mathit {student}(x) \\Rightarrow \\exists y. [\\mathit {exam}(y) \\wedge \\mathit {ace}(x,y) ] ]\n$ ",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.00812",
+          "source_type": "paper",
+          "source_path": "qasper/1602.00812",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.00812",
+            "paragraph_index": 12,
+            "section_index": 3
+          }
+        }
+      },
+      {
+        "rank": 4,
+        "score": -7.8828125,
+        "chunk_id": "chunk:8ae32a7d1f94d188393ada8e8c2b7f00dc8261bfcc70eea528c7c008ba72604f",
+        "text": "“ace” implies a (very positive) form of evaluation with respect to the object. “aced the exam” is good, whereas “aced Emory”, outside of the context of a tennis match is bad. “aced logic” can only mean something like “aced the exam for the logic course”.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.00812",
+          "source_type": "paper",
+          "source_path": "qasper/1602.00812",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.00812",
+            "paragraph_index": 11,
+            "section_index": 4
+          }
+        }
+      },
+      {
+        "rank": 5,
+        "score": -7.89453125,
+        "chunk_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+        "text": "As to the proof search strategy used by Grail, it is an instance of the “dancing links” algorithm BIBREF35 : when connecting atomic formulas, we always link a formula which has the least possibilities and we rewrite the abstract proof structures only once a fully linked proof structure has been produced. Though the parser is not extremely fast, evaluation both on randomly generated statements and on multimodal statements extracted from corpora show that the resulting algorithm performs more than well enough BIBREF36 .",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.00812",
+          "source_type": "paper",
+          "source_path": "qasper/1602.00812",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.00812",
+            "paragraph_index": 26,
+            "section_index": 10
+          }
+        }
+      },
+      {
+        "rank": 6,
+        "score": -7.96484375,
+        "chunk_id": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+        "text": "Although the structural rules give the grammar writer a great deal of flexibility, such flexibility complicates proof search. As discussed at the beginning of Section \"Theorem proving\" , theorem proving using proof nets is a four step process, which in the current situation looks as follows: 1) lexical lookup, 2) unfolding, 3) identification of atoms, 4) graph rewriting. In the current case, both the graph rewriting and the identification of atoms are complicated and since we can interleave the atom connections and the graph rewriting it is not a priori clear which strategy is optimal for which set of structural rules. The current implementation does graph rewriting only once all atoms have been connected.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.00812",
+          "source_type": "paper",
+          "source_path": "qasper/1602.00812",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.00812",
+            "paragraph_index": 22,
+            "section_index": 10
+          }
+        }
+      }
+    ]
+  },
+  "syntactic_structures": {
+    "source_id": "qasper:1602.03661",
+    "title": "On the emergence of syntactic structures: quantifying and modelling duality of patterning",
+    "status": "completed",
+    "diagnostic": "accepted",
+    "fields": [
+      {
+        "occurrence": 0,
+        "name": "task",
+        "value": "quantify the notion of duality of patterning as observed in real languages",
+        "quote": "In this section we quantify the notion of duality of patterning as observed in real languages in order to provide suitable measures for the combinatoriality and compositionality.",
+        "evidence_id": "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340",
+        "quote_exact": true,
+        "raw_field_sha256": "ee3301d45a03e3505d8e91edafbd4073590b1e2db2830d8fb7c774a80bb17b95",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 1,
+        "name": "model",
+        "value": "simulated environment which contains meaningful relations",
+        "quote": "the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment which contains meaningful relations",
+        "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+        "quote_exact": true,
+        "raw_field_sha256": "18642d39ebb841b28ed50e0519673ec8bfd46c2c66c2e6d7ef5c74ce74176f30",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 2,
+        "name": "dataset",
+        "value": "HBC word-association graph",
+        "quote": "Excess Master-Mind similarity of words as a function of the average distance d of the corresponding objects on the HBC word-association graph.",
+        "evidence_id": "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230",
+        "quote_exact": true,
+        "raw_field_sha256": "7f30734dd77488878b393ad4f19a3773debba3bc0fff964340ab9906d2cfa3fb",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 3,
+        "name": "dataset",
+        "value": "six lexica",
+        "quote": "the normalized histogram of the lengths for the words of the six lexica considered",
+        "evidence_id": "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230",
+        "quote_exact": false,
+        "raw_field_sha256": "7a78c7664066f240fc40206697d4ba3cc258a3f269d3bb097c1c216e04fe8291",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 4,
+        "name": "metric",
+        "value": "combinatoriality",
+        "quote": "C is the combinatoriality defined in Eq. 1",
+        "evidence_id": "chunk:725482606b32976f044f4cedfadcb9ac5687492a631f31302755378feed0dfdc",
+        "quote_exact": true,
+        "raw_field_sha256": "9025ed979053631aed61b9e14603705efd1e2545324accc817016c9f0fd2eb9e",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 5,
+        "name": "metric",
+        "value": "compositionality",
+        "quote": "provide suitable measures for the combinatoriality and compositionality",
+        "evidence_id": "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340",
+        "quote_exact": true,
+        "raw_field_sha256": "9f463a4c4ce6d40d9330e376b5c0c0d8ee0b038659555a29e0b7f4576341b01c",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 6,
+        "name": "metric",
+        "value": "Excess Master-Mind similarity",
+        "quote": "Excess Master-Mind-like similarity of words as a function of the distance d of the corresponding objects on the graph",
+        "evidence_id": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+        "quote_exact": true,
+        "raw_field_sha256": "8117154faa96d50b1b209757caf6ead94fd083143bb53226f2cbbb89d4190be7",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 7,
+        "name": "training",
+        "value": "purely cultural dynamics",
+        "quote": "can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment",
+        "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+        "quote_exact": true,
+        "raw_field_sha256": "5fd846df4351122f691c9b501c446c05ec97ea16721743113dac72785f0469f3",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 8,
+        "name": "result",
+        "value": "compositionality implies higher similarity among words which are closer in the semantic space",
+        "quote": "compositionality implies higher similarity among words which are closer in the semantic space",
+        "evidence_id": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+        "quote_exact": true,
+        "raw_field_sha256": "f8c96314f76cf082bd9e0ad8469f7254dfc1ed38e276193d1f17741713dac656",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 9,
+        "name": "result",
+        "value": "the two sides of duality of patterning can emerge simultaneously",
+        "quote": "they demonstrate for the first time that the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics",
+        "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+        "quote_exact": true,
+        "raw_field_sha256": "57434a3bb13e0c5ff3acad682bbb46d0fffef1d5da35557dd2fa6ac5040d8744",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 10,
+        "name": "limitation",
+        "value": "conceptual space of all the individuals are identical and modelled as a static graph",
+        "quote": "relaxing the assumptions that the conceptual space of all the individuals are identical and modelled as a static graph",
+        "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+        "quote_exact": true,
+        "raw_field_sha256": "81221eebdfac209339696478b8c4098d5135ed0f68d5655323f750e71fda0570",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 11,
+        "name": "limitation",
+        "value": "open for future investigations to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon",
+        "quote": "First of all to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon",
+        "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+        "quote_exact": true,
+        "raw_field_sha256": "9108f3400bdba89027b0d6af9f640f97908faf69692db26891813c40be911237",
+        "rule_diagnostics": []
+      }
+    ],
+    "evidence": [
+      {
+        "rank": 1,
+        "score": -5.4609375,
+        "chunk_id": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+        "text": "Figure 3 . Left Combinatoriality C for different values of pM as a function of τM . The number of agents and the number of objects in the environment are fixed respectively to N = 10 and M = 40. Right Excess Master-Mind-like similarity of words as a function of the distance d of the corresponding objects on the graph. A decrease in the excess similarity as a function of the topological distance d is the signature of the emergence of compositionality; in particular, compositionality implies higher similarity among words which are closer in the semantic space. The topological distance on the object graph is our proxy for the semantic relatedness. Results are reported for N = 10 and M = 100 and for different values of the objects graph connectivity pM , keeping fixed τM = 1 (main figure) and for different values of τM keeping fixed pM = 0.2 (inset).",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.03661",
+          "source_type": "paper",
+          "source_path": "qasper/1602.03661",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 3,
+            "paper_id": "1602.03661"
+          }
+        }
+      },
+      {
+        "rank": 2,
+        "score": -5.9296875,
+        "chunk_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+        "text": "These results are important because they demonstrate for the first time that the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment which contains meaningful relations. Many directions are open for future investigations. First of all to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon. In addition many different manipulations of our modelling scheme are possible. One very interesting consists in relaxing the assumptions that the conceptual space of all the individuals are identical and modelled as a static graph, imaging instead that the conceptual space of each individual gets continuously reshaped by the interactions among the users. In this way one would realize a truly co-evolution of the conceptual spaces of the individuals and of their inventories of associations between objects and words. Finally it is worth mentioning how recent advances in information and communication technologies allow nowadays the realization of focused experiments also in the framework of the emergence of linguistic structures and a general trend is emerging for the adoption of web-games (see for instance the recently introduced Experimental Tribe platform: www.xtribe.eu) as a very interesting laboratory to run experiments in the social-sciences and whenever the contribution of human beings is crucially required for research purposes. This is opening tremendous opportunities to monitor the emergence of specific linguistic features and their co-evolution with the structure of out conceptual spaces.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.03661",
+          "source_type": "paper",
+          "source_path": "qasper/1602.03661",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.03661",
+            "paragraph_index": 1,
+            "section_index": 3
+          }
+        }
+      },
+      {
+        "rank": 3,
+        "score": -6.18359375,
+        "chunk_id": "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340",
+        "text": "In this section we quantify the notion of duality of patterning as observed in real languages in order to provide suitable measures for the combinatoriality and compositionality.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.03661",
+          "source_type": "paper",
+          "source_path": "qasper/1602.03661",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.03661",
+            "paragraph_index": 0,
+            "section_index": 1
+          }
+        }
+      },
+      {
+        "rank": 4,
+        "score": -6.35546875,
+        "chunk_id": "chunk:3d4d428387897a9505cab4ea1ed298a9ce458db0b80beb807952b3b42b04a4d1",
+        "text": "It should be remarked that the two facets of duality of patterning have often been studied independently from each other BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . It should also be remarked that often studies in this ares have been focused on evolutionary times scales (e.g., BIBREF7 , BIBREF8 , BIBREF9 ), disregarding in this way the peer-to-peer negotiation taking place on cultural time-scales in large populations. In contrast, there is evidence suggesting that humans are capable of evolving languages with duality of patterning in the course of only one or two generations (consider for instance Nicaraguan Sign Language BIBREF10 or the emergence of Pidgins and Creole languages BIBREF11 ).",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.03661",
+          "source_type": "paper",
+          "source_path": "qasper/1602.03661",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1602.03661",
+            "paragraph_index": 1,
+            "section_index": 2
+          }
+        }
+      },
+      {
+        "rank": 5,
+        "score": -6.4296875,
+        "chunk_id": "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230",
+        "text": "Figure 1 . Left The normalized histogram of the lengths for the words of the six lexica considered. In the inset, a zoom of the region with percentages above the 5%. Center The phoneme frequency-rank plot for the words of the considered lexica. On the x-axis we report the rank of individual phonemes and in the y-axis the corresponding frequency in each lexicon. Right Excess Master-Mind similarity of words as a function of the average distance d of the corresponding objects on the HBC word-association graph.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.03661",
+          "source_type": "paper",
+          "source_path": "qasper/1602.03661",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 0,
+            "paper_id": "1602.03661"
+          }
+        }
+      },
+      {
+        "rank": 6,
+        "score": -6.49609375,
+        "chunk_id": "chunk:725482606b32976f044f4cedfadcb9ac5687492a631f31302755378feed0dfdc",
+        "text": "Table 1 Phoneme statistics of the different languages considered and of HBC. M is the number of words in the list, F is the number of different phonemes observed in the word list of each dictionary, S is the entropy calculated on the normalized frequencies distributions, Smax = log(F ) is the maximum possible value of the entropy, reached when all the forms are equiprobable. C is the combinatoriality defined in Eq. 1.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1602.03661",
+          "source_type": "paper",
+          "source_path": "qasper/1602.03661",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 1,
+            "paper_id": "1602.03661"
+          }
+        }
+      }
+    ]
+  },
+  "rnn_domain_adaptation": {
+    "source_id": "qasper:1604.00117",
+    "title": "Domain Adaptation of Recurrent Neural Networks for Natural Language Understanding",
+    "status": "failed",
+    "diagnostic": "runtime_error",
+    "fields": [],
+    "evidence": [
+      {
+        "rank": 1,
+        "score": -3.072265625,
+        "chunk_id": "chunk:3352b8064fa2f88bd18a7b88f7624cea84a9703920e9e1eef83e17c16dd050b6",
+        "text": "We compare a single-task model against the multi-task model for varying amounts of training data. In the multi-task model, the full amount of data is used for $n-1$ apps and the amount of data is allowed to vary only for the $n$ -th application. These experiments use the traditional word embeddings with a closed vocabulary. Since the data for the United app is bigger than the other three apps combined, it is used as an anchor for the multi-task model. The other three apps alternate in the position of the $n$ -th app. The data usage for the $n$ -th app is varied while the other $n-1$ apps in each experiment use the full amount of available training data. The full amount of training data is different for each app. The data used for the $n$ -th app is 200, 400, or 800 sentences or all available training data depending on the experiment. The test set remains fixed for all of the experiments even as part of the training data is discarded to simulate the low resource scenario.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00117",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00117",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00117",
+            "paragraph_index": 0,
+            "section_index": 5
+          }
+        }
+      },
+      {
+        "rank": 2,
+        "score": -3.150390625,
+        "chunk_id": "chunk:84c9fae81a24161b125c40472c4a2d608795df48286034e0d0cedd6c5817d3c8",
+        "text": "The data is split to use 30% for training with 70% to be used for test data. The reason that a majority of the data is used for testing is that in the second experiment the results are reported separately for sentences containing out of vocabulary tokens and a large amount of data is needed to get a sufficient sample size. Hyperparameter tuning presents a challenge when operating in a low resource scenario. When there is barely enough data to train the model none can be spared for a validation set. We used data from the United app for hyperparameter tuning since it is the largest and assumed that the hyperparameter settings generalized to the other apps.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00117",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00117",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00117",
+            "paragraph_index": 0,
+            "section_index": 4
+          }
+        }
+      },
+      {
+        "rank": 3,
+        "score": -3.306640625,
+        "chunk_id": "chunk:5dd6882f450a8e31a58f89d0a27134aa8d6f97448011a53ad63ca41e4d305482",
+        "text": "For the single-task model, the word embeddings are 60 dimensional and the LSTM is dimension 100 with a 70 dimensional projection layer on the LSTM. For the multi-task model, word embeddings are 200 dimensional, and the LSTM has 250 dimensions with a 170 dimensional projection layer. For the open vocabulary version of the model, the 200-dimensional input is a concatenation of 160-dimensional traditional word embeddings with 40-dimensional character-based word embeddings. The character embedding layer is 15 dimensions, the first LSTM layer is 40 dimensions with a 20 dimensional projection layer, and the second LSTM layer is 130 dimensions.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00117",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00117",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00117",
+            "paragraph_index": 2,
+            "section_index": 4
+          }
+        }
+      },
+      {
+        "rank": 4,
+        "score": -3.806640625,
+        "chunk_id": "chunk:6aecf55c2c39c8e9b609967710d1f4a81d1dad9807c1fae63474c6e2ea4050ca",
+        "text": "In Figure 1 we show the single-task vs. multi-task model performance for each of three different applications. The multi-task model outperforms the single-task model at all data sizes, and the relative performance increases as the size of the training data decreases. When only 200 sentences of training data are used, the performance of the multi-task model is about 60% better than the single-task model for both the Airbnb and Greyhound apps. The relative gain for the OpenTable app is 26%. Because the performance of the multi-task model decays much more slowly as the amount of training data is reduced, the multi-task model can deliver the same performance with a considerable reduction in the amount of labeled data.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00117",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00117",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00117",
+            "paragraph_index": 1,
+            "section_index": 5
+          }
+        }
+      },
+      {
+        "rank": 5,
+        "score": -3.96875,
+        "chunk_id": "chunk:16dcbf82551f4136301fdf7220eb1ee2148a437b11e20a1bbfd9839be377034b",
+        "text": "The proposed model is described in more detail in Section \"Model\" . The approach is assessed on a new data collection based on four apps, described in Section \"Data\" . The experiments described in Section \"Training and Model Configuration Details\" investigate how much data is necessary for the $n$ -th app using a multi-task model that leverages the data from the previous $n-1$ apps, with results compared against the single-task model that only utilizes the data from the $n$ -th app. We conclude in Section \"Conclusions\" with a summary of the key findings and discussion of opportunities for future work.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00117",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00117",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00117",
+            "paragraph_index": 6,
+            "section_index": 0
+          }
+        }
+      },
+      {
+        "rank": 6,
+        "score": -4.04296875,
+        "chunk_id": "chunk:f2747de3f7dec34115d84855fb2cbd288f4aa4f26e0a128ae9fdad8d4adf07b4",
+        "text": "The two main contributions of this work are the multi-task model and the use of the open vocabulary character-based embeddings, which together allow for scalable slot filling models. Our work on multi-task learning in slot filling differs from its previous use in BIBREF18 in that we allow for soft sharing between tasks instead of explicitly matching slots to each other across different tasks. A limitation of explicit slot matching is that two slots that appear to have the same underlying type, such as location-based slots, may actually use the slot information in different ways depending on the overall intent of the task. In our model, the sharing between tasks is done implicitly by the neural network. Our approach to handling words unseen in training data is different from the delexicalization proposed in BIBREF19 in that we do not require the vocabulary items associated with slots and values to be prespecified. It is complementary to work on extending domain coverage BIBREF20 , BIBREF21 .",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00117",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00117",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00117",
+            "paragraph_index": 5,
+            "section_index": 0
+          }
+        }
+      }
+    ]
+  },
+  "attsum": {
+    "source_id": "qasper:1604.00125",
+    "title": "AttSum: Joint Learning of Focusing and Summarization with Neural Attention",
+    "status": "failed",
+    "diagnostic": "runtime_error",
+    "fields": [],
+    "evidence": [
+      {
+        "rank": 1,
+        "score": -4.05859375,
+        "chunk_id": "chunk:9690acd353250bf7507a06827bf90a28c7bd5b43ac61034100a1a881d0108e6e",
+        "text": "For evaluation, we adopt the widely-used automatic evaluation metric ROUGE BIBREF14 . It measures the summary quality by counting the overlapping units such as the n-grams, word sequences and word pairs between the peer summary and reference summaries. We take ROUGE-2 as the main measures due to its high capability of evaluating automatic summarization systems BIBREF19 . During the training data of pairwise ranking, we also rank the sentences according to ROUGE-2 scores.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00125",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00125",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00125",
+            "paragraph_index": 0,
+            "section_index": 8
+          }
+        }
+      },
+      {
+        "rank": 2,
+        "score": -4.41796875,
+        "chunk_id": "chunk:06f3cf50ade552b6457050cab0e903f362c4cd57a4bd8aaeb43dbc201d3757f1",
+        "text": "In this work, we focus on the query-focused multi-document summarization task. The experiments are conducted on the DUC 2005 $\\sim $ 2007 datasets. All the documents are from news websites and grouped into various thematic clusters. In each cluster, there are four reference summaries created by NIST assessors. We use Stanford CoreNLP to process the datasets, including sentence splitting and tokenization. Our summarization model compiles the documents in a cluster into a single document. Table 1 shows the basic information of the three datasets. We can find that the data sizes of DUC are quite different. The sentence number of DUC 2007 is only about a half of DUC 2005's. For each cluster, a summarization system is requested to generate a summary with the length limit of 250 words. We conduct a 3-fold cross-validation on DUC datasets, with two years of data as the training set and one year of data as the test set.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00125",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00125",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00125",
+            "paragraph_index": 0,
+            "section_index": 6
+          }
+        }
+      },
+      {
+        "rank": 3,
+        "score": -4.4609375,
+        "chunk_id": "chunk:07873a4f272e0a34a4e3790c27ba57d6283503ee9e31c3d319e4430d4abe49f7",
+        "text": "For the CNN layer, we introduce a word embedding set which is trained on a large English news corpus ( $10^{10}$ tokens) with the word2vec model BIBREF18 . The dimension of word embeddings is set to 50, like many previous work (e.g., BIBREF10 ). Since the summarization dataset is quite limited, we do not update these word embeddings in the training process, which greatly reduces the model parameters to be learned. There are two hyper-parameters in our model, i.e., the word window size $h$ and the CNN layer dimension $l$ . We set $h=2$ , which is consistent with the ROUGE-2 evaluation. As for $l$ , we explore the change of model performance with $l \\in [5,100]$ . Finally, we choose $l=50$ for all the rest experiments. It is the same dimension as the word embeddings. During the training of pairwise ranking, we set the margin $\\Omega =0.5$ . The initial learning rate is 0.1 and batch size is 100.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00125",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00125",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00125",
+            "paragraph_index": 0,
+            "section_index": 7
+          }
+        }
+      },
+      {
+        "rank": 4,
+        "score": -4.609375,
+        "chunk_id": "chunk:c9fa2e376599ba33e30bfde628d90113a0b2a3123e3e2d86b4c4a19ff4e443ca",
+        "text": "The ROUGE scores of the different summarization methods are presented in Table 2 . We consider ROUGE-2 as the main evaluation metrics, and also provide the ROUGE-1 results as the common practice. As can be seen, AttSum always enjoys a reasonable increase over ISOLATION, indicating that the joint model indeed takes effects. With respect to other methods, AttSum largely outperforms two baselines (LEAD and QUERY_SIM) and the unsupervised neural network model DocEmb. Although AttSum is totally data-driven, its performance is better than the widely-used summarization systems MultiMR and SVR. It is noted that SVR heavily depends on hand-crafted features. Nevertheless, AttSum almost outperforms SVR all the time. The only exception is DUC 2005 where AttSum is slightly inferior to SVR in terms of ROUGE-2. Over-fitting is a possible reason. Table 1 demonstrates the data size of DUC 2005 is highly larger than the other two. As a result, when using the 3-fold cross-validation, the number of training data for DUC 2005 is the smallest among the three years. The lack of training data impedes the learning of sentence and document embeddings.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00125",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00125",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.00125",
+            "paragraph_index": 0,
+            "section_index": 10
+          }
+        }
+      },
+      {
+        "rank": 5,
+        "score": -5.47265625,
+        "chunk_id": "chunk:61010dc2fd4009656982c144e11adcd0e4321b25f7d56e4c33cc862eb6416bba",
+        "text": "Table 1: Statistics of the DUC datasets.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00125",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00125",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 1,
+            "paper_id": "1604.00125"
+          }
+        }
+      },
+      {
+        "rank": 6,
+        "score": -5.7578125,
+        "chunk_id": "chunk:5bf2d4089a562a1df4c976a3b36fe420373b11567c7ea375c7a80f690c07527c",
+        "text": "Table 2: ROUGE scores (%) of different models. We draw a line to distinguish models with or without hand-crafted features.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.00125",
+          "source_type": "paper",
+          "source_path": "qasper/1604.00125",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "caption_index": 2,
+            "paper_id": "1604.00125"
+          }
+        }
+      }
+    ]
+  },
+  "causal_statements": {
+    "source_id": "qasper:1604.05781",
+    "title": "What we write about when we write about causality: Features of causal statements across large-scale social discourse",
+    "status": "completed",
+    "diagnostic": "accepted",
+    "fields": [
+      {
+        "occurrence": 0,
+        "name": "task",
+        "value": "analysis of features of causal statements in large-scale social discourse",
+        "quote": "Features of causal statements across large-scale social discourse",
+        "evidence_id": "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+        "quote_exact": false,
+        "raw_field_sha256": "a086dab8bada2de70eb184d2d4bc56a2c7e0049dd11d2705e124a58d85836919",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 1,
+        "name": "dataset",
+        "value": "10% uniform sample of Twitter posts during 2013 (Gardenhose API)",
+        "quote": "Data was collected from a 10% uniform sample of Twitter posts made during 2013, specifically the Gardenhose API",
+        "evidence_id": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614",
+        "quote_exact": true,
+        "raw_field_sha256": "670bb354e23f4a5f230471d8e867e14aecb1e82ac8b1ec67160b24752efe2135",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 2,
+        "name": "dataset",
+        "value": "965,560 causal and 965,560 control documents",
+        "quote": "The end result of this procedure identified 965,560 causal and 965,560 control documents",
+        "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+        "quote_exact": true,
+        "raw_field_sha256": "b638d8dceb897d4a306085be3513522fc97df4dd78a91dd0dd2472126bde7757",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 3,
+        "name": "input_setting",
+        "value": "only English-language tweets; tweets matching more English stopwords than any other language",
+        "quote": "We considered only English-language tweets for this study",
+        "evidence_id": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614",
+        "quote_exact": true,
+        "raw_field_sha256": "eece40ea90d0ea289fd3fdf8046ae119e37debaf32536708db37ce6a4d8ecc95",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 4,
+        "name": "input_setting",
+        "value": "punctuation, XML characters, hyperlinks, at-mentions, hashtags removed; unigram tokenization; casing retained",
+        "quote": "Punctuation, XML characters, and hyperlinks were removed, as were Twitter-specific “at-mentions” and “hashtags”",
+        "evidence_id": "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+        "quote_exact": true,
+        "raw_field_sha256": "8c41cd0a6044b5a8e669832476b3860c602f7e6cb55f7ae06bddfc1133d288db",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 5,
+        "name": "input_setting",
+        "value": "causal documents contain one occurrence of 'caused', 'causing', or 'causes'",
+        "quote": "Causal documents were chosen to contain one occurrence only of the exact unigrams: ‘caused’, ‘causing’, or ‘causes’",
+        "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+        "quote_exact": false,
+        "raw_field_sha256": "a164a6247a5ef723edb3d99efdab4762f0e0fd2416135ea5e8b334546197881c",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 6,
+        "name": "model",
+        "value": "Latent Dirichlet Allocation (LDA)",
+        "quote": "We used the popular topic modeling method Latent Dirichlet Allocation (LDA)",
+        "evidence_id": "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d",
+        "quote_exact": true,
+        "raw_field_sha256": "1d471376b53aaf14a25197000e0f87e95fdc712e4a9c4566b8a2aaa377ff8296",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 7,
+        "name": "model",
+        "value": "NLTK v3.1 averaged perceptron POS tagger trained on Brown Corpus",
+        "quote": "POS tagging was done using NLTK v3.1 BIBREF29 which implements an averaged perceptron classifier BIBREF32 trained on the Brown Corpus",
+        "evidence_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+        "quote_exact": true,
+        "raw_field_sha256": "2b7bb01021cebb520b93a070ca4f07c0096ed968283c0167fce841e1c765cad6",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 8,
+        "name": "model",
+        "value": "Stanford CoreNLP v3.6.0 4-class NER tagger using conditional random field",
+        "quote": "Named Entity Recognition (NER) was performed using the 4-class, distributional similarity tagger provided as part of the Stanford CoreNLP v3.6.0 toolkit",
+        "evidence_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+        "quote_exact": true,
+        "raw_field_sha256": "ef2de341a62bf31b84cf38065fff16f6894ba2408b0162fe607cd360315e300a",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 9,
+        "name": "result",
+        "value": "caused 38.2%, causes 35.0%, causing 26.8% of causal documents",
+        "quote": "Each of the three “cause-words”, ‘caused’, ‘causes’, and ‘causing’ appeared in 38.2%, 35.0%, and 26.8% of causal documents, respectively",
+        "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+        "quote_exact": false,
+        "raw_field_sha256": "3b2f6e33dc7178a9f6dc69595f40ae6227817368d800fa131293c8c78a46d727",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 10,
+        "name": "result",
+        "value": "10-topic LDA model discovered meaningful topics",
+        "quote": "Inspecting these unigrams we found that a 10-topic model discovered meaningful topics",
+        "evidence_id": "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d",
+        "quote_exact": true,
+        "raw_field_sha256": "07b1872544c3d145256bd8da688723222674ada1ac51b8a758e2e3af577c80bf",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 11,
+        "name": "result",
+        "value": "Odds Ratio correlation with/without punctuation rho=0.71, with/without casing rho=0.80",
+        "quote": "including casing and without casing ( $\\rho = 0.71$ and $0.80$ , respectively)",
+        "evidence_id": "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6",
+        "quote_exact": true,
+        "raw_field_sha256": "f3a1f552dd9957bac4a3bb55aba60901c7589de1704881f32f8c41aa8d6c2082",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 12,
+        "name": "limitation",
+        "value": "word 'cause' excluded due to use as contraction for 'because'",
+        "quote": "The word ‘cause’ was not included due to its use as a popular contraction for ‘because’",
+        "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+        "quote_exact": false,
+        "raw_field_sha256": "bcaa9474b23db82ce5480a8173fe2141d881e44c0f1ae4928089060f53f86f2f",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 13,
+        "name": "limitation",
+        "value": "did not consider additional synonyms of cause words",
+        "quote": "We also did not consider additional synonyms of these cause words, although that could be pursued for future work",
+        "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+        "quote_exact": true,
+        "raw_field_sha256": "356ac665ab63d3c4b8d8bb6e281f6df6a9e31ae3f2e50eba6a91162a054342d9",
+        "rule_diagnostics": []
+      },
+      {
+        "occurrence": 14,
+        "name": "limitation",
+        "value": "taggers have potential ambiguity in written text",
+        "quote": "there is always potential ambiguity in written text and improving upon these methods remains an active area of research",
+        "evidence_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+        "quote_exact": true,
+        "raw_field_sha256": "45cb7594992ecd7284e47246929b070a12dbcffcd516e810d8ce1fb898acd011",
+        "rule_diagnostics": []
+      }
+    ],
+    "evidence": [
+      {
+        "rank": 1,
+        "score": -5.95703125,
+        "chunk_id": "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+        "text": "All document text was processed the same way. Punctuation, XML characters, and hyperlinks were removed, as were Twitter-specific “at-mentions” and “hashtags” (see also the Appendix). There is useful information here, but it is either not natural language text, or it is Twitter-specific, or both. Documents were broken into individual words (unigrams) on whitespace. Casing information was retained, as we will use it for our Named Entity analysis, but otherwise all words were considered lowercase only (see also the Appendix). Stemming BIBREF30 and lemmatization BIBREF31 were not performed.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.05781",
+          "source_type": "paper",
+          "source_path": "qasper/1604.05781",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.05781",
+            "paragraph_index": 1,
+            "section_index": 1
+          }
+        }
+      },
+      {
+        "rank": 2,
+        "score": -6.78125,
+        "chunk_id": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614",
+        "text": "Data was collected from a 10% uniform sample of Twitter posts made during 2013, specifically the Gardenhose API. Twitter activity consists of short posts called tweets which are limited to 140 characters. Retweets, where users repost a tweet to spread its content, were not considered. (The spread of causal statements will be considered in future work.) We considered only English-language tweets for this study. To avoid cross-language effects, we kept only tweets with a user-reported language of `English' and, as a second constraint, individual tweets needed to match more English stopwords than any other language's set of stopwords. Stopwords considered for each language were determined using NLTK's database BIBREF29 . A tweet will be referred to as a `document' for the rest of this work.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.05781",
+          "source_type": "paper",
+          "source_path": "qasper/1604.05781",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.05781",
+            "paragraph_index": 0,
+            "section_index": 1
+          }
+        }
+      },
+      {
+        "rank": 3,
+        "score": -7.23828125,
+        "chunk_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+        "text": "Causal documents were chosen to contain one occurrence only of the exact unigrams: `caused', `causing', or `causes'. The word `cause' was not included due to its use as a popular contraction for `because'. One `cause-word' per document restricted the analysis to single relationships between two relata. Documents that contain bidirectional words (`associate', `relate', `connect', `correlate', and any of their stems) were also not selected for analysis. This is because our focus is on causality, an inherently one-sided relationship between two objects. We also did not consider additional synonyms of these cause words, although that could be pursued for future work. Control documents were also selected. These documents did not contain any of `caused', `causing', or `causes', nor any bidirectional words, and are further matched temporally to obtain the same number of control documents as causal documents in each fifteen-minute period during 2013. Control documents were otherwise selected randomly; causal synonyms may be present. The end result of this procedure identified 965,560 causal and 965,560 control documents. Each of the three “cause-words”, `caused', `causes', and `causing' appeared in 38.2%, 35.0%, and 26.8% of causal documents, respectively.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.05781",
+          "source_type": "paper",
+          "source_path": "qasper/1604.05781",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.05781",
+            "paragraph_index": 2,
+            "section_index": 1
+          }
+        }
+      },
+      {
+        "rank": 4,
+        "score": -7.33984375,
+        "chunk_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+        "text": "Documents were further studied by annotating their unigrams with Parts-of-Speech (POS) and Named Entities (NE) tags. POS tagging was done using NLTK v3.1 BIBREF29 which implements an averaged perceptron classifier BIBREF32 trained on the Brown Corpus BIBREF33 . (POS tagging is affected by punctuation; we show in the Appendix that our results are relatively robust to the removal of punctuation.) POS tags denote the nouns, verbs, and other grammatical constructs present in a document. Named Entity Recognition (NER) was performed using the 4-class, distributional similarity tagger provided as part of the Stanford CoreNLP v3.6.0 toolkit BIBREF34 . NER aims to identify and classify proper words in a text. The NE classifications considered were: Organization, Location, Person, and Misc. The Stanford NER tagger uses a conditional random field model BIBREF35 trained on diverse sets of manually-tagged English-language data (CoNLL-2003) BIBREF34 . Conditional random fields allow dependencies between words so that `New York' and `New York Times', for example, are classified separately as a location and organization, respectively. These taggers are commonly used and often provide reasonably accurate results, but there is always potential ambiguity in written text and improving upon these methods remains an active area of research.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.05781",
+          "source_type": "paper",
+          "source_path": "qasper/1604.05781",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.05781",
+            "paragraph_index": 0,
+            "section_index": 2
+          }
+        }
+      },
+      {
+        "rank": 5,
+        "score": -7.5703125,
+        "chunk_id": "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6",
+        "text": "Parts-of-speech tagging depends on punctuation and casing, which we filtered in our data, so a study of how robust the POS algorithm is to punctuation and casing removal is important. We computed POS tags for the corpora with and without casing as well as with and without punctuation (which includes hashtags, links and at-symbols). Two tags mentioned in Fig. 1 B, NNPS and LS (which was not significant), were affected by punctuation removal. Otherwise, there is a strong correlation (Fig. 4 ) between Odds Ratios (causal vs. control) with punctuation and without punctuation, including casing and without casing ( $\\rho = 0.71$ and $0.80$ , respectively), indicating the POS differences between the corpora were primarily not due to the removal of punctuation or casing.",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.05781",
+          "source_type": "paper",
+          "source_path": "qasper/1604.05781",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.05781",
+            "paragraph_index": 3,
+            "section_index": 7
+          }
+        }
+      },
+      {
+        "rank": 6,
+        "score": -7.5859375,
+        "chunk_id": "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d",
+        "text": "We used the popular topic modeling method Latent Dirichlet Allocation (LDA) BIBREF39 . We ranked unigrams by how strongly associated they were with the topic. Inspecting these unigrams we found that a 10-topic model discovered meaningful topics. See Methods for full details. The top unigrams for each topic are shown in Tab. 1 .",
+        "review_required": false,
+        "source": {
+          "source_id": "qasper:1604.05781",
+          "source_type": "paper",
+          "source_path": "qasper/1604.05781",
+          "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+          "location": {
+            "paper_id": "1604.05781",
+            "paragraph_index": 12,
+            "section_index": 6
+          }
+        }
+      }
+    ]
+  }
+}

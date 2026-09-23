@@ -1,0 +1,15 @@
+{
+  "content": "",
+  "role": "assistant",
+  "tool_calls": [
+    {
+      "id": "call_00_Lnp9YBVu8WZTpBNqFQ0C5242",
+      "function": {
+        "arguments": "{\"decision\": \"include\", \"reason\": \"The paper proposes a label semantics approach to linguistic hedges (e.g. 'very', 'quite') grounded in conceptual spaces and prototype theory, defining formulae for hedged concepts and examining limiting behaviour of repeated application. This is a theoretical modeling paper with explicit definitions of the task/model and results, though it contains no empirical datasets or quantitative evaluation metrics.\", \"reason_evidence_ids\": [\"chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107\", \"chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f\"], \"fields\": [{\"name\": \"task\", \"value\": \"linguistic hedges modeling\", \"quote\": \"we give formulations of the hedges `very' and `quite'\", \"evidence_id\": \"chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107\"}, {\"name\": \"model\", \"value\": \"label semantics framework\", \"quote\": \"Our account of linguistic hedges uses the label semantics framework to model concepts\", \"evidence_id\": \"chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107\"}, {\"name\": \"model\", \"value\": \"prototype and threshold\", \"quote\": \"a formalisation of concepts as based on a prototype and a threshold, located in a conceptual space\", \"evidence_id\": \"chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107\"}, {\"name\": \"result\", \"value\": \"crisp set in the limit\", \"quote\": \"in the limit, the result of applying dilation or contraction modifiers multiple times is to create a crisp set\", \"evidence_id\": \"chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f\"}, {\"name\": \"result\", \"value\": \"dilation includes whole support; contraction reduces to prototype\", \"quote\": \"In the case of dilation, the crisp set includes the whole support of the fuzzy set associated with the original label, whereas in the case of contraction, the concept reduces to include only its prototype\", \"evidence_id\": \"chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f\"}, {\"name\": \"result\", \"value\": \"most general result applies when epsilon2 <= f(epsilon1) or epsilon2 >= f(epsilon1)\", \"quote\": \"the formula still applies when $\\\\varepsilon _2 \\\\le f(\\\\varepsilon _1)$ , or $\\\\varepsilon _2 \\\\ge f(\\\\varepsilon _1)$\", \"evidence_id\": \"chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2\"}, {\"name\": \"limitation\", \"value\": \"simplicity of the original result is lost with additional parameters\", \"quote\": \"In this case we have introduced additional parameters, so the simplicity of the original result is lost\", \"evidence_id\": \"chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2\"}]}",
+        "name": "submit_research_card"
+      },
+      "type": "function",
+      "index": 0
+    }
+  ]
+}

@@ -1,0 +1,763 @@
+{
+  "record_id": "a694230d-285d-4b96-b36b-8527c1669344",
+  "card_id": "32730d2a-fec5-4933-beb0-b50ad48aebac",
+  "created_at": "2026-09-23T07:44:19.540156Z",
+  "record_type": "extraction",
+  "subject_source_id": "qasper:1601.06081",
+  "revision_of": null,
+  "decision": null,
+  "claims": [],
+  "fields": [
+    {
+      "name": "task",
+      "value": "classification of text into urban legend vs factual news",
+      "claims": [
+        {
+          "claim": {
+            "statement": "classification of text into urban legend vs factual news",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+              "text": "Urban Legends vs News. In the UL vs. GN classification task, while all the features together performed well (F1 = 0.833), improving over all other subgroups of features ( $p<0.001$ ), no single group of features performed so well, apart from READ (F1 = 0.763, $p<0.001$ ). Particularly, the temporal features (TIMEX) performed worse than AFF and NE ( $p<0.001$ ). Still, all features improved over the baseline ( $p<0.001$ ).",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 1,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "task",
+      "value": "three class classification task (UL vs GN vs FT)",
+      "claims": [
+        {
+          "claim": {
+            "statement": "three class classification task (UL vs GN vs FT)",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f"
+            ],
+            "quote": "we also tested feature predictivity on a three class classification task (UL vs GN vs FT)",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+              "text": "Three Class Classification. Finally we also tested feature predictivity on a three class classification task (UL vs GN vs FT). Since in this case we did not performed downsampling, we use the ZeroR classifier as a baseline. For the sake of interpretability of results, along with precision, recall and F1 we also provide the Matthews Correlation Coefficient (MCC) which is useful for unbalanced datasets, as presented in BIBREF39 for the multiclass case. MCC returns a value between -1 and +1, where +1 represents a perfect prediction, 0 no better than random and -1 indicates total disagreement. Results are consistent with previous experiments. In Table 8 , all feature configurations show an improvement over the baseline ( $p<0.001$ ) but the temporal features (TIMEX) have far lower discriminative power as compared to others groups of features (MCC=0.339).",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 5,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "model",
+      "value": "SVM using libSVM",
+      "claims": [
+        {
+          "claim": {
+            "statement": "SVM using libSVM",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+              "text": "The goal of our experiments is to understand to what extent it is possible to assign a text to one of the aforementioned classes using just the prototypical characteristics (features) discussed above, and whether there is a subset of features that stands out among the others in this classification task. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. We always randomly downsampled the majority class in order to make the dataset balanced, i.e. 50% of positive examples and 50% of negative examples; this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings. Results are reported in Table 6 ; all significance tests discussed below are computed using an approximate randomization test BIBREF38 .",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 0,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "dataset",
+      "value": "New York Times stories",
+      "claims": [
+        {
+          "claim": {
+            "statement": "New York Times stories",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3",
+              "text": "We scraped the WWN for a total of 225 stories, and then randomly selected an equal amount of stories from the NYT. For both datasets we extracted the same set of features discussed in the previous sections. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. Since the dataset is balanced, this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Results are reported in Table 9 .",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 1,
+                  "section_index": 7
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "dataset",
+      "value": "Weekly World News stories (225)",
+      "claims": [
+        {
+          "claim": {
+            "statement": "Weekly World News stories (225)",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3",
+              "text": "We scraped the WWN for a total of 225 stories, and then randomly selected an equal amount of stories from the NYT. For both datasets we extracted the same set of features discussed in the previous sections. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. Since the dataset is balanced, this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Results are reported in Table 9 .",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 1,
+                  "section_index": 7
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "input_setting",
+      "value": "prototypical characteristics features",
+      "claims": [
+        {
+          "claim": {
+            "statement": "prototypical characteristics features",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+              "text": "The goal of our experiments is to understand to what extent it is possible to assign a text to one of the aforementioned classes using just the prototypical characteristics (features) discussed above, and whether there is a subset of features that stands out among the others in this classification task. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. We always randomly downsampled the majority class in order to make the dataset balanced, i.e. 50% of positive examples and 50% of negative examples; this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings. Results are reported in Table 6 ; all significance tests discussed below are computed using an approximate randomization test BIBREF38 .",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 0,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "input_setting",
+      "value": "z-score normalization of features",
+      "claims": [
+        {
+          "claim": {
+            "statement": "z-score normalization of features",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+              "text": "The goal of our experiments is to understand to what extent it is possible to assign a text to one of the aforementioned classes using just the prototypical characteristics (features) discussed above, and whether there is a subset of features that stands out among the others in this classification task. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. We always randomly downsampled the majority class in order to make the dataset balanced, i.e. 50% of positive examples and 50% of negative examples; this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings. Results are reported in Table 6 ; all significance tests discussed below are computed using an approximate randomization test BIBREF38 .",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 0,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "training",
+      "value": "ten-fold cross validation",
+      "claims": [
+        {
+          "claim": {
+            "statement": "ten-fold cross validation",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+            ],
+            "quote": "For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+              "text": "The goal of our experiments is to understand to what extent it is possible to assign a text to one of the aforementioned classes using just the prototypical characteristics (features) discussed above, and whether there is a subset of features that stands out among the others in this classification task. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. We always randomly downsampled the majority class in order to make the dataset balanced, i.e. 50% of positive examples and 50% of negative examples; this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings. Results are reported in Table 6 ; all significance tests discussed below are computed using an approximate randomization test BIBREF38 .",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 0,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "training",
+      "value": "random downsampling of majority class to balance dataset",
+      "claims": [
+        {
+          "claim": {
+            "statement": "random downsampling of majority class to balance dataset",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+              "text": "The goal of our experiments is to understand to what extent it is possible to assign a text to one of the aforementioned classes using just the prototypical characteristics (features) discussed above, and whether there is a subset of features that stands out among the others in this classification task. For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset. We always randomly downsampled the majority class in order to make the dataset balanced, i.e. 50% of positive examples and 50% of negative examples; this accounts for a random baseline of 0.5. We also normalized all features according to z-score. Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings. Results are reported in Table 6 ; all significance tests discussed below are computed using an approximate randomization test BIBREF38 .",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 0,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "metric",
+      "value": "precision",
+      "claims": [
+        {
+          "claim": {
+            "statement": "precision",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7"
+            ],
+            "quote": "in term of precision, recall and F1 over the single classes",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+              "text": "In Table 7 we report the performances of the various classification tasks in term of precision, recall and F1 over the single classes. Interestingly, for almost all feature combinations the classifiers had slightly higher precision than recall for UL, while the contrary holds for FT and GN.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 3,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "metric",
+      "value": "recall",
+      "claims": [
+        {
+          "claim": {
+            "statement": "recall",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7"
+            ],
+            "quote": "in term of precision, recall and F1 over the single classes",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+              "text": "In Table 7 we report the performances of the various classification tasks in term of precision, recall and F1 over the single classes. Interestingly, for almost all feature combinations the classifiers had slightly higher precision than recall for UL, while the contrary holds for FT and GN.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 3,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "metric",
+      "value": "F1",
+      "claims": [
+        {
+          "claim": {
+            "statement": "F1",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7"
+            ],
+            "quote": "in term of precision, recall and F1 over the single classes",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+              "text": "In Table 7 we report the performances of the various classification tasks in term of precision, recall and F1 over the single classes. Interestingly, for almost all feature combinations the classifiers had slightly higher precision than recall for UL, while the contrary holds for FT and GN.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 3,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "metric",
+      "value": "Matthews Correlation Coefficient (MCC)",
+      "claims": [
+        {
+          "claim": {
+            "statement": "Matthews Correlation Coefficient (MCC)",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f"
+            ],
+            "quote": "we also provide the Matthews Correlation Coefficient (MCC)",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+              "text": "Three Class Classification. Finally we also tested feature predictivity on a three class classification task (UL vs GN vs FT). Since in this case we did not performed downsampling, we use the ZeroR classifier as a baseline. For the sake of interpretability of results, along with precision, recall and F1 we also provide the Matthews Correlation Coefficient (MCC) which is useful for unbalanced datasets, as presented in BIBREF39 for the multiclass case. MCC returns a value between -1 and +1, where +1 represents a perfect prediction, 0 no better than random and -1 indicates total disagreement. Results are consistent with previous experiments. In Table 8 , all feature configurations show an improvement over the baseline ( $p<0.001$ ) but the temporal features (TIMEX) have far lower discriminative power as compared to others groups of features (MCC=0.339).",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 5,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "result",
+      "value": "all features F1 = 0.833 in UL vs GN",
+      "claims": [
+        {
+          "claim": {
+            "statement": "all features F1 = 0.833 in UL vs GN",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+              "text": "Urban Legends vs News. In the UL vs. GN classification task, while all the features together performed well (F1 = 0.833), improving over all other subgroups of features ( $p<0.001$ ), no single group of features performed so well, apart from READ (F1 = 0.763, $p<0.001$ ). Particularly, the temporal features (TIMEX) performed worse than AFF and NE ( $p<0.001$ ). Still, all features improved over the baseline ( $p<0.001$ ).",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 1,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "result",
+      "value": "READ F1 = 0.763 in UL vs GN",
+      "claims": [
+        {
+          "claim": {
+            "statement": "READ F1 = 0.763 in UL vs GN",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+              "text": "Urban Legends vs News. In the UL vs. GN classification task, while all the features together performed well (F1 = 0.833), improving over all other subgroups of features ( $p<0.001$ ), no single group of features performed so well, apart from READ (F1 = 0.763, $p<0.001$ ). Particularly, the temporal features (TIMEX) performed worse than AFF and NE ( $p<0.001$ ). Still, all features improved over the baseline ( $p<0.001$ ).",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 1,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "result",
+      "value": "TIMEX MCC=0.339 in three class task",
+      "claims": [
+        {
+          "claim": {
+            "statement": "TIMEX MCC=0.339 in three class task",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+              "text": "Three Class Classification. Finally we also tested feature predictivity on a three class classification task (UL vs GN vs FT). Since in this case we did not performed downsampling, we use the ZeroR classifier as a baseline. For the sake of interpretability of results, along with precision, recall and F1 we also provide the Matthews Correlation Coefficient (MCC) which is useful for unbalanced datasets, as presented in BIBREF39 for the multiclass case. MCC returns a value between -1 and +1, where +1 represents a perfect prediction, 0 no better than random and -1 indicates total disagreement. Results are consistent with previous experiments. In Table 8 , all feature configurations show an improvement over the baseline ( $p<0.001$ ) but the temporal features (TIMEX) have far lower discriminative power as compared to others groups of features (MCC=0.339).",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 5,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "result",
+      "value": "slightly higher precision than recall for UL",
+      "claims": [
+        {
+          "claim": {
+            "statement": "slightly higher precision than recall for UL",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7"
+            ],
+            "quote": "the classifiers had slightly higher precision than recall for UL, while the contrary holds for FT and GN",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+              "text": "In Table 7 we report the performances of the various classification tasks in term of precision, recall and F1 over the single classes. Interestingly, for almost all feature combinations the classifiers had slightly higher precision than recall for UL, while the contrary holds for FT and GN.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1601.06081",
+                "source_type": "paper",
+                "source_path": "qasper/1601.06081",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1601.06081",
+                  "paragraph_index": 3,
+                  "section_index": 5
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    }
+  ]
+}

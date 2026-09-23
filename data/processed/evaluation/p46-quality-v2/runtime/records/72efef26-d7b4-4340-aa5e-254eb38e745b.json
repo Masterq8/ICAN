@@ -1,0 +1,88 @@
+{
+  "record_id": "72efef26-d7b4-4340-aa5e-254eb38e745b",
+  "card_id": "1c80dde5-b345-4352-976c-0f758c88eadb",
+  "created_at": "2026-09-23T07:44:53.938727Z",
+  "record_type": "screening",
+  "subject_source_id": "qasper:1602.00812",
+  "revision_of": null,
+  "decision": "include",
+  "claims": [
+    {
+      "claim": {
+        "statement": "The paper explicitly describes the Grail theorem prover for type-logical grammars, including its proof search strategy, proof net process, and evaluation on random and corpus-extracted multimodal statements. It reports task, method, algorithmic setup, evaluation results, and limitations, warranting inclusion for extraction.",
+        "kind": "inference",
+        "evidence_ids": [
+          "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+          "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+          "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9"
+        ],
+        "quote": null,
+        "calculation": null,
+        "conditions": []
+      },
+      "status": "requires_review",
+      "evidence": [
+        {
+          "rank": 1,
+          "score": 0.0,
+          "chunk_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+          "text": "As to the proof search strategy used by Grail, it is an instance of the “dancing links” algorithm BIBREF35 : when connecting atomic formulas, we always link a formula which has the least possibilities and we rewrite the abstract proof structures only once a fully linked proof structure has been produced. Though the parser is not extremely fast, evaluation both on randomly generated statements and on multimodal statements extracted from corpora show that the resulting algorithm performs more than well enough BIBREF36 .",
+          "review_required": false,
+          "source": {
+            "source_id": "qasper:1602.00812",
+            "source_type": "paper",
+            "source_path": "qasper/1602.00812",
+            "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+            "location": {
+              "paper_id": "1602.00812",
+              "paragraph_index": 26,
+              "section_index": 10
+            }
+          }
+        },
+        {
+          "rank": 1,
+          "score": 0.0,
+          "chunk_id": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+          "text": "Although the structural rules give the grammar writer a great deal of flexibility, such flexibility complicates proof search. As discussed at the beginning of Section \"Theorem proving\" , theorem proving using proof nets is a four step process, which in the current situation looks as follows: 1) lexical lookup, 2) unfolding, 3) identification of atoms, 4) graph rewriting. In the current case, both the graph rewriting and the identification of atoms are complicated and since we can interleave the atom connections and the graph rewriting it is not a priori clear which strategy is optimal for which set of structural rules. The current implementation does graph rewriting only once all atoms have been connected.",
+          "review_required": false,
+          "source": {
+            "source_id": "qasper:1602.00812",
+            "source_type": "paper",
+            "source_path": "qasper/1602.00812",
+            "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+            "location": {
+              "paper_id": "1602.00812",
+              "paragraph_index": 22,
+              "section_index": 10
+            }
+          }
+        },
+        {
+          "rank": 1,
+          "score": 0.0,
+          "chunk_id": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9",
+          "text": "When looking at the rules and examples for the different logics, the reader may have wondered: how do we actually find proofs for type-logical grammars? This question becomes especially urgent once our grammars become more complex and the consequences of our lexical entries, given our logic, become hard to oversee. Though pen and paper generally suffice to show that a given sentence is derivable for the desired reading, it is generally much more laborious to show that a given sentence is underivable or that it has only the desired readings. This is where automated theorem provers are useful: they allow more extensive and intensive testing of your grammars, producing results more quickly and with less errors (though we should be careful about too naively assuming the implementation we are using is correct: when a proof is found it is generally easy to verify its correctness by hand, but when a proof isn't found because of a programming error this can be hard to detect).",
+          "review_required": false,
+          "source": {
+            "source_id": "qasper:1602.00812",
+            "source_type": "paper",
+            "source_path": "qasper/1602.00812",
+            "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+            "location": {
+              "paper_id": "1602.00812",
+              "paragraph_index": 0,
+              "section_index": 9
+            }
+          }
+        }
+      ],
+      "conditions": [],
+      "calculation": null,
+      "diagnostics": [
+        "Inference claims require human semantic review"
+      ]
+    }
+  ],
+  "fields": []
+}

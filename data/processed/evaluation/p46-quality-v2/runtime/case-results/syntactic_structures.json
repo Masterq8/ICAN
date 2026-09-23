@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "trace": "889fe09f07fc4f24b0e2cce3ee10f197.json",
+  "trace_sha256": "3960dd4973be6d54ceb9c8930657a87bea7c4128bfde285b8a36936ff15dabb4",
+  "usage": {
+    "paid_calls": 1,
+    "prompt_tokens": 2223,
+    "completion_tokens": 1312,
+    "actual_cost_usd": null
+  },
+  "response_id": "b1e0cc93-8feb-4830-962e-0b0ac50aaf24",
+  "tool_diagnosis": {
+    "status": "accepted",
+    "code": "accepted",
+    "issues": [],
+    "referenced_evidence_ids": [
+      "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+      "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+      "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230",
+      "chunk:725482606b32976f044f4cedfadcb9ac5687492a631f31302755378feed0dfdc",
+      "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340"
+    ],
+    "unknown_evidence_ids": []
+  },
+  "source_id": "qasper:1602.03661",
+  "request_sha256": "bf6e90671999aa0e46aec3b9883029021a977424059fa17c25aa280bf03f5d94",
+  "raw_action_path": "raw-actions/syntactic_structures.json",
+  "raw_action_sha256": "f25344ca6fce842b64e26c29e6dd8ea138edcf30aeabce9064e1f988fc2934ac"
+}

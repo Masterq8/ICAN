@@ -1,0 +1,27 @@
+{
+  "status": "completed",
+  "trace": "283f1abf3c704817b0c18d071f3d76e2.json",
+  "trace_sha256": "8b8f0d9688f1acf710c8d3db18d7ca3e192e60797860351082ca8a72e365c653",
+  "usage": {
+    "paid_calls": 1,
+    "prompt_tokens": 2338,
+    "completion_tokens": 896,
+    "actual_cost_usd": null
+  },
+  "response_id": "41797f10-8892-43e7-bd0e-43e80fac2a83",
+  "tool_diagnosis": {
+    "status": "accepted",
+    "code": "accepted",
+    "issues": [],
+    "referenced_evidence_ids": [
+      "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+      "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2",
+      "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107"
+    ],
+    "unknown_evidence_ids": []
+  },
+  "source_id": "qasper:1601.06738",
+  "request_sha256": "0538495f52295a08e3cd30610aee897df512570c23c332677b73160a9010e376",
+  "raw_action_path": "raw-actions/linguistic_hedges.json",
+  "raw_action_sha256": "ff8d4786a9187ede40c90f9eed87327bf38df6bd4edc43834cbbcce8cc84718b"
+}

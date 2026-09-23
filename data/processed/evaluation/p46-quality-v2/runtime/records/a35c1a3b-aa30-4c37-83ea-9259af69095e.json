@@ -1,0 +1,683 @@
+{
+  "record_id": "a35c1a3b-aa30-4c37-83ea-9259af69095e",
+  "card_id": "1f09c821-caf6-48bc-ad86-6b1e8807475e",
+  "created_at": "2026-09-23T07:46:42.149921Z",
+  "record_type": "extraction",
+  "subject_source_id": "qasper:1604.05781",
+  "revision_of": null,
+  "decision": null,
+  "claims": [],
+  "fields": [
+    {
+      "name": "task",
+      "value": "analysis of features of causal statements in large-scale social discourse",
+      "claims": [
+        {
+          "claim": {
+            "statement": "analysis of features of causal statements in large-scale social discourse",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+              "text": "All document text was processed the same way. Punctuation, XML characters, and hyperlinks were removed, as were Twitter-specific “at-mentions” and “hashtags” (see also the Appendix). There is useful information here, but it is either not natural language text, or it is Twitter-specific, or both. Documents were broken into individual words (unigrams) on whitespace. Casing information was retained, as we will use it for our Named Entity analysis, but otherwise all words were considered lowercase only (see also the Appendix). Stemming BIBREF30 and lemmatization BIBREF31 were not performed.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 1,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "dataset",
+      "value": "10% uniform sample of Twitter posts during 2013 (Gardenhose API)",
+      "claims": [
+        {
+          "claim": {
+            "statement": "10% uniform sample of Twitter posts during 2013 (Gardenhose API)",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614",
+              "text": "Data was collected from a 10% uniform sample of Twitter posts made during 2013, specifically the Gardenhose API. Twitter activity consists of short posts called tweets which are limited to 140 characters. Retweets, where users repost a tweet to spread its content, were not considered. (The spread of causal statements will be considered in future work.) We considered only English-language tweets for this study. To avoid cross-language effects, we kept only tweets with a user-reported language of `English' and, as a second constraint, individual tweets needed to match more English stopwords than any other language's set of stopwords. Stopwords considered for each language were determined using NLTK's database BIBREF29 . A tweet will be referred to as a `document' for the rest of this work.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 0,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "dataset",
+      "value": "965,560 causal and 965,560 control documents",
+      "claims": [
+        {
+          "claim": {
+            "statement": "965,560 causal and 965,560 control documents",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+            ],
+            "quote": "The end result of this procedure identified 965,560 causal and 965,560 control documents",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+              "text": "Causal documents were chosen to contain one occurrence only of the exact unigrams: `caused', `causing', or `causes'. The word `cause' was not included due to its use as a popular contraction for `because'. One `cause-word' per document restricted the analysis to single relationships between two relata. Documents that contain bidirectional words (`associate', `relate', `connect', `correlate', and any of their stems) were also not selected for analysis. This is because our focus is on causality, an inherently one-sided relationship between two objects. We also did not consider additional synonyms of these cause words, although that could be pursued for future work. Control documents were also selected. These documents did not contain any of `caused', `causing', or `causes', nor any bidirectional words, and are further matched temporally to obtain the same number of control documents as causal documents in each fifteen-minute period during 2013. Control documents were otherwise selected randomly; causal synonyms may be present. The end result of this procedure identified 965,560 causal and 965,560 control documents. Each of the three “cause-words”, `caused', `causes', and `causing' appeared in 38.2%, 35.0%, and 26.8% of causal documents, respectively.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 2,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "input_setting",
+      "value": "only English-language tweets; tweets matching more English stopwords than any other language",
+      "claims": [
+        {
+          "claim": {
+            "statement": "only English-language tweets; tweets matching more English stopwords than any other language",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614",
+              "text": "Data was collected from a 10% uniform sample of Twitter posts made during 2013, specifically the Gardenhose API. Twitter activity consists of short posts called tweets which are limited to 140 characters. Retweets, where users repost a tweet to spread its content, were not considered. (The spread of causal statements will be considered in future work.) We considered only English-language tweets for this study. To avoid cross-language effects, we kept only tweets with a user-reported language of `English' and, as a second constraint, individual tweets needed to match more English stopwords than any other language's set of stopwords. Stopwords considered for each language were determined using NLTK's database BIBREF29 . A tweet will be referred to as a `document' for the rest of this work.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 0,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "input_setting",
+      "value": "punctuation, XML characters, hyperlinks, at-mentions, hashtags removed; unigram tokenization; casing retained",
+      "claims": [
+        {
+          "claim": {
+            "statement": "punctuation, XML characters, hyperlinks, at-mentions, hashtags removed; unigram tokenization; casing retained",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+              "text": "All document text was processed the same way. Punctuation, XML characters, and hyperlinks were removed, as were Twitter-specific “at-mentions” and “hashtags” (see also the Appendix). There is useful information here, but it is either not natural language text, or it is Twitter-specific, or both. Documents were broken into individual words (unigrams) on whitespace. Casing information was retained, as we will use it for our Named Entity analysis, but otherwise all words were considered lowercase only (see also the Appendix). Stemming BIBREF30 and lemmatization BIBREF31 were not performed.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 1,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "input_setting",
+      "value": "causal documents contain one occurrence of 'caused', 'causing', or 'causes'",
+      "claims": [
+        {
+          "claim": {
+            "statement": "causal documents contain one occurrence of 'caused', 'causing', or 'causes'",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+              "text": "Causal documents were chosen to contain one occurrence only of the exact unigrams: `caused', `causing', or `causes'. The word `cause' was not included due to its use as a popular contraction for `because'. One `cause-word' per document restricted the analysis to single relationships between two relata. Documents that contain bidirectional words (`associate', `relate', `connect', `correlate', and any of their stems) were also not selected for analysis. This is because our focus is on causality, an inherently one-sided relationship between two objects. We also did not consider additional synonyms of these cause words, although that could be pursued for future work. Control documents were also selected. These documents did not contain any of `caused', `causing', or `causes', nor any bidirectional words, and are further matched temporally to obtain the same number of control documents as causal documents in each fifteen-minute period during 2013. Control documents were otherwise selected randomly; causal synonyms may be present. The end result of this procedure identified 965,560 causal and 965,560 control documents. Each of the three “cause-words”, `caused', `causes', and `causing' appeared in 38.2%, 35.0%, and 26.8% of causal documents, respectively.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 2,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "model",
+      "value": "Latent Dirichlet Allocation (LDA)",
+      "claims": [
+        {
+          "claim": {
+            "statement": "Latent Dirichlet Allocation (LDA)",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d"
+            ],
+            "quote": "We used the popular topic modeling method Latent Dirichlet Allocation (LDA)",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d",
+              "text": "We used the popular topic modeling method Latent Dirichlet Allocation (LDA) BIBREF39 . We ranked unigrams by how strongly associated they were with the topic. Inspecting these unigrams we found that a 10-topic model discovered meaningful topics. See Methods for full details. The top unigrams for each topic are shown in Tab. 1 .",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 12,
+                  "section_index": 6
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "model",
+      "value": "NLTK v3.1 averaged perceptron POS tagger trained on Brown Corpus",
+      "claims": [
+        {
+          "claim": {
+            "statement": "NLTK v3.1 averaged perceptron POS tagger trained on Brown Corpus",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+              "text": "Documents were further studied by annotating their unigrams with Parts-of-Speech (POS) and Named Entities (NE) tags. POS tagging was done using NLTK v3.1 BIBREF29 which implements an averaged perceptron classifier BIBREF32 trained on the Brown Corpus BIBREF33 . (POS tagging is affected by punctuation; we show in the Appendix that our results are relatively robust to the removal of punctuation.) POS tags denote the nouns, verbs, and other grammatical constructs present in a document. Named Entity Recognition (NER) was performed using the 4-class, distributional similarity tagger provided as part of the Stanford CoreNLP v3.6.0 toolkit BIBREF34 . NER aims to identify and classify proper words in a text. The NE classifications considered were: Organization, Location, Person, and Misc. The Stanford NER tagger uses a conditional random field model BIBREF35 trained on diverse sets of manually-tagged English-language data (CoNLL-2003) BIBREF34 . Conditional random fields allow dependencies between words so that `New York' and `New York Times', for example, are classified separately as a location and organization, respectively. These taggers are commonly used and often provide reasonably accurate results, but there is always potential ambiguity in written text and improving upon these methods remains an active area of research.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 0,
+                  "section_index": 2
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "model",
+      "value": "Stanford CoreNLP v3.6.0 4-class NER tagger using conditional random field",
+      "claims": [
+        {
+          "claim": {
+            "statement": "Stanford CoreNLP v3.6.0 4-class NER tagger using conditional random field",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+              "text": "Documents were further studied by annotating their unigrams with Parts-of-Speech (POS) and Named Entities (NE) tags. POS tagging was done using NLTK v3.1 BIBREF29 which implements an averaged perceptron classifier BIBREF32 trained on the Brown Corpus BIBREF33 . (POS tagging is affected by punctuation; we show in the Appendix that our results are relatively robust to the removal of punctuation.) POS tags denote the nouns, verbs, and other grammatical constructs present in a document. Named Entity Recognition (NER) was performed using the 4-class, distributional similarity tagger provided as part of the Stanford CoreNLP v3.6.0 toolkit BIBREF34 . NER aims to identify and classify proper words in a text. The NE classifications considered were: Organization, Location, Person, and Misc. The Stanford NER tagger uses a conditional random field model BIBREF35 trained on diverse sets of manually-tagged English-language data (CoNLL-2003) BIBREF34 . Conditional random fields allow dependencies between words so that `New York' and `New York Times', for example, are classified separately as a location and organization, respectively. These taggers are commonly used and often provide reasonably accurate results, but there is always potential ambiguity in written text and improving upon these methods remains an active area of research.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 0,
+                  "section_index": 2
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "result",
+      "value": "caused 38.2%, causes 35.0%, causing 26.8% of causal documents",
+      "claims": [
+        {
+          "claim": {
+            "statement": "caused 38.2%, causes 35.0%, causing 26.8% of causal documents",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+              "text": "Causal documents were chosen to contain one occurrence only of the exact unigrams: `caused', `causing', or `causes'. The word `cause' was not included due to its use as a popular contraction for `because'. One `cause-word' per document restricted the analysis to single relationships between two relata. Documents that contain bidirectional words (`associate', `relate', `connect', `correlate', and any of their stems) were also not selected for analysis. This is because our focus is on causality, an inherently one-sided relationship between two objects. We also did not consider additional synonyms of these cause words, although that could be pursued for future work. Control documents were also selected. These documents did not contain any of `caused', `causing', or `causes', nor any bidirectional words, and are further matched temporally to obtain the same number of control documents as causal documents in each fifteen-minute period during 2013. Control documents were otherwise selected randomly; causal synonyms may be present. The end result of this procedure identified 965,560 causal and 965,560 control documents. Each of the three “cause-words”, `caused', `causes', and `causing' appeared in 38.2%, 35.0%, and 26.8% of causal documents, respectively.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 2,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "result",
+      "value": "10-topic LDA model discovered meaningful topics",
+      "claims": [
+        {
+          "claim": {
+            "statement": "10-topic LDA model discovered meaningful topics",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d",
+              "text": "We used the popular topic modeling method Latent Dirichlet Allocation (LDA) BIBREF39 . We ranked unigrams by how strongly associated they were with the topic. Inspecting these unigrams we found that a 10-topic model discovered meaningful topics. See Methods for full details. The top unigrams for each topic are shown in Tab. 1 .",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 12,
+                  "section_index": 6
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "result",
+      "value": "Odds Ratio correlation with/without punctuation rho=0.71, with/without casing rho=0.80",
+      "claims": [
+        {
+          "claim": {
+            "statement": "Odds Ratio correlation with/without punctuation rho=0.71, with/without casing rho=0.80",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6",
+              "text": "Parts-of-speech tagging depends on punctuation and casing, which we filtered in our data, so a study of how robust the POS algorithm is to punctuation and casing removal is important. We computed POS tags for the corpora with and without casing as well as with and without punctuation (which includes hashtags, links and at-symbols). Two tags mentioned in Fig. 1 B, NNPS and LS (which was not significant), were affected by punctuation removal. Otherwise, there is a strong correlation (Fig. 4 ) between Odds Ratios (causal vs. control) with punctuation and without punctuation, including casing and without casing ( $\\rho = 0.71$ and $0.80$ , respectively), indicating the POS differences between the corpora were primarily not due to the removal of punctuation or casing.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 3,
+                  "section_index": 7
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "limitation",
+      "value": "word 'cause' excluded due to use as contraction for 'because'",
+      "claims": [
+        {
+          "claim": {
+            "statement": "word 'cause' excluded due to use as contraction for 'because'",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+              "text": "Causal documents were chosen to contain one occurrence only of the exact unigrams: `caused', `causing', or `causes'. The word `cause' was not included due to its use as a popular contraction for `because'. One `cause-word' per document restricted the analysis to single relationships between two relata. Documents that contain bidirectional words (`associate', `relate', `connect', `correlate', and any of their stems) were also not selected for analysis. This is because our focus is on causality, an inherently one-sided relationship between two objects. We also did not consider additional synonyms of these cause words, although that could be pursued for future work. Control documents were also selected. These documents did not contain any of `caused', `causing', or `causes', nor any bidirectional words, and are further matched temporally to obtain the same number of control documents as causal documents in each fifteen-minute period during 2013. Control documents were otherwise selected randomly; causal synonyms may be present. The end result of this procedure identified 965,560 causal and 965,560 control documents. Each of the three “cause-words”, `caused', `causes', and `causing' appeared in 38.2%, 35.0%, and 26.8% of causal documents, respectively.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 2,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "limitation",
+      "value": "did not consider additional synonyms of cause words",
+      "claims": [
+        {
+          "claim": {
+            "statement": "did not consider additional synonyms of cause words",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+              "text": "Causal documents were chosen to contain one occurrence only of the exact unigrams: `caused', `causing', or `causes'. The word `cause' was not included due to its use as a popular contraction for `because'. One `cause-word' per document restricted the analysis to single relationships between two relata. Documents that contain bidirectional words (`associate', `relate', `connect', `correlate', and any of their stems) were also not selected for analysis. This is because our focus is on causality, an inherently one-sided relationship between two objects. We also did not consider additional synonyms of these cause words, although that could be pursued for future work. Control documents were also selected. These documents did not contain any of `caused', `causing', or `causes', nor any bidirectional words, and are further matched temporally to obtain the same number of control documents as causal documents in each fifteen-minute period during 2013. Control documents were otherwise selected randomly; causal synonyms may be present. The end result of this procedure identified 965,560 causal and 965,560 control documents. Each of the three “cause-words”, `caused', `causes', and `causing' appeared in 38.2%, 35.0%, and 26.8% of causal documents, respectively.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 2,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "limitation",
+      "value": "taggers have potential ambiguity in written text",
+      "claims": [
+        {
+          "claim": {
+            "statement": "taggers have potential ambiguity in written text",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+              "text": "Documents were further studied by annotating their unigrams with Parts-of-Speech (POS) and Named Entities (NE) tags. POS tagging was done using NLTK v3.1 BIBREF29 which implements an averaged perceptron classifier BIBREF32 trained on the Brown Corpus BIBREF33 . (POS tagging is affected by punctuation; we show in the Appendix that our results are relatively robust to the removal of punctuation.) POS tags denote the nouns, verbs, and other grammatical constructs present in a document. Named Entity Recognition (NER) was performed using the 4-class, distributional similarity tagger provided as part of the Stanford CoreNLP v3.6.0 toolkit BIBREF34 . NER aims to identify and classify proper words in a text. The NE classifications considered were: Organization, Location, Person, and Misc. The Stanford NER tagger uses a conditional random field model BIBREF35 trained on diverse sets of manually-tagged English-language data (CoNLL-2003) BIBREF34 . Conditional random fields allow dependencies between words so that `New York' and `New York Times', for example, are classified separately as a location and organization, respectively. These taggers are commonly used and often provide reasonably accurate results, but there is always potential ambiguity in written text and improving upon these methods remains an active area of research.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1604.05781",
+                "source_type": "paper",
+                "source_path": "qasper/1604.05781",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1604.05781",
+                  "paragraph_index": 0,
+                  "section_index": 2
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    }
+  ]
+}

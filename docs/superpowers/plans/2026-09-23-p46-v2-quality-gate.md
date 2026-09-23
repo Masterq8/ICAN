@@ -90,11 +90,11 @@
 - Generate: `data/processed/evaluation/p46-quality-v2/runtime/case-results/*.json`
 - Generate: `data/processed/evaluation/p46-quality-v2/runtime/seal.json`
 
-- [ ] Run `python scripts/evaluate_research_cards_v2.py run --config configs/evaluation/p46-quality-v2.json` once with `deepseek-v4-pro`.
-- [ ] Do not retry any failed, interrupted, or malformed case; preserve the provider response and diagnostic category as-is.
-- [ ] Run `python scripts/evaluate_research_cards_v2.py seal --config configs/evaluation/p46-quality-v2.json` immediately after all eight sources have terminal or interrupted records.
-- [ ] Verify the seal contains hashes for the config, frozen cases, journal, every raw action, every case result, source commit, model name, and aggregate token/cost metadata.
-- [ ] Run `python scripts/evaluate_research_cards_v2.py audit --config configs/evaluation/p46-quality-v2.json`; require source commit, call count, model, freshness, and artifact hashes to pass before scoring.
+- [x] Run `python scripts/evaluate_research_cards_v2.py run --config configs/evaluation/p46-quality-v2.json` once with `deepseek-v4-pro`.
+- [x] Do not retry any failed, interrupted, or malformed case; preserve the provider response and diagnostic category as-is.
+- [x] Run `python scripts/evaluate_research_cards_v2.py seal --config configs/evaluation/p46-quality-v2.json` immediately after all eight sources have terminal or interrupted records.
+- [x] Verify the seal contains hashes for the config, frozen cases, journal, every raw action, every case result, source commit, model name, and aggregate token/cost metadata.
+- [x] Run `python scripts/evaluate_research_cards_v2.py audit --config configs/evaluation/p46-quality-v2.json`; require source commit, call count, model, freshness, and artifact hashes to pass before scoring.
 
 ### Task 5: Adjudicate every occurrence and compute the frozen decision
 
@@ -107,18 +107,18 @@
 - Create: `docs/evaluation/p46-quality-v2/report.md`
 - Create: `docs/evaluation/p46-quality-v2/human-review.md`
 
-- [ ] Write failing scorer tests proving repeated same-type entries are separate occurrences, rejected but parseable raw fields remain in the denominators, and all `8 × 9` expected type-presence decisions are counted.
-- [ ] Write failing tests proving deterministic dataset/metric/result rules emit warnings and reviewer context but never silently relabel or delete model output.
-- [ ] Implement the AI review sheet with immutable occurrence IDs, raw field/value/evidence, paper-scoped evidence context, deterministic warnings, reviewer identity `ai`, decision, and reason.
-- [ ] For each occurrence, decide evidence support and field-type correctness; for every paper/type pair, decide present, correctly missing, or missed. Preserve ambiguous cases as failures with an explicit reason instead of excluding them.
-- [ ] Bind `manual-review.json` to hashes of the seal, metrics input, and AI review. Initialize human status to `pending` and do not present AI adjudication as human review.
-- [ ] Implement `finalize` to recompute tool success, evidence support, type correctness, and missing-field identification from the bound review sheet; reject modified inputs or unrecognized occurrence IDs.
-- [ ] Generate `report.md` with all four numerators/denominators, per-paper results, protocol/server/model diagnostics, gate decision, hard-failure findings, model usage, and artifact hashes.
-- [ ] Generate `human-review.md` with exact commands for editing and finalizing a later human audit.
-- [ ] Run `python -m pytest tests/test_research_card_v2_evaluation.py tests/test_research_card_evaluation.py -q`.
+- [x] Write failing scorer tests proving repeated same-type entries are separate occurrences, rejected but parseable raw fields remain in the denominators, and all `8 × 9` expected type-presence decisions are counted.
+- [x] Write failing tests proving deterministic dataset/metric/result rules emit warnings and reviewer context but never silently relabel or delete model output.
+- [x] Implement the AI review sheet with immutable occurrence IDs, raw field/value/evidence, paper-scoped evidence context, deterministic warnings, reviewer identity `ai`, decision, and reason.
+- [x] For each occurrence, decide evidence support and field-type correctness; for every paper/type pair, decide present, correctly missing, or missed. Preserve ambiguous cases as failures with an explicit reason instead of excluding them.
+- [x] Bind `manual-review.json` to hashes of the seal, metrics input, and AI review. Initialize human status to `pending` and do not present AI adjudication as human review.
+- [x] Implement `finalize` to recompute tool success, evidence support, type correctness, and missing-field identification from the bound review sheet; reject modified inputs or unrecognized occurrence IDs.
+- [x] Generate `report.md` with all four numerators/denominators, per-paper results, protocol/server/model diagnostics, gate decision, hard-failure findings, model usage, and artifact hashes.
+- [x] Generate `human-review.md` with exact commands for editing and finalizing a later human audit.
+- [x] Run `python -m pytest tests/test_research_card_v2_evaluation.py tests/test_research_card_evaluation.py -q`.
 - [ ] If every frozen gate passes, update `task_plan.md` and `progress.md` to mark P4.6 complete, then skip Task 6.
-- [ ] If any frozen gate fails, record the failed gate and continue to Task 6 without rerunning any paper.
-- [ ] Commit the sealed results and decision with message `Record P4.6 v2 quality acceptance`.
+- [x] If any frozen gate fails, record the failed gate and continue to Task 6 without rerunning any paper.
+- [x] Commit the sealed results and decision with message `Record P4.6 v2 quality acceptance`.
 
 ### Task 6: Add the high-confidence and user-review fallback only on gate failure
 

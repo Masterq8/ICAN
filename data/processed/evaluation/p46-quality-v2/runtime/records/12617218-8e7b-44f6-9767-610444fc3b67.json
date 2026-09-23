@@ -1,0 +1,69 @@
+{
+  "record_id": "12617218-8e7b-44f6-9767-610444fc3b67",
+  "card_id": "eddddf88-0315-4d14-8fa8-2ec7dc86cbb8",
+  "created_at": "2026-09-23T07:44:34.461644Z",
+  "record_type": "screening",
+  "subject_source_id": "qasper:1601.06738",
+  "revision_of": null,
+  "decision": "include",
+  "claims": [
+    {
+      "claim": {
+        "statement": "The paper proposes a label semantics approach to linguistic hedges (e.g. 'very', 'quite') grounded in conceptual spaces and prototype theory, defining formulae for hedged concepts and examining limiting behaviour of repeated application. This is a theoretical modeling paper with explicit definitions of the task/model and results, though it contains no empirical datasets or quantitative evaluation metrics.",
+        "kind": "inference",
+        "evidence_ids": [
+          "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+          "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f"
+        ],
+        "quote": null,
+        "calculation": null,
+        "conditions": []
+      },
+      "status": "requires_review",
+      "evidence": [
+        {
+          "rank": 1,
+          "score": 0.0,
+          "chunk_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107",
+          "text": "In the following we provide an account of linguistic hedges that is both functional, and semantically grounded. In its most basic formulation, the operation requires no additional parameters, although we also show that the formulae can be generalised if necessary. Our account of linguistic hedges uses the label semantics framework to model concepts BIBREF12 . This is a random set approach which quantifies an agent's subjective uncertainty about the extent of application of a concept. We refer to this uncertainty as semantic uncertainty BIBREF13 to emphasise that it concerns the definition of concepts and categories, in contrast to stochastic uncertainty which concerns the state of the world. In BIBREF13 the label semantics approach is combined with conceptual spaces BIBREF14 and prototype theory BIBREF15 , to give a formalisation of concepts as based on a prototype and a threshold, located in a conceptual space. This approach is discussed in detail in section \"Conceptual Spaces\" . An outline of the paper is then as follows: section \"Approaches to linguistic hedges\" discusses different approaches to linguistic hedges from the literature, and compares these with our model. Subsequently, in section \"Label semantics approach to linguistic hedges\" , we give formulations of the hedges `very' and `quite'. These are formed by considering the dependence of the threshold of a hedged concept on the threshold of the original concept. We give a basic model and two generalisations, show that the models can be composed and investigate the behaviour in the limit of composition. Section \"Discussion\" compares our results to those in the literature and proposes further lines of research.",
+          "review_required": false,
+          "source": {
+            "source_id": "qasper:1601.06738",
+            "source_type": "paper",
+            "source_path": "qasper/1601.06738",
+            "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+            "location": {
+              "paper_id": "1601.06738",
+              "paragraph_index": 3,
+              "section_index": 0
+            }
+          }
+        },
+        {
+          "rank": 1,
+          "score": 0.0,
+          "chunk_id": "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+          "text": "We have shown here that in the limit, the result of applying dilation or contraction modifiers multiple times is to create a crisp set. In the case of dilation, the crisp set includes the whole support of the fuzzy set associated with the original label, whereas in the case of contraction, the concept reduces to include only its prototype.",
+          "review_required": false,
+          "source": {
+            "source_id": "qasper:1601.06738",
+            "source_type": "paper",
+            "source_path": "qasper/1601.06738",
+            "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+            "location": {
+              "paper_id": "1601.06738",
+              "paragraph_index": 8,
+              "section_index": 11
+            }
+          }
+        }
+      ],
+      "conditions": [],
+      "calculation": null,
+      "diagnostics": [
+        "Inference claims require human semantic review"
+      ]
+    }
+  ],
+  "fields": []
+}

@@ -1,0 +1,67 @@
+{
+  "task_id": "48404c163f574ff087e5bc42b10622f3",
+  "request": {
+    "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?",
+    "collection": "qasper_train_v1",
+    "source_id": "qasper:1601.06081"
+  },
+  "selected_evidence_ids": [
+    "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+    "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+    "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+    "chunk:4ecae0dbb2c9b48b3abfac09a07316027b46a5a58e90dd6906544a386d5d19c1",
+    "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+    "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3"
+  ],
+  "model_action": {
+    "content": "",
+    "role": "assistant",
+    "tool_calls": [
+      {
+        "id": "call_00_Dc3XtnXgfRJx76swVBaB0651",
+        "function": {
+          "arguments": "{\"decision\": \"include\", \"reason\": \"The paper reports a classification task (assigning texts to urban legend vs factual datasets, and a three-class task), explicitly describes the model (SVM/libSVM), datasets (WWN/NYT scraped corpora), input features, training setup (ten-fold cross-validation, downsampling, z-score normalization), evaluation metrics (precision, recall, F1, MCC), quantitative results, limitations, and mentions code availability status. This matches the user query which asks for these explicitly reported elements.\", \"reason_evidence_ids\": [\"chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43\", \"chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7\", \"chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f\"], \"fields\": [{\"name\": \"task\", \"value\": \"classification of text into urban legend vs factual news\", \"quote\": \"Urban Legends vs News. In the UL vs. GN classification task\", \"evidence_id\": \"chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7\"}, {\"name\": \"task\", \"value\": \"three class classification task (UL vs GN vs FT)\", \"quote\": \"we also tested feature predictivity on a three class classification task (UL vs GN vs FT)\", \"evidence_id\": \"chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f\"}, {\"name\": \"model\", \"value\": \"SVM using libSVM\", \"quote\": \"Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings\", \"evidence_id\": \"chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43\"}, {\"name\": \"dataset\", \"value\": \"New York Times stories\", \"quote\": \"randomly selected an equal amount of stories from the NYT\", \"evidence_id\": \"chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3\"}, {\"name\": \"dataset\", \"value\": \"Weekly World News stories (225)\", \"quote\": \"We scraped the WWN for a total of 225 stories\", \"evidence_id\": \"chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3\"}, {\"name\": \"input_setting\", \"value\": \"prototypical characteristics features\", \"quote\": \"using just the prototypical characteristics (features) discussed above\", \"evidence_id\": \"chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43\"}, {\"name\": \"input_setting\", \"value\": \"z-score normalization of features\", \"quote\": \"We also normalized all features according to z-score\", \"evidence_id\": \"chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43\"}, {\"name\": \"training\", \"value\": \"ten-fold cross validation\", \"quote\": \"For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset\", \"evidence_id\": \"chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43\"}, {\"name\": \"training\", \"value\": \"random downsampling of majority class to balance dataset\", \"quote\": \"We always randomly downsampled the majority class in order to make the dataset balanced\", \"evidence_id\": \"chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43\"}, {\"name\": \"metric\", \"value\": \"precision\", \"quote\": \"in term of precision, recall and F1 over the single classes\", \"evidence_id\": \"chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7\"}, {\"name\": \"metric\", \"value\": \"recall\", \"quote\": \"in term of precision, recall and F1 over the single classes\", \"evidence_id\": \"chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7\"}, {\"name\": \"metric\", \"value\": \"F1\", \"quote\": \"in term of precision, recall and F1 over the single classes\", \"evidence_id\": \"chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7\"}, {\"name\": \"metric\", \"value\": \"Matthews Correlation Coefficient (MCC)\", \"quote\": \"we also provide the Matthews Correlation Coefficient (MCC)\", \"evidence_id\": \"chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f\"}, {\"name\": \"result\", \"value\": \"all features F1 = 0.833 in UL vs GN\", \"quote\": \"all the features together performed well (F1 = 0.833)\", \"evidence_id\": \"chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7\"}, {\"name\": \"result\", \"value\": \"READ F1 = 0.763 in UL vs GN\", \"quote\": \"apart from READ (F1 = 0.763, $p<0.001$ )\", \"evidence_id\": \"chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7\"}, {\"name\": \"result\", \"value\": \"TIMEX MCC=0.339 in three class task\", \"quote\": \"the temporal features (TIMEX) have far lower discriminative power as compared to others groups of features (MCC=0.339)\", \"evidence_id\": \"chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f\"}, {\"name\": \"result\", \"value\": \"slightly higher precision than recall for UL\", \"quote\": \"the classifiers had slightly higher precision than recall for UL, while the contrary holds for FT and GN\", \"evidence_id\": \"chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7\"}]}",
+          "name": "submit_research_card"
+        },
+        "type": "function",
+        "index": 0
+      }
+    ]
+  },
+  "model_records": [
+    {
+      "role": "answer",
+      "requested_model": "deepseek-v4-pro",
+      "call_id": "50c0b70babb442ac85bf1061c65922a3",
+      "usage": {
+        "completion_tokens": 1754,
+        "prompt_tokens": 2077,
+        "total_tokens": 3831,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2077
+      },
+      "status": "completed",
+      "response_model": "deepseek-v4-pro",
+      "response_id": "a9caf738-a4a9-4f4b-8f85-4af926f45878"
+    }
+  ],
+  "submission_diagnostic": {
+    "status": "accepted",
+    "code": "accepted",
+    "issues": [],
+    "referenced_evidence_ids": [
+      "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+      "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+      "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+      "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+      "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3"
+    ],
+    "unknown_evidence_ids": []
+  }
+}

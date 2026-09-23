@@ -1,0 +1,529 @@
+{
+  "record_id": "5948dc69-6c5e-4b2b-b349-c239e10282f1",
+  "card_id": "84b5a15a-2be1-4813-88b9-08cfa02a578b",
+  "created_at": "2026-09-23T07:45:14.755874Z",
+  "record_type": "extraction",
+  "subject_source_id": "qasper:1602.03661",
+  "revision_of": null,
+  "decision": null,
+  "claims": [],
+  "fields": [
+    {
+      "name": "task",
+      "value": "quantify the notion of duality of patterning as observed in real languages",
+      "claims": [
+        {
+          "claim": {
+            "statement": "quantify the notion of duality of patterning as observed in real languages",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340"
+            ],
+            "quote": "In this section we quantify the notion of duality of patterning as observed in real languages in order to provide suitable measures for the combinatoriality and compositionality.",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340",
+              "text": "In this section we quantify the notion of duality of patterning as observed in real languages in order to provide suitable measures for the combinatoriality and compositionality.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1602.03661",
+                  "paragraph_index": 0,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "model",
+      "value": "simulated environment which contains meaningful relations",
+      "claims": [
+        {
+          "claim": {
+            "statement": "simulated environment which contains meaningful relations",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+            ],
+            "quote": "the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment which contains meaningful relations",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+              "text": "These results are important because they demonstrate for the first time that the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment which contains meaningful relations. Many directions are open for future investigations. First of all to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon. In addition many different manipulations of our modelling scheme are possible. One very interesting consists in relaxing the assumptions that the conceptual space of all the individuals are identical and modelled as a static graph, imaging instead that the conceptual space of each individual gets continuously reshaped by the interactions among the users. In this way one would realize a truly co-evolution of the conceptual spaces of the individuals and of their inventories of associations between objects and words. Finally it is worth mentioning how recent advances in information and communication technologies allow nowadays the realization of focused experiments also in the framework of the emergence of linguistic structures and a general trend is emerging for the adoption of web-games (see for instance the recently introduced Experimental Tribe platform: www.xtribe.eu) as a very interesting laboratory to run experiments in the social-sciences and whenever the contribution of human beings is crucially required for research purposes. This is opening tremendous opportunities to monitor the emergence of specific linguistic features and their co-evolution with the structure of out conceptual spaces.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1602.03661",
+                  "paragraph_index": 1,
+                  "section_index": 3
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "dataset",
+      "value": "HBC word-association graph",
+      "claims": [
+        {
+          "claim": {
+            "statement": "HBC word-association graph",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230"
+            ],
+            "quote": "Excess Master-Mind similarity of words as a function of the average distance d of the corresponding objects on the HBC word-association graph.",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230",
+              "text": "Figure 1 . Left The normalized histogram of the lengths for the words of the six lexica considered. In the inset, a zoom of the region with percentages above the 5%. Center The phoneme frequency-rank plot for the words of the considered lexica. On the x-axis we report the rank of individual phonemes and in the y-axis the corresponding frequency in each lexicon. Right Excess Master-Mind similarity of words as a function of the average distance d of the corresponding objects on the HBC word-association graph.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "caption_index": 0,
+                  "paper_id": "1602.03661"
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "dataset",
+      "value": "six lexica",
+      "claims": [
+        {
+          "claim": {
+            "statement": "six lexica",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230"
+            ],
+            "quote": "the normalized histogram of the lengths for the words of the six lexica considered",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "insufficient_evidence",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230",
+              "text": "Figure 1 . Left The normalized histogram of the lengths for the words of the six lexica considered. In the inset, a zoom of the region with percentages above the 5%. Center The phoneme frequency-rank plot for the words of the considered lexica. On the x-axis we report the rank of individual phonemes and in the y-axis the corresponding frequency in each lexicon. Right Excess Master-Mind similarity of words as a function of the average distance d of the corresponding objects on the HBC word-association graph.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "caption_index": 0,
+                  "paper_id": "1602.03661"
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "The supplied quote is absent from at least one cited chunk"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "metric",
+      "value": "combinatoriality",
+      "claims": [
+        {
+          "claim": {
+            "statement": "combinatoriality",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:725482606b32976f044f4cedfadcb9ac5687492a631f31302755378feed0dfdc"
+            ],
+            "quote": "C is the combinatoriality defined in Eq. 1",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:725482606b32976f044f4cedfadcb9ac5687492a631f31302755378feed0dfdc",
+              "text": "Table 1 Phoneme statistics of the different languages considered and of HBC. M is the number of words in the list, F is the number of different phonemes observed in the word list of each dictionary, S is the entropy calculated on the normalized frequencies distributions, Smax = log(F ) is the maximum possible value of the entropy, reached when all the forms are equiprobable. C is the combinatoriality defined in Eq. 1.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "caption_index": 1,
+                  "paper_id": "1602.03661"
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "metric",
+      "value": "compositionality",
+      "claims": [
+        {
+          "claim": {
+            "statement": "compositionality",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340"
+            ],
+            "quote": "provide suitable measures for the combinatoriality and compositionality",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340",
+              "text": "In this section we quantify the notion of duality of patterning as observed in real languages in order to provide suitable measures for the combinatoriality and compositionality.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1602.03661",
+                  "paragraph_index": 0,
+                  "section_index": 1
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "metric",
+      "value": "Excess Master-Mind similarity",
+      "claims": [
+        {
+          "claim": {
+            "statement": "Excess Master-Mind similarity",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+              "text": "Figure 3 . Left Combinatoriality C for different values of pM as a function of τM . The number of agents and the number of objects in the environment are fixed respectively to N = 10 and M = 40. Right Excess Master-Mind-like similarity of words as a function of the distance d of the corresponding objects on the graph. A decrease in the excess similarity as a function of the topological distance d is the signature of the emergence of compositionality; in particular, compositionality implies higher similarity among words which are closer in the semantic space. The topological distance on the object graph is our proxy for the semantic relatedness. Results are reported for N = 10 and M = 100 and for different values of the objects graph connectivity pM , keeping fixed τM = 1 (main figure) and for different values of τM keeping fixed pM = 0.2 (inset).",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "caption_index": 3,
+                  "paper_id": "1602.03661"
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "training",
+      "value": "purely cultural dynamics",
+      "claims": [
+        {
+          "claim": {
+            "statement": "purely cultural dynamics",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+            ],
+            "quote": "can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+              "text": "These results are important because they demonstrate for the first time that the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment which contains meaningful relations. Many directions are open for future investigations. First of all to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon. In addition many different manipulations of our modelling scheme are possible. One very interesting consists in relaxing the assumptions that the conceptual space of all the individuals are identical and modelled as a static graph, imaging instead that the conceptual space of each individual gets continuously reshaped by the interactions among the users. In this way one would realize a truly co-evolution of the conceptual spaces of the individuals and of their inventories of associations between objects and words. Finally it is worth mentioning how recent advances in information and communication technologies allow nowadays the realization of focused experiments also in the framework of the emergence of linguistic structures and a general trend is emerging for the adoption of web-games (see for instance the recently introduced Experimental Tribe platform: www.xtribe.eu) as a very interesting laboratory to run experiments in the social-sciences and whenever the contribution of human beings is crucially required for research purposes. This is opening tremendous opportunities to monitor the emergence of specific linguistic features and their co-evolution with the structure of out conceptual spaces.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1602.03661",
+                  "paragraph_index": 1,
+                  "section_index": 3
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "result",
+      "value": "compositionality implies higher similarity among words which are closer in the semantic space",
+      "claims": [
+        {
+          "claim": {
+            "statement": "compositionality implies higher similarity among words which are closer in the semantic space",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc"
+            ],
+            "quote": "compositionality implies higher similarity among words which are closer in the semantic space",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+              "text": "Figure 3 . Left Combinatoriality C for different values of pM as a function of τM . The number of agents and the number of objects in the environment are fixed respectively to N = 10 and M = 40. Right Excess Master-Mind-like similarity of words as a function of the distance d of the corresponding objects on the graph. A decrease in the excess similarity as a function of the topological distance d is the signature of the emergence of compositionality; in particular, compositionality implies higher similarity among words which are closer in the semantic space. The topological distance on the object graph is our proxy for the semantic relatedness. Results are reported for N = 10 and M = 100 and for different values of the objects graph connectivity pM , keeping fixed τM = 1 (main figure) and for different values of τM keeping fixed pM = 0.2 (inset).",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "caption_index": 3,
+                  "paper_id": "1602.03661"
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "result",
+      "value": "the two sides of duality of patterning can emerge simultaneously",
+      "claims": [
+        {
+          "claim": {
+            "statement": "the two sides of duality of patterning can emerge simultaneously",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+            ],
+            "quote": "they demonstrate for the first time that the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+              "text": "These results are important because they demonstrate for the first time that the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment which contains meaningful relations. Many directions are open for future investigations. First of all to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon. In addition many different manipulations of our modelling scheme are possible. One very interesting consists in relaxing the assumptions that the conceptual space of all the individuals are identical and modelled as a static graph, imaging instead that the conceptual space of each individual gets continuously reshaped by the interactions among the users. In this way one would realize a truly co-evolution of the conceptual spaces of the individuals and of their inventories of associations between objects and words. Finally it is worth mentioning how recent advances in information and communication technologies allow nowadays the realization of focused experiments also in the framework of the emergence of linguistic structures and a general trend is emerging for the adoption of web-games (see for instance the recently introduced Experimental Tribe platform: www.xtribe.eu) as a very interesting laboratory to run experiments in the social-sciences and whenever the contribution of human beings is crucially required for research purposes. This is opening tremendous opportunities to monitor the emergence of specific linguistic features and their co-evolution with the structure of out conceptual spaces.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1602.03661",
+                  "paragraph_index": 1,
+                  "section_index": 3
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "limitation",
+      "value": "conceptual space of all the individuals are identical and modelled as a static graph",
+      "claims": [
+        {
+          "claim": {
+            "statement": "conceptual space of all the individuals are identical and modelled as a static graph",
+            "kind": "verbatim",
+            "evidence_ids": [
+              "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+            ],
+            "quote": "relaxing the assumptions that the conceptual space of all the individuals are identical and modelled as a static graph",
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "supported",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+              "text": "These results are important because they demonstrate for the first time that the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment which contains meaningful relations. Many directions are open for future investigations. First of all to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon. In addition many different manipulations of our modelling scheme are possible. One very interesting consists in relaxing the assumptions that the conceptual space of all the individuals are identical and modelled as a static graph, imaging instead that the conceptual space of each individual gets continuously reshaped by the interactions among the users. In this way one would realize a truly co-evolution of the conceptual spaces of the individuals and of their inventories of associations between objects and words. Finally it is worth mentioning how recent advances in information and communication technologies allow nowadays the realization of focused experiments also in the framework of the emergence of linguistic structures and a general trend is emerging for the adoption of web-games (see for instance the recently introduced Experimental Tribe platform: www.xtribe.eu) as a very interesting laboratory to run experiments in the social-sciences and whenever the contribution of human beings is crucially required for research purposes. This is opening tremendous opportunities to monitor the emergence of specific linguistic features and their co-evolution with the structure of out conceptual spaces.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1602.03661",
+                  "paragraph_index": 1,
+                  "section_index": 3
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": []
+        }
+      ],
+      "semantic_diagnostics": []
+    },
+    {
+      "name": "limitation",
+      "value": "open for future investigations to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon",
+      "claims": [
+        {
+          "claim": {
+            "statement": "open for future investigations to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon",
+            "kind": "inference",
+            "evidence_ids": [
+              "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+            ],
+            "quote": null,
+            "calculation": null,
+            "conditions": []
+          },
+          "status": "requires_review",
+          "evidence": [
+            {
+              "rank": 1,
+              "score": 0.0,
+              "chunk_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+              "text": "These results are important because they demonstrate for the first time that the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment which contains meaningful relations. Many directions are open for future investigations. First of all to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon. In addition many different manipulations of our modelling scheme are possible. One very interesting consists in relaxing the assumptions that the conceptual space of all the individuals are identical and modelled as a static graph, imaging instead that the conceptual space of each individual gets continuously reshaped by the interactions among the users. In this way one would realize a truly co-evolution of the conceptual spaces of the individuals and of their inventories of associations between objects and words. Finally it is worth mentioning how recent advances in information and communication technologies allow nowadays the realization of focused experiments also in the framework of the emergence of linguistic structures and a general trend is emerging for the adoption of web-games (see for instance the recently introduced Experimental Tribe platform: www.xtribe.eu) as a very interesting laboratory to run experiments in the social-sciences and whenever the contribution of human beings is crucially required for research purposes. This is opening tremendous opportunities to monitor the emergence of specific linguistic features and their co-evolution with the structure of out conceptual spaces.",
+              "review_required": false,
+              "source": {
+                "source_id": "qasper:1602.03661",
+                "source_type": "paper",
+                "source_path": "qasper/1602.03661",
+                "source_version": "06806e4608976fc2fac0a090ac425d5b2b29caf4",
+                "location": {
+                  "paper_id": "1602.03661",
+                  "paragraph_index": 1,
+                  "section_index": 3
+                }
+              }
+            }
+          ],
+          "conditions": [],
+          "calculation": null,
+          "diagnostics": [
+            "Inference claims require human semantic review"
+          ]
+        }
+      ],
+      "semantic_diagnostics": []
+    }
+  ]
+}

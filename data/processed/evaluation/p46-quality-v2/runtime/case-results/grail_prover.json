@@ -1,0 +1,27 @@
+{
+  "status": "completed",
+  "trace": "51586ae422c64165bcb09bbde8aafae6.json",
+  "trace_sha256": "c394d6d7ea2f314d84ef2c4fb862e46f0117a249ba91019a64ad08e55b508a57",
+  "usage": {
+    "paid_calls": 1,
+    "prompt_tokens": 2041,
+    "completion_tokens": 1407,
+    "actual_cost_usd": null
+  },
+  "response_id": "179814c5-6dd1-4347-9e39-eb5a29b7e03f",
+  "tool_diagnosis": {
+    "status": "accepted",
+    "code": "accepted",
+    "issues": [],
+    "referenced_evidence_ids": [
+      "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+      "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+      "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9"
+    ],
+    "unknown_evidence_ids": []
+  },
+  "source_id": "qasper:1602.00812",
+  "request_sha256": "da7804cec04488094559bdfd455213858f383e3a21096eb1acff7e6c26b0db05",
+  "raw_action_path": "raw-actions/grail_prover.json",
+  "raw_action_sha256": "ab05678efb32ace391460454b2b399597b81f9f34977b518fb1067c3c7357957"
+}

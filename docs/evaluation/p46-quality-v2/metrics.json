@@ -1,0 +1,718 @@
+{
+  "version": "p46-quality-v2-metrics-v1",
+  "reviewer_type": "ai",
+  "ai_review_status": "completed",
+  "human_review_status": "pending",
+  "metrics": {
+    "tool_submission_success": {
+      "numerator": 5,
+      "denominator": 8,
+      "rate": 0.625
+    },
+    "evidence_support_rate": {
+      "numerator": 60,
+      "denominator": 65,
+      "rate": 0.9230769230769231
+    },
+    "field_classification_accuracy": {
+      "numerator": 63,
+      "denominator": 65,
+      "rate": 0.9692307692307692
+    },
+    "missing_field_identification_rate": {
+      "numerator": 16,
+      "denominator": 17,
+      "rate": 0.9411764705882353
+    },
+    "present_field_recall": {
+      "numerator": 29,
+      "denominator": 55,
+      "rate": 0.5272727272727272
+    },
+    "confusions": {
+      "dataset->result": 1,
+      "training->input_setting": 1
+    }
+  },
+  "supplementary_presence_accuracy": {
+    "numerator": 45,
+    "denominator": 72,
+    "rate": 0.625
+  },
+  "gate_decision": {
+    "status": "failed",
+    "checks": {
+      "tool_submission_success": {
+        "threshold": 0.875,
+        "actual": 0.625,
+        "passed": false
+      },
+      "evidence_support_rate": {
+        "threshold": 0.9,
+        "actual": 0.9230769230769231,
+        "passed": true
+      },
+      "field_classification_accuracy": {
+        "threshold": 0.85,
+        "actual": 0.9692307692307692,
+        "passed": true
+      },
+      "missing_field_identification_rate": {
+        "threshold": 0.85,
+        "actual": 0.9411764705882353,
+        "passed": true
+      }
+    },
+    "hard_failures": [],
+    "fallback_required": true
+  },
+  "audit": {
+    "status": "passed",
+    "paid_calls": 8,
+    "terminal_calls": 8,
+    "tool_successes": 5,
+    "model": "deepseek-v4-pro",
+    "source_commit": "5a4bd98fc0518e85d61c2f7e3e689527f92bcad5",
+    "prompt_tokens": 19008,
+    "completion_tokens": 13335
+  },
+  "case_outputs": {
+    "gaussian_priors": {
+      "source_id": "qasper:1601.02166",
+      "run_status": "failed",
+      "tool_success": false,
+      "tool_diagnosis": {
+        "status": "rejected",
+        "code": "runtime_error",
+        "issues": [
+          {
+            "code": "runtime_error",
+            "path": [],
+            "message": "ModelUnavailable"
+          }
+        ]
+      },
+      "error_category": "provider_or_payload",
+      "error_type": "ModelUnavailable",
+      "usage": {
+        "completion_tokens": 2048,
+        "prompt_tokens": 3298,
+        "total_tokens": 5346,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3298
+      },
+      "raw_fields": [],
+      "out_of_scope_evidence_ids": []
+    },
+    "urban_legends": {
+      "source_id": "qasper:1601.06081",
+      "run_status": "completed",
+      "tool_success": true,
+      "tool_diagnosis": {
+        "status": "accepted",
+        "code": "accepted",
+        "issues": [],
+        "referenced_evidence_ids": [
+          "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7",
+          "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7",
+          "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43",
+          "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f",
+          "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3"
+        ],
+        "unknown_evidence_ids": []
+      },
+      "error_category": null,
+      "error_type": null,
+      "usage": {
+        "paid_calls": 1,
+        "prompt_tokens": 2077,
+        "completion_tokens": 1754,
+        "actual_cost_usd": null
+      },
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "classification of text into urban legend vs factual news",
+          "quote": "Urban Legends vs News. In the UL vs. GN classification task",
+          "evidence_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7"
+        },
+        {
+          "name": "task",
+          "value": "three class classification task (UL vs GN vs FT)",
+          "quote": "we also tested feature predictivity on a three class classification task (UL vs GN vs FT)",
+          "evidence_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f"
+        },
+        {
+          "name": "model",
+          "value": "SVM using libSVM",
+          "quote": "Experiments were carried out using SVM BIBREF36 , in particular libSVM BIBREF37 under its default settings",
+          "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+        },
+        {
+          "name": "dataset",
+          "value": "New York Times stories",
+          "quote": "randomly selected an equal amount of stories from the NYT",
+          "evidence_id": "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3"
+        },
+        {
+          "name": "dataset",
+          "value": "Weekly World News stories (225)",
+          "quote": "We scraped the WWN for a total of 225 stories",
+          "evidence_id": "chunk:ceab6e02b26b21e043f2459a6681bc5eb0c8c5c34af955de465f9d229b47bce3"
+        },
+        {
+          "name": "input_setting",
+          "value": "prototypical characteristics features",
+          "quote": "using just the prototypical characteristics (features) discussed above",
+          "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+        },
+        {
+          "name": "input_setting",
+          "value": "z-score normalization of features",
+          "quote": "We also normalized all features according to z-score",
+          "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+        },
+        {
+          "name": "training",
+          "value": "ten-fold cross validation",
+          "quote": "For every feature combination we conducted a binary classification experiment with ten-fold cross validation on the dataset",
+          "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+        },
+        {
+          "name": "training",
+          "value": "random downsampling of majority class to balance dataset",
+          "quote": "We always randomly downsampled the majority class in order to make the dataset balanced",
+          "evidence_id": "chunk:3898c69e73927543cc2c91f08faf8b1493445cdd173e4b0fc33336fb6b335d43"
+        },
+        {
+          "name": "metric",
+          "value": "precision",
+          "quote": "in term of precision, recall and F1 over the single classes",
+          "evidence_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7"
+        },
+        {
+          "name": "metric",
+          "value": "recall",
+          "quote": "in term of precision, recall and F1 over the single classes",
+          "evidence_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7"
+        },
+        {
+          "name": "metric",
+          "value": "F1",
+          "quote": "in term of precision, recall and F1 over the single classes",
+          "evidence_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7"
+        },
+        {
+          "name": "metric",
+          "value": "Matthews Correlation Coefficient (MCC)",
+          "quote": "we also provide the Matthews Correlation Coefficient (MCC)",
+          "evidence_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f"
+        },
+        {
+          "name": "result",
+          "value": "all features F1 = 0.833 in UL vs GN",
+          "quote": "all the features together performed well (F1 = 0.833)",
+          "evidence_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7"
+        },
+        {
+          "name": "result",
+          "value": "READ F1 = 0.763 in UL vs GN",
+          "quote": "apart from READ (F1 = 0.763, $p<0.001$ )",
+          "evidence_id": "chunk:2938b0ec139573dcf816b4e15657c33e5dbe1a4c432fe1437fda2386db256ee7"
+        },
+        {
+          "name": "result",
+          "value": "TIMEX MCC=0.339 in three class task",
+          "quote": "the temporal features (TIMEX) have far lower discriminative power as compared to others groups of features (MCC=0.339)",
+          "evidence_id": "chunk:b2ae053062bd826a1560f33a2d2ec43c926147a6f427bc07a2948762afef276f"
+        },
+        {
+          "name": "result",
+          "value": "slightly higher precision than recall for UL",
+          "quote": "the classifiers had slightly higher precision than recall for UL, while the contrary holds for FT and GN",
+          "evidence_id": "chunk:1dde6177dc6a04e5ac9ecc621ba281c47d6e1a9553d589cf9bda682eaae093e7"
+        }
+      ],
+      "out_of_scope_evidence_ids": []
+    },
+    "linguistic_hedges": {
+      "source_id": "qasper:1601.06738",
+      "run_status": "completed",
+      "tool_success": true,
+      "tool_diagnosis": {
+        "status": "accepted",
+        "code": "accepted",
+        "issues": [],
+        "referenced_evidence_ids": [
+          "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f",
+          "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2",
+          "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107"
+        ],
+        "unknown_evidence_ids": []
+      },
+      "error_category": null,
+      "error_type": null,
+      "usage": {
+        "paid_calls": 1,
+        "prompt_tokens": 2338,
+        "completion_tokens": 896,
+        "actual_cost_usd": null
+      },
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "linguistic hedges modeling",
+          "quote": "we give formulations of the hedges `very' and `quite'",
+          "evidence_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107"
+        },
+        {
+          "name": "model",
+          "value": "label semantics framework",
+          "quote": "Our account of linguistic hedges uses the label semantics framework to model concepts",
+          "evidence_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107"
+        },
+        {
+          "name": "model",
+          "value": "prototype and threshold",
+          "quote": "a formalisation of concepts as based on a prototype and a threshold, located in a conceptual space",
+          "evidence_id": "chunk:dcc874432079b7337ca55ba4f386fd586f8028c6a0334b92902ddcb547b71107"
+        },
+        {
+          "name": "result",
+          "value": "crisp set in the limit",
+          "quote": "in the limit, the result of applying dilation or contraction modifiers multiple times is to create a crisp set",
+          "evidence_id": "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f"
+        },
+        {
+          "name": "result",
+          "value": "dilation includes whole support; contraction reduces to prototype",
+          "quote": "In the case of dilation, the crisp set includes the whole support of the fuzzy set associated with the original label, whereas in the case of contraction, the concept reduces to include only its prototype",
+          "evidence_id": "chunk:05ab27ac86e303ec7c7cd43103a8b1dbdbaad1bf1675afb848bf0f4d5dc6f45f"
+        },
+        {
+          "name": "result",
+          "value": "most general result applies when epsilon2 <= f(epsilon1) or epsilon2 >= f(epsilon1)",
+          "quote": "the formula still applies when $\\varepsilon _2 \\le f(\\varepsilon _1)$ , or $\\varepsilon _2 \\ge f(\\varepsilon _1)$",
+          "evidence_id": "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2"
+        },
+        {
+          "name": "limitation",
+          "value": "simplicity of the original result is lost with additional parameters",
+          "quote": "In this case we have introduced additional parameters, so the simplicity of the original result is lost",
+          "evidence_id": "chunk:0f86e2fa49e9b51bf15b8dfae3ac923961673a7ddf8206d2d0fc1aacf9e9ebf2"
+        }
+      ],
+      "out_of_scope_evidence_ids": []
+    },
+    "grail_prover": {
+      "source_id": "qasper:1602.00812",
+      "run_status": "completed",
+      "tool_success": true,
+      "tool_diagnosis": {
+        "status": "accepted",
+        "code": "accepted",
+        "issues": [],
+        "referenced_evidence_ids": [
+          "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976",
+          "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699",
+          "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9"
+        ],
+        "unknown_evidence_ids": []
+      },
+      "error_category": null,
+      "error_type": null,
+      "usage": {
+        "paid_calls": 1,
+        "prompt_tokens": 2041,
+        "completion_tokens": 1407,
+        "actual_cost_usd": null
+      },
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "automated theorem proving for type-logical grammars",
+          "quote": "This is where automated theorem provers are useful",
+          "evidence_id": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9"
+        },
+        {
+          "name": "model",
+          "value": "Grail",
+          "quote": "the proof search strategy used by Grail",
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976"
+        },
+        {
+          "name": "model",
+          "value": "dancing links algorithm",
+          "quote": "it is an instance of the “dancing links” algorithm",
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976"
+        },
+        {
+          "name": "input_setting",
+          "value": "four step process: lexical lookup, unfolding, identification of atoms, graph rewriting",
+          "quote": "theorem proving using proof nets is a four step process, which in the current situation looks as follows: 1) lexical lookup, 2) unfolding, 3) identification of atoms, 4) graph rewriting",
+          "evidence_id": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699"
+        },
+        {
+          "name": "input_setting",
+          "value": "link a formula which has the least possibilities",
+          "quote": "we always link a formula which has the least possibilities",
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976"
+        },
+        {
+          "name": "input_setting",
+          "value": "rewrite the abstract proof structures only once a fully linked proof structure has been produced",
+          "quote": "we rewrite the abstract proof structures only once a fully linked proof structure has been produced",
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976"
+        },
+        {
+          "name": "input_setting",
+          "value": "graph rewriting only once all atoms have been connected",
+          "quote": "The current implementation does graph rewriting only once all atoms have been connected",
+          "evidence_id": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699"
+        },
+        {
+          "name": "dataset",
+          "value": "randomly generated statements",
+          "quote": "evaluation both on randomly generated statements",
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976"
+        },
+        {
+          "name": "dataset",
+          "value": "multimodal statements extracted from corpora",
+          "quote": "on multimodal statements extracted from corpora",
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976"
+        },
+        {
+          "name": "result",
+          "value": "the resulting algorithm performs more than well enough",
+          "quote": "the resulting algorithm performs more than well enough",
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976"
+        },
+        {
+          "name": "result",
+          "value": "the parser is not extremely fast",
+          "quote": "Though the parser is not extremely fast",
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976"
+        },
+        {
+          "name": "limitation",
+          "value": "parser is not extremely fast",
+          "quote": "Though the parser is not extremely fast",
+          "evidence_id": "chunk:99420dbfccda0977dc170b28076d85aa8a1a126042b865ae139c17d0399ba976"
+        },
+        {
+          "name": "limitation",
+          "value": "when a proof isn't found because of a programming error this can be hard to detect",
+          "quote": "when a proof isn't found because of a programming error this can be hard to detect",
+          "evidence_id": "chunk:cb50ea6d2779e6dac758fa108518f2b5157ed226b23642726b9a32bf173f62a9"
+        },
+        {
+          "name": "limitation",
+          "value": "not a priori clear which strategy is optimal for which set of structural rules",
+          "quote": "it is not a priori clear which strategy is optimal for which set of structural rules",
+          "evidence_id": "chunk:c203460bce003c1f2cf3c9da7d7cc2efb99ada551f33643ec19d808c40701699"
+        }
+      ],
+      "out_of_scope_evidence_ids": []
+    },
+    "syntactic_structures": {
+      "source_id": "qasper:1602.03661",
+      "run_status": "completed",
+      "tool_success": true,
+      "tool_diagnosis": {
+        "status": "accepted",
+        "code": "accepted",
+        "issues": [],
+        "referenced_evidence_ids": [
+          "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc",
+          "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d",
+          "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230",
+          "chunk:725482606b32976f044f4cedfadcb9ac5687492a631f31302755378feed0dfdc",
+          "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340"
+        ],
+        "unknown_evidence_ids": []
+      },
+      "error_category": null,
+      "error_type": null,
+      "usage": {
+        "paid_calls": 1,
+        "prompt_tokens": 2223,
+        "completion_tokens": 1312,
+        "actual_cost_usd": null
+      },
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "quantify the notion of duality of patterning as observed in real languages",
+          "quote": "In this section we quantify the notion of duality of patterning as observed in real languages in order to provide suitable measures for the combinatoriality and compositionality.",
+          "evidence_id": "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340"
+        },
+        {
+          "name": "model",
+          "value": "simulated environment which contains meaningful relations",
+          "quote": "the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment which contains meaningful relations",
+          "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+        },
+        {
+          "name": "dataset",
+          "value": "HBC word-association graph",
+          "quote": "Excess Master-Mind similarity of words as a function of the average distance d of the corresponding objects on the HBC word-association graph.",
+          "evidence_id": "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230"
+        },
+        {
+          "name": "dataset",
+          "value": "six lexica",
+          "quote": "the normalized histogram of the lengths for the words of the six lexica considered",
+          "evidence_id": "chunk:6bf8f62ccb2ded353ae22bfc4f5c7f8a8aa5abbf6659bab0d645a29f8a141230"
+        },
+        {
+          "name": "metric",
+          "value": "combinatoriality",
+          "quote": "C is the combinatoriality defined in Eq. 1",
+          "evidence_id": "chunk:725482606b32976f044f4cedfadcb9ac5687492a631f31302755378feed0dfdc"
+        },
+        {
+          "name": "metric",
+          "value": "compositionality",
+          "quote": "provide suitable measures for the combinatoriality and compositionality",
+          "evidence_id": "chunk:cb59a3f621b6ccf2b75883f84544c600cf3478a8f260e9d468721247fd5fd340"
+        },
+        {
+          "name": "metric",
+          "value": "Excess Master-Mind similarity",
+          "quote": "Excess Master-Mind-like similarity of words as a function of the distance d of the corresponding objects on the graph",
+          "evidence_id": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc"
+        },
+        {
+          "name": "training",
+          "value": "purely cultural dynamics",
+          "quote": "can emerge simultaneously as a consequence of a purely cultural dynamics in a simulated environment",
+          "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+        },
+        {
+          "name": "result",
+          "value": "compositionality implies higher similarity among words which are closer in the semantic space",
+          "quote": "compositionality implies higher similarity among words which are closer in the semantic space",
+          "evidence_id": "chunk:52e5d3e273939c400e4af75715bae1c34d74373d8dfea226aad3a042f91b60bc"
+        },
+        {
+          "name": "result",
+          "value": "the two sides of duality of patterning can emerge simultaneously",
+          "quote": "they demonstrate for the first time that the two sides of duality of patterning can emerge simultaneously as a consequence of a purely cultural dynamics",
+          "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+        },
+        {
+          "name": "limitation",
+          "value": "conceptual space of all the individuals are identical and modelled as a static graph",
+          "quote": "relaxing the assumptions that the conceptual space of all the individuals are identical and modelled as a static graph",
+          "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+        },
+        {
+          "name": "limitation",
+          "value": "open for future investigations to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon",
+          "quote": "First of all to elucidate the emergence of duality of patterning at the syntax level beyond that of the lexicon",
+          "evidence_id": "chunk:54389d752daa43adadacd3b1d99d6bf05e60551f4aabc3d355e8f488f05a6d3d"
+        }
+      ],
+      "out_of_scope_evidence_ids": []
+    },
+    "rnn_domain_adaptation": {
+      "source_id": "qasper:1604.00117",
+      "run_status": "failed",
+      "tool_success": false,
+      "tool_diagnosis": {
+        "status": "rejected",
+        "code": "runtime_error",
+        "issues": [
+          {
+            "code": "runtime_error",
+            "path": [],
+            "message": "ModelUnavailable"
+          }
+        ]
+      },
+      "error_category": "provider_or_payload",
+      "error_type": "ModelUnavailable",
+      "usage": {
+        "completion_tokens": 2048,
+        "prompt_tokens": 2333,
+        "total_tokens": 4381,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 1437
+      },
+      "raw_fields": [],
+      "out_of_scope_evidence_ids": []
+    },
+    "attsum": {
+      "source_id": "qasper:1604.00125",
+      "run_status": "failed",
+      "tool_success": false,
+      "tool_diagnosis": {
+        "status": "rejected",
+        "code": "runtime_error",
+        "issues": [
+          {
+            "code": "runtime_error",
+            "path": [],
+            "message": "ModelUnavailable"
+          }
+        ]
+      },
+      "error_category": "provider_or_payload",
+      "error_type": "ModelUnavailable",
+      "usage": {
+        "completion_tokens": 2048,
+        "prompt_tokens": 2216,
+        "total_tokens": 4264,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 1320
+      },
+      "raw_fields": [],
+      "out_of_scope_evidence_ids": []
+    },
+    "causal_statements": {
+      "source_id": "qasper:1604.05781",
+      "run_status": "completed",
+      "tool_success": true,
+      "tool_diagnosis": {
+        "status": "accepted",
+        "code": "accepted",
+        "issues": [],
+        "referenced_evidence_ids": [
+          "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d",
+          "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484",
+          "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839",
+          "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6",
+          "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d",
+          "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614"
+        ],
+        "unknown_evidence_ids": []
+      },
+      "error_category": null,
+      "error_type": null,
+      "usage": {
+        "paid_calls": 1,
+        "prompt_tokens": 2482,
+        "completion_tokens": 1822,
+        "actual_cost_usd": null
+      },
+      "raw_fields": [
+        {
+          "name": "task",
+          "value": "analysis of features of causal statements in large-scale social discourse",
+          "quote": "Features of causal statements across large-scale social discourse",
+          "evidence_id": "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839"
+        },
+        {
+          "name": "dataset",
+          "value": "10% uniform sample of Twitter posts during 2013 (Gardenhose API)",
+          "quote": "Data was collected from a 10% uniform sample of Twitter posts made during 2013, specifically the Gardenhose API",
+          "evidence_id": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614"
+        },
+        {
+          "name": "dataset",
+          "value": "965,560 causal and 965,560 control documents",
+          "quote": "The end result of this procedure identified 965,560 causal and 965,560 control documents",
+          "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+        },
+        {
+          "name": "input_setting",
+          "value": "only English-language tweets; tweets matching more English stopwords than any other language",
+          "quote": "We considered only English-language tweets for this study",
+          "evidence_id": "chunk:7872a952623c23ddeca3d20f2077e652c557cf313add9952e367927645d58614"
+        },
+        {
+          "name": "input_setting",
+          "value": "punctuation, XML characters, hyperlinks, at-mentions, hashtags removed; unigram tokenization; casing retained",
+          "quote": "Punctuation, XML characters, and hyperlinks were removed, as were Twitter-specific “at-mentions” and “hashtags”",
+          "evidence_id": "chunk:2a945f4102f97739507b98813182ccd251b6f51682961d56fb87ca3d3271e839"
+        },
+        {
+          "name": "input_setting",
+          "value": "causal documents contain one occurrence of 'caused', 'causing', or 'causes'",
+          "quote": "Causal documents were chosen to contain one occurrence only of the exact unigrams: ‘caused’, ‘causing’, or ‘causes’",
+          "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+        },
+        {
+          "name": "model",
+          "value": "Latent Dirichlet Allocation (LDA)",
+          "quote": "We used the popular topic modeling method Latent Dirichlet Allocation (LDA)",
+          "evidence_id": "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d"
+        },
+        {
+          "name": "model",
+          "value": "NLTK v3.1 averaged perceptron POS tagger trained on Brown Corpus",
+          "quote": "POS tagging was done using NLTK v3.1 BIBREF29 which implements an averaged perceptron classifier BIBREF32 trained on the Brown Corpus",
+          "evidence_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d"
+        },
+        {
+          "name": "model",
+          "value": "Stanford CoreNLP v3.6.0 4-class NER tagger using conditional random field",
+          "quote": "Named Entity Recognition (NER) was performed using the 4-class, distributional similarity tagger provided as part of the Stanford CoreNLP v3.6.0 toolkit",
+          "evidence_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d"
+        },
+        {
+          "name": "result",
+          "value": "caused 38.2%, causes 35.0%, causing 26.8% of causal documents",
+          "quote": "Each of the three “cause-words”, ‘caused’, ‘causes’, and ‘causing’ appeared in 38.2%, 35.0%, and 26.8% of causal documents, respectively",
+          "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+        },
+        {
+          "name": "result",
+          "value": "10-topic LDA model discovered meaningful topics",
+          "quote": "Inspecting these unigrams we found that a 10-topic model discovered meaningful topics",
+          "evidence_id": "chunk:1c86b977d475e654f2dd1f87d55fc51be8b80412e11dc5b14f9c89059ee5e07d"
+        },
+        {
+          "name": "result",
+          "value": "Odds Ratio correlation with/without punctuation rho=0.71, with/without casing rho=0.80",
+          "quote": "including casing and without casing ( $\\rho = 0.71$ and $0.80$ , respectively)",
+          "evidence_id": "chunk:2f4912b550491d827739cd78d6c84441f5a29d094d5db7403895e15755aaa1c6"
+        },
+        {
+          "name": "limitation",
+          "value": "word 'cause' excluded due to use as contraction for 'because'",
+          "quote": "The word ‘cause’ was not included due to its use as a popular contraction for ‘because’",
+          "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+        },
+        {
+          "name": "limitation",
+          "value": "did not consider additional synonyms of cause words",
+          "quote": "We also did not consider additional synonyms of these cause words, although that could be pursued for future work",
+          "evidence_id": "chunk:26de2ad25cff6986d052f03a476dc41cb303df7164f90498018e3f3ce258f484"
+        },
+        {
+          "name": "limitation",
+          "value": "taggers have potential ambiguity in written text",
+          "quote": "there is always potential ambiguity in written text and improving upon these methods remains an active area of research",
+          "evidence_id": "chunk:59a11a7cd0ac1417b7d6ac7b7f962f9bc338520cba65404423bd6b03fe8b483d"
+        }
+      ],
+      "out_of_scope_evidence_ids": []
+    }
+  },
+  "bindings": {
+    "seal_sha256": "f76a40870923094c80b497e687fd30a3e7ffa299de660588f9d532ba96b14533",
+    "review_sha256": "6a4bc5df6a8a76a9e3e0c68d1945e958e2034c29b1cfe789813e5dfaa51ab389",
+    "ai_review_sha256": "9b3aa38c6592928739ee4e5c5ed00f0fa48c362abda7990f532f021ce3531285",
+    "review_input_sha256": "35afc7e7cbfd738762a577d8a91213bd2568917a399b3c3704a9ac5ab931ef80"
+  }
+}

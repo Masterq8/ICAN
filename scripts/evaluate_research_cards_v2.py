@@ -20,7 +20,12 @@ from dotenv import load_dotenv
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from ican.evaluation.research_card import collect_prior_source_ids
+from ican.evaluation.research_card import (
+    collect_prior_source_ids,
+    raw_card_fields,
+    score_raw_draft_review,
+    validate_review_binding,
+)
 from ican.api.app import load_config as load_index_config
 from ican.agent.journal import PaidJournal
 from ican.agent.schema import BudgetExhausted, ToolInputError
@@ -29,6 +34,7 @@ from ican.research.auto_schema import AutoCardRequest
 from ican.research.auto_service import ResearchAutoService
 from ican.research.service import ResearchService
 from ican.research.store import ResearchStore
+from ican.research.submission import diagnose_card_submission
 from ican.retrieval.hybrid import HybridEvidenceSearchService
 
 DEFAULT_CONFIG = ROOT / "configs/evaluation/p46-quality-v2.json"
@@ -44,6 +50,18 @@ FROZEN_CASES = RUNTIME_DIR / "frozen-cases.json"
 CORPUS_PATH = ROOT / "data/processed/qasper_external/v1/train_corpus.jsonl"
 PREFLIGHT_PATH = RUNTIME_DIR / "preflight.json"
 MODEL_BASE_URL = "https://api.deepseek.com"
+DOC_DIR = ROOT / "docs/evaluation/p46-quality-v2"
+FIELD_NAMES = [
+    "task",
+    "model",
+    "dataset",
+    "input_setting",
+    "training",
+    "metric",
+    "result",
+    "limitation",
+    "code_availability",
+]
 
 
 def normalize_source_id(value: str) -> str:
@@ -328,6 +346,307 @@ async def dry_run(config: dict):
     return {"status": "dry_run_passed", "cases": 8}
 
 
+def audit_run(runtime_dir: Path = RUNTIME_DIR) -> dict:
+    runtime_dir = Path(runtime_dir)
+    seal_path = runtime_dir / "seal.json"
+    if not seal_path.exists():
+        raise ValueError("Run is not sealed")
+    seal = read_json(seal_path)
+    for relative, expected in seal.get("artifact_sha256", {}).items():
+        path = (runtime_dir / relative).resolve()
+        if not path.is_relative_to(runtime_dir.resolve()):
+            raise ValueError("Sealed artifact is outside the runtime directory")
+        if not path.exists() or digest(path) != expected:
+            raise ValueError(f"Sealed artifact changed: {relative}")
+    required = {
+        "frozen-cases.json",
+        "preflight.json",
+        "call-journal.jsonl",
+        "paid-journal.jsonl",
+    }
+    if not required <= set(seal["artifact_sha256"]):
+        raise ValueError("Run seal omits a required identity artifact")
+    frozen = read_json(runtime_dir / "frozen-cases.json")
+    preflight_record = read_json(runtime_dir / "preflight.json")
+    if (
+        preflight_record.get("status") != "passed"
+        or preflight_record.get("target_model") != frozen["model"]
+        or preflight_record.get("generation_calls") != 0
+    ):
+        raise ValueError("Model preflight identity differs")
+    if seal.get("run_source_commit") != frozen["source_commit"]:
+        raise ValueError("Run source commit differs from frozen cases")
+    for relative, expected in frozen["source_sha256"].items():
+        original = subprocess.check_output(
+            ["git", "show", f"{frozen['source_commit']}:{relative}"], cwd=ROOT
+        )
+        if hashlib.sha256(original).hexdigest() != expected:
+            raise ValueError(f"Frozen source commit mismatch: {relative}")
+
+    evaluator_events = read_events(runtime_dir / "call-journal.jsonl")
+    evaluator_starts = [row for row in evaluator_events if row["event"] == "started"]
+    evaluator_ends = [row for row in evaluator_events if row["event"] != "started"]
+    paid_events = read_events(runtime_dir / "paid-journal.jsonl")
+    paid_starts = [row for row in paid_events if row["event"] == "started"]
+    paid_ends = [row for row in paid_events if row["event"] != "started"]
+    expected_sources = [case["request"]["source_id"] for case in frozen["cases"]]
+    if (
+        len(evaluator_starts) != 8
+        or len(evaluator_ends) != 8
+        or [row["source_id"] for row in evaluator_starts] != expected_sources
+    ):
+        raise ValueError("Evaluator journal is not one reservation per frozen paper")
+    if (
+        len(paid_starts) != 8
+        or len(paid_ends) != 8
+        or {row["call_id"] for row in paid_starts}
+        != {row["call_id"] for row in paid_ends}
+        or any(row["model"] != frozen["model"] for row in paid_starts)
+    ):
+        raise ValueError("Paid journal differs from the eight-call model contract")
+    by_source = {case["request"]["source_id"]: case for case in frozen["cases"]}
+    success_count = 0
+    for case in frozen["cases"]:
+        key = case["key"]
+        result_path = runtime_dir / "case-results" / f"{key}.json"
+        if result_path.relative_to(runtime_dir).as_posix() not in seal["artifact_sha256"]:
+            raise ValueError(f"{key}: case result is absent from the seal")
+        result = read_json(result_path)
+        if result["request_sha256"] != request_digest(case["request"]):
+            raise ValueError(f"{key}: request identity differs")
+        trace_name = result.get("trace")
+        if not trace_name or Path(trace_name).name != trace_name:
+            raise ValueError(f"{key}: trace is missing or unsafe")
+        trace_path = runtime_dir / "traces" / trace_name
+        if digest(trace_path) != result.get("trace_sha256"):
+            raise ValueError(f"{key}: trace identity differs")
+        trace = read_json(trace_path)
+        if trace.get("request") != case["request"] or len(trace.get("model_records", [])) != 1:
+            raise ValueError(f"{key}: trace request or model-record count differs")
+        record = trace["model_records"][0]
+        if record.get("requested_model") != frozen["model"]:
+            raise ValueError(f"{key}: trace model differs")
+        success_count += result["status"] == "completed"
+    if set(by_source) != set(expected_sources):
+        raise ValueError("Frozen source IDs are not unique")
+    if seal.get("paid_calls") != 8 or seal.get("terminal_paid_calls") != 8:
+        raise ValueError("Seal paid-call totals differ")
+    return {
+        "status": "passed",
+        "paid_calls": 8,
+        "terminal_calls": 8,
+        "tool_successes": success_count,
+        "model": frozen["model"],
+        "source_commit": frozen["source_commit"],
+        "prompt_tokens": seal["prompt_tokens"],
+        "completion_tokens": seal["completion_tokens"],
+    }
+
+
+def rate(numerator: int, denominator: int) -> dict:
+    return {
+        "numerator": numerator,
+        "denominator": denominator,
+        "rate": numerator / denominator if denominator else None,
+    }
+
+
+def case_outputs(runtime_dir: Path = RUNTIME_DIR) -> dict:
+    runtime_dir = Path(runtime_dir)
+    frozen = read_json(runtime_dir / "frozen-cases.json")
+    outputs = {}
+    for case in frozen["cases"]:
+        key = case["key"]
+        result = read_json(runtime_dir / "case-results" / f"{key}.json")
+        trace = read_json(runtime_dir / "traces" / result["trace"])
+        action = trace.get("model_action")
+        fields = raw_card_fields(action)
+        allowed = {item["chunk_id"] for item in case["evidence"]}
+        diagnosis = diagnose_card_submission(action, allowed, legacy=False)
+        if action is not None and diagnosis.code != result["tool_diagnosis"]["code"]:
+            raise ValueError(f"{key}: submission diagnosis changed")
+        outputs[key] = {
+            "source_id": case["request"]["source_id"],
+            "run_status": result["status"],
+            "tool_success": result["status"] == "completed"
+            and result["tool_diagnosis"]["code"] == "accepted",
+            "tool_diagnosis": result["tool_diagnosis"],
+            "error_category": result.get("error_category"),
+            "error_type": result.get("error_type"),
+            "usage": result.get("usage"),
+            "raw_fields": fields,
+            "out_of_scope_evidence_ids": sorted(
+                {field["evidence_id"] for field in fields if field["evidence_id"] not in allowed}
+            ),
+        }
+    return outputs
+
+
+def decide_gate(metrics: dict, thresholds: dict, hard_failures: list[dict]) -> dict:
+    checks = {
+        name: {
+            "threshold": threshold,
+            "actual": metrics[name]["rate"],
+            "passed": metrics[name]["rate"] is not None
+            and metrics[name]["rate"] >= threshold,
+        }
+        for name, threshold in thresholds.items()
+    }
+    return {
+        "status": "passed"
+        if all(item["passed"] for item in checks.values()) and not hard_failures
+        else "failed",
+        "checks": checks,
+        "hard_failures": hard_failures,
+        "fallback_required": not (
+            all(item["passed"] for item in checks.values()) and not hard_failures
+        ),
+    }
+
+
+def validate_v2_review(runtime_dir: Path, outputs: dict, review: dict):
+    seal_path = runtime_dir / "seal.json"
+    input_path = runtime_dir / "review-input.json"
+    ai_path = runtime_dir / "ai-review.json"
+    binding = review.get("binding", {})
+    if (
+        binding.get("seal_sha256") != digest(seal_path)
+        or binding.get("review_input_sha256") != digest(input_path)
+        or binding.get("ai_review_sha256") != digest(ai_path)
+    ):
+        raise ValueError("Review binding differs from sealed inputs")
+    validate_review_binding(
+        {key: value["raw_fields"] for key, value in outputs.items()}, review
+    )
+    frozen = read_json(runtime_dir / "frozen-cases.json")
+    frozen_by_key = {case["key"]: case for case in frozen["cases"]}
+    for key, item in review["cases"].items():
+        if set(item["presence_decisions"]) != set(FIELD_NAMES):
+            raise ValueError(f"{key}: review must cover all nine presence slots")
+        expected = set(item["expected_present_fields"])
+        anchors = item["presence_evidence_ids"]
+        valid_ids = {evidence["chunk_id"] for evidence in frozen_by_key[key]["evidence"]}
+        if set(anchors) != expected or not set(anchors.values()) <= valid_ids:
+            raise ValueError(f"{key}: invalid presence evidence binding")
+        for name, decision in item["presence_decisions"].items():
+            if decision["present"] != (name in expected):
+                raise ValueError(f"{key}.{name}: presence decision contradicts expected fields")
+
+
+def finalize(runtime_dir: Path = RUNTIME_DIR, doc_dir: Path = DOC_DIR) -> dict:
+    runtime_dir, doc_dir = Path(runtime_dir), Path(doc_dir)
+    audit = audit_run(runtime_dir)
+    outputs = case_outputs(runtime_dir)
+    review = read_json(runtime_dir / "manual-review.json")
+    validate_v2_review(runtime_dir, outputs, review)
+    raw = score_raw_draft_review(review, total_cases=len(outputs))
+    tool_successes = sum(item["tool_success"] for item in outputs.values())
+    metrics = {
+        "tool_submission_success": rate(tool_successes, len(outputs)),
+        "evidence_support_rate": raw["evidence_support_rate"],
+        "field_classification_accuracy": raw["field_classification_accuracy"],
+        "missing_field_identification_rate": raw[
+            "missing_field_identification_rate"
+        ],
+        "present_field_recall": raw["present_field_recall"],
+        "confusions": raw["confusions"],
+    }
+    hard_failures = []
+    for key, item in outputs.items():
+        if item["out_of_scope_evidence_ids"]:
+            hard_failures.append(
+                {"case": key, "code": "out_of_scope_evidence", "detail": item["out_of_scope_evidence_ids"]}
+            )
+        if item["run_status"] == "interrupted_unknown":
+            hard_failures.append(
+                {"case": key, "code": "interrupted_unknown", "detail": "No terminal provider response"}
+            )
+    frozen = read_json(runtime_dir / "frozen-cases.json")
+    decision = decide_gate(metrics, frozen["thresholds"], hard_failures)
+    presence_total = len(outputs) * len(FIELD_NAMES)
+    presence_correct = 0
+    for key, item in review["cases"].items():
+        expected = set(item["expected_present_fields"])
+        submitted = {field["name"] for field in item["fields"]}
+        presence_correct += sum((name in expected) == (name in submitted) for name in FIELD_NAMES)
+    payload = {
+        "version": "p46-quality-v2-metrics-v1",
+        "reviewer_type": review["reviewer_type"],
+        "ai_review_status": review["ai_review_status"],
+        "human_review_status": review["human_review_status"],
+        "metrics": metrics,
+        "supplementary_presence_accuracy": rate(presence_correct, presence_total),
+        "gate_decision": decision,
+        "audit": audit,
+        "case_outputs": outputs,
+        "bindings": {
+            "seal_sha256": digest(runtime_dir / "seal.json"),
+            "review_sha256": digest(runtime_dir / "manual-review.json"),
+            "ai_review_sha256": digest(runtime_dir / "ai-review.json"),
+            "review_input_sha256": digest(runtime_dir / "review-input.json"),
+        },
+    }
+    write_json(runtime_dir / "metrics.json", payload)
+    doc_dir.mkdir(parents=True, exist_ok=True)
+    write_json(doc_dir / "metrics.json", payload)
+
+    def display(item):
+        return f"{item['rate'] * 100:.1f}% ({item['numerator']}/{item['denominator']})"
+
+    lines = [
+        "# P4.6 v2 新论文质量门禁",
+        "",
+        f"结论：**{decision['status'].upper()}**。8 篇全新 QASPER train 论文只调用一次 `deepseek-v4-pro`，不重试；工具提交成功 {tool_successes}/8。",
+        "",
+        "## 冻结指标",
+        "",
+        f"- 工具提交成功率：{display(metrics['tool_submission_success'])}，门槛 87.5%。",
+        f"- 原文支持率：{display(metrics['evidence_support_rate'])}，门槛 90%。",
+        f"- 字段归类正确率：{display(metrics['field_classification_accuracy'])}，门槛 85%。",
+        f"- 缺失字段识别率：{display(metrics['missing_field_identification_rate'])}，门槛 85%。",
+        f"- 补充字段存在性准确率：{display(payload['supplementary_presence_accuracy'])}。",
+        "",
+        f"审核身份：{review['reviewer_type']}；AI 审核 {review['ai_review_status']}；人工审核 {review['human_review_status']}。",
+        "",
+        "## 失败诊断",
+        "",
+        "3 篇在 completion tokens 恰好达到 2048 后没有形成工具调用，SDK 将响应标为不完整并记录为 `ModelUnavailable/runtime_error`。这是根据用量和缺失工具动作作出的最大输出耗尽推断；旧运行未保存 finish_reason，因此不把该推断写成已证实的服务端原因，也不重跑。",
+        "",
+        "| 样本 | 运行 | 工具诊断 | 原始字段数 | 错误类别 |",
+        "|---|---:|---|---:|---|",
+    ]
+    for key, item in outputs.items():
+        lines.append(
+            f"| {key} | {item['run_status']} | {item['tool_diagnosis']['code']} | {len(item['raw_fields'])} | {item['error_category'] or '—'} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## 门禁处理",
+            "",
+            "工具提交成功率未达到预先冻结的 7/8，因此 P4.6 v2 不通过。原文支持率、字段归类和缺失识别即使通过，也不能覆盖生成阶段的失败。按设计进入高置信结果与同论文人工查证降级流程，不扩大样本、不重跑旧题。",
+            "",
+            "## 审计身份",
+            "",
+            f"- 运行源码提交：`{audit['source_commit']}`。",
+            f"- 模型：`{audit['model']}`；调用 8 次；输入 {audit['prompt_tokens']} tokens；输出 {audit['completion_tokens']} tokens。",
+            f"- seal：`{digest(runtime_dir / 'seal.json')}`。",
+        ]
+    )
+    (doc_dir / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (doc_dir / "human-review.md").write_text(
+        "# P4.6 v2 人工复核工作表\n\n"
+        "当前 AI 审核已完成，人工状态仍为 `pending`。人工复核时逐 occurrence 对照 `review-input.json` 的原字段、绑定证据与 `presence_decisions`；修改 `manual-review.json` 中的布尔判断、correct_type 和理由，不得修改 occurrence、name 或 raw_field_sha256。\n\n"
+        "完成后把 reviewer_type 改为 `human`、human_review_status 改为 `completed`，并执行：\n\n"
+        "```powershell\n"
+        "conda run -n ican python scripts/evaluate_research_cards_v2.py finalize --config configs/evaluation/p46-quality-v2.json\n"
+        "```\n\n"
+        "finalize 会重新检查 seal、原始字段哈希、72 个存在性槽位和三项审核产物绑定后重算。\n",
+        encoding="utf-8",
+    )
+    return payload
+
+
 def source_commit() -> str:
     return subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
@@ -570,6 +889,18 @@ def main():
         return
     if args.command == "preflight":
         print(json.dumps(preflight(args.config), ensure_ascii=False))
+        return
+    if args.command == "audit":
+        print(json.dumps(audit_run(), ensure_ascii=False))
+        return
+    if args.command == "seal":
+        if not (RUNTIME_DIR / "seal.json").exists():
+            raise ValueError("Run seal has not been created")
+        print(json.dumps({"status": "sealed", "path": str(RUNTIME_DIR / "seal.json")}))
+        return
+    if args.command == "finalize":
+        payload = finalize()
+        print(json.dumps({"status": payload["gate_decision"]["status"], "metrics": payload["metrics"]}, ensure_ascii=False))
         return
     if args.command != "preflight":
         raise SystemExit(f"{args.command} is not implemented yet")
