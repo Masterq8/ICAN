@@ -154,9 +154,9 @@
 **Files:**
 - Review all files changed by Tasks 1–6.
 
-- [ ] Run the full Python suite: `conda run -n ican python -m pytest -q`.
+- [x] Run the full Python suite: `conda run -n ican python -m pytest -q` (324 passed, 1 skipped).
 - [x] Frontend test runner is not configured; run the frontend typecheck and production build with `npm run build` (passed).
 - [x] Re-run the sealed audit and verify that post-run code changes did not alter the recorded v2 source commit or any sealed hash.
 - [x] Check `git diff --check`, `git status --short`, staged secret scanning, and confirm no `.env`, API key, or raw credential appears in tracked content.
 - [x] Review the final diff against the design spec and record the browser interaction limitation and semantic-confidence boundary in `docs/problem-solution-log.md` and `docs/p4-research-guide.md`.
-- [ ] Commit final documentation/test-only changes, push `codex/p4-agent-tools`, and report the commit IDs, exact test results, four metrics, gate decision, model-call count, and whether Task 6 was activated.
+- [x] Commit fallback as `e77a84c3d6bd22fbb7f5b2fa8d3e47fe8dd2e822` and push `codex/p4-agent-tools`. The sealed gate remains failed at 5/8 tool submissions; evidence support 60/65, field type 63/65, missing-field identification 16/17; exactly 8 Pro calls. Task 6 fallback activated and implemented. Human review remains pending.
