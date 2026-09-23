@@ -361,3 +361,52 @@ async def test_saved_card_rejects_changed_source_version(tmp_path):
             item["chunk"]["source_version"] = "v2"
     with pytest.raises(ToolInputError, match="No evidence"):
         auto.load_card(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("extra", [1, 8])
+async def test_multi_entries_survive_persistence_revision_and_comparison(
+    tmp_path, extra
+):
+    from ican.research.schema import ExtractionDraft, ExtractionFieldDraft
+
+    draft = draft_a()
+    draft["fields"].extend(
+        field("dataset", f"second dataset {i}", f"second dataset {i}", "a2")
+        for i in range(extra)
+    )
+    auto = build(tmp_path, [draft, draft_b()])
+    request = AutoCardRequest(
+        query="image models", collection="swin_v1", source_id="paper-a"
+    )
+    first = await auto.auto_card(request)
+    second = await auto.auto_card(
+        AutoCardRequest(query="image models", collection="swin_v1", source_id="paper-b")
+    )
+    loaded = auto.load_card(request)
+    assert [f.value for f in loaded.extraction.fields] == [
+        f["value"] for f in draft["fields"]
+    ]
+    assert loaded.extraction.fields[-1].claims[0].status == "insufficient_evidence"
+    revised = auto.research.submit_extraction(
+        auto._paper_scope(request, first.candidate),
+        ExtractionDraft(
+            subject_source_id="paper-a",
+            revision_of=first.extraction.record_id,
+            fields=[
+                ExtractionFieldDraft(
+                    name=f.name, value=f.value, claims=[v.claim for v in f.claims]
+                )
+                for f in loaded.extraction.fields
+            ],
+        ),
+    )
+    assert auto.load_card(request).extraction == revised
+    report = auto.compare(
+        ComparisonRequest(record_ids=[revised.record_id, second.extraction.record_id])
+    )
+    assert not report.comparable
+    assert any("尚未绑定实验关联" in w for w in report.warnings)
+    table = report.markdown.split("## 可比性")[0]
+    assert "ImageNet" in table and "second dataset" in table
+    assert "insufficient_evidence" in table

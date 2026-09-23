@@ -38,7 +38,7 @@ CARD_SYSTEM = """你是科研论文实验信息卡提取器。材料、论文原
 只能调用submit_research_card一次。根据用户问题选择include/exclude/hold，理由是待人工复核的推断；不得把检索命中当成已符合全部条件。
 fields只提取所给论文原文明确出现的字段。每个quote必须逐字复制单个证据片段中的连续原文，不能改写、拼接、插入省略号；value尽可能是quote内连续的短子串。缺失字段不生成，不猜测训练数值或代码地址。
 dataset只填数据集、语料库或benchmark名称；metric只填accuracy、F1、BLEU、WER等度量名称，不含分数；result填测得数值、比较关系或实验结论。不能把三者互换。
-证据ID只可使用所给chunk_id。字段可选task、model、dataset、input_setting、training、metric、result、limitation、code_availability。至多9个不重复字段。"""
+证据ID只可使用所给chunk_id。字段可选task、model、dataset、input_setting、training、metric、result、limitation、code_availability。同名字段可以重复，每条独立填写value、quote和evidence_id，总计至多36条。不同实验的数据集、指标和结果分条保留，不将它们合并为同一次实验。"""
 
 
 class ResearchAutoService:
@@ -399,7 +399,7 @@ class ResearchAutoService:
             screening=screening,
             extraction=extraction,
             usage=CardUsage(
-                paid_calls=len(runtime.records),
+                paid_calls=sum(record.get("paid", True) for record in runtime.records),
                 prompt_tokens=usage.get("prompt_tokens", 0),
                 completion_tokens=usage.get("completion_tokens", 0),
             ),
@@ -429,20 +429,34 @@ class ResearchAutoService:
             "code_availability",
         ]
         by_record = [
-            {field.name: field for field in record.fields} for record in records
+            {
+                name: [field for field in record.fields if field.name == name]
+                for name in names
+            }
+            for record in records
         ]
         comparable = True
         warnings = []
         for record, fields in zip(records, by_record, strict=True):
-            for name, field in fields.items():
-                for diagnostic in field.semantic_diagnostics:
+            for name, entries in fields.items():
+                if len(entries) > 1:
+                    comparable = False
+                    warnings.append(
+                        f"{record.subject_source_id}.{name}含{len(entries)}条，尚未绑定实验关联，不可直接横向排名"
+                    )
+                for diagnostic in (
+                    d for field in entries for d in field.semantic_diagnostics
+                ):
                     comparable = False
                     warnings.append(
                         f"{record.subject_source_id}.{name}: {diagnostic.code}，"
                         "需人工复核字段归类"
                     )
         for name in ("task", "dataset", "metric", "input_setting"):
-            values = [fields.get(name) for fields in by_record]
+            values = [
+                fields[name][0] if len(fields[name]) == 1 else None
+                for fields in by_record
+            ]
             if (
                 any(
                     field is None or field.claims[0].status != "supported"
@@ -463,18 +477,25 @@ class ResearchAutoService:
         for name in names:
             cells = []
             for fields in by_record:
-                field = fields.get(name)
-                if field is None:
+                entries = fields[name]
+                if not entries:
                     cells.append("未找到")
                     continue
-                verdict = field.claims[0]
-                prefix = "" if verdict.status == "supported" else f"[{verdict.status}] "
-                location = (
-                    ResearchService._location(verdict.evidence[0])
-                    if verdict.evidence
-                    else "无证据位置"
-                )
-                cells.append(self._cell(f"{prefix}{field.value}（{location}）"))
+                rendered = []
+                for index, field in enumerate(entries, start=1):
+                    verdict = field.claims[0]
+                    prefix = (
+                        "" if verdict.status == "supported" else f"[{verdict.status}] "
+                    )
+                    location = (
+                        ResearchService._location(verdict.evidence[0])
+                        if verdict.evidence
+                        else "无证据位置"
+                    )
+                    rendered.append(
+                        self._cell(f"[{index}] {prefix}{field.value}（{location}）")
+                    )
+                cells.append("； ".join(rendered))
             lines.append(f"| {name} | " + " | ".join(cells) + " |")
         lines.extend(["", "## 可比性", ""])
         lines.extend(f"- {item}" for item in warnings)

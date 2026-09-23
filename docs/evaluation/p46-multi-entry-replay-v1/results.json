@@ -1,0 +1,235 @@
+{
+  "kind": "offline_replay_not_new_model_evaluation",
+  "paid_calls": 0,
+  "frozen_manifest_sha256": "3a39f41a3cdcbcfc8b6eb051f3712c9fccccffff25297e2785e3df38a4fa26b3",
+  "source_sha256": {
+    "ican/research/auto_schema.py": "975b2157a93e9d9e5ee5d4ac7139af18cf33d28b22f9399c906249906ed4b098",
+    "ican/research/schema.py": "cf24a452f1bec99d91174e4483ad1dca6fc0960141aed7701e086aa8b8b4fb79",
+    "ican/research/auto_service.py": "cf99fa3209da1668b974c5163ee5c22b3ee98d2414690ec3b206a4cf21a2ff54",
+    "ican/research/submission.py": "14a46f08833b7393c912b6c054a809db1dd74c954ab30c2f796b35a6020dd1d0",
+    "ican/research/service.py": "26475b377bce7a28d126e7b65fddde7b1bae0a3b96c9d75bf29ad30f81910bd7",
+    "frontend/src/App.vue": "fabce21821ae90642749a9435c5d6b79a1997f8c314080e3deece55afb97dbd1",
+    "frontend/src/api.ts": "4faf5fd9b7a080830ca2edf10926625142b290e896d2318b1f64162ba3047b33",
+    "scripts/replay_research_cards.py": "19225a001841c3ad0606f953a2567413725fa9fa06a465cbf33c232e891664c7"
+  },
+  "cases": {
+    "ontology_parser": {
+      "original_diagnostic": "schema_invalid",
+      "replay_diagnostic": "accepted",
+      "preserved_entries": 7,
+      "names": {
+        "task": 1,
+        "model": 1,
+        "dataset": 1,
+        "input_setting": 1,
+        "training": 1,
+        "result": 2
+      },
+      "claim_statuses": {
+        "insufficient_evidence": 1,
+        "requires_review": 1,
+        "supported": 5
+      },
+      "original_trace_sha256": "5fa79d6978a4d982003cd967bd5129c3da85b395fd5166d1c11361c4338faf37",
+      "record_id": "f490c4b5-48c8-4bd7-b8eb-82fb49929958"
+    },
+    "speech_recognition": {
+      "original_diagnostic": "accepted",
+      "replay_diagnostic": "accepted",
+      "preserved_entries": 2,
+      "names": {
+        "limitation": 1,
+        "model": 1
+      },
+      "claim_statuses": {
+        "supported": 2
+      },
+      "original_trace_sha256": "f5ac38ebfd556a3a87511f15b8cf1de75c69527f974ca962abb68cde183f195c",
+      "record_id": "e71ab55c-d616-49a7-af43-424e4590df6e"
+    },
+    "event_extraction": {
+      "original_diagnostic": "schema_invalid",
+      "replay_diagnostic": "accepted",
+      "preserved_entries": 9,
+      "names": {
+        "task": 1,
+        "dataset": 1,
+        "metric": 2,
+        "result": 3,
+        "limitation": 1,
+        "input_setting": 1
+      },
+      "claim_statuses": {
+        "insufficient_evidence": 1,
+        "supported": 6,
+        "requires_review": 2
+      },
+      "original_trace_sha256": "124094430e8839918c1761492b86deecb94055a0874bba70d232fa881d02ff25",
+      "record_id": "1e2ae984-f4e6-4050-b321-b3555bf193b1"
+    },
+    "mobile_robot": {
+      "original_diagnostic": "accepted",
+      "replay_diagnostic": "accepted",
+      "preserved_entries": 5,
+      "names": {
+        "task": 1,
+        "model": 1,
+        "input_setting": 1,
+        "training": 1,
+        "result": 1
+      },
+      "claim_statuses": {
+        "supported": 5
+      },
+      "original_trace_sha256": "a671f772ab77c84b3fb31d4c13a11b46b530244042d464eda286df68966ff0f9",
+      "record_id": "2ddd6d97-b340-4f77-867e-14209e07c4cd"
+    },
+    "many_languages_parser": {
+      "original_diagnostic": "schema_invalid",
+      "replay_diagnostic": "accepted",
+      "preserved_entries": 9,
+      "names": {
+        "task": 2,
+        "training": 1,
+        "model": 1,
+        "metric": 1,
+        "input_setting": 1,
+        "limitation": 1,
+        "result": 2
+      },
+      "claim_statuses": {
+        "supported": 9
+      },
+      "original_trace_sha256": "b73d507b04d7d9cba7237f9d63da8611a36020c8fc6af4afb0b2e306799337c0",
+      "record_id": "220ba18c-d39f-4456-86a4-2d796957ce13"
+    },
+    "contextual_lstm": {
+      "original_diagnostic": "schema_invalid",
+      "replay_diagnostic": "accepted",
+      "preserved_entries": 9,
+      "names": {
+        "task": 1,
+        "dataset": 2,
+        "input_setting": 1,
+        "training": 1,
+        "metric": 1,
+        "result": 2,
+        "limitation": 1
+      },
+      "claim_statuses": {
+        "supported": 9
+      },
+      "original_trace_sha256": "a2cc31cfa99c8e1586c494dd9f3c9a275674f2655ec7d16c1a374f4e3d6b79e5",
+      "record_id": "e92d908d-29f6-45a9-89a4-f1d7df6b7aba"
+    },
+    "russian_twitter": {
+      "original_diagnostic": "schema_invalid",
+      "replay_diagnostic": "accepted",
+      "preserved_entries": 9,
+      "names": {
+        "task": 1,
+        "model": 1,
+        "dataset": 1,
+        "input_setting": 1,
+        "training": 1,
+        "metric": 1,
+        "result": 2,
+        "limitation": 1
+      },
+      "claim_statuses": {
+        "requires_review": 1,
+        "supported": 8
+      },
+      "original_trace_sha256": "8c2905ae1079aeb465d2db7d400736d2db7e553aa0444793200431ca5dd693cc",
+      "record_id": "704131f6-ef9c-4d2e-b21d-135e79451f11"
+    },
+    "entity_coreference": {
+      "original_diagnostic": "schema_invalid",
+      "replay_diagnostic": "accepted",
+      "preserved_entries": 9,
+      "names": {
+        "task": 1,
+        "model": 1,
+        "dataset": 2,
+        "training": 1,
+        "input_setting": 1,
+        "metric": 2,
+        "result": 1
+      },
+      "claim_statuses": {
+        "supported": 9
+      },
+      "original_trace_sha256": "0b3d54ff73a802b9914179e2b877ffa2688c0ffdb05a5627562ef13881a2cfbb",
+      "record_id": "c796bed5-f752-430a-971c-d798d07be6d3"
+    }
+  },
+  "comparisons": [
+    {
+      "record_ids": [
+        "f490c4b5-48c8-4bd7-b8eb-82fb49929958",
+        "e71ab55c-d616-49a7-af43-424e4590df6e"
+      ],
+      "comparable": false,
+      "warnings": [
+        "qasper:1601.00901.result含2条，尚未绑定实验关联，不可直接横向排名",
+        "task不同或缺少已核查证据，不可直接横向排名",
+        "dataset不同或缺少已核查证据，不可直接横向排名",
+        "metric不同或缺少已核查证据，不可直接横向排名",
+        "input_setting不同或缺少已核查证据，不可直接横向排名"
+      ],
+      "markdown": "# 多论文实验比较\n\n| 字段 | qasper:1601.00901 | qasper:1601.02543 |\n|---|---|---|\n| task | [1] [insufficient_evidence] Joint learning of ontology and semantic parser from text（qasper/1601.00901:§13¶1） | 未找到 |\n| model | [1] [requires_review] the automaton model for institution relation（qasper/1601.00901） | [1] a typical menu based ASR system（qasper/1601.02543） |\n| dataset | [1] first sentences of Wikipedia pages describing people are taken as a dataset（qasper/1601.00901:§1¶4） | 未找到 |\n| input_setting | [1] The grammar was induced on 10.000 random sentences taken from the dataset（qasper/1601.00901:§13¶1） | 未找到 |\n| training | [1] The property assignment was done by the authors.（qasper/1601.00901:§13¶1） | 未找到 |\n| metric | 未找到 | 未找到 |\n| result | [1] time spend for parsing a sentence, which is on average 0.16ms（qasper/1601.00901:§13¶3）； [2] More than a quarter of sentences were fully parsed（qasper/1601.00901:§13¶3） | 未找到 |\n| limitation | 未找到 | [1] We will present more experimental results in the final paper.（qasper/1601.02543:§3¶7） |\n| code_availability | 未找到 | 未找到 |\n\n## 可比性\n\n- qasper:1601.00901.result含2条，尚未绑定实验关联，不可直接横向排名\n- task不同或缺少已核查证据，不可直接横向排名\n- dataset不同或缺少已核查证据，不可直接横向排名\n- metric不同或缺少已核查证据，不可直接横向排名\n- input_setting不同或缺少已核查证据，不可直接横向排名\n\n## 逐条证据与限制\n\n抽取字段的supported只表示所引文字可在原文找到，不保证字段归类或研究解释正确。\n\n# 研究核查报告\n\n## extraction: qasper:1601.00901\n- revision: `f490c4b5-48c8-4bd7-b8eb-82fb49929958`\n- created_at: `2026-09-23T00:58:57.926711+00:00`\n### task: Joint learning of ontology and semantic parser from text\n- 状态：`insufficient_evidence`；结论：Joint learning of ontology and semantic parser from text\n  - 证据：`chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba`（qasper/1601.00901:§13¶1）\n  - 说明：The supplied quote is absent from at least one cited chunk\n### model: the automaton model for institution relation\n- 状态：`requires_review`；结论：the automaton model for institution relation\n  - 证据：`chunk:01cbef48e9c45a524bf96e25f36a5dced7f172cb47c856074ef86ff1e4d8c6e7`（qasper/1601.00901）\n  - 说明：Inference claims require human semantic review\n### dataset: first sentences of Wikipedia pages describing people are taken as a dataset\n- 状态：`supported`；结论：first sentences of Wikipedia pages describing people are taken as a dataset\n  - 证据：`chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283`（qasper/1601.00901:§1¶4）\n### input_setting: The grammar was induced on 10.000 random sentences taken from the dataset\n- 状态：`supported`；结论：The grammar was induced on 10.000 random sentences taken from the dataset\n  - 证据：`chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba`（qasper/1601.00901:§13¶1）\n### training: The property assignment was done by the authors.\n- 状态：`supported`；结论：The property assignment was done by the authors.\n  - 证据：`chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba`（qasper/1601.00901:§13¶1）\n### result: time spend for parsing a sentence, which is on average 0.16ms\n- 状态：`supported`；结论：time spend for parsing a sentence, which is on average 0.16ms\n  - 证据：`chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9`（qasper/1601.00901:§13¶3）\n### result: More than a quarter of sentences were fully parsed\n- 状态：`supported`；结论：More than a quarter of sentences were fully parsed\n  - 证据：`chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9`（qasper/1601.00901:§13¶3）\n\n## extraction: qasper:1601.02543\n- revision: `e71ab55c-d616-49a7-af43-424e4590df6e`\n- created_at: `2026-09-23T00:58:57.941630+00:00`\n### limitation: We will present more experimental results in the final paper.\n- 状态：`supported`；结论：We will present more experimental results in the final paper.\n  - 证据：`chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9`（qasper/1601.02543:§3¶7）\n### model: a typical menu based ASR system\n- 状态：`supported`；结论：a typical menu based ASR system\n  - 证据：`chunk:7d1da55010ca6a9ee84ab2823c103214603a17faf153ce6910f55046207bddf5`（qasper/1601.02543）\n"
+    },
+    {
+      "record_ids": [
+        "1e2ae984-f4e6-4050-b321-b3555bf193b1",
+        "2ddd6d97-b340-4f77-867e-14209e07c4cd"
+      ],
+      "comparable": false,
+      "warnings": [
+        "qasper:1601.04012.metric含2条，尚未绑定实验关联，不可直接横向排名",
+        "qasper:1601.04012.result含3条，尚未绑定实验关联，不可直接横向排名",
+        "task不同或缺少已核查证据，不可直接横向排名",
+        "dataset不同或缺少已核查证据，不可直接横向排名",
+        "metric不同或缺少已核查证据，不可直接横向排名",
+        "input_setting不同或缺少已核查证据，不可直接横向排名"
+      ],
+      "markdown": "# 多论文实验比较\n\n| 字段 | qasper:1601.04012 | qasper:1602.01208 |\n|---|---|---|\n| task | [1] [insufficient_evidence] Detecting and Extracting Events from Text Documents（qasper/1601.04012） | [1] Learning of spatial concepts（qasper/1602.01208:§7¶14） |\n| model | 未找到 | [1] an autonomous mobile robot TurtleBot 2（qasper/1602.01208:§15¶1） |\n| dataset | [1] ECB+（qasper/1601.04012:§21¶28） | 未找到 |\n| input_setting | [1] [requires_review] three dimensions, three of which we submitted for TempEval-3（qasper/1601.04012:§20¶18） | [1] in a real environment（qasper/1602.01208:§15¶1） |\n| training | 未找到 | [1] Gibbs sampling Initialize parameters（qasper/1602.01208:§7¶14） |\n| metric | [1] [requires_review] recall, precision and F-score, MUC, B3, mention-based CEAF, BLANC, and CoNLL F1（qasper/1601.04012:§21¶28）； [2] recall (R), precision (P), and F-score (F)（qasper/1601.04012:§21¶18） | 未找到 |\n| result | [1] ACE value score of 22.3%（qasper/1601.04012:§20¶35）； [2] the introduction of the granularity concept into similarity computation improves results for every metric（qasper/1601.04012:§21¶28）； [3] of these three performed among the top ten in TempEval-3 Competition（qasper/1601.04012:§20¶18） | [1] A point group of each color to represent each position distribution is drawn on an map of the considered environment（qasper/1602.01208） |\n| limitation | [1] The value is low, but other systems at the time had comparable performance.（qasper/1601.04012:§20¶35） | 未找到 |\n| code_availability | 未找到 | 未找到 |\n\n## 可比性\n\n- qasper:1601.04012.metric含2条，尚未绑定实验关联，不可直接横向排名\n- qasper:1601.04012.result含3条，尚未绑定实验关联，不可直接横向排名\n- task不同或缺少已核查证据，不可直接横向排名\n- dataset不同或缺少已核查证据，不可直接横向排名\n- metric不同或缺少已核查证据，不可直接横向排名\n- input_setting不同或缺少已核查证据，不可直接横向排名\n\n## 逐条证据与限制\n\n抽取字段的supported只表示所引文字可在原文找到，不保证字段归类或研究解释正确。\n\n# 研究核查报告\n\n## extraction: qasper:1601.04012\n- revision: `1e2ae984-f4e6-4050-b321-b3555bf193b1`\n- created_at: `2026-09-23T00:58:57.955373+00:00`\n### task: Detecting and Extracting Events from Text Documents\n- 状态：`insufficient_evidence`；结论：Detecting and Extracting Events from Text Documents\n  - 证据：`chunk:865e26540412ac75e8cff86418d81ac462e444caad86463bc7da15be334d9572`（qasper/1601.04012）\n  - 说明：The supplied quote is absent from at least one cited chunk\n### dataset: ECB+\n- 状态：`supported`；结论：ECB+\n  - 证据：`chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582`（qasper/1601.04012:§21¶28）\n### metric: recall, precision and F-score, MUC, B3, mention-based CEAF, BLANC, and CoNLL F1\n- 状态：`requires_review`；结论：recall, precision and F-score, MUC, B3, mention-based CEAF, BLANC, and CoNLL F1\n  - 证据：`chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582`（qasper/1601.04012:§21¶28）\n  - 说明：Inference claims require human semantic review\n### metric: recall (R), precision (P), and F-score (F)\n- 状态：`supported`；结论：recall (R), precision (P), and F-score (F)\n  - 证据：`chunk:84ad68a362300332e93f141fe4824b8ccc7e22ff35c2bde207620ad4fbb256d1`（qasper/1601.04012:§21¶18）\n### result: ACE value score of 22.3%\n- 状态：`supported`；结论：ACE value score of 22.3%\n  - 证据：`chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4`（qasper/1601.04012:§20¶35）\n### result: the introduction of the granularity concept into similarity computation improves results for every metric\n- 状态：`supported`；结论：the introduction of the granularity concept into similarity computation improves results for every metric\n  - 证据：`chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582`（qasper/1601.04012:§21¶28）\n### result: of these three performed among the top ten in TempEval-3 Competition\n- 状态：`supported`；结论：of these three performed among the top ten in TempEval-3 Competition\n  - 证据：`chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f`（qasper/1601.04012:§20¶18）\n### limitation: The value is low, but other systems at the time had comparable performance.\n- 状态：`supported`；结论：The value is low, but other systems at the time had comparable performance.\n  - 证据：`chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4`（qasper/1601.04012:§20¶35）\n### input_setting: three dimensions, three of which we submitted for TempEval-3\n- 状态：`requires_review`；结论：three dimensions, three of which we submitted for TempEval-3\n  - 证据：`chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f`（qasper/1601.04012:§20¶18）\n  - 说明：Inference claims require human semantic review\n\n## extraction: qasper:1602.01208\n- revision: `2ddd6d97-b340-4f77-867e-14209e07c4cd`\n- created_at: `2026-09-23T00:58:57.972373+00:00`\n### task: Learning of spatial concepts\n- 状态：`supported`；结论：Learning of spatial concepts\n  - 证据：`chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7`（qasper/1602.01208:§7¶14）\n### model: an autonomous mobile robot TurtleBot 2\n- 状态：`supported`；结论：an autonomous mobile robot TurtleBot 2\n  - 证据：`chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80`（qasper/1602.01208:§15¶1）\n### input_setting: in a real environment\n- 状态：`supported`；结论：in a real environment\n  - 证据：`chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80`（qasper/1602.01208:§15¶1）\n### training: Gibbs sampling Initialize parameters\n- 状态：`supported`；结论：Gibbs sampling Initialize parameters\n  - 证据：`chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7`（qasper/1602.01208:§7¶14）\n### result: A point group of each color to represent each position distribution is drawn on an map of the considered environment\n- 状态：`supported`；结论：A point group of each color to represent each position distribution is drawn on an map of the considered environment\n  - 证据：`chunk:fbc1f7243593c148c351f8c6792133add9c159c5329875ce4668a69f3a2025e8`（qasper/1602.01208）\n"
+    },
+    {
+      "record_ids": [
+        "220ba18c-d39f-4456-86a4-2d796957ce13",
+        "e92d908d-29f6-45a9-89a4-f1d7df6b7aba"
+      ],
+      "comparable": false,
+      "warnings": [
+        "qasper:1602.01595.task含2条，尚未绑定实验关联，不可直接横向排名",
+        "qasper:1602.01595.result含2条，尚未绑定实验关联，不可直接横向排名",
+        "qasper:1602.06291.dataset含2条，尚未绑定实验关联，不可直接横向排名",
+        "qasper:1602.06291.result含2条，尚未绑定实验关联，不可直接横向排名",
+        "task不同或缺少已核查证据，不可直接横向排名",
+        "dataset不同或缺少已核查证据，不可直接横向排名",
+        "metric不同或缺少已核查证据，不可直接横向排名",
+        "input_setting不同或缺少已核查证据，不可直接横向排名"
+      ],
+      "markdown": "# 多论文实验比较\n\n| 字段 | qasper:1602.01595 | qasper:1602.06291 |\n|---|---|---|\n| task | [1] a single parser trained on a multilingual set of treebanks（qasper/1602.01595:§14¶1）； [2] multilingual set of treebanks（qasper/1602.01595:§14¶1） | [1] word prediction task, where the goal is to predict the next word in a sentence given the words and context (captured via topic) seen previously（qasper/1602.06291:§3¶1） |\n| model | [1] the robust projection multilingual embeddings（qasper/1602.01595:§11¶17） | 未找到 |\n| dataset | 未找到 | [1] whole English corpus from Wikipedia (snapshot from 2014/09/17)（qasper/1602.06291:§6¶6）； [2] internal Google News English corpus（qasper/1602.06291:§15¶1） |\n| input_setting | [1] both gold language ID of the input language and gold POS tags are given at test time（qasper/1602.01595:§11¶10） | [1] We created the vocabulary from the words in the training data, filtering out words that occurred less than a particular threshold count in the total dataset (threshold was 200 for Wikipedia). This resulted in a vocabulary with 129K unique terms（qasper/1602.06291:§6¶7） |\n| training | [1] All embeddings are trained on the same data and use the same number of dimensions (100).（qasper/1602.01595:§11¶17） | [1] 80% was used as train, 10% as validation and 10% as test set（qasper/1602.06291:§6¶6） |\n| metric | [1] parsing accuracy（qasper/1602.01595:§11¶10） | [1] perplexity（qasper/1602.06291:§6¶13） |\n| result | [1] on average outperforms monolingually-trained parsers for target languages with a treebank（qasper/1602.01595:§14¶1）； [2] our parser outperforms previous cross-lingual multi-source model transfer methods（qasper/1602.01595:§14¶1） | [1] a distributed n-gram model with “stupid backoff” smoothing BIBREF45 on the Wikipedia dataset, and it gave a perplexity of $\\approx $ 80 on the validation set（qasper/1602.06291:§6¶13）； [2] on the Google News data (from a particular snapshot) the KN smoothed n-gram model gave a perplexity of 74 (using 5-grams)（qasper/1602.06291:§6¶13） |\n| limitation | [1] this assumption is not realistic in practical applications（qasper/1602.01595:§11¶10） | [1] We did not train a n-gram model with Knesner-Ney (KN) smoothing on the Wikipedia data（qasper/1602.06291:§6¶13） |\n| code_availability | 未找到 | 未找到 |\n\n## 可比性\n\n- qasper:1602.01595.task含2条，尚未绑定实验关联，不可直接横向排名\n- qasper:1602.01595.result含2条，尚未绑定实验关联，不可直接横向排名\n- qasper:1602.06291.dataset含2条，尚未绑定实验关联，不可直接横向排名\n- qasper:1602.06291.result含2条，尚未绑定实验关联，不可直接横向排名\n- task不同或缺少已核查证据，不可直接横向排名\n- dataset不同或缺少已核查证据，不可直接横向排名\n- metric不同或缺少已核查证据，不可直接横向排名\n- input_setting不同或缺少已核查证据，不可直接横向排名\n\n## 逐条证据与限制\n\n抽取字段的supported只表示所引文字可在原文找到，不保证字段归类或研究解释正确。\n\n# 研究核查报告\n\n## extraction: qasper:1602.01595\n- revision: `220ba18c-d39f-4456-86a4-2d796957ce13`\n- created_at: `2026-09-23T00:58:57.989066+00:00`\n### task: a single parser trained on a multilingual set of treebanks\n- 状态：`supported`；结论：a single parser trained on a multilingual set of treebanks\n  - 证据：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`（qasper/1602.01595:§14¶1）\n### task: multilingual set of treebanks\n- 状态：`supported`；结论：multilingual set of treebanks\n  - 证据：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`（qasper/1602.01595:§14¶1）\n### training: All embeddings are trained on the same data and use the same number of dimensions (100).\n- 状态：`supported`；结论：All embeddings are trained on the same data and use the same number of dimensions (100).\n  - 证据：`chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2`（qasper/1602.01595:§11¶17）\n### model: the robust projection multilingual embeddings\n- 状态：`supported`；结论：the robust projection multilingual embeddings\n  - 证据：`chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2`（qasper/1602.01595:§11¶17）\n### metric: parsing accuracy\n- 状态：`supported`；结论：parsing accuracy\n  - 证据：`chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae`（qasper/1602.01595:§11¶10）\n### input_setting: both gold language ID of the input language and gold POS tags are given at test time\n- 状态：`supported`；结论：both gold language ID of the input language and gold POS tags are given at test time\n  - 证据：`chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae`（qasper/1602.01595:§11¶10）\n### limitation: this assumption is not realistic in practical applications\n- 状态：`supported`；结论：this assumption is not realistic in practical applications\n  - 证据：`chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae`（qasper/1602.01595:§11¶10）\n### result: on average outperforms monolingually-trained parsers for target languages with a treebank\n- 状态：`supported`；结论：on average outperforms monolingually-trained parsers for target languages with a treebank\n  - 证据：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`（qasper/1602.01595:§14¶1）\n### result: our parser outperforms previous cross-lingual multi-source model transfer methods\n- 状态：`supported`；结论：our parser outperforms previous cross-lingual multi-source model transfer methods\n  - 证据：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`（qasper/1602.01595:§14¶1）\n\n## extraction: qasper:1602.06291\n- revision: `e92d908d-29f6-45a9-89a4-f1d7df6b7aba`\n- created_at: `2026-09-23T00:58:58.007106+00:00`\n### task: word prediction task, where the goal is to predict the next word in a sentence given the words and context (captured via topic) seen previously\n- 状态：`supported`；结论：word prediction task, where the goal is to predict the next word in a sentence given the words and context (captured via topic) seen previously\n  - 证据：`chunk:edbd3050496d35ced5e7681f5b6e91ec0ff3233284c6b25e86fe0ae2a017dce5`（qasper/1602.06291:§3¶1）\n### dataset: whole English corpus from Wikipedia (snapshot from 2014/09/17)\n- 状态：`supported`；结论：whole English corpus from Wikipedia (snapshot from 2014/09/17)\n  - 证据：`chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574`（qasper/1602.06291:§6¶6）\n### dataset: internal Google News English corpus\n- 状态：`supported`；结论：internal Google News English corpus\n  - 证据：`chunk:90d72bc5d815517b673fbab16aef3f4e0d5e9614b0d50d62ab9db2818e932867`（qasper/1602.06291:§15¶1）\n### input_setting: We created the vocabulary from the words in the training data, filtering out words that occurred less than a particular threshold count in the total dataset (threshold was 200 for Wikipedia). This resulted in a vocabulary with 129K unique terms\n- 状态：`supported`；结论：We created the vocabulary from the words in the training data, filtering out words that occurred less than a particular threshold count in the total dataset (threshold was 200 for Wikipedia). This resulted in a vocabulary with 129K unique terms\n  - 证据：`chunk:2b3e32cbaa2c01ab8f65256b76ef76249ba85d2a4f709c2dd89faad955bf28c5`（qasper/1602.06291:§6¶7）\n### training: 80% was used as train, 10% as validation and 10% as test set\n- 状态：`supported`；结论：80% was used as train, 10% as validation and 10% as test set\n  - 证据：`chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574`（qasper/1602.06291:§6¶6）\n### metric: perplexity\n- 状态：`supported`；结论：perplexity\n  - 证据：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`（qasper/1602.06291:§6¶13）\n### result: a distributed n-gram model with “stupid backoff” smoothing BIBREF45 on the Wikipedia dataset, and it gave a perplexity of $\\approx $ 80 on the validation set\n- 状态：`supported`；结论：a distributed n-gram model with “stupid backoff” smoothing BIBREF45 on the Wikipedia dataset, and it gave a perplexity of $\\approx $ 80 on the validation set\n  - 证据：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`（qasper/1602.06291:§6¶13）\n### result: on the Google News data (from a particular snapshot) the KN smoothed n-gram model gave a perplexity of 74 (using 5-grams)\n- 状态：`supported`；结论：on the Google News data (from a particular snapshot) the KN smoothed n-gram model gave a perplexity of 74 (using 5-grams)\n  - 证据：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`（qasper/1602.06291:§6¶13）\n### limitation: We did not train a n-gram model with Knesner-Ney (KN) smoothing on the Wikipedia data\n- 状态：`supported`；结论：We did not train a n-gram model with Knesner-Ney (KN) smoothing on the Wikipedia data\n  - 证据：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`（qasper/1602.06291:§6¶13）\n"
+    },
+    {
+      "record_ids": [
+        "704131f6-ef9c-4d2e-b21d-135e79451f11",
+        "c796bed5-f752-430a-971c-d798d07be6d3"
+      ],
+      "comparable": false,
+      "warnings": [
+        "qasper:1602.08741.result含2条，尚未绑定实验关联，不可直接横向排名",
+        "qasper:1603.04553.dataset含2条，尚未绑定实验关联，不可直接横向排名",
+        "qasper:1603.04553.metric含2条，尚未绑定实验关联，不可直接横向排名",
+        "task不同或缺少已核查证据，不可直接横向排名",
+        "dataset不同或缺少已核查证据，不可直接横向排名",
+        "metric不同或缺少已核查证据，不可直接横向排名",
+        "input_setting不同或缺少已核查证据，不可直接横向排名"
+      ],
+      "markdown": "# 多论文实验比较\n\n| 字段 | qasper:1602.08741 | qasper:1603.04553 |\n|---|---|---|\n| task | [1] [requires_review] word semantic similarity task（qasper/1602.08741:§7¶1） | [1] entity coreference resolution（qasper/1603.04553:§10¶1） |\n| model | [1] Skip-gram（qasper/1602.08741:§7¶1） | [1] a new generative, unsupervised ranking model for entity coreference resolution（qasper/1603.04553:§10¶1） |\n| dataset | [1] HJ-dataset（qasper/1602.08741:§7¶2） | [1] APW and NYT sections of Gigaword Corpus（qasper/1603.04553:§8¶1）； [2] CoNLL-2012 shared task（qasper/1603.04553:§8¶1） |\n| input_setting | [1] We train our model subsequently with 1, 7 and 15 days of Twitter data（qasper/1602.08741:§10¶1） | [1] Our system is evaluated with automatically extracted mentions on the version of the data with automatic preprocessing information（qasper/1603.04553:§8¶1） |\n| training | [1] vector size of 300, min-freq of 40, context size of 5 and downsampling of 1e-3（qasper/1602.08741:§10¶1） | [1] we select the APW and NYT sections of Gigaword Corpus (years 1994-2010) BIBREF20 to train the model（qasper/1603.04553:§8¶1） |\n| metric | [1] Spearman coefficient（qasper/1602.08741:§7¶2） | [1] MUC BIBREF22 , B $^{3}$ BIBREF23 , and Entity-based CEAF (CEAF $_e$ )（qasper/1603.04553:§8¶2）； [2] CoNLL F1 score（qasper/1603.04553:§9¶1） |\n| result | [1] the best result belongs to 7-day corpus with 0.56 correlation with HJ-dataset, and 15-day corpus has a little less, 0.55（qasper/1602.08741:§10¶1）； [2] training model with vector size of 600 on full Twitter corpus (15 days) shows the best result of 0.59（qasper/1602.08741:§10¶1） | [1] improvements of 2.93% and 3.01% on CoNLL F1 score over the Stanford system（qasper/1603.04553:§9¶1） |\n| limitation | [1] in order to achieve better results with Word2Vec one should increase both corpus and vector sizes（qasper/1602.08741:§10¶1） | 未找到 |\n| code_availability | 未找到 | 未找到 |\n\n## 可比性\n\n- qasper:1602.08741.result含2条，尚未绑定实验关联，不可直接横向排名\n- qasper:1603.04553.dataset含2条，尚未绑定实验关联，不可直接横向排名\n- qasper:1603.04553.metric含2条，尚未绑定实验关联，不可直接横向排名\n- task不同或缺少已核查证据，不可直接横向排名\n- dataset不同或缺少已核查证据，不可直接横向排名\n- metric不同或缺少已核查证据，不可直接横向排名\n- input_setting不同或缺少已核查证据，不可直接横向排名\n\n## 逐条证据与限制\n\n抽取字段的supported只表示所引文字可在原文找到，不保证字段归类或研究解释正确。\n\n# 研究核查报告\n\n## extraction: qasper:1602.08741\n- revision: `704131f6-ef9c-4d2e-b21d-135e79451f11`\n- created_at: `2026-09-23T00:58:58.024700+00:00`\n### task: word semantic similarity task\n- 状态：`requires_review`；结论：word semantic similarity task\n  - 证据：`chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc`（qasper/1602.08741:§7¶1）\n  - 说明：Inference claims require human semantic review\n### model: Skip-gram\n- 状态：`supported`；结论：Skip-gram\n  - 证据：`chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc`（qasper/1602.08741:§7¶1）\n### dataset: HJ-dataset\n- 状态：`supported`；结论：HJ-dataset\n  - 证据：`chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f`（qasper/1602.08741:§7¶2）\n### input_setting: We train our model subsequently with 1, 7 and 15 days of Twitter data\n- 状态：`supported`；结论：We train our model subsequently with 1, 7 and 15 days of Twitter data\n  - 证据：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`（qasper/1602.08741:§10¶1）\n### training: vector size of 300, min-freq of 40, context size of 5 and downsampling of 1e-3\n- 状态：`supported`；结论：vector size of 300, min-freq of 40, context size of 5 and downsampling of 1e-3\n  - 证据：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`（qasper/1602.08741:§10¶1）\n### metric: Spearman coefficient\n- 状态：`supported`；结论：Spearman coefficient\n  - 证据：`chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f`（qasper/1602.08741:§7¶2）\n### result: the best result belongs to 7-day corpus with 0.56 correlation with HJ-dataset, and 15-day corpus has a little less, 0.55\n- 状态：`supported`；结论：the best result belongs to 7-day corpus with 0.56 correlation with HJ-dataset, and 15-day corpus has a little less, 0.55\n  - 证据：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`（qasper/1602.08741:§10¶1）\n### result: training model with vector size of 600 on full Twitter corpus (15 days) shows the best result of 0.59\n- 状态：`supported`；结论：training model with vector size of 600 on full Twitter corpus (15 days) shows the best result of 0.59\n  - 证据：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`（qasper/1602.08741:§10¶1）\n### limitation: in order to achieve better results with Word2Vec one should increase both corpus and vector sizes\n- 状态：`supported`；结论：in order to achieve better results with Word2Vec one should increase both corpus and vector sizes\n  - 证据：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`（qasper/1602.08741:§10¶1）\n\n## extraction: qasper:1603.04553\n- revision: `c796bed5-f752-430a-971c-d798d07be6d3`\n- created_at: `2026-09-23T00:58:58.042235+00:00`\n### task: entity coreference resolution\n- 状态：`supported`；结论：entity coreference resolution\n  - 证据：`chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6`（qasper/1603.04553:§10¶1）\n### model: a new generative, unsupervised ranking model for entity coreference resolution\n- 状态：`supported`；结论：a new generative, unsupervised ranking model for entity coreference resolution\n  - 证据：`chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6`（qasper/1603.04553:§10¶1）\n### dataset: APW and NYT sections of Gigaword Corpus\n- 状态：`supported`；结论：APW and NYT sections of Gigaword Corpus\n  - 证据：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`（qasper/1603.04553:§8¶1）\n### dataset: CoNLL-2012 shared task\n- 状态：`supported`；结论：CoNLL-2012 shared task\n  - 证据：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`（qasper/1603.04553:§8¶1）\n### training: we select the APW and NYT sections of Gigaword Corpus (years 1994-2010) BIBREF20 to train the model\n- 状态：`supported`；结论：we select the APW and NYT sections of Gigaword Corpus (years 1994-2010) BIBREF20 to train the model\n  - 证据：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`（qasper/1603.04553:§8¶1）\n### input_setting: Our system is evaluated with automatically extracted mentions on the version of the data with automatic preprocessing information\n- 状态：`supported`；结论：Our system is evaluated with automatically extracted mentions on the version of the data with automatic preprocessing information\n  - 证据：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`（qasper/1603.04553:§8¶1）\n### metric: MUC BIBREF22 , B $^{3}$ BIBREF23 , and Entity-based CEAF (CEAF $_e$ )\n- 状态：`supported`；结论：MUC BIBREF22 , B $^{3}$ BIBREF23 , and Entity-based CEAF (CEAF $_e$ )\n  - 证据：`chunk:de09a5eed4ccdd12a35d3368f3e91ab1e675d7f07d01b7207ee5f3a2338ae077`（qasper/1603.04553:§8¶2）\n### metric: CoNLL F1 score\n- 状态：`supported`；结论：CoNLL F1 score\n  - 证据：`chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10`（qasper/1603.04553:§9¶1）\n### result: improvements of 2.93% and 3.01% on CoNLL F1 score over the Stanford system\n- 状态：`supported`；结论：improvements of 2.93% and 3.01% on CoNLL F1 score over the Stanford system\n  - 证据：`chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10`（qasper/1603.04553:§9¶1）\n"
+    }
+  ],
+  "runtime_directory": "data/processed/evaluation/p46-multi-entry-replay-v1/4963bb0a74334ddd89a936b07db127fa"
+}

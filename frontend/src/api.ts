@@ -45,7 +45,6 @@ export function compareCards(record_ids: string[]): Promise<ComparisonResponse> 
   return post('/v1/research/compare', { record_ids })
 }
 
-type EvidenceClaim = { statement: string; kind: 'verbatim' | 'inference'; evidence_ids: string[]; quote?: string }
 
 function paperScope(query: string, candidate: Candidate) {
   return {
@@ -68,13 +67,13 @@ export function reviseScreening(query: string, candidate: Candidate, revision_of
   })
 }
 
-export function reviseExtraction(query: string, candidate: Candidate, revision_of: string, fields: Array<{ name: string; value: string; claim: EvidenceClaim }>): Promise<ResearchRecord> {
+export function reviseExtraction(query: string, candidate: Candidate, revision_of: string, fields: Array<{ name: string; value: string; claims: ResearchRecord["claims"][number]["claim"][] }>): Promise<ResearchRecord> {
   return post('/v1/research/extraction', {
     scope: paperScope(query, candidate),
     draft: {
       subject_source_id: candidate.source_id,
       revision_of,
-      fields: fields.map(field => ({ name: field.name, value: field.value, claims: [field.claim] })),
+      fields: fields.map(field => ({ name: field.name, value: field.value, claims: field.claims })),
     },
   })
 }

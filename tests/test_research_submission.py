@@ -72,3 +72,42 @@ def test_valid_submission_returns_typed_draft():
     assert diagnosis.draft is not None
     assert diagnosis.draft.fields[0].name == "dataset"
     assert diagnosis.referenced_evidence_ids == ["e1", "e2"]
+
+
+def test_multiple_entries_keep_order_and_independent_evidence_with_legacy_rejection():
+    payload = dict(
+        VALID,
+        fields=[
+            VALID["fields"][0],
+            dict(VALID["fields"][0], value="Other", evidence_id="e1"),
+        ],
+    )
+    result = diagnose_card_submission(action(json.dumps(payload)), ALLOWED)
+    assert result.code == "accepted"
+    assert [(f.value, f.evidence_id) for f in result.draft.fields] == [
+        ("WikiQA", "e2"),
+        ("Other", "e1"),
+    ]
+    assert (
+        diagnose_card_submission(action(json.dumps(payload)), ALLOWED, legacy=True).code
+        == "schema_invalid"
+    )
+
+
+@pytest.mark.parametrize("count,expected", [(36, "accepted"), (37, "schema_invalid")])
+def test_multi_entry_limit_is_bounded(count, expected):
+    payload = dict(VALID, fields=[VALID["fields"][0]] * count)
+    assert (
+        diagnose_card_submission(action(json.dumps(payload)), ALLOWED).code == expected
+    )
+
+
+def test_later_same_named_entry_cannot_bypass_source_scope():
+    payload = dict(
+        VALID,
+        fields=[VALID["fields"][0], dict(VALID["fields"][0], evidence_id="outside")],
+    )
+    assert (
+        diagnose_card_submission(action(json.dumps(payload)), ALLOWED).code
+        == "evidence_out_of_scope"
+    )

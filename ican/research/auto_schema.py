@@ -72,7 +72,11 @@ class CardModelDraft(BaseModel):
     decision: Literal["include", "exclude", "hold"]
     reason: str = Field(min_length=1, max_length=1200)
     reason_evidence_ids: list[str] = Field(min_length=1, max_length=3)
-    fields: list[CardFieldDraft] = Field(min_length=1, max_length=9)
+    fields: list[CardFieldDraft] = Field(
+        min_length=1,
+        max_length=36,
+        description="Ordered entries; names may repeat. Each entry retains its own value and evidence. Maximum 36 entries.",
+    )
 
     @field_validator("reason_evidence_ids")
     @classmethod
@@ -80,6 +84,12 @@ class CardModelDraft(BaseModel):
         if len(value) != len(set(value)):
             raise ValueError("Reason evidence IDs must not repeat")
         return value
+
+
+class LegacyCardModelDraft(CardModelDraft):
+    """Frozen v1 protocol for historical audit only."""
+
+    fields: list[CardFieldDraft] = Field(min_length=1, max_length=9)
 
     @field_validator("fields")
     @classmethod

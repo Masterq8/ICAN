@@ -155,15 +155,8 @@ class ExtractionDraft(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     subject_source_id: str = Field(min_length=1, max_length=256)
-    fields: list[ExtractionFieldDraft] = Field(min_length=1, max_length=9)
+    fields: list[ExtractionFieldDraft] = Field(min_length=1, max_length=36)
     revision_of: UUID | None = None
-
-    @field_validator("fields")
-    @classmethod
-    def unique_field_names(cls, values):
-        if len({field.name for field in values}) != len(values):
-            raise ValueError("Extraction field names must not repeat")
-        return values
 
 
 class VerifiedExtractionField(BaseModel):

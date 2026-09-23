@@ -290,6 +290,7 @@ def case_outputs(manifest):
         diagnosis = diagnose_card_submission(
             trace.get("model_action"),
             {item["chunk_id"] for item in case["evidence"]},
+            legacy=True,
         )
         raw_fields = raw_card_fields(trace.get("model_action"))
         if diagnosis.code != result["tool_diagnosis"]["code"]:

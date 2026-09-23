@@ -43,7 +43,7 @@ const editingScreening = ref(false)
 const editingExtraction = ref(false)
 const screeningDecision = ref<'include' | 'exclude' | 'hold'>('hold')
 const screeningReason = ref('')
-const editFields = ref<Record<string, string>>({})
+const editFields = ref<Array<{ name: string; value: string; originalIndex: number }>>([])
 
 const fields = [
   ['task', '任务'], ['model', '模型'], ['dataset', '数据集'], ['input_setting', '输入设置'],
@@ -190,7 +190,7 @@ async function saveScreening() {
 function beginExtractionEdit() {
   const extracted = activeCard.value?.extraction
   if (!extracted) return
-  editFields.value = Object.fromEntries(fields.map(([name]) => [name, extracted.fields.find(field => field.name === name)?.value ?? '']))
+  editFields.value = extracted.fields.map((field, originalIndex) => ({ name: field.name, value: field.value, originalIndex }))
   editingExtraction.value = true
   editingScreening.value = false
 }
@@ -199,19 +199,21 @@ async function saveExtraction() {
   const paper = active.value
   const card = activeCard.value
   if (!paper || !card?.extraction) return
-  const revised = fields.flatMap(([name]) => {
-    const value = (editFields.value[name] ?? '').trim()
+  const revised = editFields.value.flatMap(entry => {
+    const name = entry.name
+    const prior = card.extraction?.fields[entry.originalIndex]
+    if (prior && entry.value === prior.value) return [{ name, value: prior.value, claims: prior.claims.map(verdict => verdict.claim) }]
+    const value = entry.value.trim()
     if (!value) return []
-    const prior = card.extraction?.fields.find(field => field.name === name)
     const evidence = prior?.claims[0]?.evidence[0] ?? card.candidate.evidence[0]
     if (!evidence) return []
     const verbatim = value.length <= 1000 && evidence.text.includes(value)
     return [{
       name,
       value,
-      claim: verbatim
+      claims: [verbatim
         ? { statement: value, kind: 'verbatim' as const, evidence_ids: [evidence.chunk_id], quote: value }
-        : { statement: value, kind: 'inference' as const, evidence_ids: [evidence.chunk_id] },
+        : { statement: value, kind: 'inference' as const, evidence_ids: [evidence.chunk_id] }],
     }]
   })
   if (!revised.length) return issue('至少保留一个字段，并为它关联论文证据。')
@@ -351,20 +353,16 @@ function saveReport() {
             <form v-if="editingScreening" class="revision-form" @submit.prevent="saveScreening"><strong>筛选人工修订</strong><p>新记录会引用当前论文证据，并保留上一版本；筛选理由仍标记为待人工复核。</p><label>决定<select v-model="screeningDecision"><option value="include">纳入</option><option value="exclude">排除</option><option value="hold">待定</option></select></label><label>理由<textarea v-model="screeningReason" maxlength="2000" rows="3" /></label><div class="revision-buttons"><button type="button" class="text-button" @click="editingScreening = false">取消</button><button type="submit" class="secondary-button" :disabled="busy !== null"><Save :size="15" />{{ busy === 'screening' ? '保存中' : '保存新版本' }}</button></div></form>
             <div class="field-table" role="table" aria-label="实验信息卡">
               <div class="field-head" role="row"><span>信息项</span><span>内容与来源</span><span>核查状态</span></div>
-              <div v-for="[name, label] in fields" :key="name" class="field-row" role="row">
-                <strong>{{ label }}</strong>
-                <div v-if="activeCard?.extraction?.fields.find(field => field.name === name)" class="field-value">
-                  {{ activeCard.extraction.fields.find(field => field.name === name)?.value }}
-                  <button type="button" class="inline-proof" @click="proof = activeCard.extraction?.fields.find(field => field.name === name)?.claims[0]?.evidence[0] ?? null">查看证据</button>
+              <template v-for="[name, label] in fields" :key="name">
+                <div v-for="(entry, index) in activeCard?.extraction?.fields.filter(field => field.name === name) ?? []" :key="`${name}-${index}`" class="field-row" role="row">
+                  <strong>{{ label }} · {{ index + 1 }}</strong>
+                  <div class="field-value">{{ entry.value }}<button type="button" class="inline-proof" @click="proof = entry.claims[0]?.evidence[0] ?? null">查看证据</button></div>
+                  <span class="claim-status" :class="entry.claims[0]?.status">{{ entry.claims[0] ? statusText(entry.claims[0].status) : '待复核' }}</span>
                 </div>
-                <div v-else class="muted">{{ activeCard ? '未提取' : '待生成' }}</div>
-                <span v-if="activeCard?.extraction?.fields.find(field => field.name === name)" class="claim-status" :class="activeCard.extraction.fields.find(field => field.name === name)?.claims[0]?.status">
-                  {{ statusText(activeCard.extraction.fields.find(field => field.name === name)!.claims[0].status) }}
-                </span>
-                <span v-else class="muted">—</span>
-              </div>
+                <div v-if="!activeCard?.extraction?.fields.some(field => field.name === name)" class="field-row" role="row"><strong>{{ label }}</strong><span class="muted">{{ activeCard ? '未提取' : '待生成' }}</span><span>—</span></div>
+              </template>
             </div>
-            <form v-if="editingExtraction" class="revision-form" @submit.prevent="saveExtraction"><strong>实验字段人工修订</strong><p>留空可移除字段。新增或改写内容若不在所引原文中，将标记为待人工复核；保存后生成新的字段版本。</p><div class="revision-fields"><label v-for="[name, label] in fields" :key="name">{{ label }}<input v-model="editFields[name]" maxlength="2000" :aria-label="`修订${label}`" /></label></div><div class="revision-buttons"><button type="button" class="text-button" @click="editingExtraction = false">取消</button><button type="submit" class="secondary-button" :disabled="busy !== null"><Save :size="15" />{{ busy === 'extraction' ? '保存中' : '保存新版本' }}</button></div></form>
+            <form v-if="editingExtraction" class="revision-form" @submit.prevent="saveExtraction"><strong>实验字段人工修订</strong><p>留空可移除字段。新增或改写内容若不在所引原文中，将标记为待人工复核；保存后生成新的字段版本。</p><div class="revision-fields"><label v-for="(entry, index) in editFields" :key="index">{{ fields.find(([name]) => name === entry.name)?.[1] }} · {{ index + 1 }}<input v-model="entry.value" maxlength="2000" :aria-label="`修订${entry.name}条目${index + 1}`" /></label></div><div class="revision-buttons"><button v-for="[name, label] in fields" :key="name" type="button" class="text-button" :disabled="editFields.length >= 36" @click="editFields.push({ name, value: '', originalIndex: -1 })">添加{{ label }}</button></div><div class="revision-buttons"><button type="button" class="text-button" @click="editingExtraction = false">取消</button><button type="submit" class="secondary-button" :disabled="busy !== null"><Save :size="15" />{{ busy === 'extraction' ? '保存中' : '保存新版本' }}</button></div></form>
             <p class="panel-note">“原文匹配”只表示所引文字在原文中；字段归类与研究解释须人工核对。</p>
           </section>
 

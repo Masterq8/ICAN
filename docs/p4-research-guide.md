@@ -84,4 +84,12 @@ python scripts/serve_api.py
 
 所有保存操作生成新的 UUID revision；通过 `revision_of` 指向旧记录，不会覆盖旧内容。记录写到本机忽略目录 `data/processed/research/p4-v1/records/`。用 `POST /v1/research/report` 传入 1–10 个 revision UUID 可得到 Markdown；报告会显示不足、阻断和人工复核项，而不会把它们隐藏掉。
 
-旧tool_loop模式注册`verify_claims`、`record_screening`、`record_extraction`与`build_research_report`；默认verified模式只开放调查与submit_claims，科研记录仍可经直接API访问。前三者只接受当前任务证据池中的chunk ID；报告仅接受已保存的UUID。现阶段记录／渲染需提供草稿，自动筛选、字段提取与综合报告待P4.6。
+旧tool_loop模式注册`verify_claims`、`record_screening`、`record_extraction`与`build_research_report`；默认verified模式只开放调查与submit_claims，科研记录仍可经直接API访问。前三者只接受当前任务证据池中的chunk ID；报告仅接受已保存的UUID。P4.6自动卡和多论文比较已接入网页，质量验收记录独立保留。
+
+## 同类字段多个条目（2026-09-23）
+
+自动卡与人工提取均使用有序`fields`数组，允许同名条目，总计1—36条。每条保留自己的值和证据；旧单条卡无需迁移。`name`不是条目唯一标识，客户端应按列表位置维护编辑，不能转成按名称覆盖的字典。
+
+网页每项逐条展示原文入口；“修订字段”可增加同类条目，留空移除该条。未改写条目保留全部原Claim，保存生成新revision。比较报告展示所有同名值；在尚未绑定实验关联时返回不可直接排名，不自动将多个数据集与结果配对。
+
+运行 `python scripts/replay_research_cards.py` 可在独立UUID目录回放封存的8份原始动作（6份失败、2份兼容控制）。回放注入原证据和离线运行时，禁止网络连接和付费预留；不验证新模型生成或检索效果。结果见[回放报告](evaluation/p46-multi-entry-replay-v1/report.md)。原质量报告仍按LegacyCardModelDraft校验，真实提交率保持2/8。

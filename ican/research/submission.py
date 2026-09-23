@@ -7,7 +7,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from .auto_schema import CardModelDraft
+from .auto_schema import CardModelDraft, LegacyCardModelDraft
 
 
 class SubmissionIssue(BaseModel):
@@ -48,7 +48,7 @@ def _reject(code: str, message: str, *, path=(), issues=None, **kwargs):
 
 
 def diagnose_card_submission(
-    action: Any, allowed_evidence_ids: set[str]
+    action: Any, allowed_evidence_ids: set[str], *, legacy: bool = False
 ) -> SubmissionDiagnosis:
     """Parse a model action without collapsing distinct protocol failures."""
 
@@ -95,7 +95,9 @@ def diagnose_card_submission(
             path=("tool_calls", 0, "function", "arguments"),
         )
     try:
-        draft = CardModelDraft.model_validate(payload)
+        draft = (LegacyCardModelDraft if legacy else CardModelDraft).model_validate(
+            payload
+        )
     except ValidationError as error:
         issues = [
             SubmissionIssue(
