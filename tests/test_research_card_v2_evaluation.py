@@ -1,4 +1,5 @@
 import copy
+import asyncio
 import json
 from pathlib import Path
 
@@ -71,3 +72,102 @@ def test_v2_contract_normalizes_ids_before_freshness_check():
     config["cases"][0]["source_id"] = "1601.02166"
     with pytest.raises(ValueError, match="prior runs"):
         validate_contract(config, prior_source_ids={"qasper:1601.02166"})
+
+
+def frozen_payload():
+    return {
+        "cases": [
+            {
+                "key": f"paper_{index}",
+                "request": {
+                    "query": "q",
+                    "collection": "qasper_train_v1",
+                    "source_id": source_id,
+                },
+                "evidence": [],
+            }
+            for index, source_id in enumerate(EXPECTED_SOURCE_IDS, start=1)
+        ]
+    }
+
+
+def test_execute_cases_calls_each_source_once_and_never_retries(tmp_path):
+    from scripts.evaluate_research_cards_v2 import execute_cases
+
+    calls = []
+
+    async def fake_executor(case):
+        calls.append(case["request"]["source_id"])
+        if case["key"] == "paper_4":
+            return {
+                "status": "failed",
+                "error_category": "provider_payload",
+                "error_type": "FakeProviderError",
+                "error": "bad response",
+                "raw_action": None,
+                "trace": None,
+                "usage": None,
+                "response_id": None,
+                "tool_diagnosis": {"status": "rejected", "code": "runtime_error", "issues": []},
+            }
+        return {
+            "status": "completed",
+            "raw_action": {"tool_calls": []},
+            "trace": f"{case['key']}.json",
+            "usage": {"prompt_tokens": 10, "completion_tokens": 5},
+            "response_id": f"response-{case['key']}",
+            "tool_diagnosis": {"status": "accepted", "code": "accepted", "issues": []},
+        }
+
+    config = {"model": "deepseek-v4-pro", "max_paid_calls": 8}
+    asyncio.run(execute_cases(config, frozen_payload(), fake_executor, tmp_path))
+    asyncio.run(execute_cases(config, frozen_payload(), fake_executor, tmp_path))
+    assert calls == EXPECTED_SOURCE_IDS
+    results = sorted((tmp_path / "case-results").glob("*.json"))
+    assert len(results) == 8
+    assert sum(json.loads(path.read_text())["status"] == "completed" for path in results) == 7
+    events = [json.loads(line) for line in (tmp_path / "call-journal.jsonl").read_text().splitlines()]
+    assert sum(row["event"] == "started" for row in events) == 8
+    assert all(row["model"] == "deepseek-v4-pro" for row in events)
+
+
+def test_started_case_becomes_interrupted_unknown_without_new_call(tmp_path):
+    from scripts.evaluate_research_cards_v2 import append_event, execute_cases, request_digest
+
+    payload = frozen_payload()
+    first = payload["cases"][0]
+    append_event(
+        tmp_path / "call-journal.jsonl",
+        {
+            "event": "started",
+            "source_id": first["request"]["source_id"],
+            "request_sha256": request_digest(first["request"]),
+            "model": "deepseek-v4-pro",
+        },
+    )
+    calls = []
+
+    async def fake_executor(case):
+        calls.append(case["request"]["source_id"])
+        return {
+            "status": "completed",
+            "raw_action": None,
+            "trace": None,
+            "usage": {},
+            "response_id": None,
+            "tool_diagnosis": {"status": "accepted", "code": "accepted", "issues": []},
+        }
+
+    asyncio.run(
+        execute_cases(
+            {"model": "deepseek-v4-pro", "max_paid_calls": 8},
+            payload,
+            fake_executor,
+            tmp_path,
+        )
+    )
+    assert calls == EXPECTED_SOURCE_IDS[1:]
+    first_result = json.loads(
+        (tmp_path / "case-results/paper_1.json").read_text(encoding="utf-8")
+    )
+    assert first_result["status"] == "interrupted_unknown"

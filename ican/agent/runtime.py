@@ -66,6 +66,7 @@ class DeepSeekRuntime:
                     **options,
                 )
             record["response_model"] = result.model
+            record["response_id"] = result.id
             record["usage"] = result.usage.model_dump() if result.usage else None
             if not result.choices or result.choices[0].finish_reason not in {
                 "stop",

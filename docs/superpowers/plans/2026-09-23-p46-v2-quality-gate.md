@@ -59,14 +59,14 @@
 - Runtime: `data/processed/evaluation/p46-quality-v2/runtime/raw-actions/`
 - Runtime: `data/processed/evaluation/p46-quality-v2/runtime/case-results/`
 
-- [ ] Write a failing test with a fake model client proving `run` invokes each source exactly once, records failures without retry, and stops once eight terminal records exist.
-- [ ] Write a failing resume test proving a source with a `started` journal event but no terminal event is marked `interrupted_unknown` and is never called again automatically.
-- [ ] Implement append-only `started`, `completed`, and `failed` journal events with source ID, request hash, model, timestamp, status, usage, response ID, and sanitized server diagnostics.
-- [ ] Save the exact raw tool action before submission parsing, then run the current multi-entry `diagnose_card_submission(..., legacy=False)` path and save accepted or rejected case output.
-- [ ] Classify errors as transport, HTTP status, provider payload, missing tool call, JSON/schema, evidence-scope, or local persistence; never collapse all failures to `ToolInputError`.
-- [ ] Add `--dry-run` and fake-client seams that exercise the full persistence path without network access.
-- [ ] Run `python -m pytest tests/test_research_card_v2_evaluation.py tests/test_research_submission.py -q`.
-- [ ] Commit with message `Enforce P4.6 v2 call budget and diagnostics`.
+- [x] Write a failing test with a fake model client proving `run` invokes each source exactly once, records failures without retry, and stops once eight terminal records exist.
+- [x] Write a failing resume test proving a source with a `started` journal event but no terminal event is marked `interrupted_unknown` and is never called again automatically.
+- [x] Implement append-only `started`, `completed`, and `failed` journal events with source ID, request hash, model, timestamp, status, usage, response ID, and sanitized server diagnostics.
+- [x] Save the exact raw tool action before submission parsing, then run the current multi-entry `diagnose_card_submission(..., legacy=False)` path and save accepted or rejected case output.
+- [x] Classify errors as transport, HTTP status, provider payload, missing tool call, JSON/schema, evidence-scope, or local persistence; never collapse all failures to `ToolInputError`.
+- [x] Add `--dry-run` and fake-client seams that exercise the full persistence path without network access.
+- [x] Run `python -m pytest tests/test_research_card_v2_evaluation.py tests/test_research_submission.py -q`.
+- [x] Commit with message `Enforce P4.6 v2 call budget and diagnostics`.
 
 ### Task 3: Prepare, inspect, and freeze before spending the budget
 
