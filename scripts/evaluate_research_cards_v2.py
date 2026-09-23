@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from filelock import FileLock
+from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -41,6 +42,8 @@ RUN_DIR = ROOT / "data/processed/evaluation/p46-quality-v2"
 RUNTIME_DIR = RUN_DIR / "runtime"
 FROZEN_CASES = RUNTIME_DIR / "frozen-cases.json"
 CORPUS_PATH = ROOT / "data/processed/qasper_external/v1/train_corpus.jsonl"
+PREFLIGHT_PATH = RUNTIME_DIR / "preflight.json"
+MODEL_BASE_URL = "https://api.deepseek.com"
 
 
 def normalize_source_id(value: str) -> str:
@@ -412,13 +415,71 @@ def validate_contract(config: dict, *, prior_source_ids: set[str]) -> dict:
 
 
 def load_contract(path: Path = DEFAULT_CONFIG) -> dict:
-    prior = collect_prior_source_ids(
-        [
-            ROOT / "data/processed/evaluation",
-            ROOT / "data/processed/research",
-        ]
-    )
+    evaluation_root = ROOT / "data/processed/evaluation"
+    prior_roots = [ROOT / "data/processed/research"]
+    if evaluation_root.exists():
+        prior_roots.extend(
+            child
+            for child in evaluation_root.iterdir()
+            if child.resolve() != RUN_DIR.resolve()
+        )
+    prior = collect_prior_source_ids(prior_roots)
     return validate_contract(read_json(path), prior_source_ids=prior)
+
+
+def preflight(config_path: Path = DEFAULT_CONFIG) -> dict:
+    import httpx
+
+    config = load_contract(config_path)
+    load_dotenv(ROOT / ".env", override=False)
+    key = os.environ.get("ICAN_LLM_API_KEY", "").strip()
+    if not key:
+        raise ValueError("ICAN_LLM_API_KEY is unavailable")
+    try:
+        response = httpx.get(
+            f"{MODEL_BASE_URL}/models",
+            headers={"Authorization": f"Bearer {key}"},
+            timeout=20,
+        )
+        response.raise_for_status()
+        body = response.json()
+    except (httpx.HTTPError, ValueError) as error:
+        record = {
+            "status": "failed",
+            "checked_at": datetime.now(timezone.utc).isoformat(),
+            "source_commit": source_commit(),
+            "base_url": MODEL_BASE_URL,
+            "target_model": config["model"],
+            "key_present": True,
+            "error_type": type(error).__name__,
+            "error": "Model-list compatibility check failed",
+        }
+        write_json(PREFLIGHT_PATH, record)
+        raise ValueError(record["error"]) from None
+    models = sorted(
+        {
+            str(item.get("id"))
+            for item in body.get("data", [])
+            if isinstance(item, dict) and item.get("id")
+        }
+    )
+    record = {
+        "status": "passed" if config["model"] in models else "failed",
+        "checked_at": datetime.now(timezone.utc).isoformat(),
+        "source_commit": source_commit(),
+        "base_url": MODEL_BASE_URL,
+        "target_model": config["model"],
+        "key_present": True,
+        "http_status": response.status_code,
+        "openai_models_shape": isinstance(body.get("data"), list),
+        "available_model_ids": models,
+        "target_model_visible": config["model"] in models,
+        "generation_calls": 0,
+    }
+    write_json(PREFLIGHT_PATH, record)
+    if record["status"] != "passed":
+        raise ValueError("Target model is absent from the provider model list")
+    return record
 
 
 def prepare(config_path: Path = DEFAULT_CONFIG):
@@ -507,9 +568,11 @@ def main():
             asyncio.run(run(args.config))
             print(json.dumps({"status": "run_complete"}))
         return
+    if args.command == "preflight":
+        print(json.dumps(preflight(args.config), ensure_ascii=False))
+        return
     if args.command != "preflight":
         raise SystemExit(f"{args.command} is not implemented yet")
-    print(json.dumps({"status": "contract_valid", "cases": len(config["cases"])}))
 
 
 if __name__ == "__main__":

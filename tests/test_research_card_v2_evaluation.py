@@ -171,3 +171,30 @@ def test_started_case_becomes_interrupted_unknown_without_new_call(tmp_path):
         (tmp_path / "case-results/paper_1.json").read_text(encoding="utf-8")
     )
     assert first_result["status"] == "interrupted_unknown"
+
+
+def test_preflight_records_model_compatibility_without_secret(tmp_path, monkeypatch):
+    import httpx
+    import scripts.evaluate_research_cards_v2 as evaluator
+
+    class Response:
+        status_code = 200
+
+        @staticmethod
+        def raise_for_status():
+            return None
+
+        @staticmethod
+        def json():
+            return {"object": "list", "data": [{"id": "deepseek-v4-pro"}]}
+
+    monkeypatch.setenv("ICAN_LLM_API_KEY", "secret-test-key")
+    monkeypatch.setattr(httpx, "get", lambda *args, **kwargs: Response())
+    monkeypatch.setattr(evaluator, "PREFLIGHT_PATH", tmp_path / "preflight.json")
+    monkeypatch.setattr(evaluator, "source_commit", lambda: "abc123")
+    monkeypatch.setattr(evaluator, "collect_prior_source_ids", lambda roots: set())
+    record = evaluator.preflight(Path("configs/evaluation/p46-quality-v2.json"))
+    serialized = json.dumps(record)
+    assert record["status"] == "passed"
+    assert record["generation_calls"] == 0
+    assert "secret-test-key" not in serialized
