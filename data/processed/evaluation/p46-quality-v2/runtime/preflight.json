@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "checked_at": "2026-09-23T07:41:36.737845+00:00",
+  "source_commit": "5a4bd98fc0518e85d61c2f7e3e689527f92bcad5",
+  "base_url": "https://api.deepseek.com",
+  "target_model": "deepseek-v4-pro",
+  "key_present": true,
+  "http_status": 200,
+  "openai_models_shape": true,
+  "available_model_ids": [
+    "deepseek-flash",
+    "deepseek-v4-pro"
+  ],
+  "target_model_visible": true,
+  "generation_calls": 0
+}

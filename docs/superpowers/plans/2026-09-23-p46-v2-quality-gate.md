@@ -75,12 +75,12 @@
 - Generate: `data/processed/evaluation/p46-quality-v2/runtime/preflight.json`
 - Update: `docs/problem-solution-log.md`
 
-- [ ] Run `python scripts/evaluate_research_cards_v2.py prepare --config configs/evaluation/p46-quality-v2.json`.
-- [ ] Inspect the eight titles and frozen evidence for empty text, duplicate evidence IDs, truncated quotes, and prior-ID overlap; abort preparation if any check fails.
-- [ ] Run the evaluator preflight against the configured endpoint without generating a card: validate environment-variable presence, model name, API compatibility, and writable runtime paths while keeping secrets out of artifacts and terminal output.
-- [ ] Record preparation findings and any resolved issue in `docs/problem-solution-log.md` without recording the API key.
-- [ ] Commit the frozen manifest and preflight record with message `Freeze fresh QASPER v2 acceptance cases`.
-- [ ] Record the resulting commit as the sole allowed source commit in `preflight.json`; no code or config edit is allowed during Task 4.
+- [x] Run `python scripts/evaluate_research_cards_v2.py prepare --config configs/evaluation/p46-quality-v2.json`.
+- [x] Inspect the eight titles and frozen evidence for empty text, duplicate evidence IDs, truncated quotes, and prior-ID overlap; abort preparation if any check fails.
+- [x] Run the evaluator preflight against the configured endpoint without generating a card: validate environment-variable presence, model name, API compatibility, and writable runtime paths while keeping secrets out of artifacts and terminal output.
+- [x] Record preparation findings and any resolved issue in `docs/problem-solution-log.md` without recording the API key.
+- [x] Commit the frozen manifest and preflight record with message `Freeze fresh QASPER v2 acceptance cases`.
+- [x] Record source commit `5a4bd98fc0518e85d61c2f7e3e689527f92bcad5` as the sole allowed code identity in `preflight.json`; no code or config edit is allowed during Task 4.
 
 ### Task 4: Execute and seal the eight real calls
 
