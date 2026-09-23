@@ -93,3 +93,18 @@ python scripts/serve_api.py
 网页每项逐条展示原文入口；“修订字段”可增加同类条目，留空移除该条。未改写条目保留全部原Claim，保存生成新revision。比较报告展示所有同名值；在尚未绑定实验关联时返回不可直接排名，不自动将多个数据集与结果配对。
 
 运行 `python scripts/replay_research_cards.py` 可在独立UUID目录回放封存的8份原始动作（6份失败、2份兼容控制）。回放注入原证据和离线运行时，禁止网络连接和付费预留；不验证新模型生成或检索效果。结果见[回放报告](evaluation/p46-multi-entry-replay-v1/report.md)。原质量报告仍按LegacyCardModelDraft校验，真实提交率保持2/8。
+
+## P4.6 v2 质量门与人工查证降级（2026-09-23）
+
+固定8篇从未运行过的QASPER train论文，每篇只调用一次`deepseek-v4-pro`。工具提交成功5/8，低于预先固定的7/8门槛；原文支持60/65、字段归类63/65、缺失字段识别16/17。三份失败输出在2048个completion tokens时没有提交工具调用，按一次失败封存，没有重跑。逐论文证据和诊断见[质量报告](evaluation/p46-quality-v2/report.md)；AI复核已完成，人类复核仍为pending，工作表见[人工复核表](evaluation/p46-quality-v2/human-review.md)。因此这表示“自动抽取质量门失败”，不表示人工复核已通过。
+
+自动卡返回`status=completed`或`review_required`：
+
+- `high_confidence_fields`仅表示字段值是同一论文连续原文中的字面内容，且现有确定性字段规则没有发现冲突。它不是研究语义或字段分类正确的证明。已通过此规则的字段可保存并显示原文。
+- `review_candidates`包含不支持的引文、类型规则冲突或其他无法直接采用的候选及原因码。模型没有留下条目时，页面仍允许添加人工候选。
+- 对模型拒绝的卡，只有逐项满足上述高置信条件的字段会存为独立extraction记录；筛选决定和待复核候选不会伪装成已确认记录。
+- 页面可以用`POST /v1/research/evidence-search`在所选论文的固定source、路径和版本内检索。选择结果后编辑字段类型、值和引文，再通过`POST /v1/research/extraction`保存追加revision；忽略的候选不会进入记录。
+- 重新载入卡片时，会从已存Claim的原文补足展示证据，并校验论文身份、路径和版本。只有存在可用筛选记录的卡才显示`completed`。
+- 对照仅纳入Claim状态为`supported`且没有字段语义诊断的条目；待复核字段被排除。存在多个同名条目而没有实验关联时，报告展示条目并禁止自动排名。
+
+人工补录引文若不是证据中的连续原文，将保存为`inference`并保持待复核状态；若是连续原文，只能说明字面匹配。真实评测数据仍按封存结果统计，不因本降级功能而改写。

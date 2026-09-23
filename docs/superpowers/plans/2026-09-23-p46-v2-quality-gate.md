@@ -133,31 +133,30 @@
 - Modify: `frontend/src/style.css`
 - Create: `tests/test_research_confidence.py`
 - Modify: `tests/test_research_auto.py`
-- Modify: `tests/test_research_api.py`
-- Modify: `frontend/src/App.test.ts`
+- Modify: `tests/test_research_auto.py` (API and service integration)
 
-- [ ] Write failing unit tests for the confidence projector. A high-confidence occurrence must have valid structure, an exact contiguous quote in the same paper, and no deterministic field-rule conflict; every other parseable occurrence becomes a review candidate with reason codes.
-- [ ] Write failing tests proving a candidate can never use another paper's evidence, and that missing experiment association blocks comparison/ranking even when its quote is supported.
-- [ ] Add `HighConfidenceField`, `ReviewCandidate`, and `CardGenerationOutcome` response models. Include stable occurrence ID, source ID, proposed type/value/evidence, confidence reasons, and allowed user actions.
-- [ ] Change auto-card generation to return `completed` for an accepted card or `review_required` for parseable rejected output. Persist only accepted/high-confidence entries; never label review candidates as verified.
-- [ ] Add a paper-scoped research evidence-search endpoint that reuses the existing retrieval service while forcing the selected `source_id`; reject cross-paper hits before returning them.
-- [ ] Write failing API tests for outcome status, confidence projection, paper scope, and saving a corrected candidate through the existing `/v1/research/extraction` revision path.
-- [ ] Update the Vue workspace to show two sections: usable high-confidence results and items needing review. For each candidate, show the current quote, reason, same-paper search box, type/value/evidence editors, save-revision action, and ignore action.
-- [ ] Ensure the comparison/report controls consume only saved or high-confidence fields and display a blocking message when experiment binding is missing.
-- [ ] Add frontend tests for searching, editing, saving, ignoring, and comparison blocking.
-- [ ] Run `python -m pytest tests/test_research_confidence.py tests/test_research_auto.py tests/test_research_api.py -q`.
-- [ ] Run `npm test -- --run` and `npm run build` from `frontend`.
-- [ ] Update `docs/p4-research-guide.md`, `task_plan.md`, `progress.md`, and `docs/problem-solution-log.md` with the fallback behavior and the failed acceptance evidence.
-- [ ] Commit with message `Add paper-scoped research review fallback`.
+- [x] Write projector tests for same-paper evidence, exact quote, and deterministic-rule conflicts.
+- [x] Write regression tests proving cross-paper evidence cannot become high-confidence and that unsupported or semantically conflicted fields are excluded from comparison; preserve the existing multi-entry comparison block.
+- [x] Add high-confidence and review-candidate response models with occurrence, source, proposed value/evidence, reason codes, and allowed user actions. The existing `status` union carries generation outcome.
+- [x] Return `completed` for a saved screening card and `review_required` otherwise; persist only independently high-confidence fields from rejected actions.
+- [x] Add paper-scoped evidence search forced to selected source identity, path, and version; filter returned retrieval results again server-side.
+- [x] Verify status, confidence projection, scoped search, persistence/reload, and same-paper evidence validation in service/API tests.
+- [x] Update Vue workspace with high-confidence and review sections, same-paper search, field editors, revision save, ignore, and manual entry when no tool action exists.
+- [x] Comparison only accepts supported fields without semantic diagnostics; ambiguous multiple same-name entries block ranking.
+- [x] Frontend test runner is not configured; rely on Python API integration coverage and Vue typecheck/production build without adding a test framework.
+- [x] Run `conda run -n ican python -m pytest tests/test_research_confidence.py tests/test_research_auto.py tests/test_research_api.py -q` (18 passed).
+- [x] Run `npm run build` from `frontend` (vue-tsc and Vite production build passed).
+- [x] Update research guide, task plan, progress, and problem log with fallback behavior and failed acceptance evidence.
+- [x] Commit with message `Add paper-scoped research review fallback`.
 
 ### Task 7: Final regression, review, and push
 
 **Files:**
 - Review all files changed by Tasks 1–6.
 
-- [ ] Run the full Python suite: `python -m pytest -q`.
-- [ ] Run the full frontend suite and production build from `frontend`: `npm test -- --run` and `npm run build`.
-- [ ] Re-run the sealed audit and verify that post-run code changes did not alter the recorded v2 source commit or any sealed hash.
-- [ ] Check `git diff --check`, `git status --short`, staged secret scanning, and confirm no `.env`, API key, or raw credential appears in tracked content.
-- [ ] Review the final diff against `docs/superpowers/specs/2026-09-23-p46-v2-quality-gate-design.md` and record any limitation in `docs/problem-solution-log.md`.
+- [ ] Run the full Python suite: `conda run -n ican python -m pytest -q`.
+- [x] Frontend test runner is not configured; run the frontend typecheck and production build with `npm run build` (passed).
+- [x] Re-run the sealed audit and verify that post-run code changes did not alter the recorded v2 source commit or any sealed hash.
+- [x] Check `git diff --check`, `git status --short`, staged secret scanning, and confirm no `.env`, API key, or raw credential appears in tracked content.
+- [x] Review the final diff against the design spec and record the browser interaction limitation and semantic-confidence boundary in `docs/problem-solution-log.md` and `docs/p4-research-guide.md`.
 - [ ] Commit final documentation/test-only changes, push `codex/p4-agent-tools`, and report the commit IDs, exact test results, four metrics, gate decision, model-call count, and whether Task 6 was activated.

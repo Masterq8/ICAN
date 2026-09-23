@@ -9,13 +9,14 @@ from uuid import uuid4
 from ican.agent.corpus import AgentCorpus
 from ican.agent.journal import PaidJournal
 from ican.agent.runtime import DeepSeekRuntime
-from ican.agent.schema import AgentConfig, AgentRequest, ToolInputError
+from ican.agent.schema import AgentConfig, AgentRequest, BudgetExhausted, ToolInputError
 from ican.indexing.inputs import load_chunks
 from ican.retrieval.schema import SearchFilters, SearchRequest
 
 from .auto_schema import (
     AutoCardRequest,
     AutoCardResponse,
+    CardFieldDraft,
     CardModelDraft,
     CardUsage,
     ComparisonRequest,
@@ -23,7 +24,9 @@ from .auto_schema import (
     DiscoveryRequest,
     DiscoveryResponse,
     PaperCandidate,
+    PaperEvidenceSearchRequest,
 )
+from .confidence import project_fields, recover_fields
 from .schema import (
     ClaimDraft,
     ExtractionDraft,
@@ -178,6 +181,33 @@ class ResearchAutoService:
             raise ToolInputError("No evidence was retrieved for the selected paper")
         return PaperCandidate(**paper, evidence=evidence), result.index_fingerprint
 
+    def search_paper(self, request: PaperEvidenceSearchRequest):
+        catalog = self._catalog()
+        key = (request.collection, request.source_id)
+        if key not in catalog:
+            raise ToolInputError("Paper source is absent from the selected collection")
+        paper = catalog[key]
+        result = self.evidence_service.search(
+            SearchRequest(
+                query=request.query,
+                collection=request.collection,
+                limit=request.limit,
+                strategy="hybrid_rerank",
+                family=self._family(request.collection),
+                filters=SearchFilters(
+                    source_types=["paper"], path_prefixes=[paper["source_path"]]
+                ),
+            )
+        )
+        scoped = [
+            item
+            for item in result.results
+            if item.source.source_id == request.source_id
+            and item.source.source_path == paper["source_path"]
+            and item.source.source_version == paper["source_version"]
+        ][: request.limit]
+        return result.model_copy(update={"results": scoped})
+
     def _paper_scope(self, request, candidate):
         return AgentRequest(
             query=request.query,
@@ -257,20 +287,52 @@ class ResearchAutoService:
         screening = self.research.store.latest_for_subject(
             request.source_id, "screening"
         )
-        if screening is None:
-            raise ToolInputError("No saved research card exists for this paper")
-        extraction = self.research.store.latest_for_card(
-            request.source_id, "extraction", screening.card_id
+        extraction = (
+            self.research.store.latest_for_card(
+                request.source_id, "extraction", screening.card_id
+            )
+            if screening is not None
+            else self.research.store.latest_for_subject(request.source_id, "extraction")
         )
-        if extraction is None:
-            raise ToolInputError("Saved research card is incomplete")
-        self._validate_saved_record(screening, candidate, corpus)
-        self._validate_saved_record(extraction, candidate, corpus)
+        if screening is None and extraction is None:
+            raise ToolInputError("No saved research card exists for this paper")
+        if screening is not None:
+            self._validate_saved_record(screening, candidate, corpus)
+        if extraction is not None:
+            self._validate_saved_record(extraction, candidate, corpus)
+        projected = []
+        if extraction is not None:
+            projected = [
+                CardFieldDraft(
+                    name=field.name,
+                    value=field.value,
+                    quote=(
+                        field.claims[0].claim.quote or field.claims[0].claim.statement
+                    ),
+                    evidence_id=field.claims[0].evidence[0].chunk_id,
+                )
+                for field in extraction.fields
+                if field.claims and field.claims[0].evidence
+            ]
+        projection_evidence = list(candidate.evidence)
+        if extraction is not None:
+            known = {item.chunk_id for item in projection_evidence}
+            projection_evidence.extend(
+                item
+                for item in self._record_evidence(extraction)
+                if item.chunk_id not in known
+            )
+        high, review = project_fields(
+            candidate.source_id, projection_evidence, projected
+        )
         return AutoCardResponse(
+            status="completed" if screening is not None else "review_required",
             candidate=candidate,
             screening=screening,
             extraction=extraction,
             usage=CardUsage(paid_calls=0, prompt_tokens=0, completion_tokens=0),
+            high_confidence_fields=high,
+            review_candidates=review,
         )
 
     async def auto_card(self, request: AutoCardRequest) -> AutoCardResponse:
@@ -326,7 +388,21 @@ class ResearchAutoService:
                     },
                 },
             )
-            raise
+            if isinstance(error, BudgetExhausted):
+                raise
+            usage = runtime.records[-1].get("usage") if runtime.records else None
+            return AutoCardResponse(
+                status="review_required",
+                candidate=candidate,
+                screening=None,
+                extraction=None,
+                usage=CardUsage(
+                    paid_calls=len(runtime.records),
+                    prompt_tokens=(usage or {}).get("prompt_tokens", 0),
+                    completion_tokens=(usage or {}).get("completion_tokens", 0),
+                ),
+                failure_code=f"generation:{type(error).__name__}",
+            )
         diagnosis = diagnose_card_submission(action, selected)
         self._write_trace(
             task_id,
@@ -342,7 +418,53 @@ class ResearchAutoService:
             },
         )
         if diagnosis.status != "accepted":
-            raise ToolInputError(diagnosis.error_message())
+            recovered = recover_fields(action)
+            high, review = project_fields(
+                candidate.source_id, candidate.evidence, recovered
+            )
+            extraction = None
+            if high:
+                extraction = self.research.submit_extraction(
+                    scope,
+                    ExtractionDraft(
+                        subject_source_id=request.source_id,
+                        fields=[
+                            ExtractionFieldDraft(
+                                name=field.name,
+                                value=field.value,
+                                claims=[
+                                    ClaimDraft(
+                                        statement=field.value,
+                                        kind="verbatim",
+                                        evidence_ids=[field.evidence_id],
+                                        quote=field.quote,
+                                    )
+                                ],
+                            )
+                            for field in high
+                        ],
+                    ),
+                    corpus=corpus,
+                    allowed_ids=selected,
+                    card_id=card_id,
+                )
+            usage = runtime.records[-1].get("usage") or {}
+            return AutoCardResponse(
+                status="review_required",
+                candidate=candidate,
+                screening=None,
+                extraction=extraction,
+                usage=CardUsage(
+                    paid_calls=sum(
+                        record.get("paid", True) for record in runtime.records
+                    ),
+                    prompt_tokens=usage.get("prompt_tokens", 0),
+                    completion_tokens=usage.get("completion_tokens", 0),
+                ),
+                high_confidence_fields=high,
+                review_candidates=review,
+                failure_code=f"tool:{diagnosis.code}",
+            )
         draft = diagnosis.draft
         if draft is None:  # pragma: no cover - guarded by SubmissionDiagnosis
             raise ToolInputError("Accepted research card has no validated draft")
@@ -366,6 +488,9 @@ class ResearchAutoService:
             )
             for field in draft.fields
         ]
+        high, review = project_fields(
+            candidate.source_id, candidate.evidence, draft.fields
+        )
         self.research.verify_with_corpus(
             corpus,
             [reason, *(claim for field in fields for claim in field.claims)],
@@ -395,6 +520,7 @@ class ResearchAutoService:
         )
         usage = runtime.records[-1].get("usage") or {}
         return AutoCardResponse(
+            status="completed",
             candidate=candidate,
             screening=screening,
             extraction=extraction,
@@ -403,6 +529,8 @@ class ResearchAutoService:
                 prompt_tokens=usage.get("prompt_tokens", 0),
                 completion_tokens=usage.get("completion_tokens", 0),
             ),
+            high_confidence_fields=high,
+            review_candidates=review,
         )
 
     @staticmethod
@@ -428,15 +556,35 @@ class ResearchAutoService:
             "limitation",
             "code_availability",
         ]
+        excluded = []
         by_record = [
             {
-                name: [field for field in record.fields if field.name == name]
+                name: [
+                    field
+                    for field in record.fields
+                    if field.name == name
+                    and field.claims
+                    and all(claim.status == "supported" for claim in field.claims)
+                    and not field.semantic_diagnostics
+                ]
                 for name in names
             }
             for record in records
         ]
+        for record in records:
+            for field in record.fields:
+                if (
+                    not field.claims
+                    or any(claim.status != "supported" for claim in field.claims)
+                    or field.semantic_diagnostics
+                ):
+                    excluded.append(
+                        f"{record.subject_source_id}.{field.name}尚未高置信确认，已从比较中排除"
+                    )
         comparable = True
-        warnings = []
+        warnings = list(dict.fromkeys(excluded))
+        if warnings:
+            comparable = False
         for record, fields in zip(records, by_record, strict=True):
             for name, entries in fields.items():
                 if len(entries) > 1:

@@ -1,4 +1,4 @@
-import type { AgentResponse, Candidate, CardResponse, Collection, ComparisonResponse, ResearchRecord } from './types'
+import type { AgentResponse, Candidate, CardResponse, Collection, ComparisonResponse, Evidence, ResearchRecord } from './types'
 
 async function post<T>(path: string, body: object): Promise<T> {
   let response: Response
@@ -45,6 +45,10 @@ export function compareCards(record_ids: string[]): Promise<ComparisonResponse> 
   return post('/v1/research/compare', { record_ids })
 }
 
+export function searchPaperEvidence(query: string, collection: Collection, source_id: string): Promise<{ results: Evidence[] }> {
+  return post('/v1/research/evidence-search', { query, collection, source_id, limit: 6 })
+}
+
 
 function paperScope(query: string, candidate: Candidate) {
   return {
@@ -67,7 +71,7 @@ export function reviseScreening(query: string, candidate: Candidate, revision_of
   })
 }
 
-export function reviseExtraction(query: string, candidate: Candidate, revision_of: string, fields: Array<{ name: string; value: string; claims: ResearchRecord["claims"][number]["claim"][] }>): Promise<ResearchRecord> {
+export function reviseExtraction(query: string, candidate: Candidate, revision_of: string | null, fields: Array<{ name: string; value: string; claims: ResearchRecord["claims"][number]["claim"][] }>): Promise<ResearchRecord> {
   return post('/v1/research/extraction', {
     scope: paperScope(query, candidate),
     draft: {

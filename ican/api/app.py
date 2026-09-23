@@ -22,6 +22,7 @@ from ican.research.auto_schema import (
     ComparisonResponse,
     DiscoveryRequest,
     DiscoveryResponse,
+    PaperEvidenceSearchRequest,
 )
 from ican.research.schema import (
     ClaimVerificationRequest,
@@ -251,6 +252,17 @@ def create_app(
         except ModelTimeout:
             raise HTTPException(
                 status_code=504, detail="Generation timed out"
+            ) from None
+
+    @app.post("/v1/research/evidence-search", response_model=SearchResponse)
+    def search_research_paper(request: PaperEvidenceSearchRequest):
+        try:
+            return get_research_auto_service().search_paper(request)
+        except (CollectionNotFound, ToolInputError, ValueError) as error:
+            raise HTTPException(status_code=422, detail=str(error)) from error
+        except IndexUnavailable:
+            raise HTTPException(
+                status_code=503, detail="Evidence index is unavailable"
             ) from None
 
     @app.post("/v1/research/load-card", response_model=AutoCardResponse)

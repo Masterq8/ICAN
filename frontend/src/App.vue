@@ -21,8 +21,8 @@ import {
   ShieldCheck,
   X,
 } from '@lucide/vue'
-import { compareCards, discover, generateCard, loadCard, reviseExtraction, reviseScreening, runAgent } from './api'
-import type { AgentResponse, Candidate, CardResponse, ClaimStatus, Collection, ComparisonResponse, Evidence } from './types'
+import { compareCards, discover, generateCard, loadCard, reviseExtraction, reviseScreening, runAgent, searchPaperEvidence } from './api'
+import type { AgentResponse, Candidate, CardResponse, ClaimStatus, Collection, ComparisonResponse, Evidence, ReviewCandidate } from './types'
 
 const markdown = new MarkdownIt({ html: false, linkify: true, breaks: true })
 const collection = ref<Collection>('swin_v1')
@@ -36,7 +36,7 @@ const proof = ref<Evidence | null>(null)
 const agentQuery = ref('')
 const agentClaimKind = ref('code_execution')
 const agentResult = ref<AgentResponse | null>(null)
-const busy = ref<'search' | 'card' | 'load' | 'compare' | 'agent' | 'screening' | 'extraction' | null>(null)
+const busy = ref<'search' | 'card' | 'load' | 'compare' | 'agent' | 'screening' | 'extraction' | 'evidence' | null>(null)
 const error = ref('')
 const serviceOnline = ref<boolean | null>(null)
 const editingScreening = ref(false)
@@ -44,6 +44,9 @@ const editingExtraction = ref(false)
 const screeningDecision = ref<'include' | 'exclude' | 'hold'>('hold')
 const screeningReason = ref('')
 const editFields = ref<Array<{ name: string; value: string; originalIndex: number }>>([])
+const reviewSearch = ref('')
+const reviewEvidence = ref<Evidence[]>([])
+const reviewEdits = ref<Record<number, { name: string; value: string; quote: string; evidence_id: string }>>({})
 
 const fields = [
   ['task', '任务'], ['model', '模型'], ['dataset', '数据集'], ['input_setting', '输入设置'],
@@ -76,6 +79,9 @@ watch(collection, next => {
 watch(activeId, () => {
   editingScreening.value = false
   editingExtraction.value = false
+  reviewSearch.value = ''
+  reviewEvidence.value = []
+  reviewEdits.value = {}
 })
 
 onMounted(async () => {
@@ -90,6 +96,16 @@ onMounted(async () => {
 function issue(message: string) {
   error.value = message
   window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function initializeReview(card: CardResponse) {
+  reviewEdits.value = Object.fromEntries(card.review_candidates.map(item => [item.occurrence, {
+    name: item.name,
+    value: item.value,
+    quote: item.quote,
+    evidence_id: item.evidence_id,
+  }]))
+  reviewEvidence.value = []
 }
 
 async function searchPapers() {
@@ -130,6 +146,7 @@ async function createCard() {
   try {
     const result = await generateCard(query.value.trim(), active.value.collection, active.value.source_id)
     cards.value = { ...cards.value, [active.value.source_id]: result }
+    initializeReview(result)
     editingScreening.value = false
     editingExtraction.value = false
     proof.value = result.extraction?.fields[0]?.claims[0]?.evidence[0] ?? active.value.evidence[0] ?? null
@@ -147,6 +164,7 @@ async function restoreCard() {
   try {
     const result = await loadCard(query.value.trim(), active.value.collection, active.value.source_id)
     cards.value = { ...cards.value, [active.value.source_id]: result }
+    initializeReview(result)
     proof.value = result.extraction?.fields[0]?.claims[0]?.evidence[0] ?? active.value.evidence[0] ?? null
     editingScreening.value = false
     editingExtraction.value = false
@@ -158,7 +176,7 @@ async function restoreCard() {
 }
 
 function beginScreeningEdit() {
-  if (!activeCard.value) return
+  if (!activeCard.value?.screening) return
   screeningDecision.value = activeCard.value.screening.decision ?? 'hold'
   screeningReason.value = activeCard.value.screening.claims[0]?.claim.statement ?? ''
   editingScreening.value = true
@@ -168,7 +186,7 @@ function beginScreeningEdit() {
 async function saveScreening() {
   const paper = active.value
   const card = activeCard.value
-  if (!paper || !card) return
+  if (!paper || !card?.screening) return
   const reason = screeningReason.value.trim()
   if (!reason) return issue('请填写筛选理由。')
   const evidenceId = card.screening.claims[0]?.evidence[0]?.chunk_id ?? card.candidate.evidence[0]?.chunk_id
@@ -226,6 +244,120 @@ async function saveExtraction() {
     report.value = null
   } catch (cause) {
     issue(cause instanceof Error ? cause.message : '字段修订失败。')
+  } finally {
+    busy.value = null
+  }
+}
+
+function evidenceFor(card: CardResponse, evidenceId: string): Evidence | undefined {
+  return [...card.candidate.evidence, ...reviewEvidence.value].find(item => item.chunk_id === evidenceId)
+}
+
+function showEvidence(evidenceId: string) {
+  const card = activeCard.value
+  proof.value = card ? evidenceFor(card, evidenceId) ?? null : null
+}
+
+async function findReviewEvidence() {
+  const paper = active.value
+  if (!paper || !reviewSearch.value.trim()) return issue('请输入要在当前论文中查找的关键词。')
+  busy.value = 'evidence'
+  error.value = ''
+  try {
+    const result = await searchPaperEvidence(reviewSearch.value.trim(), paper.collection, paper.source_id)
+    reviewEvidence.value = result.results
+  } catch (cause) {
+    issue(cause instanceof Error ? cause.message : '论文内证据搜索失败。')
+  } finally {
+    busy.value = null
+  }
+}
+
+function useReviewEvidence(candidate: ReviewCandidate, evidence: Evidence) {
+  const edit = reviewEdits.value[candidate.occurrence]
+  if (!edit) return
+  const valueOffset = edit.value.trim() ? evidence.text.indexOf(edit.value.trim()) : 0
+  const quoteStart = valueOffset > 0 ? Math.max(0, valueOffset - 300) : 0
+  const quote = evidence.text.slice(quoteStart, quoteStart + 1000)
+  reviewEdits.value = { ...reviewEdits.value, [candidate.occurrence]: { ...edit, evidence_id: evidence.chunk_id, quote } }
+  proof.value = evidence
+}
+
+function ignoreReviewCandidate(candidate: ReviewCandidate) {
+  const card = activeCard.value
+  const paper = active.value
+  if (!card || !paper) return
+  cards.value = { ...cards.value, [paper.source_id]: { ...card, review_candidates: card.review_candidates.filter(item => item.occurrence !== candidate.occurrence) } }
+}
+
+function addManualCandidate() {
+  const card = activeCard.value
+  const paper = active.value
+  if (!card || !paper) return
+  const used = [
+    ...card.high_confidence_fields.map(item => item.occurrence),
+    ...card.review_candidates.map(item => item.occurrence),
+  ]
+  const occurrence = used.length ? Math.max(...used) + 1 : 0
+  const evidenceId = reviewEvidence.value[0]?.chunk_id ?? card.candidate.evidence[0]?.chunk_id ?? ''
+  const candidate: ReviewCandidate = {
+    occurrence,
+    source_id: paper.source_id,
+    name: 'task',
+    value: '',
+    quote: '',
+    evidence_id: evidenceId,
+    reason_codes: ['user_created'],
+    reason: '模型未给出可用条目，请在当前论文内搜索并人工补录。',
+    allowed_actions: ['open_evidence', 'search_same_paper', 'edit_and_save', 'ignore'],
+  }
+  cards.value = {
+    ...cards.value,
+    [paper.source_id]: { ...card, review_candidates: [...card.review_candidates, candidate] },
+  }
+  reviewEdits.value = {
+    ...reviewEdits.value,
+    [occurrence]: { name: 'task', value: '', quote: '', evidence_id: evidenceId },
+  }
+}
+
+async function saveReviewCandidate(candidate: ReviewCandidate) {
+  const paper = active.value
+  const card = activeCard.value
+  const edit = reviewEdits.value[candidate.occurrence]
+  if (!paper || !card || !edit) return
+  const evidence = evidenceFor(card, edit.evidence_id)
+  if (!evidence || evidence.source.source_id !== paper.source_id) return issue('请选择当前论文中的证据。')
+  const value = edit.value.trim()
+  const quote = edit.quote.trim()
+  if (!value || !quote) return issue('字段值和原文引文不能为空。')
+  const existing = card.extraction?.fields.map(field => ({ name: field.name, value: field.value, claims: field.claims.map(verdict => verdict.claim) })) ?? card.high_confidence_fields.map(field => ({
+    name: field.name,
+    value: field.value,
+    claims: [{ statement: field.value, kind: 'verbatim', evidence_ids: [field.evidence_id], quote: field.quote }],
+  }))
+  const claim = evidence.text.includes(quote) && quote.includes(value)
+    ? { statement: value, kind: 'verbatim' as const, evidence_ids: [evidence.chunk_id], quote }
+    : { statement: value, kind: 'inference' as const, evidence_ids: [evidence.chunk_id] }
+  const replacement = { name: edit.name, value, claims: [claim] }
+  const revised = [...existing]
+  if (card.status === 'completed' && card.extraction && candidate.occurrence < revised.length) revised[candidate.occurrence] = replacement
+  else revised.push(replacement)
+  busy.value = 'extraction'
+  error.value = ''
+  try {
+    const extraction = await reviseExtraction(query.value.trim(), paper, card.extraction?.record_id ?? null, revised)
+    cards.value = {
+      ...cards.value,
+      [paper.source_id]: {
+        ...card,
+        extraction,
+        review_candidates: card.review_candidates.filter(item => item.occurrence !== candidate.occurrence),
+      },
+    }
+    report.value = null
+  } catch (cause) {
+    issue(cause instanceof Error ? cause.message : '待复核字段保存失败。')
   } finally {
     busy.value = null
   }
@@ -347,10 +479,13 @@ function saveReport() {
 
           <section id="card" class="paper-panel card-section" aria-labelledby="card-title">
             <div class="panel-header"><div><p class="section-number">02 / 实验信息卡</p><h2 id="card-title">{{ active?.title || '选择论文后整理信息' }}</h2></div><div class="panel-actions"><button class="text-button" type="button" :disabled="!active || busy !== null" @click="restoreCard"><LoaderCircle v-if="busy === 'load'" class="spin" :size="16" /><FolderOpen v-else :size="16" />{{ busy === 'load' ? '读取中' : '读取已存卡' }}</button><button class="secondary-button" type="button" :disabled="!active || busy !== null" @click="createCard"><LoaderCircle v-if="busy === 'card'" class="spin" :size="17" /><FileText v-else :size="17" />{{ busy === 'card' ? '生成中' : '从原文生成' }}</button></div></div>
-            <div v-if="activeCard" class="screening-line"><span>筛选决定：{{ activeCard.screening.decision === 'include' ? '纳入' : activeCard.screening.decision === 'exclude' ? '排除' : '待定' }}</span><span>理由：{{ activeCard.screening.claims[0]?.claim.statement }}</span><em>待人工复核</em></div>
+            <div v-if="activeCard?.screening" class="screening-line"><span>筛选决定：{{ activeCard.screening.decision === 'include' ? '纳入' : activeCard.screening.decision === 'exclude' ? '排除' : '待定' }}</span><span>理由：{{ activeCard.screening.claims[0]?.claim.statement }}</span><em>待人工复核</em></div>
+            <div v-else-if="activeCard" class="screening-line review-alert"><span>模型输出需要复核</span><span>{{ activeCard.failure_code || '未形成可提交的信息卡' }}</span><em>请在同一论文内查证</em></div>
             <div v-if="activeCard" class="card-usage"><span v-if="activeCard.usage.paid_calls">本次生成：{{ activeCard.usage.paid_calls }} 次模型调用 · {{ activeCard.usage.prompt_tokens }} 输入 token · {{ activeCard.usage.completion_tokens }} 输出 token · 实际费用未提供</span><span v-else>读取已存记录：本次未调用模型</span></div>
-            <div v-if="activeCard" class="revision-actions"><span>当前筛选版本 {{ activeCard.screening.record_id.slice(0, 8) }}{{ activeCard.extraction ? ` · 字段版本 ${activeCard.extraction.record_id.slice(0, 8)}` : '' }}</span><button type="button" class="text-button" :disabled="busy !== null" @click="beginScreeningEdit"><PencilLine :size="15" />修订筛选</button><button type="button" class="text-button" :disabled="!activeCard.extraction || busy !== null" @click="beginExtractionEdit"><PencilLine :size="15" />修订字段</button></div>
+            <div v-if="activeCard" class="revision-actions"><span>{{ activeCard.screening ? `当前筛选版本 ${activeCard.screening.record_id.slice(0, 8)}` : '尚无已提交筛选记录' }}{{ activeCard.extraction ? ` · 字段版本 ${activeCard.extraction.record_id.slice(0, 8)}` : '' }}</span><button type="button" class="text-button" :disabled="!activeCard.screening || busy !== null" @click="beginScreeningEdit"><PencilLine :size="15" />修订筛选</button><button type="button" class="text-button" :disabled="!activeCard.extraction || busy !== null" @click="beginExtractionEdit"><PencilLine :size="15" />修订字段</button></div>
             <form v-if="editingScreening" class="revision-form" @submit.prevent="saveScreening"><strong>筛选人工修订</strong><p>新记录会引用当前论文证据，并保留上一版本；筛选理由仍标记为待人工复核。</p><label>决定<select v-model="screeningDecision"><option value="include">纳入</option><option value="exclude">排除</option><option value="hold">待定</option></select></label><label>理由<textarea v-model="screeningReason" maxlength="2000" rows="3" /></label><div class="revision-buttons"><button type="button" class="text-button" @click="editingScreening = false">取消</button><button type="submit" class="secondary-button" :disabled="busy !== null"><Save :size="15" />{{ busy === 'screening' ? '保存中' : '保存新版本' }}</button></div></form>
+            <section v-if="activeCard?.high_confidence_fields.length" class="confidence-section"><div class="confidence-heading"><strong>可直接使用的高置信字段</strong><span>同论文证据 · 连续原文 · 无确定性类型冲突</span></div><div v-for="item in activeCard.high_confidence_fields" :key="`high-${item.occurrence}`" class="confidence-row"><strong>{{ fields.find(([name]) => name === item.name)?.[1] }}</strong><span>{{ item.value }}</span><button type="button" class="inline-proof" @click="showEvidence(item.evidence_id)">查看原文</button></div></section>
+            <section v-if="activeCard && (activeCard.status === 'review_required' || activeCard.review_candidates.length)" class="review-section"><div class="confidence-heading"><strong>需要你确认的候选字段</strong><span>可在当前论文内搜索，不会跨论文取证</span></div><form class="paper-search" @submit.prevent="findReviewEvidence"><input v-model="reviewSearch" maxlength="1000" placeholder="在当前论文中搜索数据集、指标或结果" aria-label="论文内搜索" /><button type="submit" class="text-button" :disabled="busy !== null"><Search :size="15" />{{ busy === 'evidence' ? '搜索中' : '论文内搜索' }}</button></form><div v-if="reviewEvidence.length" class="review-evidence-list"><button v-for="item in reviewEvidence" :key="item.chunk_id" type="button" @click="proof = item"><strong>{{ sourceLabel(item) }}</strong><span>{{ item.text.slice(0, 150) }}{{ item.text.length > 150 ? '…' : '' }}</span></button></div><div v-if="!activeCard.review_candidates.length" class="manual-review-empty"><span>模型没有留下可修订条目。请搜索当前论文，再手动添加字段。</span><button type="button" class="secondary-button" @click="addManualCandidate">手动添加字段</button></div><article v-for="candidate in activeCard.review_candidates" :key="`review-${candidate.occurrence}`" class="review-candidate"><div class="review-reason"><strong>候选 {{ candidate.occurrence + 1 }}</strong><span>{{ candidate.reason }}</span></div><div class="review-grid"><label>字段类型<select v-model="reviewEdits[candidate.occurrence].name"><option v-for="[name, label] in fields" :key="name" :value="name">{{ label }}</option></select></label><label>字段值<input v-model="reviewEdits[candidate.occurrence].value" maxlength="2000" /></label><label class="review-quote">原文引文<textarea v-model="reviewEdits[candidate.occurrence].quote" maxlength="1000" rows="3" /></label></div><div class="review-source"><span>证据：{{ reviewEdits[candidate.occurrence].evidence_id }}</span><button type="button" class="text-button" @click="showEvidence(reviewEdits[candidate.occurrence].evidence_id)">查看当前证据</button></div><div v-if="reviewEvidence.length" class="review-buttons"><button v-for="item in reviewEvidence" :key="`${candidate.occurrence}-${item.chunk_id}`" type="button" class="text-button" @click="useReviewEvidence(candidate, item)">改用 {{ sourceLabel(item) }}</button></div><div class="review-buttons"><button type="button" class="text-button" @click="ignoreReviewCandidate(candidate)">忽略候选</button><button type="button" class="secondary-button" :disabled="busy !== null" @click="saveReviewCandidate(candidate)"><Save :size="15" />保存为新版本</button></div></article></section>
             <div class="field-table" role="table" aria-label="实验信息卡">
               <div class="field-head" role="row"><span>信息项</span><span>内容与来源</span><span>核查状态</span></div>
               <template v-for="[name, label] in fields" :key="name">

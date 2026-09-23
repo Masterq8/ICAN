@@ -108,13 +108,66 @@ class CardUsage(BaseModel):
     actual_cost_usd: None = None
 
 
+class HighConfidenceField(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    occurrence: int = Field(ge=0)
+    source_id: str
+    name: ExtractionFieldName
+    value: str
+    quote: str
+    evidence_id: str
+    confidence_reasons: list[str]
+
+
+class ReviewCandidate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    occurrence: int = Field(ge=0)
+    source_id: str
+    name: ExtractionFieldName
+    value: str
+    quote: str
+    evidence_id: str
+    reason_codes: list[str] = Field(min_length=1)
+    reason: str
+    allowed_actions: list[
+        Literal[
+            "open_evidence",
+            "search_same_paper",
+            "edit_and_save",
+            "ignore",
+        ]
+    ] = Field(
+        default_factory=lambda: [
+            "open_evidence",
+            "search_same_paper",
+            "edit_and_save",
+            "ignore",
+        ]
+    )
+
+
 class AutoCardResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    status: Literal["completed", "review_required"] = "completed"
     candidate: PaperCandidate
-    screening: ResearchRecord
+    screening: ResearchRecord | None
     extraction: ResearchRecord | None
     usage: CardUsage
+    high_confidence_fields: list[HighConfidenceField] = Field(default_factory=list)
+    review_candidates: list[ReviewCandidate] = Field(default_factory=list)
+    failure_code: str | None = None
+
+
+class PaperEvidenceSearchRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    query: str = Field(min_length=2, max_length=1000)
+    collection: ProductCollection
+    source_id: str = Field(min_length=1, max_length=256)
+    limit: int = Field(default=6, ge=1, le=8)
 
 
 class ComparisonRequest(BaseModel):

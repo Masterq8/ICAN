@@ -43,10 +43,36 @@ export interface ResearchRecord {
 }
 
 export interface CardResponse {
+  status: 'completed' | 'review_required'
   candidate: Candidate
-  screening: ResearchRecord
+  screening: ResearchRecord | null
   extraction: ResearchRecord | null
   usage: { paid_calls: number; prompt_tokens: number; completion_tokens: number; actual_cost_usd: null }
+  high_confidence_fields: HighConfidenceField[]
+  review_candidates: ReviewCandidate[]
+  failure_code?: string | null
+}
+
+export interface HighConfidenceField {
+  occurrence: number
+  source_id: string
+  name: string
+  value: string
+  quote: string
+  evidence_id: string
+  confidence_reasons: string[]
+}
+
+export interface ReviewCandidate {
+  occurrence: number
+  source_id: string
+  name: string
+  value: string
+  quote: string
+  evidence_id: string
+  reason_codes: string[]
+  reason: string
+  allowed_actions: Array<'open_evidence' | 'search_same_paper' | 'edit_and_save' | 'ignore'>
 }
 
 export interface ComparisonResponse {

@@ -6,13 +6,20 @@ from fastapi.testclient import TestClient
 
 from ican.agent.schema import AgentConfig, AgentRequest, ToolInputError
 from ican.api.app import create_app
+from ican.qa.runtime import ModelUnavailable
 from ican.research.auto_schema import (
     AutoCardRequest,
     ComparisonRequest,
     DiscoveryRequest,
+    PaperEvidenceSearchRequest,
 )
 from ican.research.auto_service import ResearchAutoService
-from ican.research.schema import ClaimDraft, ScreeningDraft
+from ican.research.schema import (
+    ClaimDraft,
+    ExtractionDraft,
+    ExtractionFieldDraft,
+    ScreeningDraft,
+)
 from ican.research.service import ResearchService
 from ican.research.store import ResearchStore
 from ican.retrieval.schema import (
@@ -113,6 +120,14 @@ class MalformedRuntime:
         return {"role": "assistant", "tool_calls": [{}]}
 
 
+class FailingRuntime:
+    def __init__(self):
+        self.records = [{"usage": {"prompt_tokens": 25, "completion_tokens": 2048}}]
+
+    async def request(self, role, messages, tools):
+        raise ModelUnavailable("incomplete response")
+
+
 def field(name, value, quote, cid):
     return {"name": name, "value": value, "quote": quote, "evidence_id": cid}
 
@@ -207,6 +222,14 @@ async def test_auto_card_is_scoped_and_preserves_revisions_and_verdicts(tmp_path
     result = await auto.auto_card(
         AutoCardRequest(query="image models", collection="swin_v1", source_id="paper-a")
     )
+    assert result.status == "completed"
+    assert [field.name for field in result.high_confidence_fields] == [
+        "model",
+        "dataset",
+        "metric",
+        "training",
+    ]
+    assert [item.name for item in result.review_candidates] == ["limitation", "result"]
     assert result.screening.claims[0].status == "requires_review"
     assert result.extraction is not None
     statuses = {
@@ -222,17 +245,83 @@ async def test_auto_card_is_scoped_and_preserves_revisions_and_verdicts(tmp_path
 
 
 @pytest.mark.asyncio
-async def test_auto_card_rejects_cross_paper_evidence_without_writing(tmp_path):
+async def test_rejected_card_persists_only_independently_high_confidence_fields(
+    tmp_path,
+):
     bad = draft_a()
     bad["reason_evidence_ids"] = ["b1"]
     auto = build(tmp_path, [bad])
-    with pytest.raises(ToolInputError, match="outside the selected paper"):
-        await auto.auto_card(
-            AutoCardRequest(
-                query="image models", collection="swin_v1", source_id="paper-a"
-            )
-        )
-    assert list((tmp_path / "records").glob("*.json")) == []
+    result = await auto.auto_card(
+        AutoCardRequest(query="image models", collection="swin_v1", source_id="paper-a")
+    )
+    assert result.status == "review_required"
+    assert result.screening is None
+    assert result.extraction is not None
+    assert [field.value for field in result.extraction.fields] == [
+        "Model A",
+        "ImageNet",
+        "top-1 accuracy",
+        "100 epochs",
+    ]
+    assert all(
+        verdict.status == "supported"
+        for field in result.extraction.fields
+        for verdict in field.claims
+    )
+    assert result.failure_code == "tool:evidence_out_of_scope"
+    assert len(list((tmp_path / "records").glob("*.json"))) == 1
+    loaded = auto.load_card(
+        AutoCardRequest(query="image models", collection="swin_v1", source_id="paper-a")
+    )
+    assert loaded.status == "review_required"
+    assert loaded.screening is None
+    assert loaded.extraction.record_id == result.extraction.record_id
+    client = TestClient(create_app(root=Path(tmp_path), research_service=auto.research))
+    revision = client.post(
+        "/v1/research/extraction",
+        json={
+            "scope": auto._paper_scope(
+                AutoCardRequest(
+                    query="image models",
+                    collection="swin_v1",
+                    source_id="paper-a",
+                ),
+                result.candidate,
+            ).model_dump(mode="json"),
+            "draft": {
+                "subject_source_id": "paper-a",
+                "revision_of": str(result.extraction.record_id),
+                "fields": [
+                    {
+                        "name": field.name,
+                        "value": field.value,
+                        "claims": [
+                            verdict.claim.model_dump(mode="json")
+                            for verdict in field.claims
+                        ],
+                    }
+                    for field in result.extraction.fields
+                ]
+                + [
+                    {
+                        "name": "metric",
+                        "value": "top-1 accuracy",
+                        "claims": [
+                            {
+                                "statement": "top-1 accuracy",
+                                "kind": "verbatim",
+                                "evidence_ids": ["a1"],
+                                "quote": "top-1 accuracy",
+                            }
+                        ],
+                    }
+                ],
+            },
+        },
+    )
+    assert revision.status_code == 200
+    assert revision.json()["revision_of"] == str(result.extraction.record_id)
+    assert revision.json()["fields"][-1]["value"] == "top-1 accuracy"
 
 
 @pytest.mark.asyncio
@@ -244,8 +333,9 @@ async def test_empty_card_is_rejected_without_replacing_prior_complete_card(tmp_
         query="image models", collection="swin_v1", source_id="paper-a"
     )
     first = await auto.auto_card(request)
-    with pytest.raises(ToolInputError, match="invalid"):
-        await auto.auto_card(request)
+    rejected = await auto.auto_card(request)
+    assert rejected.status == "review_required"
+    assert rejected.failure_code == "tool:schema_invalid"
     saved = auto.load_card(request)
     assert saved.screening.record_id == first.screening.record_id
     assert saved.extraction.record_id == first.extraction.record_id
@@ -255,16 +345,40 @@ async def test_empty_card_is_rejected_without_replacing_prior_complete_card(tmp_
 async def test_malformed_model_tool_call_is_a_bounded_input_error(tmp_path):
     auto = build(tmp_path, [])
     auto.runtime_factory = lambda root, config, journal, task_id: MalformedRuntime()
-    with pytest.raises(ToolInputError, match="malformed_tool_call"):
-        await auto.auto_card(
-            AutoCardRequest(
-                query="image models", collection="swin_v1", source_id="paper-a"
-            )
-        )
+    result = await auto.auto_card(
+        AutoCardRequest(query="image models", collection="swin_v1", source_id="paper-a")
+    )
+    assert result.status == "review_required"
+    assert result.failure_code == "tool:malformed_tool_call"
     traces = list((tmp_path / "data/processed/research/p4-v2/tasks").glob("*.json"))
     assert len(traces) == 1
     trace = json.loads(traces[0].read_text(encoding="utf-8"))
     assert trace["submission_diagnostic"]["code"] == "malformed_tool_call"
+
+
+@pytest.mark.asyncio
+async def test_runtime_failure_returns_paper_scoped_review_fallback(tmp_path):
+    auto = build(tmp_path, [])
+    auto.runtime_factory = lambda root, config, journal, task_id: FailingRuntime()
+    result = await auto.auto_card(
+        AutoCardRequest(query="image models", collection="swin_v1", source_id="paper-a")
+    )
+    assert result.status == "review_required"
+    assert result.failure_code == "generation:ModelUnavailable"
+    assert result.screening is None and result.extraction is None
+    assert result.candidate.source_id == "paper-a"
+    assert result.usage.completion_tokens == 2048
+
+
+def test_paper_evidence_search_is_forced_to_the_selected_source(tmp_path):
+    auto = build(tmp_path, [])
+    result = auto.search_paper(
+        PaperEvidenceSearchRequest(
+            query="accuracy", collection="swin_v1", source_id="paper-a"
+        )
+    )
+    assert [item.chunk_id for item in result.results] == ["a1", "a2"]
+    assert all(item.source.source_id == "paper-a" for item in result.results)
 
 
 @pytest.mark.asyncio
@@ -306,6 +420,19 @@ def test_new_endpoints_forward_and_reject_invalid_collection(tmp_path):
         ).status_code
         == 422
     )
+    scoped = client.post(
+        "/v1/research/evidence-search",
+        json={
+            "query": "accuracy",
+            "collection": "swin_v1",
+            "source_id": "paper-a",
+            "limit": 6,
+        },
+    )
+    assert scoped.status_code == 200
+    assert {item["source"]["source_id"] for item in scoped.json()["results"]} == {
+        "paper-a"
+    }
 
 
 @pytest.mark.asyncio
@@ -363,6 +490,38 @@ async def test_saved_card_rejects_changed_source_version(tmp_path):
         auto.load_card(request)
 
 
+def test_extraction_only_fallback_revision_can_be_loaded_without_screening(tmp_path):
+    auto = build(tmp_path, [])
+    request = AutoCardRequest(
+        query="image models", collection="swin_v1", source_id="paper-a"
+    )
+    candidate, _ = auto._paper_evidence(request)
+    extraction = auto.research.submit_extraction(
+        auto._paper_scope(request, candidate),
+        ExtractionDraft(
+            subject_source_id="paper-a",
+            fields=[
+                ExtractionFieldDraft(
+                    name="dataset",
+                    value="ImageNet",
+                    claims=[
+                        ClaimDraft(
+                            statement="ImageNet",
+                            kind="verbatim",
+                            evidence_ids=["a1"],
+                            quote="ImageNet",
+                        )
+                    ],
+                )
+            ],
+        ),
+    )
+    loaded = auto.load_card(request)
+    assert loaded.screening is None
+    assert loaded.extraction == extraction
+    assert [field.value for field in loaded.high_confidence_fields] == ["ImageNet"]
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize("extra", [1, 8])
 async def test_multi_entries_survive_persistence_revision_and_comparison(
@@ -372,8 +531,7 @@ async def test_multi_entries_survive_persistence_revision_and_comparison(
 
     draft = draft_a()
     draft["fields"].extend(
-        field("dataset", f"second dataset {i}", f"second dataset {i}", "a2")
-        for i in range(extra)
+        field("dataset", "ImageNet", "ImageNet", "a1") for _ in range(extra)
     )
     auto = build(tmp_path, [draft, draft_b()])
     request = AutoCardRequest(
@@ -387,7 +545,7 @@ async def test_multi_entries_survive_persistence_revision_and_comparison(
     assert [f.value for f in loaded.extraction.fields] == [
         f["value"] for f in draft["fields"]
     ]
-    assert loaded.extraction.fields[-1].claims[0].status == "insufficient_evidence"
+    assert loaded.extraction.fields[-1].claims[0].status == "supported"
     revised = auto.research.submit_extraction(
         auto._paper_scope(request, first.candidate),
         ExtractionDraft(
@@ -408,5 +566,4 @@ async def test_multi_entries_survive_persistence_revision_and_comparison(
     assert not report.comparable
     assert any("尚未绑定实验关联" in w for w in report.warnings)
     table = report.markdown.split("## 可比性")[0]
-    assert "ImageNet" in table and "second dataset" in table
-    assert "insufficient_evidence" in table
+    assert "ImageNet" in table
