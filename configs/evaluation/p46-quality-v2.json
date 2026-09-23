@@ -1,0 +1,64 @@
+{
+  "version": "p46-quality-v2",
+  "collection": "qasper_train_v1",
+  "split": "train",
+  "model": "deepseek-v4-pro",
+  "max_paid_calls": 8,
+  "retry_limit": 0,
+  "thresholds": {
+    "tool_submission_success": 0.875,
+    "evidence_support_rate": 0.9,
+    "field_classification_accuracy": 0.85,
+    "missing_field_identification_rate": 0.85
+  },
+  "cases": [
+    {
+      "key": "gaussian_priors",
+      "source_id": "qasper:1601.02166",
+      "title": "Empirical Gaussian priors for cross-lingual transfer learning",
+      "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "urban_legends",
+      "source_id": "qasper:1601.06081",
+      "title": "Why Do Urban Legends Go Viral?",
+      "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "linguistic_hedges",
+      "source_id": "qasper:1601.06738",
+      "title": "A Label Semantics Approach to Linguistic Hedges",
+      "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "grail_prover",
+      "source_id": "qasper:1602.00812",
+      "title": "The Grail theorem prover: Type theory for syntax and semantics",
+      "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "syntactic_structures",
+      "source_id": "qasper:1602.03661",
+      "title": "On the emergence of syntactic structures: quantifying and modelling duality of patterning",
+      "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "rnn_domain_adaptation",
+      "source_id": "qasper:1604.00117",
+      "title": "Domain Adaptation of Recurrent Neural Networks for Natural Language Understanding",
+      "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "attsum",
+      "source_id": "qasper:1604.00125",
+      "title": "AttSum: Joint Learning of Focusing and Summarization with Neural Attention",
+      "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    },
+    {
+      "key": "causal_statements",
+      "source_id": "qasper:1604.05781",
+      "title": "What we write about when we write about causality: Features of causal statements across large-scale social discourse",
+      "query": "What task, model, datasets, input and training setup, evaluation metrics, quantitative results, limitations and code availability are explicitly reported?"
+    }
+  ]
+}

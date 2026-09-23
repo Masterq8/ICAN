@@ -18,7 +18,7 @@
       "dataset_id": "qasper_external_chunks_v1",
       "kind": "qasper",
       "parent_manifest": "data/processed/qasper_external/v1/manifest.json",
-      "expected_manifest_sha256": "593e3c071031c95815797d4796e5d3fa103a210922f853a77be19e5934365d6f",
+      "expected_manifest_sha256": "cc0f8feac22ff05ce50140d1421b79bb2f6b2ec9b0c1f094fabfcbefd3c8a11a",
       "inputs": {"train": "data/processed/qasper_external/v1/train_corpus.jsonl", "validation": "data/processed/qasper_external/v1/validation_corpus.jsonl"},
       "output_dir": "data/processed/qasper_external/chunks/v1"
     }

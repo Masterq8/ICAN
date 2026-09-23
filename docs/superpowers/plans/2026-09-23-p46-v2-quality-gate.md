@@ -39,16 +39,16 @@
 - Reuse: `ican/evaluation/research_card.py`
 - Reuse: `ican/evaluation/research_audit.py`
 
-- [ ] Run `conda run -n ican python scripts/prepare_qasper.py --train-count 23 --validation-count 10` against the already downloaded pinned parquet and dataset card.
-- [ ] Update the QASPER parent-manifest hash in `configs/chunking/v1.json`, rebuild chunks, then update the QASPER chunk-manifest and evaluation hashes in `configs/indexing/v1.json` and rebuild the index.
-- [ ] Verify the first 20 train papers are byte-for-byte unchanged as records, the validation artifacts are unchanged, and the three added train papers are exactly `1604.00117`, `1604.00125`, and `1604.05781`.
-- [ ] Write a failing test that loads the v2 config and asserts the eight source IDs, order, split, model, hard call cap, and four thresholds above.
-- [ ] Write a failing test that normalizes IDs to `qasper:<paper_id>` and rejects duplicate IDs, fewer or more than eight IDs, a used source ID, a model other than `deepseek-v4-pro`, and any retry allowance above zero.
-- [ ] Implement the frozen JSON config and a `prepare` command that reads the corpus, groups chunks by `source_id`, checks both freshness roots, and writes `data/processed/evaluation/p46-quality-v2/runtime/frozen-cases.json`.
-- [ ] Make preparation freeze each paper title, selected evidence-unit IDs, evidence text, corpus file SHA-256, config SHA-256, and current Git source commit.
-- [ ] Make preparation refuse a dirty tree except for ignored runtime output, and refuse to overwrite a started or sealed run.
-- [ ] Run `python -m pytest tests/test_research_card_v2_evaluation.py -q` and require all tests to pass.
-- [ ] Commit the config, runner, and tests with message `Add sealed P4.6 v2 quality gate`.
+- [x] Run `conda run -n ican python scripts/prepare_qasper.py --train-count 23 --validation-count 10` against the already downloaded pinned parquet and dataset card.
+- [x] Update the QASPER parent-manifest hash in `configs/chunking/v1.json`, rebuild chunks, then update the QASPER chunk-manifest and evaluation hashes in `configs/indexing/v1.json` and rebuild the index.
+- [x] Verify the first 20 train papers are byte-for-byte unchanged as records, the validation artifacts are unchanged, and the three added train papers are exactly `1604.00117`, `1604.00125`, and `1604.05781`.
+- [x] Write a failing test that loads the v2 config and asserts the eight source IDs, order, split, model, hard call cap, and four thresholds above.
+- [x] Write a failing test that normalizes IDs to `qasper:<paper_id>` and rejects duplicate IDs, fewer or more than eight IDs, a used source ID, a model other than `deepseek-v4-pro`, and any retry allowance above zero.
+- [x] Implement the frozen JSON config and a `prepare` command that reads the corpus, groups chunks by `source_id`, checks both freshness roots, and writes `data/processed/evaluation/p46-quality-v2/runtime/frozen-cases.json`.
+- [x] Make preparation freeze each paper title, selected evidence-unit IDs, evidence text, corpus file SHA-256, config SHA-256, and current Git source commit.
+- [x] Make preparation refuse a dirty tree except for ignored runtime output, and refuse to overwrite a started or sealed run.
+- [x] Run `python -m pytest tests/test_research_card_v2_evaluation.py -q` and require all tests to pass.
+- [x] Commit the config, runner, and tests with message `Add sealed P4.6 v2 quality gate`.
 
 ### Task 2: Enforce one paid generation call per paper
 

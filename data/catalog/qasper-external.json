@@ -1,8 +1,8 @@
 {
   "artifact_sha256": {
-    "data/eval/qasper_external/v1/train_questions.jsonl": "d16b5c02a93d2cd82e8632545a8d2122f5ef2091caab94cbf384b95194ac7065",
+    "data/eval/qasper_external/v1/train_questions.jsonl": "78d7ad3fe03cfdd19cbef77d622e0c753bfc8d050f4bdf3ae5f45c40acb7ff04",
     "data/eval/qasper_external/v1/validation_questions.jsonl": "21ecb3df1c226997c999e786882ae22b3620e405f324b5ac8e95de7562c3f761",
-    "data/processed/qasper_external/v1/train_corpus.jsonl": "bee8df4016b7fdbb4022af8a07b2c0a0557d7af4b09f90d62a3c0026f72d1760",
+    "data/processed/qasper_external/v1/train_corpus.jsonl": "e6bc3b92d27ecb74ae2c33968f652f577412f4c56f50e63734724936cad1c3e2",
     "data/processed/qasper_external/v1/validation_corpus.jsonl": "f6ba131118749f33932bb9b2845e81822d6dbbd339e4ff8aabc5245a94de903b"
   },
   "card_revision": "fdc9d8214fbab5dd782958601db4d678e6934a54",
@@ -10,10 +10,10 @@
   "counts": {
     "train": {
       "ambiguous_matches": 0,
-      "annotations": 51,
-      "papers": 20,
-      "questions": 51,
-      "units": 1656,
+      "annotations": 61,
+      "papers": 23,
+      "questions": 61,
+      "units": 1789,
       "unmatched_evidence": 1
     },
     "validation": {
@@ -59,7 +59,10 @@
       "1603.01417",
       "1603.04513",
       "1603.04553",
-      "1603.07044"
+      "1603.07044",
+      "1604.00117",
+      "1604.00125",
+      "1604.05781"
     ],
     "validation": [
       "1503.00841",
