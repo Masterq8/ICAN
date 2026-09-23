@@ -9,6 +9,7 @@
 ## 冻结样本与运行规则
 
 - 固定 8 篇新的 QASPER train 论文，按 `source_id` 与历史 evaluation、research、replay 产物做全集排除。
+- 统一使用 `qasper:<paper_id>` 比较历史记录；当前 20 篇子集仅剩 5 篇未用，因此从本地已固定 revision 的 train parquet 增量扩展到前 23 篇。最终冻结样本为 `qasper:1601.02166`、`qasper:1601.06081`、`qasper:1601.06738`、`qasper:1602.00812`、`qasper:1602.03661`、`qasper:1604.00117`、`qasper:1604.00125`、`qasper:1604.05781`。
 - 每篇固定统一研究问题、论文版本、索引指纹以及 6 条实际模型输入证据。
 - 每篇只允许一次 `deepseek-v4-pro` 调用；调用前写 started marker，失败后不重试、不换题。
 - 使用独立配置、运行目录、记录库、journal、trace 和 8 次硬预算。

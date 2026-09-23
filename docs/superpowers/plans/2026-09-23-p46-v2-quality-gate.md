@@ -12,8 +12,9 @@
 
 ## Frozen acceptance contract
 
-- Papers, in order: `1601.00901`, `1601.01705`, `1601.02166`, `1601.02543`, `1601.04012`, `1601.06068`, `1601.06081`, `1601.06738`.
+- Papers, in order: `qasper:1601.02166`, `qasper:1601.06081`, `qasper:1601.06738`, `qasper:1602.00812`, `qasper:1602.03661`, `qasper:1604.00117`, `qasper:1604.00125`, `qasper:1604.05781`.
 - Corpus: `data/processed/qasper_external/v1/train_corpus.jsonl`, QASPER `train` split only.
+- Corpus preparation: expand the pinned local QASPER train sample from the first 20 to the first 23 lexicographic paper IDs, then rebuild its chunks and index; the validation sample remains fixed at 10.
 - Freshness roots: `data/processed/evaluation` and `data/processed/research`; preparation must fail if any frozen ID is found there.
 - Generation model: `deepseek-v4-pro`; exactly one generation request per paper, with no retry, substitution, or prompt rerun.
 - Tool success gate: at least `7/8` accepted submissions.
@@ -29,11 +30,20 @@
 - Create: `configs/evaluation/p46-quality-v2.json`
 - Create: `scripts/evaluate_research_cards_v2.py`
 - Create: `tests/test_research_card_v2_evaluation.py`
+- Modify: `configs/chunking/v1.json`
+- Modify: `configs/indexing/v1.json`
+- Regenerate: `data/processed/qasper_external/v1/`
+- Regenerate: `data/processed/qasper_external/chunks/v1/`
+- Regenerate: `data/eval/qasper_external/v1/train_questions.jsonl`
+- Regenerate: `data/catalog/qasper-external.json`
 - Reuse: `ican/evaluation/research_card.py`
 - Reuse: `ican/evaluation/research_audit.py`
 
+- [ ] Run `conda run -n ican python scripts/prepare_qasper.py --train-count 23 --validation-count 10` against the already downloaded pinned parquet and dataset card.
+- [ ] Update the QASPER parent-manifest hash in `configs/chunking/v1.json`, rebuild chunks, then update the QASPER chunk-manifest and evaluation hashes in `configs/indexing/v1.json` and rebuild the index.
+- [ ] Verify the first 20 train papers are byte-for-byte unchanged as records, the validation artifacts are unchanged, and the three added train papers are exactly `1604.00117`, `1604.00125`, and `1604.05781`.
 - [ ] Write a failing test that loads the v2 config and asserts the eight source IDs, order, split, model, hard call cap, and four thresholds above.
-- [ ] Write a failing test that rejects duplicate IDs, fewer or more than eight IDs, a used source ID, a model other than `deepseek-v4-pro`, and any retry allowance above zero.
+- [ ] Write a failing test that normalizes IDs to `qasper:<paper_id>` and rejects duplicate IDs, fewer or more than eight IDs, a used source ID, a model other than `deepseek-v4-pro`, and any retry allowance above zero.
 - [ ] Implement the frozen JSON config and a `prepare` command that reads the corpus, groups chunks by `source_id`, checks both freshness roots, and writes `data/processed/evaluation/p46-quality-v2/runtime/frozen-cases.json`.
 - [ ] Make preparation freeze each paper title, selected evidence-unit IDs, evidence text, corpus file SHA-256, config SHA-256, and current Git source commit.
 - [ ] Make preparation refuse a dirty tree except for ignored runtime output, and refuse to overwrite a started or sealed run.
