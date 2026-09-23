@@ -344,6 +344,12 @@ def finalize():
         ROOT, RUN_DIR, manifest, read_json(DOC_DIR / "run-seal.json")
     )
     review = read_json(REVIEW_PATH)
+    provenance = review.get("review_provenance")
+    if provenance and (
+        provenance.get("artifact") != "pro-review.json"
+        or digest(DOC_DIR / "pro-review.json") != provenance.get("sha256")
+    ):
+        raise ValueError("AI review provenance artifact identity differs")
     outputs = case_outputs(manifest)
     validate_review_binding(
         {key: value["raw_fields"] for key, value in outputs.items()}, review
@@ -376,6 +382,8 @@ def finalize():
             "supplementary_raw_draft_metrics": metrics,
             "reviewer_type": review["reviewer_type"],
             "human_review_status": review["human_review_status"],
+            "ai_review_status": review.get("ai_review_status", "initial"),
+            "review_provenance": review.get("review_provenance"),
             "usage": usage,
             "audit_inputs": {
                 "review_sha256": digest(REVIEW_PATH),
@@ -399,6 +407,7 @@ def finalize():
         f"本轮质量检查已执行：{len(outputs)} 篇新论文成功提交 {accepted_count} 篇。具体失败原因见逐篇诊断；本报告不自动判定产品验收通过。",
         "",
         f"**{review_notice}**",
+        f"AI 复核状态：{review.get('ai_review_status', 'initial')}；审核身份：{review['reviewer_type']}。",
         "",
         "## 预先约定口径：成功提交样本",
         "",
@@ -428,6 +437,16 @@ def finalize():
         "| 样本 | 工具诊断 | 运行状态 | 提交字段 | 遗漏的已有字段 | 规则提示 |",
         "|---|---|---|---|---|---|",
     ]
+    provenance = review.get("review_provenance")
+    if provenance:
+        lines[6:6] = [
+            "",
+            "复核过程与分歧裁定见 [AI复核记录](review-adjudication.md)。",
+            (
+                f"额外语义审核：{provenance['review_paid_calls']} 次 {provenance['review_model']}，"
+                "与下文原始生成用量分开计算，未重新生成卡片。"
+            ),
+        ]
     for key, output in outputs.items():
         item = review["cases"][key]
         rule_codes = [
@@ -518,7 +537,7 @@ def finalize():
     packet = [
         "# P4.6 人工复核工作表",
         "",
-        f"当前 reviewer_type={review['reviewer_type']}，human_review_status={review_status}。请核对字段类型、引文支持与遗漏；审核单位为下方 occurrence（从 0 开始），不是去重后的字段名。",
+        f"当前 reviewer_type={review['reviewer_type']}，ai_review_status={review.get('ai_review_status', 'initial')}，human_review_status={review_status}。请核对字段类型、引文支持与遗漏；审核单位为下方 occurrence（从 0 开始），不是去重后的字段名。",
         "修改 manual-review.json 中的判断、理由和字段存在性；保留原始字段哈希。人工完成后填写本人 reviewer、reviewer_type=human 和 human_review_status=completed，再运行 finalize。",
         "",
     ]
@@ -533,6 +552,17 @@ def finalize():
             "当前遗漏：" + (", ".join(label["omitted_present_fields"]) or "无"),
             "",
         ]
+        if label.get("presence_review"):
+            packet += ["### 字段存在性复核", ""]
+            for name, verdict in label["presence_review"].items():
+                packet += [
+                    f"- **{name}：存在**。{verdict['reason']}",
+                    f"  原文：{verdict['excerpt']}",
+                    f"  来源：`{verdict['evidence_id']}`",
+                ]
+            for name, reason in label.get("absence_review", {}).items():
+                packet.append(f"- **{name}：当前证据未提供**。{reason}")
+            packet.append("")
         for index, (raw, audit) in enumerate(
             zip(outputs[key]["raw_fields"], label["fields"], strict=True)
         ):
@@ -548,6 +578,11 @@ def finalize():
                 audit["note"],
                 "",
             ]
+            if audit.get("ambiguity"):
+                packet += [
+                    "分类歧义：" + audit["ambiguity"]["resolution"],
+                    "",
+                ]
         packet += ["### 实际输入证据", ""]
         for evidence in case["evidence"]:
             packet += [

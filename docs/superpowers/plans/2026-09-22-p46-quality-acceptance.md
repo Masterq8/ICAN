@@ -83,3 +83,5 @@
 ## 2026-09-23 checkpoint
 
 Eight calls completed once at source commit `2937a56`; 2 accepted, 6 rejected for duplicate field names. Preserve the original accepted-only metrics and explicitly label all-raw-field metrics as a posthoc supplement. Assistant labels are provisional. Source, artifact, journal and occurrence hashes bind the offline scorer to this run. No paid reruns. Independent review found no remaining Critical/Important issues after fixes. Next product change: design multi-entry fields and test with offline replay, retaining the original failures.
+
+- [x] 2026-09-23 user-authorized Pro-assisted second AI audit: 16 reviewer calls, 59 occurrences and 72 presence slots checked, identities retained, finalize recalculated. This does not check off human confirmation. See `docs/evaluation/p46-quality-v1/review-adjudication.md`.

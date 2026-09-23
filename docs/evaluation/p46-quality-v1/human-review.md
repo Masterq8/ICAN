@@ -1,14 +1,42 @@
 # P4.6 人工复核工作表
 
-当前 reviewer_type=assistant，human_review_status=pending。请核对字段类型、引文支持与遗漏；审核单位为下方 occurrence（从 0 开始），不是去重后的字段名。
+当前 reviewer_type=assistant，ai_review_status=completed，human_review_status=pending。请核对字段类型、引文支持与遗漏；审核单位为下方 occurrence（从 0 开始），不是去重后的字段名。
 修改 manual-review.json 中的判断、理由和字段存在性；保留原始字段哈希。人工完成后填写本人 reviewer、reviewer_type=human 和 human_review_status=completed，再运行 finalize。
 
 ## ontology_parser — Joint learning of ontology and semantic parser from text
 
 来源：qasper:1601.00901；版本：06806e4608976fc2fac0a090ac425d5b2b29caf4
 
-证据中应有字段：task, model, dataset, input_setting, training, metric, result
-当前遗漏：metric
+证据中应有字段：task, model, dataset, input_setting, training, metric, result, limitation
+当前遗漏：metric, limitation
+
+### 字段存在性复核
+
+- **task：存在**。关系预测及语法解析任务在正文中明确可提取；不以缺少原题目引文否认其他位置存在任务。
+  原文：several models to predict relations have been trained and evaluated.
+  来源：`chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283`
+- **model：存在**。自动机模型明确出现。
+  原文：The automaton model for institution relation.
+  来源：`chunk:01cbef48e9c45a524bf96e25f36a5dced7f172cb47c856074ef86ff1e4d8c6e7`
+- **dataset：存在**。数据来源与单位明确。
+  原文：first sentences of Wikipedia pages describing people are taken as a dataset.
+  来源：`chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283`
+- **input_setting：存在**。测试输入样本规模明确，区别于一万句训练集。
+  原文：The grammar was also tested by parsing a sample of 100.000 test sentences.
+  来源：`chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9`
+- **training：存在**。语法诱导训练规模明确。
+  原文：The grammar was induced on 10.000 random sentences
+  来源：`chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba`
+- **metric：存在**。直接定义Coverage，不能因不是F1等常见缩写就判缺失。
+  原文：Coverage represents the fraction of words in a sentence that were parsed
+  来源：`chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9`
+- **result：存在**。测试完全解析比例明确。
+  原文：More than a quarter of sentences were fully parsed
+  来源：`chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9`
+- **limitation：存在**。明确未覆盖长尾，属于覆盖局限；初审遗漏。
+  原文：there is a long tail of unparsed nodes/sentences.
+  来源：`chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9`
+- **code_availability：当前证据未提供**。六段证据没有本文实现的代码访问／发布说明。
 
 ### 字段 0: task
 
@@ -18,7 +46,7 @@
 
 证据 ID：`chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba`
 当前审核：原文支持=False；归类正确=True；建议类型=task
-The quoted title does not occur in the cited evidence chunk.
+不支持：所引chunk仅叙述语法诱导设置，不含提交的论文标题；不能用标题元数据补引文。值本身描述研究任务，task类型可保留。
 
 ### 字段 1: model
 
@@ -28,7 +56,7 @@ The quoted title does not occur in the cited evidence chunk.
 
 证据 ID：`chunk:01cbef48e9c45a524bf96e25f36a5dced7f172cb47c856074ef86ff1e4d8c6e7`
 当前审核：原文支持=True；归类正确=True；建议类型=model
-The automaton model appears verbatim in the figure caption.
+支持：图6原文明示institution relation的automaton model，属于算法模型；不把图中的训练树比例当成另一个模型。
 
 ### 字段 2: dataset
 
@@ -38,7 +66,7 @@ The automaton model appears verbatim in the figure caption.
 
 证据 ID：`chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283`
 当前审核：原文支持=True；归类正确=True；建议类型=dataset
-Wikipedia first sentences are explicitly called a dataset.
+支持：原文明确称人物Wikipedia页面首句为dataset；描述性数据集无需正式名称也可归为dataset。
 
 ### 字段 3: input_setting
 
@@ -48,7 +76,7 @@ Wikipedia first sentences are explicitly called a dataset.
 
 证据 ID：`chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba`
 当前审核：原文支持=True；归类正确=False；建议类型=training
-Grammar induction on 10,000 sentences is a training setup rather than an input setting.
+支持但错分：原文说grammar was induced on 10.000 random sentences，是学习所用训练样本规模，归training，不是测试输入条件。
 
 ### 字段 4: training
 
@@ -58,7 +86,7 @@ Grammar induction on 10,000 sentences is a training setup rather than an input s
 
 证据 ID：`chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba`
 当前审核：原文支持=True；归类正确=True；建议类型=training
-Manual property assignment is part of induction setup.
+支持：属性分配由作者完成，位于语法诱导的人工反馈流程中，属于训练／标注步骤；不臆测未写出的标注协议。
 
 ### 字段 5: result
 
@@ -68,7 +96,7 @@ Manual property assignment is part of induction setup.
 
 证据 ID：`chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-Average parsing time is a measured result.
+支持：原文明示每句平均解析时间0.16ms，是测得结果；仅凭该值不能扩展为跨硬件性能结论。
 
 ### 字段 6: result
 
@@ -78,7 +106,7 @@ Average parsing time is a measured result.
 
 证据 ID：`chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-Fully parsed fraction is a reported result; this duplicate field caused schema rejection.
+支持：超过四分之一句子被完全解析是定量覆盖结果；重复result影响提交协议，不影响这条语义支持。
 
 ### 实际输入证据
 
@@ -122,8 +150,32 @@ Table 6. Performance of various relation extraction models.
 
 来源：qasper:1601.02543；版本：06806e4608976fc2fac0a090ac425d5b2b29caf4
 
-证据中应有字段：task, model, metric, result, limitation
-当前遗漏：task, metric, result
+证据中应有字段：task, model, input_setting, metric, result, limitation
+当前遗漏：task, input_setting, metric, result
+
+### 字段存在性复核
+
+- **task：存在**。speech recognition直接给出任务名，无需必须有We aim to句式；拒绝Pro把缺少目标句等同没有任务的建议。
+  原文：A typical speech recognition system.
+  来源：`chunk:e2631ae8ae10b636bf04ee68a092cdb37fcd4e62ef0393004a4368ab46ef43bf`
+- **model：存在**。菜单式ASR系统明确。
+  原文：a typical menu based ASR system
+  来源：`chunk:7d1da55010ca6a9ee84ab2823c103214603a17faf153ce6910f55046207bddf5`
+- **input_setting：存在**。每节点指定待识别词集，是输入／识别候选约束；初审遗漏。
+  原文：the language model is typically the set of words that need to be recognized at a given node.
+  来源：`chunk:e2631ae8ae10b636bf04ee68a092cdb37fcd4e62ef0393004a4368ab46ef43bf`
+- **metric：存在**。交易完成率明确。
+  原文：transaction completion rate
+  来源：`chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9`
+- **result：存在**。报告定性提升。
+  原文：resulted in a significant improvement in the transaction completion rate.
+  来源：`chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9`
+- **limitation：存在**。当前报告结果尚不完整，归报告范围局限。
+  原文：We will present more experimental results in the final paper.
+  来源：`chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9`
+- **dataset：当前证据未提供**。活动词列表及距离测量表题没有描述一个用于训练／评测的数据集，不能仅凭表题臆造语料。
+- **training：当前证据未提供**。修改识别词表是系统配置调整，没有明确参数学习、训练数据或训练过程；不推断成训练。
+- **code_availability：当前证据未提供**。未提及本文代码获取方式。
 
 ### 字段 0: limitation
 
@@ -133,7 +185,9 @@ Table 6. Performance of various relation extraction models.
 
 证据 ID：`chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9`
 当前审核：原文支持=True；归类正确=True；建议类型=limitation
-The excerpt explicitly defers further experimental results.
+支持：原文把更多实验结果推迟至最终论文，按当前报告尚不完整的披露局限归limitation；这是报告范围的限制，不是ASR算法能力缺陷。
+
+分类歧义：采用报告完整性局限口径；不声称是算法能力局限。
 
 ### 字段 1: model
 
@@ -143,7 +197,7 @@ The excerpt explicitly defers further experimental results.
 
 证据 ID：`chunk:7d1da55010ca6a9ee84ab2823c103214603a17faf153ce6910f55046207bddf5`
 当前审核：原文支持=True；归类正确=True；建议类型=model
-The menu-based ASR system is stated in the cited caption.
+支持且类型正确：图1确实描述menu based ASR system，是软件识别系统结构，model可容纳系统方法；不同于仅指实验硬件型号。
 
 ### 实际输入证据
 
@@ -187,8 +241,34 @@ A similar analysis was carried out at other recognition nodes and the active wor
 
 来源：qasper:1601.04012；版本：06806e4608976fc2fac0a090ac425d5b2b29caf4
 
-证据中应有字段：task, dataset, input_setting, training, metric, result, model
-当前遗漏：training, model
+证据中应有字段：task, model, dataset, input_setting, training, metric, result
+当前遗漏：model, training
+
+### 字段存在性复核
+
+- **task：存在**。事件抽取任务直接出现。
+  原文：performance of an event extraction system
+  来源：`chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4`
+- **model：存在**。命名ATT系统可作方法信息，不能因未给全部架构判model缺失。
+  原文：in building the ATT systems
+  来源：`chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f`
+- **dataset：存在**。ECB+数据集明确。
+  原文：Cybulska and Vossen use the ECB+ dataset
+  来源：`chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582`
+- **input_setting：存在**。表注明确三类评测输入，原先锚点训练段落不合适，改用表注。
+  原文：Whole data set (W), Abstracts only (A) and Full papers only (F)
+  来源：`chunk:865e26540412ac75e8cff86418d81ac462e444caad86463bc7da15be334d9572`
+- **training：存在**。十二个模型、两个探索维度为训练设置。
+  原文：for each task, they trained twelve models exploring these two dimensions
+  来源：`chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f`
+- **metric：存在**。指标名明确。
+  原文：recall, precision and F-score
+  来源：`chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582`
+- **result：存在**。定量结果明确。
+  原文：they achieve an ACE value score of 22.3%
+  来源：`chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4`
+- **limitation：当前证据未提供**。所给六段中low but comparable为结果评价，没有明确适用约束或实验覆盖缺口。采用result优先口径；Pro的广义limitation意见保留为歧义。
+- **code_availability：当前证据未提供**。未提及本文代码获取方式。
 
 ### 字段 0: task
 
@@ -198,7 +278,7 @@ A similar analysis was carried out at other recognition nodes and the active wor
 
 证据 ID：`chunk:865e26540412ac75e8cff86418d81ac462e444caad86463bc7da15be334d9572`
 当前审核：原文支持=False；归类正确=True；建议类型=task
-The submitted title is not a contiguous quote in the cited table caption.
+不支持：引用指向表XI图注，原文是评测条件及指标，不含提交的论文标题；task类型与引用支持分别判断。
 
 ### 字段 1: dataset
 
@@ -208,7 +288,7 @@ The submitted title is not a contiguous quote in the cited table caption.
 
 证据 ID：`chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582`
 当前审核：原文支持=True；归类正确=True；建议类型=dataset
-ECB+ is explicitly identified as the dataset.
+支持：段落明确Cybulska和Vossen使用ECB+及502篇文本。是综述引用的他人数据集，不能称为综述作者自己的实验。
 
 ### 字段 2: metric
 
@@ -218,7 +298,7 @@ ECB+ is explicitly identified as the dataset.
 
 证据 ID：`chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582`
 当前审核：原文支持=True；归类正确=True；建议类型=metric
-The cited paragraph lists coreference metrics.
+支持：原文明列recall、precision、F-score、MUC、B3、CEAF、BLANC、CoNLL F1；省去BIBREF标记是忠实名称归一化。
 
 ### 字段 3: metric
 
@@ -228,7 +308,7 @@ The cited paragraph lists coreference metrics.
 
 证据 ID：`chunk:84ad68a362300332e93f141fe4824b8ccc7e22ff35c2bde207620ad4fbb256d1`
 当前审核：原文支持=True；归类正确=True；建议类型=metric
-The second metric list is valid, but duplicates the metric field.
+支持：原文列出recall(R)、precision(P)、F-score(F)，字段值为指标名称而非分数；与上一metric重复只影响协议。
 
 ### 字段 4: result
 
@@ -238,7 +318,7 @@ The second metric list is valid, but duplicates the metric field.
 
 证据 ID：`chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-ACE value 22.3% is a quantitative result.
+支持：22.3%是原文ACE value实测分数，应归result；该结果属于被综述的方法，不代表本文统一基准成绩。
 
 ### 字段 5: result
 
@@ -248,7 +328,7 @@ ACE value 22.3% is a quantitative result.
 
 证据 ID：`chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-Improvement for every metric is a comparative result.
+支持：原文称引入granularity后所有指标改善，是比较性结果；未提供幅度，不补造数值。
 
 ### 字段 6: result
 
@@ -258,7 +338,7 @@ Improvement for every metric is a comparative result.
 
 证据 ID：`chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-Top-ten placement is an experimental result.
+支持：原文确实写TempEval-3前十，尽管句法残缺；保留原文粒度，不推断具体系统名或名次。
 
 ### 字段 7: limitation
 
@@ -268,7 +348,9 @@ Top-ten placement is an experimental result.
 
 证据 ID：`chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4`
 当前审核：原文支持=True；归类正确=False；建议类型=result
-Low but comparable performance interprets a result rather than stating a study limitation.
+支持但错分：low but comparable是对已测成绩的比较评价，未给方法适用约束或研究设计缺陷，主类型为result；记录与宽泛limitation解释的边界。
+
+分类歧义：广义低性能局限解释可成立，但本轮按缺少明确约束的比较评价归result；与Russian样本同口径。
 
 ### 字段 8: input_setting
 
@@ -278,7 +360,7 @@ Low but comparable performance interprets a result rather than stating a study l
 
 证据 ID：`chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f`
 当前审核：原文支持=False；归类正确=False；建议类型=training
-The draft changes two dimensions to three and describes model training/submission, not an input setting.
+不支持且错分：引用为two dimensions，值改成three dimensions；three of which指提交的模型，不是维度。其主题是训练配置，归training。
 
 ### 实际输入证据
 
@@ -322,8 +404,28 @@ The ACE specification provided a way to measure the performance of an event extr
 
 来源：qasper:1602.01208；版本：06806e4608976fc2fac0a090ac425d5b2b29caf4
 
-证据中应有字段：task, model, input_setting, training, result
+证据中应有字段：task, input_setting, training, result
 当前遗漏：无
+
+### 字段存在性复核
+
+- **task：存在**。任务标题直接出现。
+  原文：Learning of spatial concepts
+  来源：`chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7`
+- **input_setting：存在**。实验平台与环境明确；不把硬件计入model。
+  原文：using an autonomous mobile robot TurtleBot 2 in a real environment.
+  来源：`chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80`
+- **training：存在**。学习过程明示采样与初始化。
+  原文：Gibbs sampling Initialize parameters
+  来源：`chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7`
+- **result：存在**。图注明确是学到的位置分布，属于定性结果。
+  原文：Learning result of the position distribution
+  来源：`chunk:fbc1f7243593c148c351f8c6792133add9c159c5329875ce4668a69f3a2025e8`
+- **model：当前证据未提供**。TurtleBot 2是硬件，ROS是运行平台；the proposed method未给算法模型身份，Gibbs采样为学习程序，不据此补造特定模型。
+- **dataset：当前证据未提供**。没有明确命名或描述的训练／测试数据集合；学到的词和位置分布是输出，不当作数据集。
+- **metric：当前证据未提供**。只见定性学习结果与图注，没有度量定义。
+- **limitation：当前证据未提供**。未明确陈述适用限制或结果披露缺口。
+- **code_availability：当前证据未提供**。提到ROS等组件不等于披露本文实现代码。
 
 ### 字段 0: task
 
@@ -333,7 +435,7 @@ The ACE specification provided a way to measure the performance of an event extr
 
 证据 ID：`chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7`
 当前审核：原文支持=True；归类正确=True；建议类型=task
-Learning spatial concepts is explicit.
+支持：学习步骤中明示Learning of spatial concepts，足以支持该任务；不从INLINEFORM占位符恢复未知公式。
 
 ### 字段 1: model
 
@@ -342,8 +444,8 @@ Learning spatial concepts is explicit.
 引用：the effectiveness of the proposed method was tested by using an autonomous mobile robot TurtleBot 2 in a real environment
 
 证据 ID：`chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80`
-当前审核：原文支持=True；归类正确=True；建议类型=model
-TurtleBot 2 is the experimental system/platform.
+当前审核：原文支持=True；归类正确=False；建议类型=input_setting
+支持但错分：TurtleBot 2在所引段落中是测试用机器人硬件，不能作为论文的算法模型。九类字段无hardware槽时，最佳归类为input_setting（实验平台）。
 
 ### 字段 2: input_setting
 
@@ -353,7 +455,7 @@ TurtleBot 2 is the experimental system/platform.
 
 证据 ID：`chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80`
 当前审核：原文支持=True；归类正确=True；建议类型=input_setting
-The experiment is explicitly conducted in a real environment.
+支持：原文明确in a real environment，是实验／测试环境条件；没有具体地点，不能补填。
 
 ### 字段 3: training
 
@@ -363,7 +465,7 @@ The experiment is explicitly conducted in a real environment.
 
 证据 ID：`chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7`
 当前审核：原文支持=True；归类正确=True；建议类型=training
-Gibbs sampling and parameter initialization occur in the learning procedure.
+支持：学习流程明示Gibbs sampling Initialize parameters，属于训练／推断步骤；碎片化算法文本不支持更细的采样参数。
 
 ### 字段 4: result
 
@@ -373,7 +475,7 @@ Gibbs sampling and parameter initialization occur in the learning procedure.
 
 证据 ID：`chunk:fbc1f7243593c148c351f8c6792133add9c159c5329875ce4668a69f3a2025e8`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-The figure caption describes the learned position-distribution output.
+支持：图4标题明确Learning result of the position distribution，字段描述所得位置分布可视化，可作定性result；不是定量性能提升。
 
 ### 实际输入证据
 
@@ -420,6 +522,34 @@ Fig. 11. Learning result of each position distribution: A point group of each co
 证据中应有字段：task, model, dataset, input_setting, training, metric, result, limitation
 当前遗漏：dataset
 
+### 字段存在性复核
+
+- **task：存在**。上下文直接说明多语言解析任务；任务存在不等于提交的parser实体或treebanks数据值属于task。
+  原文：a single parser trained on a multilingual set of treebanks
+  来源：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`
+- **model：存在**。方法名明确。
+  原文：We presented MaLOPa
+  来源：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`
+- **dataset：存在**。描述性数据集合已足够支持dataset槽位，不臆造具体树库清单。
+  原文：a multilingual set of treebanks
+  来源：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`
+- **input_setting：存在**。测试时金标准输入明确。
+  原文：both gold language ID of the input language and gold POS tags are given at test time.
+  来源：`chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae`
+- **training：存在**。训练维度等设置明确。
+  原文：All embeddings are trained on the same data and use the same number of dimensions (100).
+  来源：`chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2`
+- **metric：存在**。指标名称明确。
+  原文：parsing accuracy
+  来源：`chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae`
+- **result：存在**。比较结果明确。
+  原文：on average outperforms monolingually-trained parsers
+  来源：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`
+- **limitation：存在**。实际应用中假设不成立。
+  原文：this assumption is not realistic in practical applications.
+  来源：`chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae`
+- **code_availability：当前证据未提供**。六段没有实现代码的发布／访问说明。
+
 ### 字段 0: task
 
 值：a single parser trained on a multilingual set of treebanks
@@ -428,7 +558,7 @@ Fig. 11. Learning result of each position distribution: A point group of each co
 
 证据 ID：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`
 当前审核：原文支持=True；归类正确=False；建议类型=model
-A single multilingual parser describes the model, not the parsing task.
+支持但错分：a single parser trained on...描述一个解析器及训练属性，主语是方法实体，归model；研究任务可另从上下文提取，但不能把该值直接算task。
 
 ### 字段 1: task
 
@@ -438,7 +568,7 @@ A single multilingual parser describes the model, not the parsing task.
 
 证据 ID：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`
 当前审核：原文支持=True；归类正确=False；建议类型=dataset
-A multilingual set of treebanks is dataset information and duplicates task.
+支持但错分：multilingual set of treebanks描述训练数据集合，应归dataset；无需出现具体树库名称才算数据集。
 
 ### 字段 2: training
 
@@ -448,7 +578,7 @@ A multilingual set of treebanks is dataset information and duplicates task.
 
 证据 ID：`chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2`
 当前审核：原文支持=True；归类正确=True；建议类型=training
-Embedding training data and dimensionality are training setup.
+支持：相同训练数据与100维嵌入是训练／模型设置，本协议归training；引文没有提供语料具体名称。
 
 ### 字段 3: model
 
@@ -458,7 +588,7 @@ Embedding training data and dimensionality are training setup.
 
 证据 ID：`chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2`
 当前审核：原文支持=True；归类正确=True；建议类型=model
-Robust-projection multilingual embeddings are a model component.
+支持：robust projection multilingual embeddings是所用方法组件，归model；保留借用guo:16模型的归属。
 
 ### 字段 4: metric
 
@@ -468,7 +598,7 @@ Robust-projection multilingual embeddings are a model component.
 
 证据 ID：`chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae`
 当前审核：原文支持=True；归类正确=True；建议类型=metric
-Parsing accuracy is an evaluation metric.
+支持：parsing accuracy是评价量名称，归metric；引文虽讲精度下降，字段值没有测得分数。
 
 ### 字段 5: input_setting
 
@@ -478,7 +608,7 @@ Parsing accuracy is an evaluation metric.
 
 证据 ID：`chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae`
 当前审核：原文支持=True；归类正确=True；建议类型=input_setting
-Gold language ID and POS tags at test time define the input/evaluation setting.
+支持：测试时提供gold language ID和gold POS tags明确属于input_setting。
 
 ### 字段 6: limitation
 
@@ -488,7 +618,7 @@ Gold language ID and POS tags at test time define the input/evaluation setting.
 
 证据 ID：`chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae`
 当前审核：原文支持=True；归类正确=True；建议类型=limitation
-The paper calls the gold-input assumption unrealistic.
+支持：原文明言金标准输入假设不符合实际应用，是明确适用局限，不是仅描述低分。
 
 ### 字段 7: result
 
@@ -498,7 +628,7 @@ The paper calls the gold-input assumption unrealistic.
 
 证据 ID：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-Outperformance over monolingual parsers is a comparative result.
+支持：原文比较平均优于单语训练解析器，是result；只保留有树库的目标语言条件。
 
 ### 字段 8: result
 
@@ -508,7 +638,7 @@ Outperformance over monolingual parsers is a comparative result.
 
 证据 ID：`chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-Outperformance over transfer baselines is another result and duplicates the field.
+支持：原文在小或无目标树库场景比较优于跨语迁移方法，是result；条件不能省略后跨场景排名。
 
 ### 实际输入证据
 
@@ -555,6 +685,34 @@ In Table 3 , we assume that both gold language ID of the input language and gold
 证据中应有字段：task, model, dataset, input_setting, training, metric, result, limitation
 当前遗漏：model
 
+### 字段存在性复核
+
+- **task：存在**。任务明确。
+  原文：the word prediction task
+  来源：`chunk:edbd3050496d35ced5e7681f5b6e91ec0ff3233284c6b25e86fe0ae2a017dce5`
+- **model：存在**。基线模型明确可提取；不能因CLSTM名称未在这六段出现就认定所有模型信息缺失。
+  原文：a distributed n-gram model with “stupid backoff” smoothing
+  来源：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`
+- **dataset：存在**。数据集明确。
+  原文：whole English corpus from Wikipedia (snapshot from 2014/09/17)
+  来源：`chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574`
+- **input_setting：存在**。词表构造阈值约束模型输入表示。
+  原文：threshold was 200 for Wikipedia
+  来源：`chunk:2b3e32cbaa2c01ab8f65256b76ef76249ba85d2a4f709c2dd89faad955bf28c5`
+- **training：存在**。训练划分明确。
+  原文：80% was used as train, 10% as validation and 10% as test set.
+  来源：`chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574`
+- **metric：存在**。指标明确。
+  原文：perplexity
+  来源：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`
+- **result：存在**。基线测得结果明确。
+  原文：perplexity of 74 (using 5-grams)
+  来源：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`
+- **limitation：存在**。特定基线未运行，比较覆盖有局限。
+  原文：We did not train a n-gram model with Knesner-Ney (KN) smoothing on the Wikipedia data
+  来源：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`
+- **code_availability：当前证据未提供**。六段未披露本文实现代码。
+
 ### 字段 0: task
 
 值：word prediction task, where the goal is to predict the next word in a sentence given the words and context (captured via topic) seen previously
@@ -563,7 +721,7 @@ In Table 3 , we assume that both gold language ID of the input language and gold
 
 证据 ID：`chunk:edbd3050496d35ced5e7681f5b6e91ec0ff3233284c6b25e86fe0ae2a017dce5`
 当前审核：原文支持=True；归类正确=True；建议类型=task
-Next-word prediction is explicit.
+支持：原句明示基于此前词及主题上下文预测下一个词，是task。
 
 ### 字段 1: dataset
 
@@ -573,7 +731,7 @@ Next-word prediction is explicit.
 
 证据 ID：`chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574`
 当前审核：原文支持=True；归类正确=True；建议类型=dataset
-Wikipedia corpus is a dataset.
+支持：英语Wikipedia、2014/09/17快照及470万文档在同一引用段落，dataset正确。
 
 ### 字段 2: dataset
 
@@ -583,7 +741,7 @@ Wikipedia corpus is a dataset.
 
 证据 ID：`chunk:90d72bc5d815517b673fbab16aef3f4e0d5e9614b0d50d62ab9db2818e932867`
 当前审核：原文支持=True；归类正确=True；建议类型=dataset
-Google News corpus is another dataset and duplicates the field.
+支持：2015/07/06内部Google News英语语料快照被明确列为另一数据集，重复不改变语义正确性。
 
 ### 字段 3: input_setting
 
@@ -593,7 +751,9 @@ Google News corpus is another dataset and duplicates the field.
 
 证据 ID：`chunk:2b3e32cbaa2c01ab8f65256b76ef76249ba85d2a4f709c2dd89faad955bf28c5`
 当前审核：原文支持=True；归类正确=True；建议类型=input_setting
-Vocabulary filtering is an input preprocessing setting.
+支持：词频阈值200及129K词表均见原文。该值描述输入表示／词表预处理，按主对象归input_setting；虽然词表从训练数据拟合，也有training解释，但不能据此把忠实引文判为不支持。
+
+分类歧义：词表从训练集构造，同时属于输入表示；按值的主对象归input_setting，原文支持不受类型边界影响。
 
 ### 字段 4: training
 
@@ -603,7 +763,7 @@ Vocabulary filtering is an input preprocessing setting.
 
 证据 ID：`chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574`
 当前审核：原文支持=True；归类正确=True；建议类型=training
-Train/validation/test split is experimental setup.
+支持：80%训练／10%验证／10%测试是明确的数据划分方案，training正确。
 
 ### 字段 5: metric
 
@@ -613,7 +773,7 @@ Train/validation/test split is experimental setup.
 
 证据 ID：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`
 当前审核：原文支持=True；归类正确=True；建议类型=metric
-Perplexity is the metric.
+支持：perplexity是度量名称；包含80的上下文不使仅提取名称的字段变成result。
 
 ### 字段 6: result
 
@@ -623,7 +783,7 @@ Perplexity is the metric.
 
 证据 ID：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-Perplexity near 80 is a result.
+支持：原文报告Wikipedia上stupid-backoff分布式n-gram基线困惑度约80，是基线result，不是CLSTM自身成绩。
 
 ### 字段 7: result
 
@@ -633,7 +793,7 @@ Perplexity near 80 is a result.
 
 证据 ID：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-Perplexity 74 is another result and duplicates the field.
+支持：原文报告Google News上KN平滑5-gram困惑度74，result正确；与上一结果数据集和模型均不同，不宜直接排名。
 
 ### 字段 8: limitation
 
@@ -643,7 +803,7 @@ Perplexity 74 is another result and duplicates the field.
 
 证据 ID：`chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6`
 当前审核：原文支持=True；归类正确=True；建议类型=limitation
-The missing KN Wikipedia experiment is an explicit limitation of the comparison.
+支持：明确未在Wikipedia训练KN基线，属于实验比较覆盖不足的limitation；不推断训练失败原因。
 
 ### 实际输入证据
 
@@ -690,6 +850,34 @@ Note that we also trained a distributed n-gram model with “stupid backoff” s
 证据中应有字段：task, model, dataset, input_setting, training, metric, result, limitation
 当前遗漏：无
 
+### 字段存在性复核
+
+- **task：存在**。任务在末段明确，而提交的task引用没有指向这里。
+  原文：task of word semantic similarity.
+  来源：`chunk:72366a903d6fb4afa1e0c1e7fc0a611a00e3ee49ecd8c8b581a10666da629788`
+- **model：存在**。使用的模型明确。
+  原文：Skip-gram model
+  来源：`chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc`
+- **dataset：存在**。评价数据明确。
+  原文：HJ-dataset
+  来源：`chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f`
+- **input_setting：存在**。逐行输入的预处理表示明确，不用训练语料天数作输入设置。
+  原文：Output of Tomita Parser is fed directly line-by-line to the model.
+  来源：`chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f`
+- **training：存在**。训练配置明确。
+  原文：We fix parameters for the model with following values: vector size of 300, min-freq of 40, context size of 5 and downsampling of 1e-3.
+  来源：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`
+- **metric：存在**。相关性指标明确。
+  原文：Spearman coefficient
+  来源：`chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f`
+- **result：存在**。实测比较结果明确。
+  原文：best result belongs to 7-day corpus with 0.56 correlation with HJ-dataset
+  来源：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`
+- **limitation：存在**。明确进一步改进所依赖的数据量和表示维度条件，保留limitation；不用单纯性能差距作为锚点。与result解释重叠的歧义另列。
+  原文：in order to achieve better results with Word2Vec one should increase both corpus and vector sizes.
+  来源：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`
+- **code_availability：当前证据未提供**。C工具和gensim是第三方实现，不证明这篇论文自身代码开放；未见本文实现访问说明。
+
 ### 字段 0: task
 
 值：word semantic similarity task
@@ -698,7 +886,7 @@ Note that we also trained a distributed n-gram model with “stupid backoff” s
 
 证据 ID：`chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc`
 当前审核：原文支持=False；归类正确=True；建议类型=task
-The cited quote discusses Word2Vec but does not contain the submitted task phrase.
+不支持：所引chunk只讲Word2Vec训练与模型，不能单凭词向量训练推出词义相似度任务；另一chunk虽明确任务，也不能替换该字段自己的引用。task类型本身正确。
 
 ### 字段 1: model
 
@@ -708,7 +896,7 @@ The cited quote discusses Word2Vec but does not contain the submitted task phras
 
 证据 ID：`chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc`
 当前审核：原文支持=True；归类正确=True；建议类型=model
-Skip-gram is explicit.
+支持：原文明确只报告Skip-gram的结果，model正确。
 
 ### 字段 2: dataset
 
@@ -718,7 +906,7 @@ Skip-gram is explicit.
 
 证据 ID：`chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f`
 当前审核：原文支持=True；归类正确=True；建议类型=dataset
-HJ-dataset is explicit.
+支持：原文以HJ-dataset计算相关性，dataset正确；不从名称猜测具体样本规模。
 
 ### 字段 3: input_setting
 
@@ -728,7 +916,7 @@ HJ-dataset is explicit.
 
 证据 ID：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`
 当前审核：原文支持=True；归类正确=False；建议类型=training
-The 1/7/15-day training-corpus comparison is training setup, consistently with the ontology induction-data label; actual line-by-line input preprocessing is separately present.
+支持但错分：We train...1,7,15 days描述不同训练语料窗口，归training，不是测试时输入条件。
 
 ### 字段 4: training
 
@@ -738,7 +926,7 @@ The 1/7/15-day training-corpus comparison is training setup, consistently with t
 
 证据 ID：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`
 当前审核：原文支持=True；归类正确=True；建议类型=training
-Vector size, frequency, context and downsampling parameters are training setup.
+支持：300维、min-freq40、context5、downsampling1e-3逐项一致，属于训练超参数。
 
 ### 字段 5: metric
 
@@ -748,7 +936,7 @@ Vector size, frequency, context and downsampling parameters are training setup.
 
 证据 ID：`chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f`
 当前审核：原文支持=True；归类正确=True；建议类型=metric
-Spearman coefficient is explicit.
+支持：Spearman coefficient明确用于评价相关性，metric正确。
 
 ### 字段 6: result
 
@@ -758,7 +946,7 @@ Spearman coefficient is explicit.
 
 证据 ID：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-0.56 and 0.55 correlations are results.
+支持：7日0.56与15日0.55均见原文，是固定300维配置下的结果；不能与600维结果混为同条件。
 
 ### 字段 7: result
 
@@ -768,7 +956,7 @@ Spearman coefficient is explicit.
 
 证据 ID：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-0.59 is another result and duplicates the field.
+支持：15日全语料、600维、0.59均见原文，result正确；不把后段另写的0.598自动回填到该引用。
 
 ### 字段 8: limitation
 
@@ -778,7 +966,9 @@ Spearman coefficient is explicit.
 
 证据 ID：`chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03`
 当前审核：原文支持=True；归类正确=True；建议类型=limitation
-The need for larger corpus and vectors is a stated constraint/recommendation.
+支持：in order to achieve better results...one should increase both...明确给出进一步改善所需的数据／表示规模条件，保留limitation。与单纯low but comparable的成绩评价不同；也可解释为结果分析，歧义单列，不将合理替代标签强判错误。
+
+分类歧义：条件式措辞明确进一步改进所需资源，保留limitation；同时承认结果解释／训练建议读法，不把不唯一的分类假装成确定真值。
 
 ### 实际输入证据
 
@@ -825,6 +1015,32 @@ Training the model on 15-days corpus took 8 hours on our machine with 2 cores an
 证据中应有字段：task, model, dataset, input_setting, training, metric, result
 当前遗漏：无
 
+### 字段存在性复核
+
+- **task：存在**。任务明确。
+  原文：entity coreference resolution
+  来源：`chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6`
+- **model：存在**。模型明确。
+  原文：a new generative, unsupervised ranking model
+  来源：`chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6`
+- **dataset：存在**。数据集明确。
+  原文：APW and NYT sections of Gigaword Corpus
+  来源：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`
+- **input_setting：存在**。测试输入明确。
+  原文：Our system is evaluated with automatically extracted mentions
+  来源：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`
+- **training：存在**。训练文档筛选明确。
+  原文：we remove duplicated documents and the documents which include fewer than 3 sentences.
+  来源：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`
+- **metric：存在**。指标明确。
+  原文：Entity-based CEAF
+  来源：`chunk:de09a5eed4ccdd12a35d3368f3e91ab1e675d7f07d01b7207ee5f3a2338ae077`
+- **result：存在**。相对基线的实测提升明确。
+  原文：improvements of 2.93% and 3.01% on CoNLL F1 score over the Stanford system
+  来源：`chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10`
+- **limitation：当前证据未提供**。没有明确限制／缺口声明；不从论文采用无监督方法或存在基线比较推断局限。
+- **code_availability：当前证据未提供**。没有代码访问或发布说明。
+
 ### 字段 0: task
 
 值：entity coreference resolution
@@ -833,7 +1049,7 @@ Training the model on 15-days corpus took 8 hours on our machine with 2 cores an
 
 证据 ID：`chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6`
 当前审核：原文支持=True；归类正确=True；建议类型=task
-Entity coreference resolution is explicit.
+支持：引用明确entity coreference resolution，task正确。
 
 ### 字段 1: model
 
@@ -843,7 +1059,7 @@ Entity coreference resolution is explicit.
 
 证据 ID：`chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6`
 当前审核：原文支持=True；归类正确=True；建议类型=model
-The generative unsupervised ranking model is explicit.
+支持：原文明确新的生成式无监督排序模型及resolution mode变量，model正确。
 
 ### 字段 2: dataset
 
@@ -853,7 +1069,7 @@ The generative unsupervised ranking model is explicit.
 
 证据 ID：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`
 当前审核：原文支持=True；归类正确=True；建议类型=dataset
-Gigaword APW/NYT is training data.
+支持：Gigaword的APW和NYT部分是训练数据集合，dataset正确。
 
 ### 字段 3: dataset
 
@@ -863,7 +1079,7 @@ Gigaword APW/NYT is training data.
 
 证据 ID：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`
 当前审核：原文支持=True；归类正确=True；建议类型=dataset
-CoNLL-2012/OntoNotes is evaluation data and duplicates the field.
+支持：CoNLL-2012英语数据源于OntoNotes，作为开发／测试dataset；字段名中shared task按上下文指数据集，而非研究任务。
 
 ### 字段 4: training
 
@@ -873,7 +1089,7 @@ CoNLL-2012/OntoNotes is evaluation data and duplicates the field.
 
 证据 ID：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`
 当前审核：原文支持=True；归类正确=True；建议类型=training
-Training corpus selection and document filtering are explicit.
+支持：原文明确选择1994—2010年APW/NYT训练模型，并说明文档过滤，归training；不推断样本数量。
 
 ### 字段 5: input_setting
 
@@ -883,7 +1099,7 @@ Training corpus selection and document filtering are explicit.
 
 证据 ID：`chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6`
 当前审核：原文支持=True；归类正确=True；建议类型=input_setting
-Automatic mentions and predicted preprocessing define evaluation input.
+支持：评测使用自动提取mentions和预测解析树等自动预处理信息，属于input_setting。
 
 ### 字段 6: metric
 
@@ -893,7 +1109,7 @@ Automatic mentions and predicted preprocessing define evaluation input.
 
 证据 ID：`chunk:de09a5eed4ccdd12a35d3368f3e91ab1e675d7f07d01b7207ee5f3a2338ae077`
 当前审核：原文支持=True；归类正确=True；建议类型=metric
-MUC/B3/CEAF metrics are explicit.
+支持：MUC、B3、CEAF均为度量名称，BIBREF和数学记号保留原貌，不是结果分数。
 
 ### 字段 7: metric
 
@@ -903,7 +1119,7 @@ MUC/B3/CEAF metrics are explicit.
 
 证据 ID：`chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10`
 当前审核：原文支持=True；归类正确=True；建议类型=metric
-CoNLL F1 is a metric and duplicates the field.
+支持：字段仅为CoNLL F1 score指标名；引用上下文虽含提升幅度，仍归metric。
 
 ### 字段 8: result
 
@@ -913,7 +1129,7 @@ CoNLL F1 is a metric and duplicates the field.
 
 证据 ID：`chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10`
 当前审核：原文支持=True；归类正确=True；建议类型=result
-Reported percentage improvements over three baselines are results.
+支持：开发／测试集相对Stanford分别提升2.93%／3.01%与原文一致。只判为原文支持，不擅自把百分号解释成相对百分比或百分点。
 
 ### 实际输入证据
 

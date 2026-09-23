@@ -40,7 +40,7 @@
 
 运行后另加全部可解析草稿的补充口径，明确标记为事后增加，不替换原口径。包含被 schema 拒绝的原始字段，重复字段按 occurrence 分别审核；不可解析动作不进字段分母。缺失分母按每篇九类槽位计算。额外报告已有字段槽位覆盖率、混淆和遗漏；槽位覆盖不要求内容正确，不等于正确内容召回率。
 
-当前标签是助手逐条初审，`reviewer_type=assistant`、`human_review_status=pending`，不得称为已完成人工审核。人工可对照 `human-review.md` 中的原始字段与全部输入证据修改审核文件；保留字段哈希后离线 `finalize` 重算，不产生模型调用。
+初始标签为助手逐条初审；2026-09-23已完成Pro辅助第二轮AI复核（见review-adjudication.md），`reviewer_type=assistant`、`human_review_status=pending`，不得称为已完成人工审核。人工可对照 `human-review.md` 中的原始字段与全部输入证据修改审核文件；保留字段哈希后离线 `finalize` 重算，不产生模型调用。
 
 ## 产物
 

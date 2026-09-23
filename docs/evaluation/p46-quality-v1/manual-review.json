@@ -1,7 +1,7 @@
 {
   "version": "p46-quality-v1-manual-review",
-  "reviewer": "Codex assistant evidence audit",
-  "review_scope": "Exact supplied text (each evidence text[:2200]); assistant labels pending human confirmation",
+  "reviewer": "Codex source-by-source adjudication with DeepSeek Pro review opinions",
+  "review_scope": "All 59 raw occurrences and 72 field-presence slots against the exact six supplied evidence passages per paper; two Pro opinion rounds, final source-grounded Codex adjudication. Not human review.",
   "reviewed_at": "2026-09-23",
   "cases": {
     "ontology_parser": {
@@ -12,7 +12,8 @@
         "input_setting",
         "training",
         "metric",
-        "result"
+        "result",
+        "limitation"
       ],
       "fields": [
         {
@@ -20,7 +21,7 @@
           "evidence_supported": false,
           "type_correct": true,
           "correct_type": "task",
-          "note": "The quoted title does not occur in the cited evidence chunk.",
+          "note": "不支持：所引chunk仅叙述语法诱导设置，不含提交的论文标题；不能用标题元数据补引文。值本身描述研究任务，task类型可保留。",
           "occurrence": 0,
           "raw_field_sha256": "ceb5b4d1fbab438c92dbf4bf22faec42399f26182648defbc45c21067cdfa95a"
         },
@@ -29,7 +30,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "model",
-          "note": "The automaton model appears verbatim in the figure caption.",
+          "note": "支持：图6原文明示institution relation的automaton model，属于算法模型；不把图中的训练树比例当成另一个模型。",
           "occurrence": 1,
           "raw_field_sha256": "f5e8537c1ee1dd3878823d6ed51a4918770b604de3748a2d145ecce8b7fb4ff6"
         },
@@ -38,7 +39,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "dataset",
-          "note": "Wikipedia first sentences are explicitly called a dataset.",
+          "note": "支持：原文明确称人物Wikipedia页面首句为dataset；描述性数据集无需正式名称也可归为dataset。",
           "occurrence": 2,
           "raw_field_sha256": "36258906dd69c4035fb36a6a77e84b85fc4023de33f4d3e8941afff56cd5cbca"
         },
@@ -47,7 +48,7 @@
           "evidence_supported": true,
           "type_correct": false,
           "correct_type": "training",
-          "note": "Grammar induction on 10,000 sentences is a training setup rather than an input setting.",
+          "note": "支持但错分：原文说grammar was induced on 10.000 random sentences，是学习所用训练样本规模，归training，不是测试输入条件。",
           "occurrence": 3,
           "raw_field_sha256": "012074b60d4b6a18c41c818986714ad295f1c367abed239a4005465da5129c80"
         },
@@ -56,7 +57,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "training",
-          "note": "Manual property assignment is part of induction setup.",
+          "note": "支持：属性分配由作者完成，位于语法诱导的人工反馈流程中，属于训练／标注步骤；不臆测未写出的标注协议。",
           "occurrence": 4,
           "raw_field_sha256": "2f367dd4b5d58381c8eb42973d17c2e896dc9608c852c998c62de47d1cdd965d"
         },
@@ -65,7 +66,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "Average parsing time is a measured result.",
+          "note": "支持：原文明示每句平均解析时间0.16ms，是测得结果；仅凭该值不能扩展为跨硬件性能结论。",
           "occurrence": 5,
           "raw_field_sha256": "a56eaf5325619827d0256e0d99eb5805ecc6787cfd0026e6f5c37c44b792555f"
         },
@@ -74,15 +75,16 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "Fully parsed fraction is a reported result; this duplicate field caused schema rejection.",
+          "note": "支持：超过四分之一句子被完全解析是定量覆盖结果；重复result影响提交协议，不影响这条语义支持。",
           "occurrence": 6,
           "raw_field_sha256": "5a9b66b724a76236fc1ba4ad774bd1db769a849dab8ccc9075c7567654b4ba21"
         }
       ],
       "omitted_present_fields": [
-        "metric"
+        "metric",
+        "limitation"
       ],
-      "note": "Schema rejected two result entries; metric names such as coverage and parsing time were not separated from results.",
+      "note": "59字段逐条AI复核之一；两个Pro轮次独立建议后由Codex按原文裁定，非人类审核。多字段语义正确也不能消除原提交协议失败。",
       "presence_evidence_ids": {
         "task": "chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283",
         "model": "chunk:01cbef48e9c45a524bf96e25f36a5dced7f172cb47c856074ef86ff1e4d8c6e7",
@@ -90,14 +92,61 @@
         "input_setting": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
         "training": "chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba",
         "metric": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
-        "result": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9"
+        "result": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
+        "limitation": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9"
       },
-      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+      "absence_basis": "仅表示这六条实际输入证据未给出该类信息，不推断全文缺失。逐类理由见absence_review。",
+      "presence_review": {
+        "task": {
+          "evidence_id": "chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283",
+          "excerpt": "several models to predict relations have been trained and evaluated.",
+          "reason": "关系预测及语法解析任务在正文中明确可提取；不以缺少原题目引文否认其他位置存在任务。"
+        },
+        "model": {
+          "evidence_id": "chunk:01cbef48e9c45a524bf96e25f36a5dced7f172cb47c856074ef86ff1e4d8c6e7",
+          "excerpt": "The automaton model for institution relation.",
+          "reason": "自动机模型明确出现。"
+        },
+        "dataset": {
+          "evidence_id": "chunk:b51d3566ce132ffb3c5bc2254b906b74db3c7ed50b48bfaa3cfe1e5df58f7283",
+          "excerpt": "first sentences of Wikipedia pages describing people are taken as a dataset.",
+          "reason": "数据来源与单位明确。"
+        },
+        "input_setting": {
+          "evidence_id": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
+          "excerpt": "The grammar was also tested by parsing a sample of 100.000 test sentences.",
+          "reason": "测试输入样本规模明确，区别于一万句训练集。"
+        },
+        "training": {
+          "evidence_id": "chunk:2f752ddae79ad754bb23c05e7fe332a47b6f4faef440c94d268e1ef14ec3a0ba",
+          "excerpt": "The grammar was induced on 10.000 random sentences",
+          "reason": "语法诱导训练规模明确。"
+        },
+        "metric": {
+          "evidence_id": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
+          "excerpt": "Coverage represents the fraction of words in a sentence that were parsed",
+          "reason": "直接定义Coverage，不能因不是F1等常见缩写就判缺失。"
+        },
+        "result": {
+          "evidence_id": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
+          "excerpt": "More than a quarter of sentences were fully parsed",
+          "reason": "测试完全解析比例明确。"
+        },
+        "limitation": {
+          "evidence_id": "chunk:8c61b82465a7a0f2d5f77ed4e9e7bfcf7bbc5104f16fed8fc64ca45744386ff9",
+          "excerpt": "there is a long tail of unparsed nodes/sentences.",
+          "reason": "明确未覆盖长尾，属于覆盖局限；初审遗漏。"
+        }
+      },
+      "absence_review": {
+        "code_availability": "六段证据没有本文实现的代码访问／发布说明。"
+      }
     },
     "speech_recognition": {
       "expected_present_fields": [
         "task",
         "model",
+        "input_setting",
         "metric",
         "result",
         "limitation"
@@ -108,44 +157,89 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "limitation",
-          "note": "The excerpt explicitly defers further experimental results.",
+          "note": "支持：原文把更多实验结果推迟至最终论文，按当前报告尚不完整的披露局限归limitation；这是报告范围的限制，不是ASR算法能力缺陷。",
           "occurrence": 0,
-          "raw_field_sha256": "97f8b972817b9740ee8893d27c98f12542b35567bcc0afa273d6f82b15e188d9"
+          "raw_field_sha256": "97f8b972817b9740ee8893d27c98f12542b35567bcc0afa273d6f82b15e188d9",
+          "ambiguity": {
+            "alternative_types": [
+              "none"
+            ],
+            "resolution": "采用报告完整性局限口径；不声称是算法能力局限。"
+          }
         },
         {
           "name": "model",
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "model",
-          "note": "The menu-based ASR system is stated in the cited caption.",
+          "note": "支持且类型正确：图1确实描述menu based ASR system，是软件识别系统结构，model可容纳系统方法；不同于仅指实验硬件型号。",
           "occurrence": 1,
           "raw_field_sha256": "ccb104a6301a6414347335d28b4f703d3c16c747bf149871fbd85cf10abc3555"
         }
       ],
       "omitted_present_fields": [
         "task",
+        "input_setting",
         "metric",
         "result"
       ],
-      "note": "The evidence names speech recognition, transaction completion rate, and a significant improvement, but the card omitted those task/metric/result fields.",
+      "note": "59字段逐条AI复核之一；两个Pro轮次独立建议后由Codex按原文裁定，非人类审核。多字段语义正确也不能消除原提交协议失败。",
       "presence_evidence_ids": {
         "task": "chunk:e2631ae8ae10b636bf04ee68a092cdb37fcd4e62ef0393004a4368ab46ef43bf",
         "model": "chunk:7d1da55010ca6a9ee84ab2823c103214603a17faf153ce6910f55046207bddf5",
+        "input_setting": "chunk:e2631ae8ae10b636bf04ee68a092cdb37fcd4e62ef0393004a4368ab46ef43bf",
         "metric": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9",
         "result": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9",
         "limitation": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9"
       },
-      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+      "absence_basis": "仅表示这六条实际输入证据未给出该类信息，不推断全文缺失。逐类理由见absence_review。",
+      "presence_review": {
+        "task": {
+          "evidence_id": "chunk:e2631ae8ae10b636bf04ee68a092cdb37fcd4e62ef0393004a4368ab46ef43bf",
+          "excerpt": "A typical speech recognition system.",
+          "reason": "speech recognition直接给出任务名，无需必须有We aim to句式；拒绝Pro把缺少目标句等同没有任务的建议。"
+        },
+        "model": {
+          "evidence_id": "chunk:7d1da55010ca6a9ee84ab2823c103214603a17faf153ce6910f55046207bddf5",
+          "excerpt": "a typical menu based ASR system",
+          "reason": "菜单式ASR系统明确。"
+        },
+        "input_setting": {
+          "evidence_id": "chunk:e2631ae8ae10b636bf04ee68a092cdb37fcd4e62ef0393004a4368ab46ef43bf",
+          "excerpt": "the language model is typically the set of words that need to be recognized at a given node.",
+          "reason": "每节点指定待识别词集，是输入／识别候选约束；初审遗漏。"
+        },
+        "metric": {
+          "evidence_id": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9",
+          "excerpt": "transaction completion rate",
+          "reason": "交易完成率明确。"
+        },
+        "result": {
+          "evidence_id": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9",
+          "excerpt": "resulted in a significant improvement in the transaction completion rate.",
+          "reason": "报告定性提升。"
+        },
+        "limitation": {
+          "evidence_id": "chunk:8f23dcb5f429e4cd7c486a1bc701695d82bd7139586629fe67d6c697fc79dba9",
+          "excerpt": "We will present more experimental results in the final paper.",
+          "reason": "当前报告结果尚不完整，归报告范围局限。"
+        }
+      },
+      "absence_review": {
+        "dataset": "活动词列表及距离测量表题没有描述一个用于训练／评测的数据集，不能仅凭表题臆造语料。",
+        "training": "修改识别词表是系统配置调整，没有明确参数学习、训练数据或训练过程；不推断成训练。",
+        "code_availability": "未提及本文代码获取方式。"
+      }
     },
     "event_extraction": {
       "expected_present_fields": [
         "task",
+        "model",
         "dataset",
         "input_setting",
         "training",
         "metric",
-        "result",
-        "model"
+        "result"
       ],
       "fields": [
         {
@@ -153,7 +247,7 @@
           "evidence_supported": false,
           "type_correct": true,
           "correct_type": "task",
-          "note": "The submitted title is not a contiguous quote in the cited table caption.",
+          "note": "不支持：引用指向表XI图注，原文是评测条件及指标，不含提交的论文标题；task类型与引用支持分别判断。",
           "occurrence": 0,
           "raw_field_sha256": "da90a238ef58a540005f48c6666c70280f68bf8ec402b233a7e385797e67c3c7"
         },
@@ -162,7 +256,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "dataset",
-          "note": "ECB+ is explicitly identified as the dataset.",
+          "note": "支持：段落明确Cybulska和Vossen使用ECB+及502篇文本。是综述引用的他人数据集，不能称为综述作者自己的实验。",
           "occurrence": 1,
           "raw_field_sha256": "0484e1a336fad492def100940a9621af69f2c29277e998d7104fa1e325da56ae"
         },
@@ -171,7 +265,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "metric",
-          "note": "The cited paragraph lists coreference metrics.",
+          "note": "支持：原文明列recall、precision、F-score、MUC、B3、CEAF、BLANC、CoNLL F1；省去BIBREF标记是忠实名称归一化。",
           "occurrence": 2,
           "raw_field_sha256": "fda93ee2060c2005371fbc988eea3b4a8cc8fab63d6b5c7439b8a9a3e77e2868"
         },
@@ -180,7 +274,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "metric",
-          "note": "The second metric list is valid, but duplicates the metric field.",
+          "note": "支持：原文列出recall(R)、precision(P)、F-score(F)，字段值为指标名称而非分数；与上一metric重复只影响协议。",
           "occurrence": 3,
           "raw_field_sha256": "beb74779c42bf7b5290d7e15d14af531926dca1c32bae5b2ef5653c66d05b063"
         },
@@ -189,7 +283,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "ACE value 22.3% is a quantitative result.",
+          "note": "支持：22.3%是原文ACE value实测分数，应归result；该结果属于被综述的方法，不代表本文统一基准成绩。",
           "occurrence": 4,
           "raw_field_sha256": "ff6b1f1eca7b7e245ff58be73d5b26ae9680e22ad556ad1f3504e0e1acfbf908"
         },
@@ -198,7 +292,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "Improvement for every metric is a comparative result.",
+          "note": "支持：原文称引入granularity后所有指标改善，是比较性结果；未提供幅度，不补造数值。",
           "occurrence": 5,
           "raw_field_sha256": "58cddc197dfd7fdf25fded7438a628dda72b68ee1b739799d8b85cf6fa309792"
         },
@@ -207,7 +301,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "Top-ten placement is an experimental result.",
+          "note": "支持：原文确实写TempEval-3前十，尽管句法残缺；保留原文粒度，不推断具体系统名或名次。",
           "occurrence": 6,
           "raw_field_sha256": "a48f9e87c7c820fba5237b070be35679ee19e8d7eed3770000293534f8878473"
         },
@@ -216,40 +310,86 @@
           "evidence_supported": true,
           "type_correct": false,
           "correct_type": "result",
-          "note": "Low but comparable performance interprets a result rather than stating a study limitation.",
+          "note": "支持但错分：low but comparable是对已测成绩的比较评价，未给方法适用约束或研究设计缺陷，主类型为result；记录与宽泛limitation解释的边界。",
           "occurrence": 7,
-          "raw_field_sha256": "7bf4371449477c0b87e3a88d824350f3e0879676509b493ced881766f5d24119"
+          "raw_field_sha256": "7bf4371449477c0b87e3a88d824350f3e0879676509b493ced881766f5d24119",
+          "ambiguity": {
+            "alternative_types": [
+              "limitation"
+            ],
+            "resolution": "广义低性能局限解释可成立，但本轮按缺少明确约束的比较评价归result；与Russian样本同口径。"
+          }
         },
         {
           "name": "input_setting",
           "evidence_supported": false,
           "type_correct": false,
           "correct_type": "training",
-          "note": "The draft changes two dimensions to three and describes model training/submission, not an input setting.",
+          "note": "不支持且错分：引用为two dimensions，值改成three dimensions；three of which指提交的模型，不是维度。其主题是训练配置，归training。",
           "occurrence": 8,
           "raw_field_sha256": "149e5fe3c62bb1e03ca273eac800e8b5860281ca68b729fb294154d91090ac01"
         }
       ],
       "omitted_present_fields": [
-        "training",
-        "model"
+        "model",
+        "training"
       ],
-      "note": "Duplicate metric/result fields caused rejection; field #9 changes the value from two to three dimensions while its quote is exact. ATT systems are named but the model field is omitted.",
+      "note": "59字段逐条AI复核之一；两个Pro轮次独立建议后由Codex按原文裁定，非人类审核。多字段语义正确也不能消除原提交协议失败。",
       "presence_evidence_ids": {
         "task": "chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4",
         "model": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f",
         "dataset": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582",
-        "input_setting": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f",
+        "input_setting": "chunk:865e26540412ac75e8cff86418d81ac462e444caad86463bc7da15be334d9572",
         "training": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f",
         "metric": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582",
         "result": "chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4"
       },
-      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+      "absence_basis": "仅表示这六条实际输入证据未给出该类信息，不推断全文缺失。逐类理由见absence_review。",
+      "presence_review": {
+        "task": {
+          "evidence_id": "chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4",
+          "excerpt": "performance of an event extraction system",
+          "reason": "事件抽取任务直接出现。"
+        },
+        "model": {
+          "evidence_id": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f",
+          "excerpt": "in building the ATT systems",
+          "reason": "命名ATT系统可作方法信息，不能因未给全部架构判model缺失。"
+        },
+        "dataset": {
+          "evidence_id": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582",
+          "excerpt": "Cybulska and Vossen use the ECB+ dataset",
+          "reason": "ECB+数据集明确。"
+        },
+        "input_setting": {
+          "evidence_id": "chunk:865e26540412ac75e8cff86418d81ac462e444caad86463bc7da15be334d9572",
+          "excerpt": "Whole data set (W), Abstracts only (A) and Full papers only (F)",
+          "reason": "表注明确三类评测输入，原先锚点训练段落不合适，改用表注。"
+        },
+        "training": {
+          "evidence_id": "chunk:fd20760a84b25c32884c34c15f6833c6ec23dd163a23a31412dffa1e0306359f",
+          "excerpt": "for each task, they trained twelve models exploring these two dimensions",
+          "reason": "十二个模型、两个探索维度为训练设置。"
+        },
+        "metric": {
+          "evidence_id": "chunk:7777cbd552a98bd53abda0a0a1610eee0ee8a4b05163f489da3228612df88582",
+          "excerpt": "recall, precision and F-score",
+          "reason": "指标名明确。"
+        },
+        "result": {
+          "evidence_id": "chunk:e29a1516a1817061cffecb2d37327e3ef5dc10ddcd8955bf02cb469e31124fa4",
+          "excerpt": "they achieve an ACE value score of 22.3%",
+          "reason": "定量结果明确。"
+        }
+      },
+      "absence_review": {
+        "limitation": "所给六段中low but comparable为结果评价，没有明确适用约束或实验覆盖缺口。采用result优先口径；Pro的广义limitation意见保留为歧义。",
+        "code_availability": "未提及本文代码获取方式。"
+      }
     },
     "mobile_robot": {
       "expected_present_fields": [
         "task",
-        "model",
         "input_setting",
         "training",
         "result"
@@ -260,16 +400,16 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "task",
-          "note": "Learning spatial concepts is explicit.",
+          "note": "支持：学习步骤中明示Learning of spatial concepts，足以支持该任务；不从INLINEFORM占位符恢复未知公式。",
           "occurrence": 0,
           "raw_field_sha256": "844bbbd1d2264718b7a120d440376bfd65b171d6258d669e3459a36819b80e32"
         },
         {
           "name": "model",
           "evidence_supported": true,
-          "type_correct": true,
-          "correct_type": "model",
-          "note": "TurtleBot 2 is the experimental system/platform.",
+          "type_correct": false,
+          "correct_type": "input_setting",
+          "note": "支持但错分：TurtleBot 2在所引段落中是测试用机器人硬件，不能作为论文的算法模型。九类字段无hardware槽时，最佳归类为input_setting（实验平台）。",
           "occurrence": 1,
           "raw_field_sha256": "3d897807c2c0f305fc77fbdd16b76600d6d16c1cf564a718fa0c1b7cc3fccefa"
         },
@@ -278,7 +418,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "input_setting",
-          "note": "The experiment is explicitly conducted in a real environment.",
+          "note": "支持：原文明确in a real environment，是实验／测试环境条件；没有具体地点，不能补填。",
           "occurrence": 2,
           "raw_field_sha256": "dd5b922bd2cd3be450dbc8cd2ffc2b117965d07a1875d6be3a63033218865d42"
         },
@@ -287,7 +427,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "training",
-          "note": "Gibbs sampling and parameter initialization occur in the learning procedure.",
+          "note": "支持：学习流程明示Gibbs sampling Initialize parameters，属于训练／推断步骤；碎片化算法文本不支持更细的采样参数。",
           "occurrence": 3,
           "raw_field_sha256": "92038a69a53bc7c6ae5bed7e6efe2bf7efa93d6a17939aee6d8addfeecd1f03a"
         },
@@ -296,21 +436,49 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "The figure caption describes the learned position-distribution output.",
+          "note": "支持：图4标题明确Learning result of the position distribution，字段描述所得位置分布可视化，可作定性result；不是定量性能提升。",
           "occurrence": 4,
           "raw_field_sha256": "b6c4de4a2babb2aa7e2b338655187d69f92404dd17bb855c0291203a3f155453"
         }
       ],
       "omitted_present_fields": [],
-      "note": "All fields are text-supported; result is qualitative rather than a performance score.",
+      "note": "59字段逐条AI复核之一；两个Pro轮次独立建议后由Codex按原文裁定，非人类审核。多字段语义正确也不能消除原提交协议失败。",
       "presence_evidence_ids": {
         "task": "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7",
-        "model": "chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80",
         "input_setting": "chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80",
         "training": "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7",
         "result": "chunk:fbc1f7243593c148c351f8c6792133add9c159c5329875ce4668a69f3a2025e8"
       },
-      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+      "absence_basis": "仅表示这六条实际输入证据未给出该类信息，不推断全文缺失。逐类理由见absence_review。",
+      "presence_review": {
+        "task": {
+          "evidence_id": "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7",
+          "excerpt": "Learning of spatial concepts",
+          "reason": "任务标题直接出现。"
+        },
+        "input_setting": {
+          "evidence_id": "chunk:d303a290a805f367c4d367ee208d17649dba4ce0acb3f87a5c965eac1b52bb80",
+          "excerpt": "using an autonomous mobile robot TurtleBot 2 in a real environment.",
+          "reason": "实验平台与环境明确；不把硬件计入model。"
+        },
+        "training": {
+          "evidence_id": "chunk:588e941771c6d3715a86f87eaeb7f9f83013d0a8dce82b3b068eab2fd0e151d7",
+          "excerpt": "Gibbs sampling Initialize parameters",
+          "reason": "学习过程明示采样与初始化。"
+        },
+        "result": {
+          "evidence_id": "chunk:fbc1f7243593c148c351f8c6792133add9c159c5329875ce4668a69f3a2025e8",
+          "excerpt": "Learning result of the position distribution",
+          "reason": "图注明确是学到的位置分布，属于定性结果。"
+        }
+      },
+      "absence_review": {
+        "model": "TurtleBot 2是硬件，ROS是运行平台；the proposed method未给算法模型身份，Gibbs采样为学习程序，不据此补造特定模型。",
+        "dataset": "没有明确命名或描述的训练／测试数据集合；学到的词和位置分布是输出，不当作数据集。",
+        "metric": "只见定性学习结果与图注，没有度量定义。",
+        "limitation": "未明确陈述适用限制或结果披露缺口。",
+        "code_availability": "提到ROS等组件不等于披露本文实现代码。"
+      }
     },
     "many_languages_parser": {
       "expected_present_fields": [
@@ -329,7 +497,7 @@
           "evidence_supported": true,
           "type_correct": false,
           "correct_type": "model",
-          "note": "A single multilingual parser describes the model, not the parsing task.",
+          "note": "支持但错分：a single parser trained on...描述一个解析器及训练属性，主语是方法实体，归model；研究任务可另从上下文提取，但不能把该值直接算task。",
           "occurrence": 0,
           "raw_field_sha256": "0294afbf20d4b59dc5d73ec359af8f97f9604e7974a96aad400a382e1c0354e6"
         },
@@ -338,7 +506,7 @@
           "evidence_supported": true,
           "type_correct": false,
           "correct_type": "dataset",
-          "note": "A multilingual set of treebanks is dataset information and duplicates task.",
+          "note": "支持但错分：multilingual set of treebanks描述训练数据集合，应归dataset；无需出现具体树库名称才算数据集。",
           "occurrence": 1,
           "raw_field_sha256": "4e218e1e8bc8c91a70481f46a59a11209ca647f32f218ac301b324b501a5eecf"
         },
@@ -347,7 +515,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "training",
-          "note": "Embedding training data and dimensionality are training setup.",
+          "note": "支持：相同训练数据与100维嵌入是训练／模型设置，本协议归training；引文没有提供语料具体名称。",
           "occurrence": 2,
           "raw_field_sha256": "e838b6a9d7004ffe8cd57a378d5ae040d5c65ab82eaac08a3800c99b16101879"
         },
@@ -356,7 +524,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "model",
-          "note": "Robust-projection multilingual embeddings are a model component.",
+          "note": "支持：robust projection multilingual embeddings是所用方法组件，归model；保留借用guo:16模型的归属。",
           "occurrence": 3,
           "raw_field_sha256": "80079e40849bdb9f99704fbef77cc1d838c6a31db41322ae03ec9b21bf9d0599"
         },
@@ -365,7 +533,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "metric",
-          "note": "Parsing accuracy is an evaluation metric.",
+          "note": "支持：parsing accuracy是评价量名称，归metric；引文虽讲精度下降，字段值没有测得分数。",
           "occurrence": 4,
           "raw_field_sha256": "f13b5b20f97b66203e612dc97b6d84b20b28942cd83cefb2a8778f02f87089ed"
         },
@@ -374,7 +542,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "input_setting",
-          "note": "Gold language ID and POS tags at test time define the input/evaluation setting.",
+          "note": "支持：测试时提供gold language ID和gold POS tags明确属于input_setting。",
           "occurrence": 5,
           "raw_field_sha256": "79a3325770e39e248f00f65969fe63bbc3b054d0e2d549a1afde02d9675b3d30"
         },
@@ -383,7 +551,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "limitation",
-          "note": "The paper calls the gold-input assumption unrealistic.",
+          "note": "支持：原文明言金标准输入假设不符合实际应用，是明确适用局限，不是仅描述低分。",
           "occurrence": 6,
           "raw_field_sha256": "b235be04831f307616b81c0650a10c5dbc2baceab823f1b66705222621f6d292"
         },
@@ -392,7 +560,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "Outperformance over monolingual parsers is a comparative result.",
+          "note": "支持：原文比较平均优于单语训练解析器，是result；只保留有树库的目标语言条件。",
           "occurrence": 7,
           "raw_field_sha256": "51d3c3f9e69b7add2e202ef50c759f33fbf5c2a1bb34f3dc0837eed2c7564e02"
         },
@@ -401,7 +569,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "Outperformance over transfer baselines is another result and duplicates the field.",
+          "note": "支持：原文在小或无目标树库场景比较优于跨语迁移方法，是result；条件不能省略后跨场景排名。",
           "occurrence": 8,
           "raw_field_sha256": "e3faad1f2f8a166c4cdb5b714f0750aed78fa3b7e20abfe3d782550fdc4a6c2d"
         }
@@ -409,7 +577,7 @@
       "omitted_present_fields": [
         "dataset"
       ],
-      "note": "Duplicate task/result fields caused rejection; the two task entries were also semantically misclassified.",
+      "note": "59字段逐条AI复核之一；两个Pro轮次独立建议后由Codex按原文裁定，非人类审核。多字段语义正确也不能消除原提交协议失败。",
       "presence_evidence_ids": {
         "task": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
         "model": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
@@ -420,7 +588,52 @@
         "result": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
         "limitation": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae"
       },
-      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+      "absence_basis": "仅表示这六条实际输入证据未给出该类信息，不推断全文缺失。逐类理由见absence_review。",
+      "presence_review": {
+        "task": {
+          "evidence_id": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
+          "excerpt": "a single parser trained on a multilingual set of treebanks",
+          "reason": "上下文直接说明多语言解析任务；任务存在不等于提交的parser实体或treebanks数据值属于task。"
+        },
+        "model": {
+          "evidence_id": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
+          "excerpt": "We presented MaLOPa",
+          "reason": "方法名明确。"
+        },
+        "dataset": {
+          "evidence_id": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
+          "excerpt": "a multilingual set of treebanks",
+          "reason": "描述性数据集合已足够支持dataset槽位，不臆造具体树库清单。"
+        },
+        "input_setting": {
+          "evidence_id": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae",
+          "excerpt": "both gold language ID of the input language and gold POS tags are given at test time.",
+          "reason": "测试时金标准输入明确。"
+        },
+        "training": {
+          "evidence_id": "chunk:e958d403c87d08abd2fc250f699f1209e28b596fc211cb8974b85bbbf6644fd2",
+          "excerpt": "All embeddings are trained on the same data and use the same number of dimensions (100).",
+          "reason": "训练维度等设置明确。"
+        },
+        "metric": {
+          "evidence_id": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae",
+          "excerpt": "parsing accuracy",
+          "reason": "指标名称明确。"
+        },
+        "result": {
+          "evidence_id": "chunk:b717ff6617863bf9912592b3da2e0391b406a4d2eb4c380d8008635b49500a63",
+          "excerpt": "on average outperforms monolingually-trained parsers",
+          "reason": "比较结果明确。"
+        },
+        "limitation": {
+          "evidence_id": "chunk:fe5f7598eacaff77f9bf9e0d2bd8f1df77dda9cc92580e8f4cc8495f6a0c5aae",
+          "excerpt": "this assumption is not realistic in practical applications.",
+          "reason": "实际应用中假设不成立。"
+        }
+      },
+      "absence_review": {
+        "code_availability": "六段没有实现代码的发布／访问说明。"
+      }
     },
     "contextual_lstm": {
       "expected_present_fields": [
@@ -439,7 +652,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "task",
-          "note": "Next-word prediction is explicit.",
+          "note": "支持：原句明示基于此前词及主题上下文预测下一个词，是task。",
           "occurrence": 0,
           "raw_field_sha256": "0724810e3507052ec77af270771aa298b4e2e0e7c71eddbe4240a5ca773a4c45"
         },
@@ -448,7 +661,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "dataset",
-          "note": "Wikipedia corpus is a dataset.",
+          "note": "支持：英语Wikipedia、2014/09/17快照及470万文档在同一引用段落，dataset正确。",
           "occurrence": 1,
           "raw_field_sha256": "79a73942e2f5ea1667476799ddf4e04645b16ddc5f504a3a72629a5b14cf1752"
         },
@@ -457,7 +670,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "dataset",
-          "note": "Google News corpus is another dataset and duplicates the field.",
+          "note": "支持：2015/07/06内部Google News英语语料快照被明确列为另一数据集，重复不改变语义正确性。",
           "occurrence": 2,
           "raw_field_sha256": "401ff54ab1b4096871a833c59316f82abcce7c3e79917fa8c810b35a6201e86f"
         },
@@ -466,16 +679,22 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "input_setting",
-          "note": "Vocabulary filtering is an input preprocessing setting.",
+          "note": "支持：词频阈值200及129K词表均见原文。该值描述输入表示／词表预处理，按主对象归input_setting；虽然词表从训练数据拟合，也有training解释，但不能据此把忠实引文判为不支持。",
           "occurrence": 3,
-          "raw_field_sha256": "638c7a5d7f233d01179eb47f7ea134cd30cc74881846dbea186f4ecbdbb4fbe0"
+          "raw_field_sha256": "638c7a5d7f233d01179eb47f7ea134cd30cc74881846dbea186f4ecbdbb4fbe0",
+          "ambiguity": {
+            "alternative_types": [
+              "training"
+            ],
+            "resolution": "词表从训练集构造，同时属于输入表示；按值的主对象归input_setting，原文支持不受类型边界影响。"
+          }
         },
         {
           "name": "training",
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "training",
-          "note": "Train/validation/test split is experimental setup.",
+          "note": "支持：80%训练／10%验证／10%测试是明确的数据划分方案，training正确。",
           "occurrence": 4,
           "raw_field_sha256": "9e227c14ba2a9d1a591e7730f9510e1ab1e6ba5b72036df353f6aa0133004c8c"
         },
@@ -484,7 +703,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "metric",
-          "note": "Perplexity is the metric.",
+          "note": "支持：perplexity是度量名称；包含80的上下文不使仅提取名称的字段变成result。",
           "occurrence": 5,
           "raw_field_sha256": "c7bfd0f2bb1478fc7526ae9a23be1e3b205120b5f1864f3f3f2e75c7f300c9c3"
         },
@@ -493,7 +712,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "Perplexity near 80 is a result.",
+          "note": "支持：原文报告Wikipedia上stupid-backoff分布式n-gram基线困惑度约80，是基线result，不是CLSTM自身成绩。",
           "occurrence": 6,
           "raw_field_sha256": "751ae00cb4944ead7401864a26a569d749a0e20f7968d6bc1c65f5e111d16e97"
         },
@@ -502,7 +721,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "Perplexity 74 is another result and duplicates the field.",
+          "note": "支持：原文报告Google News上KN平滑5-gram困惑度74，result正确；与上一结果数据集和模型均不同，不宜直接排名。",
           "occurrence": 7,
           "raw_field_sha256": "b4812c7a5a3c3bfb4696fe6d3c0de356925485195373accd64d6f29811001bfc"
         },
@@ -511,7 +730,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "limitation",
-          "note": "The missing KN Wikipedia experiment is an explicit limitation of the comparison.",
+          "note": "支持：明确未在Wikipedia训练KN基线，属于实验比较覆盖不足的limitation；不推断训练失败原因。",
           "occurrence": 8,
           "raw_field_sha256": "583d6ed2e26be3f5aabb035f07bba264716563b51e5e2c3fbda3f61fa7b83ce8"
         }
@@ -519,7 +738,7 @@
       "omitted_present_fields": [
         "model"
       ],
-      "note": "Duplicate dataset/result fields caused rejection; the evidence names distributed n-gram baselines but no model field was submitted.",
+      "note": "59字段逐条AI复核之一；两个Pro轮次独立建议后由Codex按原文裁定，非人类审核。多字段语义正确也不能消除原提交协议失败。",
       "presence_evidence_ids": {
         "task": "chunk:edbd3050496d35ced5e7681f5b6e91ec0ff3233284c6b25e86fe0ae2a017dce5",
         "model": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
@@ -530,7 +749,52 @@
         "result": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
         "limitation": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6"
       },
-      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+      "absence_basis": "仅表示这六条实际输入证据未给出该类信息，不推断全文缺失。逐类理由见absence_review。",
+      "presence_review": {
+        "task": {
+          "evidence_id": "chunk:edbd3050496d35ced5e7681f5b6e91ec0ff3233284c6b25e86fe0ae2a017dce5",
+          "excerpt": "the word prediction task",
+          "reason": "任务明确。"
+        },
+        "model": {
+          "evidence_id": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
+          "excerpt": "a distributed n-gram model with “stupid backoff” smoothing",
+          "reason": "基线模型明确可提取；不能因CLSTM名称未在这六段出现就认定所有模型信息缺失。"
+        },
+        "dataset": {
+          "evidence_id": "chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574",
+          "excerpt": "whole English corpus from Wikipedia (snapshot from 2014/09/17)",
+          "reason": "数据集明确。"
+        },
+        "input_setting": {
+          "evidence_id": "chunk:2b3e32cbaa2c01ab8f65256b76ef76249ba85d2a4f709c2dd89faad955bf28c5",
+          "excerpt": "threshold was 200 for Wikipedia",
+          "reason": "词表构造阈值约束模型输入表示。"
+        },
+        "training": {
+          "evidence_id": "chunk:9b75f3f7cfb83772129882dda1eb796bdccc594a209a42632bd2565d014d6574",
+          "excerpt": "80% was used as train, 10% as validation and 10% as test set.",
+          "reason": "训练划分明确。"
+        },
+        "metric": {
+          "evidence_id": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
+          "excerpt": "perplexity",
+          "reason": "指标明确。"
+        },
+        "result": {
+          "evidence_id": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
+          "excerpt": "perplexity of 74 (using 5-grams)",
+          "reason": "基线测得结果明确。"
+        },
+        "limitation": {
+          "evidence_id": "chunk:4533b7ea0f51cf6d3e9b93068bd8d3f932f2bba598bd1826ed8c36093dabeeb6",
+          "excerpt": "We did not train a n-gram model with Knesner-Ney (KN) smoothing on the Wikipedia data",
+          "reason": "特定基线未运行，比较覆盖有局限。"
+        }
+      },
+      "absence_review": {
+        "code_availability": "六段未披露本文实现代码。"
+      }
     },
     "russian_twitter": {
       "expected_present_fields": [
@@ -549,7 +813,7 @@
           "evidence_supported": false,
           "type_correct": true,
           "correct_type": "task",
-          "note": "The cited quote discusses Word2Vec but does not contain the submitted task phrase.",
+          "note": "不支持：所引chunk只讲Word2Vec训练与模型，不能单凭词向量训练推出词义相似度任务；另一chunk虽明确任务，也不能替换该字段自己的引用。task类型本身正确。",
           "occurrence": 0,
           "raw_field_sha256": "5ce567883d8e7ca63f574b10325c2430c0f0b3eff515ebe5c9e21f817a8041ac"
         },
@@ -558,7 +822,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "model",
-          "note": "Skip-gram is explicit.",
+          "note": "支持：原文明确只报告Skip-gram的结果，model正确。",
           "occurrence": 1,
           "raw_field_sha256": "902cacaaa221ea09bbcbede736d3e5bd97c05c2de9d895765f5528ab6d1aaa13"
         },
@@ -567,7 +831,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "dataset",
-          "note": "HJ-dataset is explicit.",
+          "note": "支持：原文以HJ-dataset计算相关性，dataset正确；不从名称猜测具体样本规模。",
           "occurrence": 2,
           "raw_field_sha256": "ac357bcef84ebab4ef160d6ea5d26b8aa5aaddb9a29dbaa8520a99b7c51fff88"
         },
@@ -576,7 +840,7 @@
           "evidence_supported": true,
           "type_correct": false,
           "correct_type": "training",
-          "note": "The 1/7/15-day training-corpus comparison is training setup, consistently with the ontology induction-data label; actual line-by-line input preprocessing is separately present.",
+          "note": "支持但错分：We train...1,7,15 days描述不同训练语料窗口，归training，不是测试时输入条件。",
           "occurrence": 3,
           "raw_field_sha256": "c3e0cf603260fec1a38c278689906724a3a28323f059b1eff6e7b85d480a211f"
         },
@@ -585,7 +849,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "training",
-          "note": "Vector size, frequency, context and downsampling parameters are training setup.",
+          "note": "支持：300维、min-freq40、context5、downsampling1e-3逐项一致，属于训练超参数。",
           "occurrence": 4,
           "raw_field_sha256": "0290078b9aef99730b87e8fa2346470d958827a8fbb4f9eabab58c4183c9c32c"
         },
@@ -594,7 +858,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "metric",
-          "note": "Spearman coefficient is explicit.",
+          "note": "支持：Spearman coefficient明确用于评价相关性，metric正确。",
           "occurrence": 5,
           "raw_field_sha256": "dcb11e8130f7d57596570a2b89f2b7aa0c8ffaf654956c936894870e1d18c072"
         },
@@ -603,7 +867,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "0.56 and 0.55 correlations are results.",
+          "note": "支持：7日0.56与15日0.55均见原文，是固定300维配置下的结果；不能与600维结果混为同条件。",
           "occurrence": 6,
           "raw_field_sha256": "3cd4e705cb0bbfb4e72ed47276dc5cb800d94e420abfc29c44d2a5cfe4e5a904"
         },
@@ -612,7 +876,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "0.59 is another result and duplicates the field.",
+          "note": "支持：15日全语料、600维、0.59均见原文，result正确；不把后段另写的0.598自动回填到该引用。",
           "occurrence": 7,
           "raw_field_sha256": "f9a602ca77922b8ccc46d07091a606dbfcd8f1f1d55e15d5d112660fe8442c19"
         },
@@ -621,13 +885,20 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "limitation",
-          "note": "The need for larger corpus and vectors is a stated constraint/recommendation.",
+          "note": "支持：in order to achieve better results...one should increase both...明确给出进一步改善所需的数据／表示规模条件，保留limitation。与单纯low but comparable的成绩评价不同；也可解释为结果分析，歧义单列，不将合理替代标签强判错误。",
           "occurrence": 8,
-          "raw_field_sha256": "68aff74cdc5f1b9af9ad2df44f10509c728690428ab7dd68b84dc06bb8645c86"
+          "raw_field_sha256": "68aff74cdc5f1b9af9ad2df44f10509c728690428ab7dd68b84dc06bb8645c86",
+          "ambiguity": {
+            "alternative_types": [
+              "result",
+              "training"
+            ],
+            "resolution": "条件式措辞明确进一步改进所需资源，保留limitation；同时承认结果解释／训练建议读法，不把不唯一的分类假装成确定真值。"
+          }
         }
       ],
       "omitted_present_fields": [],
-      "note": "Duplicate result fields caused rejection; the task value itself is not present in its cited quote.",
+      "note": "59字段逐条AI复核之一；两个Pro轮次独立建议后由Codex按原文裁定，非人类审核。多字段语义正确也不能消除原提交协议失败。",
       "presence_evidence_ids": {
         "task": "chunk:72366a903d6fb4afa1e0c1e7fc0a611a00e3ee49ecd8c8b581a10666da629788",
         "model": "chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc",
@@ -636,9 +907,54 @@
         "training": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03",
         "metric": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f",
         "result": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03",
-        "limitation": "chunk:72366a903d6fb4afa1e0c1e7fc0a611a00e3ee49ecd8c8b581a10666da629788"
+        "limitation": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03"
       },
-      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+      "absence_basis": "仅表示这六条实际输入证据未给出该类信息，不推断全文缺失。逐类理由见absence_review。",
+      "presence_review": {
+        "task": {
+          "evidence_id": "chunk:72366a903d6fb4afa1e0c1e7fc0a611a00e3ee49ecd8c8b581a10666da629788",
+          "excerpt": "task of word semantic similarity.",
+          "reason": "任务在末段明确，而提交的task引用没有指向这里。"
+        },
+        "model": {
+          "evidence_id": "chunk:116ffeef877e1874cafbdd9c085459621e1b0cff5d588015cb1990a15a3934fc",
+          "excerpt": "Skip-gram model",
+          "reason": "使用的模型明确。"
+        },
+        "dataset": {
+          "evidence_id": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f",
+          "excerpt": "HJ-dataset",
+          "reason": "评价数据明确。"
+        },
+        "input_setting": {
+          "evidence_id": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f",
+          "excerpt": "Output of Tomita Parser is fed directly line-by-line to the model.",
+          "reason": "逐行输入的预处理表示明确，不用训练语料天数作输入设置。"
+        },
+        "training": {
+          "evidence_id": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03",
+          "excerpt": "We fix parameters for the model with following values: vector size of 300, min-freq of 40, context size of 5 and downsampling of 1e-3.",
+          "reason": "训练配置明确。"
+        },
+        "metric": {
+          "evidence_id": "chunk:38858a2f373bf48c291123bdd7343f365ed49b1debfad4bb98df0a1575538b3f",
+          "excerpt": "Spearman coefficient",
+          "reason": "相关性指标明确。"
+        },
+        "result": {
+          "evidence_id": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03",
+          "excerpt": "best result belongs to 7-day corpus with 0.56 correlation with HJ-dataset",
+          "reason": "实测比较结果明确。"
+        },
+        "limitation": {
+          "evidence_id": "chunk:4727c9bfb55b5dbcb0a7556a4edfcf94d2c2d2d16a62c6f9a625f18fe3a1fc03",
+          "excerpt": "in order to achieve better results with Word2Vec one should increase both corpus and vector sizes.",
+          "reason": "明确进一步改进所依赖的数据量和表示维度条件，保留limitation；不用单纯性能差距作为锚点。与result解释重叠的歧义另列。"
+        }
+      },
+      "absence_review": {
+        "code_availability": "C工具和gensim是第三方实现，不证明这篇论文自身代码开放；未见本文实现访问说明。"
+      }
     },
     "entity_coreference": {
       "expected_present_fields": [
@@ -656,7 +972,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "task",
-          "note": "Entity coreference resolution is explicit.",
+          "note": "支持：引用明确entity coreference resolution，task正确。",
           "occurrence": 0,
           "raw_field_sha256": "3df58ecc545af96deddb101b63e2b01c0c92d36b118afbcda96b0af5038677fb"
         },
@@ -665,7 +981,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "model",
-          "note": "The generative unsupervised ranking model is explicit.",
+          "note": "支持：原文明确新的生成式无监督排序模型及resolution mode变量，model正确。",
           "occurrence": 1,
           "raw_field_sha256": "9f1f88b8b409007be901f2fb548576f187d3a8785c136f15ccccc450842b5024"
         },
@@ -674,7 +990,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "dataset",
-          "note": "Gigaword APW/NYT is training data.",
+          "note": "支持：Gigaword的APW和NYT部分是训练数据集合，dataset正确。",
           "occurrence": 2,
           "raw_field_sha256": "0b39883aac4ff5239d6f66635986bb3df76f7c63ee22981f922752a7170fb790"
         },
@@ -683,7 +999,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "dataset",
-          "note": "CoNLL-2012/OntoNotes is evaluation data and duplicates the field.",
+          "note": "支持：CoNLL-2012英语数据源于OntoNotes，作为开发／测试dataset；字段名中shared task按上下文指数据集，而非研究任务。",
           "occurrence": 3,
           "raw_field_sha256": "89b8d377f29594e9633fd25a3f50cdc84a98525c2975e1f3e48cea526ea97fed"
         },
@@ -692,7 +1008,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "training",
-          "note": "Training corpus selection and document filtering are explicit.",
+          "note": "支持：原文明确选择1994—2010年APW/NYT训练模型，并说明文档过滤，归training；不推断样本数量。",
           "occurrence": 4,
           "raw_field_sha256": "5e929202b2bd800de11840cda5a6bcbd78f3445a119963617747152826833da2"
         },
@@ -701,7 +1017,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "input_setting",
-          "note": "Automatic mentions and predicted preprocessing define evaluation input.",
+          "note": "支持：评测使用自动提取mentions和预测解析树等自动预处理信息，属于input_setting。",
           "occurrence": 5,
           "raw_field_sha256": "5bb31165846dabf6eebdfda01940f46fc5478cfa6d4e3dae1d86caf738570c6e"
         },
@@ -710,7 +1026,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "metric",
-          "note": "MUC/B3/CEAF metrics are explicit.",
+          "note": "支持：MUC、B3、CEAF均为度量名称，BIBREF和数学记号保留原貌，不是结果分数。",
           "occurrence": 6,
           "raw_field_sha256": "1117affedfdc3878f03154a837926c5effd062474a20f15bb12e31c6443106bf"
         },
@@ -719,7 +1035,7 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "metric",
-          "note": "CoNLL F1 is a metric and duplicates the field.",
+          "note": "支持：字段仅为CoNLL F1 score指标名；引用上下文虽含提升幅度，仍归metric。",
           "occurrence": 7,
           "raw_field_sha256": "d0e712f53c9e4bb9032181612f527ea032782c390f6cdb723b790ce041a2e94b"
         },
@@ -728,13 +1044,13 @@
           "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "note": "Reported percentage improvements over three baselines are results.",
+          "note": "支持：开发／测试集相对Stanford分别提升2.93%／3.01%与原文一致。只判为原文支持，不擅自把百分号解释成相对百分比或百分点。",
           "occurrence": 8,
           "raw_field_sha256": "880e983d7ca70072ac692c6dcb827fe3e77d85e23b5cc9caefe9c254f1728b6a"
         }
       ],
       "omitted_present_fields": [],
-      "note": "Duplicate dataset/metric fields caused rejection; the remaining assignments are supported and correctly typed.",
+      "note": "59字段逐条AI复核之一；两个Pro轮次独立建议后由Codex按原文裁定，非人类审核。多字段语义正确也不能消除原提交协议失败。",
       "presence_evidence_ids": {
         "task": "chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6",
         "model": "chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6",
@@ -744,9 +1060,81 @@
         "metric": "chunk:de09a5eed4ccdd12a35d3368f3e91ab1e675d7f07d01b7207ee5f3a2338ae077",
         "result": "chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10"
       },
-      "absence_basis": "No explicit information for other field types in the six supplied passages; not a claim of absence in the full paper."
+      "absence_basis": "仅表示这六条实际输入证据未给出该类信息，不推断全文缺失。逐类理由见absence_review。",
+      "presence_review": {
+        "task": {
+          "evidence_id": "chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6",
+          "excerpt": "entity coreference resolution",
+          "reason": "任务明确。"
+        },
+        "model": {
+          "evidence_id": "chunk:fc5ec8894c202c3224e6dc5c2c8bb4e3cd19b27b60895325d4da659138cd7fd6",
+          "excerpt": "a new generative, unsupervised ranking model",
+          "reason": "模型明确。"
+        },
+        "dataset": {
+          "evidence_id": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6",
+          "excerpt": "APW and NYT sections of Gigaword Corpus",
+          "reason": "数据集明确。"
+        },
+        "input_setting": {
+          "evidence_id": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6",
+          "excerpt": "Our system is evaluated with automatically extracted mentions",
+          "reason": "测试输入明确。"
+        },
+        "training": {
+          "evidence_id": "chunk:146030edd8a379d47f90d3dfa94c202a83c3fa49a96e8b2966a57be7b20683b6",
+          "excerpt": "we remove duplicated documents and the documents which include fewer than 3 sentences.",
+          "reason": "训练文档筛选明确。"
+        },
+        "metric": {
+          "evidence_id": "chunk:de09a5eed4ccdd12a35d3368f3e91ab1e675d7f07d01b7207ee5f3a2338ae077",
+          "excerpt": "Entity-based CEAF",
+          "reason": "指标明确。"
+        },
+        "result": {
+          "evidence_id": "chunk:197bc3288848e9d890d53d47d0137fee4748976344c247edb7dffd85d4093c10",
+          "excerpt": "improvements of 2.93% and 3.01% on CoNLL F1 score over the Stanford system",
+          "reason": "相对基线的实测提升明确。"
+        }
+      },
+      "absence_review": {
+        "limitation": "没有明确限制／缺口声明；不从论文采用无监督方法或存在基线比较推断局限。",
+        "code_availability": "没有代码访问或发布说明。"
+      }
     }
   },
   "reviewer_type": "assistant",
-  "human_review_status": "pending"
+  "human_review_status": "pending",
+  "ai_review_status": "completed",
+  "review_round": "p46-pro-assisted-v2",
+  "previous_review": {
+    "git_commit": "bce693856d083aab26f09a173d3ebd9520d3b9e5",
+    "sha256": "0adc663c55ebbd3b18a7f514dfee39acfff1448a390141979aa98abd4c8cceb9"
+  },
+  "rubric_notes": [
+    "支持只依据本字段指定chunk；其他chunk可用于判断字段是否存在，不能补救原字段引错来源。",
+    "类型根据字段值的主对象；错误类型不使忠实文本自动失去支持。",
+    "单纯低分比较归result；limitation可包含明确资源依赖、覆盖缺口或披露不完整；结果解释与资源条件重叠时保留合理原标签并记录歧义。",
+    "model不包含单纯硬件型号；描述性数据集合无需正式名称。",
+    "输入词表预处理归input_setting；训练语料选取、样本规模及时间范围归training。",
+    "第三方库可用不等于本文代码开放。"
+  ],
+  "review_provenance": {
+    "artifact": "pro-review.json",
+    "sha256": "117ed713c4a3974058a557702696fd93c7ecfdd96d7168d427fd8c59f3e8c005",
+    "review_model": "deepseek-v4-pro",
+    "review_paid_calls": 16,
+    "review_cost_scope": "Separate from original 8 Flash generation calls; actual currency cost unavailable",
+    "method": "Round 1 blinded to prior labels. Round 2 used explicit occurrence IDs and source-grounded rubric clarifications informed by initial inspection; not an independent benchmark. Codex adjudicated all labels against evidence.",
+    "usage": {
+      "paid_calls": 16,
+      "prompt_tokens": 39443,
+      "completion_tokens": 90129,
+      "response_models": [
+        "deepseek-v4-pro"
+      ],
+      "actual_cost": null
+    }
+  }
 }

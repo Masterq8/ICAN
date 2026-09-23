@@ -11,21 +11,23 @@
       "rate": 1.0
     },
     "field_classification_accuracy": {
-      "numerator": 7,
+      "numerator": 6,
       "denominator": 7,
-      "rate": 1.0
+      "rate": 0.8571428571428571
     },
     "missing_field_identification_rate": {
-      "numerator": 8,
+      "numerator": 7,
       "denominator": 8,
-      "rate": 1.0
+      "rate": 0.875
     },
     "present_field_recall": {
-      "numerator": 7,
+      "numerator": 6,
       "denominator": 10,
-      "rate": 0.7
+      "rate": 0.6
     },
-    "confusions": {},
+    "confusions": {
+      "model->input_setting": 1
+    },
     "field_metrics_successful_cases_only": true
   },
   "supplementary_raw_draft_metrics": {
@@ -40,23 +42,24 @@
       "rate": 0.9322033898305084
     },
     "field_classification_accuracy": {
-      "numerator": 53,
+      "numerator": 52,
       "denominator": 59,
-      "rate": 0.8983050847457628
+      "rate": 0.8813559322033898
     },
     "missing_field_identification_rate": {
-      "numerator": 16,
-      "denominator": 17,
-      "rate": 0.9411764705882353
+      "numerator": 14,
+      "denominator": 16,
+      "rate": 0.875
     },
     "present_field_recall": {
-      "numerator": 47,
-      "denominator": 55,
-      "rate": 0.8545454545454545
+      "numerator": 46,
+      "denominator": 56,
+      "rate": 0.8214285714285714
     },
     "confusions": {
       "input_setting->training": 3,
       "limitation->result": 1,
+      "model->input_setting": 1,
       "task->dataset": 1,
       "task->model": 1
     },
@@ -64,6 +67,24 @@
   },
   "reviewer_type": "assistant",
   "human_review_status": "pending",
+  "ai_review_status": "completed",
+  "review_provenance": {
+    "artifact": "pro-review.json",
+    "sha256": "117ed713c4a3974058a557702696fd93c7ecfdd96d7168d427fd8c59f3e8c005",
+    "review_model": "deepseek-v4-pro",
+    "review_paid_calls": 16,
+    "review_cost_scope": "Separate from original 8 Flash generation calls; actual currency cost unavailable",
+    "method": "Round 1 blinded to prior labels. Round 2 used explicit occurrence IDs and source-grounded rubric clarifications informed by initial inspection; not an independent benchmark. Codex adjudicated all labels against evidence.",
+    "usage": {
+      "paid_calls": 16,
+      "prompt_tokens": 39443,
+      "completion_tokens": 90129,
+      "response_models": [
+        "deepseek-v4-pro"
+      ],
+      "actual_cost": null
+    }
+  },
   "usage": {
     "paid_calls": 8,
     "prompt_tokens": 15508,
@@ -71,7 +92,7 @@
     "actual_cost_usd": null
   },
   "audit_inputs": {
-    "review_sha256": "0adc663c55ebbd3b18a7f514dfee39acfff1448a390141979aa98abd4c8cceb9",
+    "review_sha256": "2aa219c87f7dbc49aa92e09ae782d5dce18d2ef7c47f28cfc9105b9ebfff2fa3",
     "run_seal_sha256": "0a9345432e52b8ee0de5558514c94215781c650ac2d045c6a18841e3dde53096",
     "scorer_sha256": "988ad8eedc23236d7715a115f47718e592e0eea0a1e0190f02f0e09727e205d7"
   },

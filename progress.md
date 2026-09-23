@@ -296,3 +296,11 @@
 - 逐字段审核绑定occurrence和原始哈希；当前为助手初审，human_review_status=pending。human-review.md已汇总59个原始字段和全部实际输入证据供人类审核，P4.6整体质量未通过。
 - 新增dataset／metric／result确定性警告，不改写模型输出；修复引用上下文造成的误报和数字评分漏报。封存清单绑定30个产物、8组journal与源码快照；finalize离线重算，无付费调用。
 - 最终验证：303项Python测试通过／1项Windows权限跳过；14个改动Python文件Ruff与格式检查通过，前端生产构建通过，61项保护文件哈希不变，28个本轮变更文件凭据模式扫描无匹配。独立复查无剩余严重或重要问题。
+
+### 2026-09-23：按工作表完成 Pro 辅助第二轮 AI 复核
+
+- 两轮各8次deepseek-v4-pro审核，先无思考独立意见，再显式编号与规则澄清后的思考复核；共39443输入／90129输出token，金额未知。与原8次Flash生成分开记账，没有重跑生成。
+- Codex对照原文裁定全部59个occurrence及72个字段存在性槽位，保持所有原始绑定哈希。修改TurtleBot 2类型，补齐ontology局限／speech输入存在性，修正锚点；全部理由中文化，保留4处分类歧义及Pro分歧。
+- 重算：工具2/8；全草稿支持55/59、归类52/59、缺失14/16、槽位46/56。成功卡片口径为支持7/7、归类6/7、缺失7/8、槽位6/10，两种口径均保留。
+- ai_review_status=completed，reviewer_type=assistant，human_review_status=pending。提供pro-review.json原始辅助意见与review-adjudication.md裁定记录，不能称为人类验收通过。
+- 验证：8项评分回归通过、finalize成功、Ruff与格式检查通过；59组occurrence／哈希不变、72槽位完整、56条存在性锚点为连续原文；61保护文件及原生成run-seal不变，变更文件凭据模式扫描无匹配。
