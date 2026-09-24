@@ -1,0 +1,145 @@
+{
+  "frozen_at": "2026-09-24T04:44:23.485930+00:00",
+  "identity": {
+    "budgets": {
+      "agent_paid_calls": 160,
+      "qa_attempts": 80
+    },
+    "cases": {
+      "qasper_validation": 32,
+      "swin_test": 8
+    },
+    "git_commit": "b83b2b835f23acecb7ade4af1abcb8ac1fd5bef4",
+    "index_fingerprint": "9ac56ab768fe11b9a49b281f729856c8be506a8678ebcaf0b7014d4d97d175dd",
+    "index_identity": {
+      "chunk_snapshots": {
+        "qasper_external_chunks_v1": {
+          "chunk_artifacts_sha256": {
+            "chunk_report.json": "1d050e9f3ef050d99c8ff2580895f5de043dea1d796485a03deba1e3de65eb83",
+            "chunks.jsonl": "33b009dff3bce559a2ba8df3c1af30fd26c3804574f1d34417745d347ef8db6f"
+          },
+          "chunk_manifest_sha256": "d0593e37c2d406055f037bb0eae25cc7bdcdd4f015a54cdddff248fc413635bc",
+          "parent_input_sha256": {
+            "data/processed/qasper_external/v1/train_corpus.jsonl": "e6bc3b92d27ecb74ae2c33968f652f577412f4c56f50e63734724936cad1c3e2",
+            "data/processed/qasper_external/v1/validation_corpus.jsonl": "f6ba131118749f33932bb9b2845e81822d6dbbd339e4ff8aabc5245a94de903b"
+          },
+          "parent_manifest_sha256": "cc0f8feac22ff05ce50140d1421b79bb2f6b2ec9b0c1f094fabfcbefd3c8a11a",
+          "verification_sha256": "c977a3a63675d04ffcb98de664def9c147d9534309d701de31a11af4399d9aa3"
+        },
+        "swin_chunks_v1": {
+          "chunk_artifacts_sha256": {
+            "chunk_report.json": "7a0953562d2d57453b6de0d428d0639728309093a07e02a1079013e155ac9d32",
+            "chunks.jsonl": "569388dbdce12f96e9f8f545d406d878ccdb047aa3a50928f082e7d12ae75723"
+          },
+          "chunk_manifest_sha256": "675e566bd94e1eea2e31f808d93c8434dfbe723877c4e556ecee6988b6325d59",
+          "parent_input_sha256": {
+            "data/processed/swin/v1/parsed_units.jsonl": "0d0da117cb0eb584cf011aceef2a9be0d8a8ffbb6010321b69039ff8f3d1461f",
+            "data/processed/swin/v1/sources.jsonl": "763b75389a2416f57e4fed18a8c18b6c930b98d2b1884feaeea8383f95b16deb"
+          },
+          "parent_manifest_sha256": "277a37bebb8d576bc30d538cc43fa5ccf8e6f0cbceb7fab4335cf673b5fa0a31",
+          "verification_sha256": "3b700d734ab5f091adf53c9137cb3e2d64080fc8c1eee30cc1874d4ee0f10304"
+        },
+        "vision_mamba_chunks_v1": {
+          "chunk_artifacts_sha256": {
+            "chunk_report.json": "1367e4d1fa2bc9eface75b4becd93a9897e5d14815af6c8596a50bbb82ee3edd",
+            "chunks.jsonl": "56d921f77fa35f9527166dbf1672caaa66e5fd07fd46bb68705a46dc85c921db"
+          },
+          "chunk_manifest_sha256": "30c2bd1ce3f37da0af1daab3b63a37d3590044e685ed077c18f2b03afc638dd7",
+          "parent_input_sha256": {
+            "data/processed/vision_mamba/v1/parsed_units.jsonl": "804b6ac703b172452b4d9dda9a0e00b0a0ae32806f24c53193118fc93615fb61",
+            "data/processed/vision_mamba/v1/sources.jsonl": "5f2b0728c5557f2e13be90f825322de1352a5ecc2ca6aca2e32abab8ea1b98f1"
+          },
+          "parent_manifest_sha256": "b11f774949400e82c10ff65cdd719d0724e68b8b6f267a6164e78b52c0c42efc",
+          "verification_sha256": "e272b9daa2061c67cd42ba880f5e52c2cd52f2201d777c412ae7e250eabc5ffe"
+        }
+      },
+      "config_sha256": "fa4fcfa19813820f4c6890b4657a0c7f6d3358a7d2a364d6598f46213c53412f",
+      "libraries": {
+        "numpy": "2.4.6",
+        "qdrant-client": "1.19.0",
+        "sentence-transformers": "6.0.1",
+        "tokenizers": "0.23.2",
+        "torch": "2.11.0+cu128",
+        "transformers": "5.17.0"
+      },
+      "model_ledger_sha256": "8a5bf12e545a8ebb15a19b671c3986f21acd9e4a8dedefff648ef547c33e74de"
+    },
+    "index_manifest_sha256": "90aeeb9f4159bb4d981abd8c11794ec0b23c1c647aa037fc32c83ffa38b6b41e",
+    "models": {
+      "agent_answer": "deepseek-v4-pro",
+      "agent_planner": "deepseek-v4-pro",
+      "qa": "deepseek-v4-pro"
+    },
+    "policy": "started attempts never retried; frozen results never used to tune",
+    "retrieval_k": 8,
+    "source_sha256": {
+      "configs/agent/v2.json": "5efa772033b4bfe48679b663581f6693c47b24c8ffc573758da4e4506b516fc0",
+      "configs/indexing/v2.json": "53c90f5dd02dd66e0388054f1bbe5dcf5eddba9d57634d00ed9e33559d18cb7b",
+      "configs/qa/v1.json": "516ddd44f8840fb5c4080f7cc88ace8cbd8ccfb78797a27c56c9f00860d45307",
+      "configs/reranking/v1.json": "55dd817830f45f8f88962de178338d203ebc586fafa88ccdd89f001907a37df8",
+      "configs/retrieval/v1.json": "abfe56564193c1c4a84f6222a922cbdd9dc94577817a5d435259f4586fec7797",
+      "data/eval/qasper_external/v1/validation_questions.jsonl": "21ecb3df1c226997c999e786882ae22b3620e405f324b5ac8e95de7562c3f761",
+      "data/eval/swin_eval_manifest.json": "0dfe424c849c2141cabc5b2b9c8be1c33798d3c3ad3edc6da441b0c839269d02",
+      "data/eval/swin_evidence.json": "a0fdb2448f70b3e6c5193ab779e383096d802d506087f458f8f04b5c9d4207b6",
+      "data/eval/swin_test.jsonl": "5b2db3539abd08fd52b1e2d6aab4b5b78a1398d3738e3ebce9764c35b55c74b2",
+      "ican/agent/__init__.py": "024e8768ff11550f1a34df607b5cd983f2b2c3a6e69d2152637c3339264b953a",
+      "ican/agent/calculation.py": "9d06a2e4068beb899ab53a3df4d76003d96aa16c2587406c3fe67acf7e952ddb",
+      "ican/agent/configuration.py": "bb861da93b461cec7c8add1533e16bf25eb9af0340cdbe93e27b05415f14f884",
+      "ican/agent/corpus.py": "259e3215676fecfa2bedeef1626c8132eb8c369562d31dd8a20337f8e7a5b4b5",
+      "ican/agent/environment.py": "a284fe9ecdaf6d20010051a13a48ae51a18abbf4e0fe89f1364da3ae3d0fd27b",
+      "ican/agent/journal.py": "401151cbe8c4d81b15a60ae6ce0da2f940daaebb7dbc84c461ae06dda8353775",
+      "ican/agent/prompts.py": "1f9027304d47cebc7a23c2e96d95e3848d8f9a90f6e74b81fa090316676f7e48",
+      "ican/agent/runtime.py": "aeea0e172996e5f23ee1a800374acdef95025c64ed2e7c8cb144ae2367687be9",
+      "ican/agent/schema.py": "39c24497a7bd866ea677de7164f51bb53868bdb1e2022ecd9e341a96b723815a",
+      "ican/agent/service.py": "38001236ec55e70939e003b3c0ec34e4ef2833891ca96b3d391ee5ca8aa24cc1",
+      "ican/agent/workflow.py": "9fc9351c50c212caa2cb5f9d9177f7cb738b62ed3d35bf1da5bc0853400bf4cf",
+      "ican/evaluation/__init__.py": "7723d5dcaea0db031e31a2a52946decb8e4c0f19f4ffdc60b1985cebab821759",
+      "ican/evaluation/data.py": "75113e5788ca4bbe82c1676bc0ab1dd11d834915b247287222833c330f3ed2b4",
+      "ican/evaluation/metrics.py": "bd02e80a25d3680c6bc6027ac47b0dfdbbb566f4c7dfb490d8a778f439eafbd3",
+      "ican/evaluation/p4_agent.py": "fd2c0fb4aeaf6b90fec0999617475f79a6cc4ca3a6d46ce9e688b1c252abe6eb",
+      "ican/evaluation/report.py": "f1abe8828d6ac1ebb2e6c8a3f23c320a2e0b81a40a1def663fee692028be8619",
+      "ican/evaluation/research_audit.py": "7c7d7c2d3bcd3d9fae6f66f6e25dc6960eecc590706e691be028a457ab346f85",
+      "ican/evaluation/research_card.py": "988ad8eedc23236d7715a115f47718e592e0eea0a1e0190f02f0e09727e205d7",
+      "ican/evaluation/runner.py": "d31d34d576a2d51d8bdd7d4ebbb7672872d56629f909bb7e0217e866559d0b7e",
+      "ican/indexing/__init__.py": "39693da0305825d16aa2a93d4e7c2768870398c63f5b8c05cbc2bb53d267b506",
+      "ican/indexing/inputs.py": "4dc509c0e685f1dbdc60395e01ba1b1e70c77d19b563cc36a8172eaa8f509994",
+      "ican/indexing/model.py": "39d309ae5db8fbda18ac175315120a22eae3f35bf6ccd6ad5226494a631adaa5",
+      "ican/indexing/pipeline.py": "59f8f9d7fb4062f2b54355da0c3586deff1cda424dd1db29a87b8a2d69be5e58",
+      "ican/indexing/schema.py": "939a7c11d95d7e05e81e0ac8bf08e9e686f7813c9c4315842a5bf271d57ba891",
+      "ican/indexing/verification.py": "05a8ed6323ac88ad8ab16db705a2eafa576457729b3c4d81be0fcc6c99f37795",
+      "ican/qa/__init__.py": "f329c1ab06fac224a8cbad26eac72a1544e0cf7b406efb71dcb9a700286e401b",
+      "ican/qa/paperqa_adapter.py": "d8e4353169f46bfc200e9fbabfbc0ecf033d17f40552968a96233a71cd4da0c0",
+      "ican/qa/prompts.py": "41f25786882b29827a4c310d474997a938f8a19de1c4fc1f83e56d868e1f3306",
+      "ican/qa/runtime.py": "ff316505f5639054cad8e32a956ba4dfcc0e7349f5c80794dc985101b2793eec",
+      "ican/qa/schema.py": "5e18950ed14908f535af09252b4d6641b6ded9a84744821bad61f62968b38cf3",
+      "ican/qa/service.py": "bffe927ad0d950ab885359d9ec47b92be0e656ce791923cf07bc63d93b0e050c",
+      "ican/research/__init__.py": "33ee84bc028c5e4c9e624019b24a37b8de522cf5f337fe732cba84802f154de3",
+      "ican/research/auto_schema.py": "6c2433b590487addead827008edaa9114210ac4a034676191dac856bcd733325",
+      "ican/research/auto_service.py": "7a0c0bd041d46db611d0e8d26461a9002ec0d6a6555917610949148c8573ddc2",
+      "ican/research/claims.py": "c7ce1195f057e9eecbfe41a02bcf3aa2f5edc295e77d48cbbae6083c39123b34",
+      "ican/research/confidence.py": "6aede3ce20e647674f8cdcfa1d6cbbed6eeb83d2aac458ec0b9f1b3e2456b0f6",
+      "ican/research/field_rules.py": "ecbb98fa06ae61e1e8ffa7974a8e440bf45896844e21c7dbfcd4456d375a4222",
+      "ican/research/schema.py": "cf24a452f1bec99d91174e4483ad1dca6fc0960141aed7701e086aa8b8b4fb79",
+      "ican/research/service.py": "8fe7bb0a456e23a8bf90a1714c8f77bc76997827a89d3b6a0070404f7d68028e",
+      "ican/research/store.py": "70be0739724241641bc76a353a91c9abee3542662f484233c1c2f8e2d142f3b6",
+      "ican/research/submission.py": "14a46f08833b7393c912b6c054a809db1dd74c954ab30c2f796b35a6020dd1d0",
+      "ican/retrieval/__init__.py": "97bfd09e2f21780973824785be4141e8aa58f91856e25b3e95a8ab09d615626c",
+      "ican/retrieval/download.py": "6382226a89851a85563c37d80db595d41bc1050075de3f21d9af88af5eaa9f8d",
+      "ican/retrieval/hybrid.py": "3763c6ebe291759c33b7dd7cc788b654b1c04e59913395761f1215c0010f918a",
+      "ican/retrieval/lexical.py": "1fb096347e84fe68367c9cb677b90757d3285b795743cff041130f586188d9a3",
+      "ican/retrieval/policy.py": "5655d66e89dff4eef65d32a28c6e9ede78f7714d5053f2a45ac0d136196e8037",
+      "ican/retrieval/reranking.py": "e80e4d1f473121fbffecc8862a41aac1da9d54a24eccc7c779b5221278874ee4",
+      "ican/retrieval/schema.py": "ca457c5696ba1332151a8217cf49ba5193559c9c7dc9c059139f3e758a6fe7ef",
+      "ican/retrieval/scope.py": "1588a220cbb0f9c06e3361319118900497db6748794709b3d2ee46d134bf0284",
+      "ican/retrieval/service.py": "7e969fb58cc1a65b6e6632477ffc6edab32d56d7cc78b4db850f4154ffe9bcb0",
+      "scripts/run_p6_frozen.py": "992a8b4d800cb059f793d46a6e00854855d51bd5625a40b8836bf0066a0489f2",
+      "third_party/qasper/evaluator.py": "781aba7cd8e524bef4f0a1b4bf3504e5b02cb1d8d5bf32a8f0a89dfa83e86bfe"
+    },
+    "strategies": [
+      "dense",
+      "hybrid_rerank",
+      "agent"
+    ],
+    "version": "p6-frozen-once-v1"
+  }
+}
