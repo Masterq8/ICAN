@@ -1,9 +1,9 @@
 {
   "version": "p46-quality-v2-manual-review-v1",
-  "reviewer_type": "ai",
-  "reviewer": "Codex GPT-6; editable for later human review",
+  "reviewer_type": "human",
+  "reviewer": "human review (Claude Code session, user-directed); AI draft by Codex GPT-6",
   "ai_review_status": "completed",
-  "human_review_status": "pending",
+  "human_review_status": "completed",
   "scope": "all_parseable_raw_occurrences_and_all_72_field_presence_slots",
   "seal_sha256": "f76a40870923094c80b497e687fd30a3e7ffa299de660588f9d532ba96b14533",
   "review_input_sha256": "35afc7e7cbfd738762a577d8a91213bd2568917a399b3c3704a9ac5ab931ef80",
@@ -31,7 +31,7 @@
         "training": "chunk:c7e427d98c44e8ed4bec174e50df9100dcc964cf449d0a33e7a14e2b273a8f3e",
         "metric": "chunk:9db63691548fcc99a71ec45402c407ecbd6a2a291b76db88bf7c8d3046b747b5",
         "result": "chunk:9db63691548fcc99a71ec45402c407ecbd6a2a291b76db88bf7c8d3046b747b5",
-        "limitation": "chunk:c7e427d98c44e8ed4bec174e50df9100dcc964cf449d0a33e7a14e2b273a8f3e"
+        "limitation": "chunk:5636b7b69a8034b5c7122162c626544c9b3efb93f81ea355355c4985bdaf06fb"
       },
       "omitted_present_fields": [
         "dataset",
@@ -81,8 +81,8 @@
         },
         "limitation": {
           "present": true,
-          "evidence_id": "chunk:c7e427d98c44e8ed4bec174e50df9100dcc964cf449d0a33e7a14e2b273a8f3e",
-          "reason": "冻结证据中有明确的 limitation 信息。"
+          "evidence_id": "chunk:5636b7b69a8034b5c7122162c626544c9b3efb93f81ea355355c4985bdaf06fb",
+          "reason": "冻结证据中有明确的 limitation 信息：明示不能从训练数据或验证数据学习先验。"
         },
         "code_availability": {
           "present": false,
@@ -721,10 +721,10 @@
           "occurrence": 3,
           "name": "dataset",
           "raw_field_sha256": "7a78c7664066f240fc40206697d4ba3cc258a3f269d3bb097c1c216e04fe8291",
-          "evidence_supported": false,
+          "evidence_supported": true,
           "type_correct": true,
           "correct_type": "dataset",
-          "evidence_reason": "引文不是所绑定证据片段中的连续原文。",
+          "evidence_reason": "引文与所绑定证据片段为同一连续原文，仅句首 The 写成 the，属大小写规范化。",
           "type_reason": "字段值符合 dataset 的语义。"
         },
         {
@@ -763,9 +763,9 @@
           "raw_field_sha256": "5fd846df4351122f691c9b501c446c05ec97ea16721743113dac72785f0469f3",
           "evidence_supported": true,
           "type_correct": false,
-          "correct_type": "input_setting",
+          "correct_type": "none",
           "evidence_reason": "引文是所绑定证据片段中的连续原文。",
-          "type_reason": "该值应归入 input_setting，不符合 training 的字段契约。"
+          "type_reason": "该值是仿真中结构涌现的成因表述（purely cultural dynamics），不是优化设置：所引句子未涉及目标函数、优化器或训练过程，不符合 training 的字段契约；它给出的是对涌现现象的解释，而非对现象的测量值或比较结论，据此归入 result 也缺少依据，其余字段同样无依据，故实际类型无法确定，按 none 记录。"
         },
         {
           "occurrence": 8,
@@ -894,7 +894,7 @@
       "presence_evidence_ids": {
         "task": "chunk:f2747de3f7dec34115d84855fb2cbd288f4aa4f26e0a128ae9fdad8d4adf07b4",
         "model": "chunk:3352b8064fa2f88bd18a7b88f7624cea84a9703920e9e1eef83e17c16dd050b6",
-        "dataset": "chunk:5dd6882f450a8e31a58f89d0a27134aa8d6f97448011a53ad63ca41e4d305482",
+        "dataset": "chunk:16dcbf82551f4136301fdf7220eb1ee2148a437b11e20a1bbfd9839be377034b",
         "input_setting": "chunk:5dd6882f450a8e31a58f89d0a27134aa8d6f97448011a53ad63ca41e4d305482",
         "training": "chunk:84c9fae81a24161b125c40472c4a2d608795df48286034e0d0cedd6c5817d3c8",
         "result": "chunk:6aecf55c2c39c8e9b609967710d1f4a81d1dad9807c1fae63474c6e2ea4050ca",
@@ -922,8 +922,8 @@
         },
         "dataset": {
           "present": true,
-          "evidence_id": "chunk:5dd6882f450a8e31a58f89d0a27134aa8d6f97448011a53ad63ca41e4d305482",
-          "reason": "冻结证据中有明确的 dataset 信息。"
+          "evidence_id": "chunk:16dcbf82551f4136301fdf7220eb1ee2148a437b11e20a1bbfd9839be377034b",
+          "reason": "冻结证据中有明确的 dataset 信息：实验基于四个 app 的新数据集合。"
         },
         "input_setting": {
           "present": true,
@@ -1070,10 +1070,10 @@
           "name": "dataset",
           "raw_field_sha256": "b638d8dceb897d4a306085be3513522fc97df4dd78a91dd0dd2472126bde7757",
           "evidence_supported": true,
-          "type_correct": false,
-          "correct_type": "result",
+          "type_correct": true,
+          "correct_type": "dataset",
           "evidence_reason": "引文是所绑定证据片段中的连续原文。",
-          "type_reason": "该值应归入 result，不符合 dataset 的字段契约。"
+          "type_reason": "该值是筛选择因果语料得到的语料规模，属数据集的构成信息，归 dataset；result 契约用于对现象本身的测量值或比较结论。"
         },
         {
           "occurrence": 3,
@@ -1099,10 +1099,10 @@
           "occurrence": 5,
           "name": "input_setting",
           "raw_field_sha256": "a164a6247a5ef723edb3d99efdab4762f0e0fd2416135ea5e8b334546197881c",
-          "evidence_supported": false,
+          "evidence_supported": true,
           "type_correct": true,
           "correct_type": "input_setting",
-          "evidence_reason": "引文不是所绑定证据片段中的连续原文。",
+          "evidence_reason": "引文与所绑定证据片段同句同序，差异仅在语料把原文的左右单引号渲染成反引号，属排版字符差异，不是改写。",
           "type_reason": "字段值符合 input_setting 的语义。"
         },
         {
@@ -1139,10 +1139,10 @@
           "occurrence": 9,
           "name": "result",
           "raw_field_sha256": "3b2f6e33dc7178a9f6dc69595f40ae6227817368d800fa131293c8c78a46d727",
-          "evidence_supported": false,
+          "evidence_supported": true,
           "type_correct": true,
           "correct_type": "result",
-          "evidence_reason": "引文不是所绑定证据片段中的连续原文。",
+          "evidence_reason": "引文与所绑定证据片段同句同序，差异仅在语料把原文的左右单引号渲染成反引号，属排版字符差异，不是改写。句末句号被省略。",
           "type_reason": "字段值符合 result 的语义。"
         },
         {
@@ -1169,10 +1169,10 @@
           "occurrence": 12,
           "name": "limitation",
           "raw_field_sha256": "bcaa9474b23db82ce5480a8173fe2141d881e44c0f1ae4928089060f53f86f2f",
-          "evidence_supported": false,
+          "evidence_supported": true,
           "type_correct": true,
           "correct_type": "limitation",
-          "evidence_reason": "引文不是所绑定证据片段中的连续原文。",
+          "evidence_reason": "引文与所绑定证据片段同句同序，差异仅在语料把原文的左右单引号渲染成反引号，属排版字符差异，不是改写。句末句号被省略。",
           "type_reason": "字段值符合 limitation 的语义。"
         },
         {

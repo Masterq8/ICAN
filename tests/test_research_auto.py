@@ -241,6 +241,13 @@ async def test_auto_card_is_scoped_and_preserves_revisions_and_verdicts(tmp_path
     assert result.screening.card_id == result.extraction.card_id
     assert result.screening.card_id is not None
     assert result.usage.paid_calls == 1
+    assert [(stage.stage, stage.status) for stage in result.stages] == [
+        ("evidence_preparation", "completed"),
+        ("model_submission", "completed"),
+        ("result_validation", "completed"),
+        ("record_save", "completed"),
+    ]
+    assert result.stop_reason == "completed"
     assert len(list((tmp_path / "records").glob("*.json"))) == 2
 
 
@@ -269,6 +276,13 @@ async def test_rejected_card_persists_only_independently_high_confidence_fields(
         for verdict in field.claims
     )
     assert result.failure_code == "tool:evidence_out_of_scope"
+    assert result.stop_reason == "tool_submission_rejected"
+    assert [(stage.stage, stage.status) for stage in result.stages] == [
+        ("evidence_preparation", "completed"),
+        ("model_submission", "completed"),
+        ("result_validation", "failed"),
+        ("record_save", "completed"),
+    ]
     assert len(list((tmp_path / "records").glob("*.json"))) == 1
     loaded = auto.load_card(
         AutoCardRequest(query="image models", collection="swin_v1", source_id="paper-a")
@@ -368,6 +382,32 @@ async def test_runtime_failure_returns_paper_scoped_review_fallback(tmp_path):
     assert result.screening is None and result.extraction is None
     assert result.candidate.source_id == "paper-a"
     assert result.usage.completion_tokens == 2048
+    assert result.stop_reason == "model_unavailable"
+    assert [(stage.stage, stage.status) for stage in result.stages] == [
+        ("evidence_preparation", "completed"),
+        ("model_submission", "failed"),
+        ("result_validation", "skipped"),
+        ("record_save", "skipped"),
+    ]
+
+
+@pytest.mark.asyncio
+async def test_record_save_failure_returns_truthful_terminal_stage(tmp_path):
+    auto = build(tmp_path, [draft_a()])
+
+    def fail_save(*args, **kwargs):
+        raise OSError("private filesystem detail")
+
+    auto.research.submit_screening = fail_save
+    result = await auto.auto_card(
+        AutoCardRequest(query="image models", collection="swin_v1", source_id="paper-a")
+    )
+    assert result.status == "review_required"
+    assert result.failure_code == "record_save_failed"
+    assert result.stop_reason == "record_save_failed"
+    assert result.stages[-1].stage == "record_save"
+    assert result.stages[-1].status == "failed"
+    assert "private filesystem detail" not in result.model_dump_json()
 
 
 def test_paper_evidence_search_is_forced_to_the_selected_source(tmp_path):

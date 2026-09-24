@@ -1,4 +1,4 @@
-export type Collection = 'swin_v1' | 'qasper_train_v1'
+export type Collection = 'swin_v1' | 'qasper_train_v1' | 'vision_mamba_v1'
 export type ClaimStatus = 'supported' | 'requires_review' | 'insufficient_evidence' | 'blocked_by_precondition'
 
 export interface Evidence {
@@ -34,12 +34,20 @@ export interface ClaimVerdict {
 
 export interface ResearchRecord {
   record_id: string
+  created_at: string
+  card_id?: string | null
   revision_of?: string | null
   record_type: 'screening' | 'extraction'
   subject_source_id: string
   decision?: 'include' | 'exclude' | 'hold'
   claims: ClaimVerdict[]
-  fields: Array<{ name: string; value: string; claims: ClaimVerdict[] }>
+  fields: Array<{ name: string; value: string; claims: ClaimVerdict[]; semantic_diagnostics?: unknown[] }>
+}
+
+export interface ResearchHistory {
+  screening: ResearchRecord[]
+  extraction: ResearchRecord[]
+  diagnostics: Array<{ record_id: string; code: 'invalid_json' | 'invalid_record' | 'unreadable' }>
 }
 
 export interface CardResponse {
@@ -51,6 +59,8 @@ export interface CardResponse {
   high_confidence_fields: HighConfidenceField[]
   review_candidates: ReviewCandidate[]
   failure_code?: string | null
+  stages: Array<{ stage: 'evidence_preparation' | 'model_submission' | 'result_validation' | 'record_save'; status: 'completed' | 'failed' | 'skipped' }>
+  stop_reason: 'completed' | 'tool_submission_rejected' | 'model_request_failed' | 'model_unavailable' | 'model_timeout' | 'budget_exhausted' | 'record_save_failed'
 }
 
 export interface HighConfidenceField {

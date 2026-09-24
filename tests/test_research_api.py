@@ -22,6 +22,9 @@ class FakeResearch:
     def build_report(self, request):
         return ResearchReport(record_ids=request.record_ids, markdown="# report")
 
+    def history(self, source_id):
+        return {"screening": [], "extraction": [], "diagnostics": []}
+
 
 def test_research_claim_endpoint_is_lazy_and_forwards_the_fixed_scope(tmp_path):
     research = FakeResearch()
@@ -48,6 +51,18 @@ def test_research_claim_endpoint_is_lazy_and_forwards_the_fixed_scope(tmp_path):
     assert response.status_code == 200 and response.json() == {"verdicts": []}
     assert isinstance(research.scope, AgentRequest)
     assert research.scope.family == "swin_v1"
+
+
+def test_research_history_endpoint_returns_grouped_history(tmp_path):
+    client = TestClient(create_app(root=tmp_path, research_service=FakeResearch()))
+    response = client.get("/v1/research/history/paper-source")
+    assert response.status_code == 200
+    assert response.json() == {"screening": [], "extraction": [], "diagnostics": []}
+
+
+def test_research_history_endpoint_rejects_overlong_source_id(tmp_path):
+    client = TestClient(create_app(root=tmp_path, research_service=FakeResearch()))
+    assert client.get(f"/v1/research/history/{'x' * 257}").status_code == 422
 
 
 def test_research_api_rejects_invalid_scope_and_path_like_record_ids(tmp_path):

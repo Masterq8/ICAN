@@ -1,8 +1,8 @@
 # P4.6 v2 人工复核工作表
 
-当前 AI 审核已完成，人工状态仍为 `pending`。人工复核时逐 occurrence 对照 `review-input.json` 的原字段、绑定证据与 `presence_decisions`；修改 `manual-review.json` 中的布尔判断、correct_type 和理由，不得修改 occurrence、name 或 raw_field_sha256。
+**人工复核已完成。** 用户逐 occurrence 对照 `review-input.json` 中的原字段、绑定证据与 `presence_decisions`，更新了 `manual-review.json`；身份为 `human`，状态为 `completed`。封存与review-input哈希绑定已由finalize验证通过。
 
-完成后把 reviewer_type 改为 `human`、human_review_status 改为 `completed`，并执行：
+如果今后需要更正本轮人工判断，编辑完成后再次执行以下命令重算：
 
 ```powershell
 conda run -n ican python scripts/evaluate_research_cards_v2.py finalize --config configs/evaluation/p46-quality-v2.json

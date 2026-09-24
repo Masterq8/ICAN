@@ -44,7 +44,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def load_config(root: Path) -> IndexConfig:
-    path = root / "configs/indexing/v1.json"
+    path = root / "configs/indexing/v2.json"
     return IndexConfig.model_validate_json(path.read_text(encoding="utf-8"))
 
 
@@ -219,6 +219,12 @@ def create_app(
             return get_research_service().build_report(request)
         except (ToolInputError, ValueError) as error:
             raise HTTPException(status_code=422, detail=str(error)) from error
+
+    @app.get("/v1/research/history/{source_id}")
+    def research_history(source_id: str):
+        if not source_id or len(source_id) > 256:
+            raise HTTPException(status_code=422, detail="Invalid source ID")
+        return get_research_service().history(source_id)
 
     @app.post("/v1/research/discover", response_model=DiscoveryResponse)
     def discover_papers(request: DiscoveryRequest):

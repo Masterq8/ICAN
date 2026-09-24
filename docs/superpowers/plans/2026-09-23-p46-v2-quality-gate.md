@@ -159,4 +159,5 @@
 - [x] Re-run the sealed audit and verify that post-run code changes did not alter the recorded v2 source commit or any sealed hash.
 - [x] Check `git diff --check`, `git status --short`, staged secret scanning, and confirm no `.env`, API key, or raw credential appears in tracked content.
 - [x] Review the final diff against the design spec and record the browser interaction limitation and semantic-confidence boundary in `docs/problem-solution-log.md` and `docs/p4-research-guide.md`.
-- [x] Commit fallback as `e77a84c3d6bd22fbb7f5b2fa8d3e47fe8dd2e822` and push `codex/p4-agent-tools`. The sealed gate remains failed at 5/8 tool submissions; evidence support 60/65, field type 63/65, missing-field identification 16/17; exactly 8 Pro calls. Task 6 fallback activated and implemented. Human review remains pending.
+- [x] Commit fallback as `e77a84c3d6bd22fbb7f5b2fa8d3e47fe8dd2e822` and push `codex/p4-agent-tools`. The sealed gate remains failed at 5/8 tool submissions; exactly 8 Pro calls. Task 6 fallback activated and implemented.
+- [x] User completed human adjudication in `manual-review.json`; run `finalize` and validate frozen bindings. Final metrics: tool submissions 5/8, evidence support 64/65, classification 64/65, missing-field identification 16/17, present-field recall 29/55. Human review is completed; the tool-submission gate still fails.

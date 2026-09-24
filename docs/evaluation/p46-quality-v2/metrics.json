@@ -1,8 +1,8 @@
 {
   "version": "p46-quality-v2-metrics-v1",
-  "reviewer_type": "ai",
+  "reviewer_type": "human",
   "ai_review_status": "completed",
-  "human_review_status": "pending",
+  "human_review_status": "completed",
   "metrics": {
     "tool_submission_success": {
       "numerator": 5,
@@ -10,14 +10,14 @@
       "rate": 0.625
     },
     "evidence_support_rate": {
-      "numerator": 60,
+      "numerator": 64,
       "denominator": 65,
-      "rate": 0.9230769230769231
+      "rate": 0.9846153846153847
     },
     "field_classification_accuracy": {
-      "numerator": 63,
+      "numerator": 64,
       "denominator": 65,
-      "rate": 0.9692307692307692
+      "rate": 0.9846153846153847
     },
     "missing_field_identification_rate": {
       "numerator": 16,
@@ -30,8 +30,7 @@
       "rate": 0.5272727272727272
     },
     "confusions": {
-      "dataset->result": 1,
-      "training->input_setting": 1
+      "training->none": 1
     }
   },
   "supplementary_presence_accuracy": {
@@ -49,12 +48,12 @@
       },
       "evidence_support_rate": {
         "threshold": 0.9,
-        "actual": 0.9230769230769231,
+        "actual": 0.9846153846153847,
         "passed": true
       },
       "field_classification_accuracy": {
         "threshold": 0.85,
-        "actual": 0.9692307692307692,
+        "actual": 0.9846153846153847,
         "passed": true
       },
       "missing_field_identification_rate": {
@@ -711,7 +710,7 @@
   },
   "bindings": {
     "seal_sha256": "f76a40870923094c80b497e687fd30a3e7ffa299de660588f9d532ba96b14533",
-    "review_sha256": "6a4bc5df6a8a76a9e3e0c68d1945e958e2034c29b1cfe789813e5dfaa51ab389",
+    "review_sha256": "45623ca2cb6ff9ce4d44a96ffe3bca3aca114b33fe6e2ba9bd600c1080d530dc",
     "ai_review_sha256": "9b3aa38c6592928739ee4e5c5ed00f0fa48c362abda7990f532f021ce3531285",
     "review_input_sha256": "35afc7e7cbfd738762a577d8a91213bd2568917a399b3c3704a9ac5ab931ef80"
   }

@@ -1,0 +1,88 @@
+{
+  "label": "预置演示数据",
+  "query": "Swin Transformer 的 shifted window 如何连接相邻窗口？",
+  "candidate": {
+    "collection": "swin_v1",
+    "source_id": "src:21e757794f07f8f043ac",
+    "title": "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows",
+    "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf",
+    "source_version": "arXiv:2103.14030v2 / ICCV 2021",
+    "evidence": [
+      {
+        "rank": 1,
+        "score": 0.7607518316419253,
+        "chunk_id": "chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b",
+        "text": "A key design element of Swin Transformer is its shift of the window partition between consecutive self-attention layers, as illustrated in Figure 2. The shifted windows bridge the windows of the preceding layer, providing connections among them that significantly enhance modeling power (see Table 4). This strategy is also efficient in regards to real-world latency: all query patches within a window share the same key set 1, which facilitates memory access in hardware. In contrast, earlier sliding window based self-attention approaches [33, 50] suffer from low latency on general hardware due to different key sets for different query pixels 2. Our experiments show that the proposed shifted window approach has much lower latency than the sliding window method, yet is similar in modeling power (see Tables 5 and 6). The shifted window approach also proves beneficial for all-MLP architectures [61].",
+        "review_required": false,
+        "source": {
+          "source_id": "src:21e757794f07f8f043ac",
+          "source_type": "paper",
+          "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf",
+          "source_version": "arXiv:2103.14030v2 / ICCV 2021",
+          "location": {"page": 2}
+        }
+      }
+    ]
+  },
+  "history": {
+    "screening": [
+      {
+        "record_id": "30000002-0000-4000-8000-000000000002",
+        "card_id": "40000000-0000-4000-8000-000000000001",
+        "created_at": "2026-09-22T10:30:00Z",
+        "record_type": "screening",
+        "subject_source_id": "src:21e757794f07f8f043ac",
+        "revision_of": "30000001-0000-4000-8000-000000000001",
+        "decision": "include",
+        "claims": [
+          {"claim": {"statement": "论文研究 shifted window 视觉 Transformer，符合当前架构分析主题。", "kind": "inference", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示数据；筛选判断需人工确认。"]}
+        ],
+        "fields": []
+      },
+      {
+        "record_id": "30000001-0000-4000-8000-000000000001",
+        "card_id": "40000000-0000-4000-8000-000000000001",
+        "created_at": "2026-09-20T09:00:00Z",
+        "record_type": "screening",
+        "subject_source_id": "src:21e757794f07f8f043ac",
+        "revision_of": null,
+        "decision": "hold",
+        "claims": [
+          {"claim": {"statement": "主题相关，但需要进一步核对实验范围。", "kind": "inference", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示数据；筛选判断需人工确认。"]}
+        ],
+        "fields": []
+      }
+    ],
+    "extraction": [
+      {
+        "record_id": "50000002-0000-4000-8000-000000000002",
+        "card_id": "40000000-0000-4000-8000-000000000001",
+        "created_at": "2026-09-22T10:35:00Z",
+        "record_type": "extraction",
+        "subject_source_id": "src:21e757794f07f8f043ac",
+        "revision_of": "50000001-0000-4000-8000-000000000001",
+        "decision": null,
+        "claims": [],
+        "fields": [
+          {"name": "model", "value": "Swin Transformer", "claims": [{"claim": {"statement": "Swin Transformer", "kind": "verbatim", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"], "quote": "Swin Transformer"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "result", "value": "移位窗口在连续层之间建立跨窗口连接。", "claims": [{"claim": {"statement": "移位窗口连接前一层窗口。", "kind": "inference", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示整理；建议核对英文原文。"]}]}
+        ]
+      },
+      {
+        "record_id": "50000001-0000-4000-8000-000000000001",
+        "card_id": "40000000-0000-4000-8000-000000000001",
+        "created_at": "2026-09-20T09:10:00Z",
+        "record_type": "extraction",
+        "subject_source_id": "src:21e757794f07f8f043ac",
+        "revision_of": null,
+        "decision": null,
+        "claims": [],
+        "fields": [
+          {"name": "model", "value": "Swin Transformer", "claims": [{"claim": {"statement": "Swin Transformer", "kind": "verbatim", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"], "quote": "Swin Transformer"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "result", "value": "移位窗口连接前一层中的窗口。", "claims": [{"claim": {"statement": "移位窗口连接前一层中的窗口。", "kind": "inference", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示整理；建议核对英文原文。"]}]}
+        ]
+      }
+    ]
+  },
+  "report": "# Swin Transformer 单篇研究记录\n\n**范围：** arXiv:2103.14030v2 / ICCV 2021。以下是预置演示数据，不是本次模型生成或评测 gold。\n\n## 当前记录\n\n筛选：纳入（仍需人工确认）。\n\n提取：模型为 Swin Transformer；核心设计为相邻层移动窗口建立跨窗口连接。\n\n## 证据\n\n原文说明，移位窗口桥接前一层窗口并在窗口间提供连接（PDF 第 2 页）。\n\n## 使用边界\n\n本页展示单篇论文的记录快照，不代表论文间比较、实验排名或自动抽取质量。"
+}

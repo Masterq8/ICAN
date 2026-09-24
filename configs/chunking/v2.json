@@ -1,0 +1,42 @@
+{
+  "schema_version": "1",
+  "tokenizer": "cl100k_base",
+  "max_tokens": 768,
+  "max_context_tokens": 128,
+  "overlap_tokens": 64,
+  "datasets": [
+    {
+      "dataset_id": "swin_chunks_v1",
+      "kind": "parsed",
+      "parent_manifest": "data/processed/swin/v1/parse_report.json",
+      "expected_manifest_sha256": "277a37bebb8d576bc30d538cc43fa5ccf8e6f0cbceb7fab4335cf673b5fa0a31",
+      "inputs": {
+        "default": "data/processed/swin/v1/parsed_units.jsonl"
+      },
+      "sources": "data/processed/swin/v1/sources.jsonl",
+      "output_dir": "data/processed/swin/chunks/v2"
+    },
+    {
+      "dataset_id": "qasper_external_chunks_v1",
+      "kind": "qasper",
+      "parent_manifest": "data/processed/qasper_external/v1/manifest.json",
+      "expected_manifest_sha256": "cc0f8feac22ff05ce50140d1421b79bb2f6b2ec9b0c1f094fabfcbefd3c8a11a",
+      "inputs": {
+        "train": "data/processed/qasper_external/v1/train_corpus.jsonl",
+        "validation": "data/processed/qasper_external/v1/validation_corpus.jsonl"
+      },
+      "output_dir": "data/processed/qasper_external/chunks/v2"
+    },
+    {
+      "dataset_id": "vision_mamba_chunks_v1",
+      "kind": "parsed",
+      "parent_manifest": "data/processed/vision_mamba/v1/parse_report.json",
+      "expected_manifest_sha256": "b11f774949400e82c10ff65cdd719d0724e68b8b6f267a6164e78b52c0c42efc",
+      "inputs": {
+        "default": "data/processed/vision_mamba/v1/parsed_units.jsonl"
+      },
+      "sources": "data/processed/vision_mamba/v1/sources.jsonl",
+      "output_dir": "data/processed/vision_mamba/chunks/v2"
+    }
+  ]
+}

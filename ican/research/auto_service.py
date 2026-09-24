@@ -16,6 +16,7 @@ from ican.retrieval.schema import SearchFilters, SearchRequest
 from .auto_schema import (
     AutoCardRequest,
     AutoCardResponse,
+    AutoStageResult,
     CardFieldDraft,
     CardModelDraft,
     CardUsage,
@@ -93,7 +94,7 @@ class ResearchAutoService:
         for item in self._rows:
             collection, row = item["collection"], item["chunk"]
             if (
-                collection not in {"swin_v1", "qasper_train_v1"}
+                collection not in {"swin_v1", "qasper_train_v1", "vision_mamba_v1"}
                 or row["source_type"] != "paper"
             ):
                 continue
@@ -342,6 +343,7 @@ class ResearchAutoService:
         corpus = self._corpus(scope)
         task_id = uuid4().hex
         card_id = uuid4()
+        stages = [AutoStageResult(stage="evidence_preparation", status="completed")]
         runtime = self.runtime_factory(self.root, self.config, self.journal, task_id)
         message = {
             "query": request.query,
@@ -368,6 +370,21 @@ class ResearchAutoService:
                 [self._tool()],
             )
         except Exception as error:
+            stage_status = [
+                *stages,
+                AutoStageResult(stage="model_submission", status="failed"),
+                AutoStageResult(stage="result_validation", status="skipped"),
+                AutoStageResult(stage="record_save", status="skipped"),
+            ]
+            stop_reason = (
+                "budget_exhausted"
+                if isinstance(error, BudgetExhausted)
+                else "model_unavailable"
+                if type(error).__name__ == "ModelUnavailable"
+                else "model_timeout"
+                if type(error).__name__ == "ModelTimeout"
+                else "model_request_failed"
+            )
             self._write_trace(
                 task_id,
                 {
@@ -375,6 +392,8 @@ class ResearchAutoService:
                     "request": request.model_dump(mode="json"),
                     "selected_evidence_ids": sorted(selected),
                     "model_records": runtime.records,
+                    "stages": [stage.model_dump() for stage in stage_status],
+                    "stop_reason": stop_reason,
                     "submission_diagnostic": {
                         "status": "rejected",
                         "code": "runtime_error",
@@ -402,8 +421,15 @@ class ResearchAutoService:
                     completion_tokens=(usage or {}).get("completion_tokens", 0),
                 ),
                 failure_code=f"generation:{type(error).__name__}",
+                stages=stage_status,
+                stop_reason=stop_reason,
             )
+        stages.append(AutoStageResult(stage="model_submission", status="completed"))
         diagnosis = diagnose_card_submission(action, selected)
+        validation_status = "completed" if diagnosis.status == "accepted" else "failed"
+        stages.append(
+            AutoStageResult(stage="result_validation", status=validation_status)
+        )
         self._write_trace(
             task_id,
             {
@@ -412,6 +438,10 @@ class ResearchAutoService:
                 "selected_evidence_ids": sorted(selected),
                 "model_action": action,
                 "model_records": runtime.records,
+                "stages": [stage.model_dump() for stage in stages],
+                "stop_reason": "completed"
+                if diagnosis.status == "accepted"
+                else "tool_submission_rejected",
                 "submission_diagnostic": diagnosis.model_dump(
                     mode="json", exclude={"draft"}
                 ),
@@ -424,30 +454,58 @@ class ResearchAutoService:
             )
             extraction = None
             if high:
-                extraction = self.research.submit_extraction(
-                    scope,
-                    ExtractionDraft(
-                        subject_source_id=request.source_id,
-                        fields=[
-                            ExtractionFieldDraft(
-                                name=field.name,
-                                value=field.value,
-                                claims=[
-                                    ClaimDraft(
-                                        statement=field.value,
-                                        kind="verbatim",
-                                        evidence_ids=[field.evidence_id],
-                                        quote=field.quote,
-                                    )
-                                ],
-                            )
-                            for field in high
-                        ],
-                    ),
-                    corpus=corpus,
-                    allowed_ids=selected,
-                    card_id=card_id,
+                try:
+                    extraction = self.research.submit_extraction(
+                        scope,
+                        ExtractionDraft(
+                            subject_source_id=request.source_id,
+                            fields=[
+                                ExtractionFieldDraft(
+                                    name=field.name,
+                                    value=field.value,
+                                    claims=[
+                                        ClaimDraft(
+                                            statement=field.value,
+                                            kind="verbatim",
+                                            evidence_ids=[field.evidence_id],
+                                            quote=field.quote,
+                                        )
+                                    ],
+                                )
+                                for field in high
+                            ],
+                        ),
+                        corpus=corpus,
+                        allowed_ids=selected,
+                        card_id=card_id,
+                    )
+                except (OSError, ToolInputError, ValueError):
+                    stages.append(AutoStageResult(stage="record_save", status="failed"))
+                    usage = runtime.records[-1].get("usage") or {}
+                    return AutoCardResponse(
+                        status="review_required",
+                        candidate=candidate,
+                        screening=None,
+                        extraction=None,
+                        usage=CardUsage(
+                            paid_calls=sum(
+                                record.get("paid", True) for record in runtime.records
+                            ),
+                            prompt_tokens=usage.get("prompt_tokens", 0),
+                            completion_tokens=usage.get("completion_tokens", 0),
+                        ),
+                        high_confidence_fields=high,
+                        review_candidates=review,
+                        failure_code="record_save_failed",
+                        stages=stages,
+                        stop_reason="record_save_failed",
+                    )
+            stages.append(
+                AutoStageResult(
+                    stage="record_save",
+                    status="completed" if extraction is not None else "skipped",
                 )
+            )
             usage = runtime.records[-1].get("usage") or {}
             return AutoCardResponse(
                 status="review_required",
@@ -464,6 +522,8 @@ class ResearchAutoService:
                 high_confidence_fields=high,
                 review_candidates=review,
                 failure_code=f"tool:{diagnosis.code}",
+                stages=stages,
+                stop_reason="tool_submission_rejected",
             )
         draft = diagnosis.draft
         if draft is None:  # pragma: no cover - guarded by SubmissionDiagnosis
@@ -496,28 +556,52 @@ class ResearchAutoService:
             [reason, *(claim for field in fields for claim in field.claims)],
             allowed_ids=selected,
         )
-        screening = self.research.submit_screening(
-            scope,
-            ScreeningDraft(
-                subject_source_id=request.source_id,
-                decision=draft.decision,
-                claims=[reason],
-            ),
-            corpus=corpus,
-            allowed_ids=selected,
-            card_id=card_id,
-        )
-        extraction = (
-            self.research.submit_extraction(
+        screening = None
+        extraction = None
+        try:
+            screening = self.research.submit_screening(
                 scope,
-                ExtractionDraft(subject_source_id=request.source_id, fields=fields),
+                ScreeningDraft(
+                    subject_source_id=request.source_id,
+                    decision=draft.decision,
+                    claims=[reason],
+                ),
                 corpus=corpus,
                 allowed_ids=selected,
                 card_id=card_id,
             )
-            if fields
-            else None
-        )
+            extraction = (
+                self.research.submit_extraction(
+                    scope,
+                    ExtractionDraft(subject_source_id=request.source_id, fields=fields),
+                    corpus=corpus,
+                    allowed_ids=selected,
+                    card_id=card_id,
+                )
+                if fields
+                else None
+            )
+        except (OSError, ToolInputError, ValueError):
+            usage = runtime.records[-1].get("usage") or {}
+            return AutoCardResponse(
+                status="review_required",
+                candidate=candidate,
+                screening=screening,
+                extraction=extraction,
+                usage=CardUsage(
+                    paid_calls=sum(
+                        record.get("paid", True) for record in runtime.records
+                    ),
+                    prompt_tokens=usage.get("prompt_tokens", 0),
+                    completion_tokens=usage.get("completion_tokens", 0),
+                ),
+                high_confidence_fields=high,
+                review_candidates=review,
+                failure_code="record_save_failed",
+                stages=[*stages, AutoStageResult(stage="record_save", status="failed")],
+                stop_reason="record_save_failed",
+            )
+        stages.append(AutoStageResult(stage="record_save", status="completed"))
         usage = runtime.records[-1].get("usage") or {}
         return AutoCardResponse(
             status="completed",
@@ -531,6 +615,8 @@ class ResearchAutoService:
             ),
             high_confidence_fields=high,
             review_candidates=review,
+            stages=stages,
+            stop_reason="completed",
         )
 
     @staticmethod

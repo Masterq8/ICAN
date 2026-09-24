@@ -119,6 +119,45 @@ def test_screening_revisions_are_append_only_and_validate_subject(tmp_path):
     assert first.record_id != second.record_id
 
 
+def test_history_lists_records_by_subject_and_survives_corrupt_record(tmp_path):
+    research = service(tmp_path)
+    first = research.submit_screening(
+        request(),
+        ScreeningDraft(
+            subject_source_id="paper-source",
+            decision="include",
+            claims=[verbatim_claim()],
+        ),
+    )
+    extraction = research.submit_extraction(
+        request(),
+        ExtractionDraft(
+            subject_source_id="paper-source",
+            fields=[
+                ExtractionFieldDraft(
+                    name="model", value="Swin-T", claims=[verbatim_claim()]
+                )
+            ],
+        ),
+    )
+    same_time = research.store.append(first.model_copy(update={"record_id": uuid4()}))
+    research.store.append(
+        first.model_copy(
+            update={"record_id": uuid4(), "subject_source_id": "other-paper"}
+        )
+    )
+    research.store.directory.joinpath("broken.json").write_text("{", encoding="utf-8")
+    result = research.history("paper-source")
+    assert [record.record_id for record in result["screening"]] == sorted(
+        [first.record_id, same_time.record_id], key=str, reverse=True
+    )
+    assert [record.record_id for record in result["extraction"]] == [
+        extraction.record_id
+    ]
+    assert result["diagnostics"] == [{"record_id": "broken", "code": "invalid_json"}]
+    assert set(result["diagnostics"][0]) == {"record_id", "code"}
+
+
 def test_extraction_and_report_keep_blocked_claim_and_locations(tmp_path):
     research = service(tmp_path)
     record = research.submit_extraction(
@@ -209,3 +248,6 @@ def test_extraction_keeps_deterministic_field_semantic_diagnostics(tmp_path):
     assert [item.code for item in record.fields[0].semantic_diagnostics] == [
         "dataset_is_metric"
     ]
+
+
+from uuid import uuid4

@@ -1,0 +1,18 @@
+{
+  "schema_version": "1",
+  "tokenizer": "cl100k_base",
+  "max_tokens": 768,
+  "max_context_tokens": 128,
+  "overlap_tokens": 64,
+  "datasets": [
+    {
+      "dataset_id": "vision_mamba_chunks_v1",
+      "kind": "parsed",
+      "parent_manifest": "data/processed/vision_mamba/v1/parse_report.json",
+      "expected_manifest_sha256": "b11f774949400e82c10ff65cdd719d0724e68b8b6f267a6164e78b52c0c42efc",
+      "inputs": {"default": "data/processed/vision_mamba/v1/parsed_units.jsonl"},
+      "sources": "data/processed/vision_mamba/v1/sources.jsonl",
+      "output_dir": "data/processed/vision_mamba/chunks/v1"
+    }
+  ]
+}

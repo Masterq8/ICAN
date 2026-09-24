@@ -11,7 +11,7 @@ from ican.retrieval.schema import EvidenceResult
 
 from .schema import ExtractionFieldName, ResearchRecord
 
-ProductCollection = Literal["swin_v1", "qasper_train_v1"]
+ProductCollection = Literal["swin_v1", "qasper_train_v1", "vision_mamba_v1"]
 
 
 class DiscoveryRequest(BaseModel):
@@ -148,6 +148,15 @@ class ReviewCandidate(BaseModel):
     )
 
 
+class AutoStageResult(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    stage: Literal[
+        "evidence_preparation", "model_submission", "result_validation", "record_save"
+    ]
+    status: Literal["completed", "failed", "skipped"]
+
+
 class AutoCardResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -159,6 +168,16 @@ class AutoCardResponse(BaseModel):
     high_confidence_fields: list[HighConfidenceField] = Field(default_factory=list)
     review_candidates: list[ReviewCandidate] = Field(default_factory=list)
     failure_code: str | None = None
+    stages: list[AutoStageResult] = Field(default_factory=list, max_length=4)
+    stop_reason: Literal[
+        "completed",
+        "tool_submission_rejected",
+        "model_request_failed",
+        "model_unavailable",
+        "model_timeout",
+        "budget_exhausted",
+        "record_save_failed",
+    ] = "completed"
 
 
 class PaperEvidenceSearchRequest(BaseModel):

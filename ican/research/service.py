@@ -82,6 +82,18 @@ class ResearchService:
             )
         return previous
 
+    def history(self, subject_source_id: str):
+        records, diagnostics = self.store.list_for_subject(subject_source_id)
+        return {
+            "screening": [
+                record for record in records if record.record_type == "screening"
+            ],
+            "extraction": [
+                record for record in records if record.record_type == "extraction"
+            ],
+            "diagnostics": diagnostics,
+        }
+
     def submit_screening(
         self,
         request,

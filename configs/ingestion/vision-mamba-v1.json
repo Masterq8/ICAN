@@ -1,0 +1,23 @@
+{
+  "dataset_id": "vision_mamba_corpus_v1",
+  "pdf_backend": "docling",
+  "output_dir": "data/processed/vision_mamba/v1",
+  "max_file_bytes": 2097152,
+  "extensions": [".py", ".yaml", ".yml", ".json", ".md", ".sh", ".txt"],
+  "filenames": ["LICENSE", "LICENSE.txt"],
+  "sources": [
+    {
+      "kind": "paper",
+      "path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "version": "arXiv:2401.09417",
+      "url": "https://arxiv.org/abs/2401.09417",
+      "expected_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444"
+    },
+    {
+      "kind": "repository",
+      "path": "data/raw/repositories/Vim",
+      "version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "url": "https://github.com/hustvl/Vim"
+    }
+  ]
+}

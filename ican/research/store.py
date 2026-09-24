@@ -51,6 +51,32 @@ class ResearchStore:
         except (OSError, ValueError, json.JSONDecodeError) as error:
             raise ToolInputError("Research record is invalid") from error
 
+    def list_for_subject(self, subject_source_id: str):
+        """Return readable records and safe diagnostics for one paper."""
+        records = []
+        diagnostics = []
+        for path in sorted(self.directory.glob("*.json")):
+            try:
+                record = ResearchRecord.model_validate(
+                    json.loads(path.read_text(encoding="utf-8"))
+                )
+            except json.JSONDecodeError:
+                diagnostics.append({"record_id": path.stem, "code": "invalid_json"})
+                continue
+            except OSError:
+                diagnostics.append({"record_id": path.stem, "code": "unreadable"})
+                continue
+            except (ValueError, TypeError):
+                diagnostics.append({"record_id": path.stem, "code": "invalid_record"})
+                continue
+            if record.subject_source_id == subject_source_id:
+                records.append(record)
+        records.sort(
+            key=lambda record: (record.created_at, str(record.record_id)),
+            reverse=True,
+        )
+        return records, diagnostics
+
     def latest_for_subject(self, subject_source_id: str, record_type: str):
         latest = None
         for path in self.directory.glob("*.json"):
