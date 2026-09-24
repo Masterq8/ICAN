@@ -1,0 +1,327 @@
+{
+  "dataset_id": "vision_mamba_dev_v1",
+  "purpose": "development_only; never index gold labels",
+  "pdf_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+  "repo_commit": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+  "chunks_sha256": "56d921f77fa35f9527166dbf1672caaa66e5fd07fd46bb68705a46dc85c921db",
+  "evidence": [
+    {
+      "id": "VP01",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:3a12e7f3e6517980dd746c30d238d5aee0d0ca41e65eaf59f732609f03aa919f",
+      "anchor": "transform the 2-D image",
+      "supports": "image patch sequence and linear projection",
+      "page": 4
+    },
+    {
+      "id": "VP02",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:eab28419893226dcc7463ab310551d07a2227e24b2c520416b6712a16500b42c",
+      "anchor": "bidirectional sequence modeling",
+      "supports": "forward and backward Vim block",
+      "page": 4
+    },
+    {
+      "id": "VP03",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:a18d168456a6ed716d521d561708ffbc3b8c1ad3e2003ddafbf1c72db89c4d21",
+      "anchor": "number of blocks L to 24",
+      "supports": "Vim 16x16 patch projection and 24 stacked blocks",
+      "page": 4
+    },
+    {
+      "id": "VP04",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:9b78f26461356d222184bfbf8292e8a902e41cf5f21b1398ba5a39e5be0c1120",
+      "anchor": "Ω( self-attention ) = 4 MD 2 +2 M 2 D",
+      "supports": "global self-attention complexity equation",
+      "page": 5
+    },
+    {
+      "id": "VP05",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:0dcf7d9bfb52ba56b415bee88ba6a7e631c67f48c362a375ba0f1c903d5cf239",
+      "anchor": "Ω( SSM ) = 3 M (2 D ) N + M (2 D ) N",
+      "supports": "SSM complexity equation",
+      "page": 5
+    },
+    {
+      "id": "VP06",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:86e82ef4218c58ebed2f22ab6d6c057cb7d3f1403df4dbc450484c8068b90769",
+      "anchor": "self-attention is quadratic to sequence length M",
+      "supports": "asymptotic complexity under fixed state dimension",
+      "page": 5
+    },
+    {
+      "id": "VP07",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:5d9e2a8b10f5d2e4dbc65221adba3a24017b1a9b47e95337bcd517599c7b910e",
+      "anchor": "|Vim-Ti|224 2|7M|76.1|",
+      "supports": "ImageNet-1K Vim-Ti and dagger variant table values",
+      "page": 5
+    },
+    {
+      "id": "VP08",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:e24a2e1ab049796cc68912e99746da8c56d7448bfd459c5a8f06c115c66f8397",
+      "anchor": "We train the Vim models for 300 epochs",
+      "supports": "ImageNet-1K training recipe with EMA",
+      "page": 6
+    },
+    {
+      "id": "VP09",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:fa976ece7506b0d2f22b4912eef220ada406a94cfe79f4219af08c4e28a74a36",
+      "anchor": "set a patch extraction stride of 8",
+      "supports": "long-sequence fine-tuning schedule",
+      "page": 6
+    },
+    {
+      "id": "VP10",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:15459bee3ee4ef5afc68db1d96b19e2ec8421f953dcaf27a2922089b979fa31d",
+      "anchor": "We use the strategy of Bidirectional SSM + Conv1d as the default setting",
+      "supports": "paper ablation default bidirectional block",
+      "page": 8
+    },
+    {
+      "id": "VP11",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:26df11280a05d955be90cf312d658548a19f60f18048ac8d5f07aaf033246c8c",
+      "anchor": "we propose another variant Hier-Vim",
+      "supports": "Hier-Vim variant derives from Swin hierarchy",
+      "page": 13
+    },
+    {
+      "id": "VP12",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:1adf734994fa7f2512be29b3b97df079ba08380ddf5dfbfd405e12f204ca8d7a",
+      "anchor": "|Hier-Vim-T|[2, 2, 5, 2]|[96, 192, 384, 768]|30M|",
+      "supports": "Hier-Vim-T stage configuration",
+      "page": 13
+    },
+    {
+      "id": "VP13",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:87feb423dc8071be484090a2c22f0da47ad259add0d830d0b89277295cd1f8a5",
+      "anchor": "|Hier-Vim-T|224 2|30M|82.5|",
+      "supports": "Hier-Vim Table 7 versus cited Swin-T; table visually checked",
+      "page": 14
+    },
+    {
+      "id": "VR01",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/vim/models_mamba.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "c51f1505c5125fd6d430eb41e75a56da336e1be5f4ff6ee2faf8eb7223ba950d",
+      "chunk_id": "chunk:2d616a3885912603ce4876f30615eec007d829156cea2b8a65067383f0c79fdc",
+      "anchor": "self.grid_size = ((img_size[0] - patch_size[0]) // stride + 1",
+      "supports": "patch grid formula",
+      "lines": [
+        42,
+        53
+      ]
+    },
+    {
+      "id": "VR02",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/vim/models_mamba.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "c51f1505c5125fd6d430eb41e75a56da336e1be5f4ff6ee2faf8eb7223ba950d",
+      "chunk_id": "chunk:06606176e516e7fc9622ac1c4731e27541d16f7d8966174620bdde85ac25ede9",
+      "anchor": "assert H == self.img_size[0] and W == self.img_size[1]",
+      "supports": "fixed input-size assertion and projection",
+      "lines": [
+        55,
+        63
+      ]
+    },
+    {
+      "id": "VR03",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/vim/models_mamba.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "c51f1505c5125fd6d430eb41e75a56da336e1be5f4ff6ee2faf8eb7223ba950d",
+      "chunk_id": "chunk:4062512784dab558569673614716852845f528822ff756bae5e8f428fc3b4181",
+      "anchor": "token_position = M // 2",
+      "supports": "middle class token and absolute position addition",
+      "lines": [
+        385,
+        447
+      ]
+    },
+    {
+      "id": "VR04",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/vim/models_mamba.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "c51f1505c5125fd6d430eb41e75a56da336e1be5f4ff6ee2faf8eb7223ba950d",
+      "chunk_id": "chunk:cf6e1efb3db034bdc94fc011f6d277869cc42d248e49917eafbd4350d59bbb26",
+      "anchor": "return hidden_states[:, token_position, :]",
+      "supports": "class-token return precedes mean pool",
+      "lines": [
+        520,
+        543
+      ]
+    },
+    {
+      "id": "VR05",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/vim/models_mamba.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "c51f1505c5125fd6d430eb41e75a56da336e1be5f4ff6ee2faf8eb7223ba950d",
+      "chunk_id": "chunk:a9f6e493af646b60ee3e1154902d6500d3e475a96fa16b94d106d22898cdeab3",
+      "anchor": "def vim_tiny_patch16_224_bimambav2_final_pool_mean_abs_pos_embed_with_midclstok_div2",
+      "supports": "fixed Vim-Ti 224 model factory",
+      "lines": [
+        555,
+        566
+      ]
+    },
+    {
+      "id": "VR06",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/vim/models_mamba.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "c51f1505c5125fd6d430eb41e75a56da336e1be5f4ff6ee2faf8eb7223ba950d",
+      "chunk_id": "chunk:5e8453868df844e44c73cefe37d6fd3f02af82e5c2273601a19c7bcec1bc45ea",
+      "anchor": "def vim_tiny_patch16_stride8_224_bimambav2_final_pool_mean_abs_pos_embed_with_midclstok_div2",
+      "supports": "long-sequence stride-8 model factory",
+      "lines": [
+        568,
+        579
+      ]
+    },
+    {
+      "id": "VR07",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/vim/models_mamba.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "c51f1505c5125fd6d430eb41e75a56da336e1be5f4ff6ee2faf8eb7223ba950d",
+      "chunk_id": "chunk:305f99991562e8f43e8ef42c3daf04d8839e07c0db631be139c9da3c8607a1c0",
+      "anchor": "if_bidirectional=False,",
+      "supports": "outer bidirectional flag default",
+      "lines": [
+        230,
+        310
+      ]
+    },
+    {
+      "id": "VR08",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/vim/models_mamba.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "c51f1505c5125fd6d430eb41e75a56da336e1be5f4ff6ee2faf8eb7223ba950d",
+      "chunk_id": "chunk:6a76c059f291a739582b6decb3a4dcf896dfcca58d3d1a5624e0669f821585d2",
+      "anchor": "if not self.if_bidirectional:",
+      "supports": "outer paired-layer branch is conditional",
+      "lines": [
+        442,
+        525
+      ]
+    },
+    {
+      "id": "VR09",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/mamba-1p1p1/mamba_ssm/modules/mamba_simple.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "a0f76db675a6e246b12d0ed1eb5c1264dd05ff8fb071a495b6733141e3cbac7c",
+      "chunk_id": "chunk:9381d5c68e99b315dd90723f2a8d939faae862c2fef60030396c3cbf00733598",
+      "anchor": "elif self.bimamba_type == \"v2\":",
+      "supports": "per-block BiMamba v2 forward/backward branch",
+      "lines": [
+        168,
+        244
+      ]
+    },
+    {
+      "id": "VR10",
+      "source": "vim_repository",
+      "source_type": "code",
+      "source_path": "data/raw/repositories/Vim/mamba-1p1p1/mamba_ssm/modules/mamba_simple.py",
+      "source_version": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+      "source_sha256": "a0f76db675a6e246b12d0ed1eb5c1264dd05ff8fb071a495b6733141e3cbac7c",
+      "chunk_id": "chunk:274210b5f1a8458a4b8683cf2daa6827584cd7a2643b66bc5f06bfc70dc7d467",
+      "anchor": "out + out_b.flip([-1])",
+      "supports": "if_divide_out=True branch combines forward and reversed backward outputs before output projection",
+      "lines": [
+        242,
+        245
+      ]
+    },
+    {
+      "id": "VP14",
+      "source": "vim_paper",
+      "source_type": "paper",
+      "source_path": "data/raw/papers/vision_mamba_2401.09417.pdf",
+      "source_version": "arXiv:2401.09417",
+      "source_sha256": "15c3ccf7340a412e6ce408526c03a67e412d9bb4958e6c0bfe310394b6337444",
+      "chunk_id": "chunk:7bd5b6d358054e3d9aeafe01a8d4b995655df3bacda891c5245b3fd0f58a0947",
+      "anchor": "saves 86.8% GPU memory",
+      "supports": "high-resolution speed and memory comparison explicitly uses DeiT, not Swin",
+      "page": 1
+    }
+  ]
+}
