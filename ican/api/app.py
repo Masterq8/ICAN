@@ -8,10 +8,11 @@ from fastapi.staticfiles import StaticFiles
 
 from ican.agent.schema import (
     AgentRequest,
-    AgentResponse,
+    PublicAgentResponse,
     BudgetExhausted,
     ToolInputError,
 )
+from ican.agent.public_response import to_public_agent_response
 from ican.indexing.schema import IndexConfig
 from ican.qa.runtime import ModelTimeout, ModelUnavailable
 from ican.qa.schema import QARequest, QAResponse
@@ -155,10 +156,11 @@ def create_app(
                 status_code=504, detail="Generation timed out"
             ) from None
 
-    @app.post("/v1/agent/run", response_model=AgentResponse)
-    async def run_agent(request: AgentRequest) -> AgentResponse:
+    @app.post("/v1/agent/run", response_model=PublicAgentResponse)
+    async def run_agent(request: AgentRequest) -> PublicAgentResponse:
         try:
-            return await get_agent_service().run(request)
+            response = await get_agent_service().run(request)
+            return to_public_agent_response(response)
         except BudgetExhausted:
             raise HTTPException(
                 status_code=429, detail="Model call budget exhausted"

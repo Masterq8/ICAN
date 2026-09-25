@@ -40,6 +40,10 @@ python scripts/serve_api.py --host 127.0.0.1 --port 8000
 
 浏览器打开 `http://127.0.0.1:8000`。输入问题并选择语料，勾选候选论文后点击“从原文生成”；已有记录可用“读取已存卡”恢复。筛选决定和字段可人工修订，新版本保留旧记录。至少两篇已有信息卡时可生成对照报告。页面新增“记录历史”面板，可任意比较同论文、同类型的两版；检索栏旁的“载入演示案例”可在无后端、无模型时展示固定Swin只读案例。详细说明见[P5演示与历史版本指南](docs/p5-web-guide.md)。
 
+### Cloudflare Pages 公网只读演示
+
+从 GitHub 创建 Pages 项目并连接本仓库，设置 Root directory 为 `frontend`、Build command 为 `npm run build`、Build output directory 为 `dist`，并在生产构建环境变量中设置 `VITE_DEMO_ONLY=true`。该公网构建会自动载入 Swin 固定只读案例，隐藏退出回放和在线 Agent 入口，禁用在线检索与写入操作；此变量不是密钥。默认本地构建不设置该变量，在线后端工作台行为保持不变。Pages 版不提供实时检索或模型调用。
+
 **P2.6完成：** 47题检索、94次双版真实生成与94份助手语义审核。QASPER validation答案F1领域版16.95%／默认版8.42%；Swin评分点覆盖18/49／16/49，存在变体混入和配置链缺证据。语义审核未有人类独立复核；实际费用未知，按指定官方价格假设估算0.0779415美元。指标口径与逐题理由见[基线报告](docs/p2-baseline-report.md)及[审核记录](docs/evaluation/README.md)。
 
 ## 文档入口
@@ -61,6 +65,9 @@ python scripts/serve_api.py --host 127.0.0.1 --port 8000
 - [P4.5必经核查工作流报告](docs/p4-verified-workflow-report.md)
 - [P4.6/P5 科研工作台使用说明](docs/p46-web-guide.md)
 - [P5演示与历史版本使用说明](docs/p5-web-guide.md)
+- [赛事演示操作手册](docs/contest-demo-operation-manual.md)
+- [赛事演示讲解稿](docs/contest-demo-script.md)
+- [赛事应用方案](docs/application-solution.md)
 - [Vision Mamba 与 Swin-T 来源比较](docs/vision-mamba-swin-comparison.md)
 - [P4.6 与 P5 设计及验收顺序](docs/superpowers/plans/2026-09-19-research-product-sequence.md)
 - [环境说明](docs/environment-setup.md)

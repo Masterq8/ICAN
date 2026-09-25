@@ -92,11 +92,42 @@ export interface ComparisonResponse {
   markdown: string
 }
 
+export interface AgentTrajectoryEvent {
+  event: 'planning' | 'tool'
+  turn: number
+  tool?: string | null
+  parameter_summary: string
+  status: 'planned' | 'completed' | 'cached' | 'failed' | null
+  result_summary: string
+  cached: boolean
+}
+
+export interface AgentCitation {
+  number: number
+  context_id: string
+  evidence: Evidence
+}
+
 export interface AgentResponse {
+  task_id: string
   status: string
   stop_reason: string
-  answer: { answer: string; status: string; citations: Evidence[] } | null
+  answer: { answer: string; status: string; citations: AgentCitation[] } | null
   artifacts: Array<{ kind: string; verdicts?: ClaimVerdict[] }>
+  trajectory: AgentTrajectoryEvent[]
+  workflow_mode: 'tool_loop' | 'verified'
   workflow_stages: Array<{ stage: string; status: string }>
-  usage: { paid_calls: number; prompt_tokens: number; completion_tokens: number; actual_cost_usd: null }
+  usage: {
+    paid_calls: number
+    planner_calls: number
+    answer_calls: number
+    prompt_tokens: number
+    completion_tokens: number
+    usage_missing_calls: number
+    actual_cost_usd: number | null
+  }
+  index_fingerprint: string | null
+  paperqa_version: string
+  planner_model: string
+  answer_model: string
 }

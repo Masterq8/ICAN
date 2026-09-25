@@ -223,6 +223,8 @@ async def test_native_research_claim_tool_uses_only_retained_evidence(tmp_path):
     assert result.artifacts[0]["kind"] == "claim_verification"
     assert result.artifacts[0]["verdicts"][0]["status"] == "requires_review"
     assert result.trajectory[3]["name"] == "verify_claims"
+    assert result.trajectory[3]["turn"] == 2
+    assert result.trajectory[3]["arguments"]["claims"][0]["kind"] == "inference"
 
 
 @pytest.mark.asyncio

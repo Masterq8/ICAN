@@ -212,11 +212,13 @@ class AgentService:
                             raise BudgetExhausted("Task tool-call limit reached")
                         tool_calls += 1
                         name = call["function"]["name"]
+                        validated_arguments = {}
                         try:
                             arguments = json.loads(call["function"]["arguments"])
                             if name not in available_names:
                                 raise ToolInputError("Unknown tool name")
                             validate(arguments, schemas[name])
+                            validated_arguments = arguments
                             key = (
                                 name
                                 + ":"
@@ -253,7 +255,9 @@ class AgentService:
                         response.trajectory.append(
                             {
                                 "event": "tool",
+                                "turn": turn + 1,
                                 "name": name,
+                                "arguments": validated_arguments,
                                 "tool_call_id": call["id"],
                                 "result": result,
                                 "cached": cached,

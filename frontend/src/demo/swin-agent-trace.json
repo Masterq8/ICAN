@@ -1,0 +1,253 @@
+{
+  "label": "预置演示数据 · 只读",
+  "query": "为什么固定官方 Swin-T 实现默认在 PatchEmbed 的卷积投影后加入 LayerNorm？当前论文与代码证据能否给出作者明确的设计动机？",
+  "provenance": {
+    "source_task_id": "b0d9bb2c0b87499a917d8749f814fddd",
+    "source_file": "data/processed/agent/p4-v1/tasks/b0d9bb2c0b87499a917d8749f814fddd.json",
+    "source_sha256": "4d4a129ebc7d6ccfe03efdf729362f7d93a5f7f7e25ea709c0fea4d0b02499da",
+    "source_versions": [
+      "arXiv:2103.14030v2 / ICCV 2021",
+      "f82860bfb5225915aca09c3227159ee9e1df874d"
+    ],
+    "source_run": "completed P4 development task; not a P6 evaluation task",
+    "question_is_exactly_in_p6_swin_test": false
+  },
+  "response": {
+    "task_id": "b0d9bb2c0b87499a917d8749f814fddd",
+    "status": "completed",
+    "stop_reason": "final_answer_generated",
+    "answer": {
+      "status": "answered",
+      "answer": "根据现有证据，**无法**给出作者明确的设计动机：\n\n- 论文只说明 Swin-T 先用 patch splitting 分块，再经 linear embedding 投到维度 C，并说明 patch size 为 4×4、每块原始特征 48 维 ([1])。论文此段并未解释投影后为何加 LayerNorm，也未陈述其目的。\n- 代码层面：PatchEmbed 在 `proj` 卷积后，若 `norm_layer` 非 None 则执行 `self.norm(x)`，即投影后接归一化 ([2])([3])。SwinTransformer 默认 `patch_norm=True`，且只有当 `patch_norm` 为真时才把 `norm_layer` 传入 PatchEmbed ([4])。\n- 配置层默认 `_C.MODEL.SWIN.PATCH_NORM = True`，`norm_layer` 默认 `nn.LayerNorm` ([5])([6])。\n\n综上，证据仅能确认「默认开启该归一化」这一实现事实，未提供作者对其动机的说明，故动机无法由当前证据回答。",
+      "citations": [
+        {
+          "number": 1,
+          "context_id": "pqac-6a453cc0",
+          "evidence": {
+            "rank": 6,
+            "score": -3.97265625,
+            "chunk_id": "chunk:97ac02f20e8e19c445dfd2afd820a3a8d704b316dfdeff2e483811c24480408d",
+            "text": "Anoverview of the Swin Transformer architecture is presented in Figure 3, which illustrates the tiny version (SwinT). It first splits an input RGB image into non-overlapping patches by a patch splitting module, like ViT. Each patch is treated as a 'token' and its feature is set as a concatenation of the raw pixel RGB values. In our implementation, we use a patch size of 4 × 4 and thus the feature dimension of each patch is 4 × 4 × 3 = 48 . A linear embedding layer is applied on this raw-valued feature to project it to an arbitrary dimension (denoted as C ).",
+            "review_required": false,
+            "source": {
+              "source_id": "src:21e757794f07f8f043ac",
+              "source_type": "paper",
+              "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf",
+              "source_version": "arXiv:2103.14030v2 / ICCV 2021",
+              "location": {
+                "page": 3
+              }
+            }
+          }
+        },
+        {
+          "number": 2,
+          "context_id": "pqac-21d28855",
+          "evidence": {
+            "rank": 1,
+            "score": 1.541015625,
+            "chunk_id": "chunk:0f147af11e9a6ff4998760e94c3ac3788b3378c4171e6c0a8a7fea6f113d30db",
+            "text": "    def __init__(self, img_size=224, patch_size=4, in_chans=3, embed_dim=96, norm_layer=None):\r\n        super().__init__()\r\n        img_size = to_2tuple(img_size)\r\n        patch_size = to_2tuple(patch_size)\r\n        patches_resolution = [img_size[0] // patch_size[0], img_size[1] // patch_size[1]]\r\n        self.img_size = img_size\r\n        self.patch_size = patch_size\r\n        self.patches_resolution = patches_resolution\r\n        self.num_patches = patches_resolution[0] * patches_resolution[1]\r\n\r\n        self.in_chans = in_chans\r\n        self.embed_dim = embed_dim\r\n\r\n        self.proj = nn.Conv2d(in_chans, embed_dim, kernel_size=patch_size, stride=patch_size)\r\n        if norm_layer is not None:\r\n            self.norm = norm_layer(embed_dim)\r\n        else:\r\n            self.norm = None\r\n",
+            "review_required": false,
+            "source": {
+              "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+              "source_type": "code",
+              "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+              "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+              "location": {
+                "line_end": 465,
+                "line_start": 448
+              }
+            }
+          }
+        },
+        {
+          "number": 3,
+          "context_id": "pqac-9984d93b",
+          "evidence": {
+            "rank": 2,
+            "score": -2.52734375,
+            "chunk_id": "chunk:2cefb942b7528d2af811a6af15ca38bd2efdacc4e2bbbafd5650866e4f5a752e",
+            "text": "    def forward(self, x):\r\n        B, C, H, W = x.shape\r\n        # FIXME look at relaxing size constraints\r\n        assert H == self.img_size[0] and W == self.img_size[1], \\\r\n            f\"Input image size ({H}*{W}) doesn't match model ({self.img_size[0]}*{self.img_size[1]}).\"\r\n        x = self.proj(x).flatten(2).transpose(1, 2)  # B Ph*Pw C\r\n        if self.norm is not None:\r\n            x = self.norm(x)\r\n        return x\r\n",
+            "review_required": false,
+            "source": {
+              "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+              "source_type": "code",
+              "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+              "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+              "location": {
+                "line_end": 475,
+                "line_start": 467
+              }
+            }
+          }
+        },
+        {
+          "number": 4,
+          "context_id": "pqac-3bef5a73",
+          "evidence": {
+            "rank": 3,
+            "score": 1.9453125,
+            "chunk_id": "chunk:a75612ae170b7a8096fde151c103c5a46099ac862695b02151073712cfa97765",
+            "text": "    def __init__(self, img_size=224, patch_size=4, in_chans=3, num_classes=1000,\r\n                 embed_dim=96, depths=[2, 2, 6, 2], num_heads=[3, 6, 12, 24],\r\n                 window_size=7, mlp_ratio=4., qkv_bias=True, qk_scale=None,\r\n                 drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1,\r\n                 norm_layer=nn.LayerNorm, ape=False, patch_norm=True,\r\n                 use_checkpoint=False, fused_window_process=False, **kwargs):\r\n        super().__init__()\r\n\r\n        self.num_classes = num_classes\r\n        self.num_layers = len(depths)\r\n        self.embed_dim = embed_dim\r\n        self.ape = ape\r\n        self.patch_norm = patch_norm\r\n        self.num_features = int(embed_dim * 2 ** (self.num_layers - 1))\r\n        self.mlp_ratio = mlp_ratio\r\n\r\n        # split image into non-overlapping patches\r\n        self.patch_embed = PatchEmbed(\r\n            img_size=img_size, patch_size=patch_size, in_chans=in_chans, embed_dim=embed_dim,\r\n            norm_layer=norm_layer if self.patch_norm else None)\r\n        num_patches = self.patch_embed.num_patches\r\n        patches_resolution = self.patch_embed.patches_resolution\r\n        self.patches_resolution = patches_resolution\r\n\r\n        # absolute position embedding\r\n        if self.ape:\r\n            self.absolute_pos_embed = nn.Parameter(torch.zeros(1, num_patches, embed_dim))\r\n            trunc_normal_(self.absolute_pos_embed, std=.02)\r\n\r\n        self.pos_drop = nn.Dropout(p=drop_rate)\r\n\r\n        # stochastic depth\r\n        dpr = [x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))]  # stochastic depth decay rule\r\n\r\n        # build layers\r\n        self.layers = nn.ModuleList()\r\n        for i_layer in range(self.num_layers):\r\n            layer = BasicLayer(dim=int(embed_dim * 2 ** i_layer),\r\n                               input_resolution=(patches_resolution[0] // (2 ** i_layer),\r\n                                                 patches_resolution[1] // (2 ** i_layer)),\r\n                               depth=depths[i_layer],\r\n                               num_heads=num_heads[i_layer],\r\n                               window_size=window_size,\r\n                               mlp_ratio=self.mlp_ratio,\r\n                               qkv_bias=qkv_bias, qk_scale=qk_scale,\r\n                               drop=drop_rate, attn_drop=attn_drop_rate,\r\n                               drop_path=dpr[sum(depths[:i_layer]):sum(depths[:i_layer + 1])],\r\n                               norm_layer=norm_layer,\r\n                               downsample=PatchMerging if (i_layer < self.num_layers - 1) else None,\r\n                               use_checkpoint=use_checkpoint,\r\n                               fused_window_process=fused_window_process)\r\n            self.layers.append(layer)\r\n\r\n        self.norm = norm_layer(self.num_features)\r\n        self.avgpool = nn.AdaptiveAvgPool1d(1)\r\n        self.head = nn.Linear(self.num_features, num_classes) if num_classes > 0 else nn.Identity()\r\n\r\n        self.apply(self._init_weights)\r\n",
+            "review_required": false,
+            "source": {
+              "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+              "source_type": "code",
+              "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+              "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+              "location": {
+                "line_end": 569,
+                "line_start": 512
+              }
+            }
+          }
+        },
+        {
+          "number": 5,
+          "context_id": "pqac-839c523a",
+          "evidence": {
+            "rank": 5,
+            "score": -1.4482421875,
+            "chunk_id": "chunk:000dbccc73ad65acc646ce3945a852b62dc07cd9e72853de6e010cc5470fa393",
+            "text": "_C.MODEL.SWIN.APE = False\r\n_C.MODEL.SWIN.PATCH_NORM = True\r\n\r\n# Swin Transformer V2 parameters\r\n_C.MODEL.SWINV2 = CN()\r\n_C.MODEL.SWINV2.PATCH_SIZE = 4\r\n_C.MODEL.SWINV2.IN_CHANS = 3\r\n_C.MODEL.SWINV2.EMBED_DIM = 96\r\n_C.MODEL.SWINV2.DEPTHS = [2, 2, 6, 2]\r\n_C.MODEL.SWINV2.NUM_HEADS = [3, 6, 12, 24]\r\n_C.MODEL.SWINV2.WINDOW_SIZE = 7\r\n_C.MODEL.SWINV2.MLP_RATIO = 4.\r\n_C.MODEL.SWINV2.QKV_BIAS = True\r\n_C.MODEL.SWINV2.APE = False\r\n_C.MODEL.SWINV2.PATCH_NORM = True\r\n_C.MODEL.SWINV2.PRETRAINED_WINDOW_SIZES = [0, 0, 0, 0]\r\n\r\n# Swin Transformer MoE parameters\r\n_C.MODEL.SWIN_MOE = CN()\r\n_C.MODEL.SWIN_MOE.PATCH_SIZE = 4\r\n_C.MODEL.SWIN_MOE.IN_CHANS = 3\r\n_C.MODEL.SWIN_MOE.EMBED_DIM = 96\r\n_C.MODEL.SWIN_MOE.DEPTHS = [2, 2, 6, 2]\r\n_C.MODEL.SWIN_MOE.NUM_HEADS = [3, 6, 12, 24]\r\n_C.MODEL.SWIN_MOE.WINDOW_SIZE = 7\r\n_C.MODEL.SWIN_MOE.MLP_RATIO = 4.\r\n_C.MODEL.SWIN_MOE.QKV_BIAS = True\r\n_C.MODEL.SWIN_MOE.QK_SCALE = None\r\n_C.MODEL.SWIN_MOE.APE = False\r\n_C.MODEL.SWIN_MOE.PATCH_NORM = True\r\n_C.MODEL.SWIN_MOE.MLP_FC2_BIAS = True\r\n_C.MODEL.SWIN_MOE.INIT_STD = 0.02\r\n_C.MODEL.SWIN_MOE.PRETRAINED_WINDOW_SIZES = [0, 0, 0, 0]\r\n_C.MODEL.SWIN_MOE.MOE_BLOCKS = [[-1], [-1], [-1], [-1]]\r\n_C.MODEL.SWIN_MOE.NUM_LOCAL_EXPERTS = 1\r\n_C.MODEL.SWIN_MOE.TOP_VALUE = 1\r\n_C.MODEL.SWIN_MOE.CAPACITY_FACTOR = 1.25\r\n_C.MODEL.SWIN_MOE.COSINE_ROUTER = False\r\n_C.MODEL.SWIN_MOE.NORMALIZE_GATE = False\r\n_C.MODEL.SWIN_MOE.USE_BPR = True\r\n_C.MODEL.SWIN_MOE.IS_GSHARD_LOSS = False\r\n_C.MODEL.SWIN_MOE.GATE_NOISE = 1.0\r\n_C.MODEL.SWIN_MOE.COSINE_ROUTER_DIM = 256\r\n_C.MODEL.SWIN_MOE.COSINE_ROUTER_INIT_T = 0.5\r\n_C.MODEL.SWIN_MOE.MOE_DROP = 0.0\r\n_C.MODEL.SWIN_MOE.AUX_LOSS_WEIGHT = 0.01\r\n\r\n# Swin MLP parameters\r\n_C.MODEL.SWIN_MLP = CN()\r\n_C.MODEL.SWIN_MLP.PATCH_SIZE = 4\r\n_C.MODEL.SWIN_MLP.IN_CHANS = 3\r\n_C.MODEL.SWIN_MLP.EMBED_DIM = 96\r\n_C.MODEL.SWIN_MLP.DEPTHS = [2, 2, 6, 2]\r\n",
+            "review_required": false,
+            "source": {
+              "source_id": "src:0790a4963843e3e453c1:file:117426151e93a626",
+              "source_type": "code",
+              "source_path": "data/raw/repositories/Swin-Transformer/config.py",
+              "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+              "location": {
+                "line_end": 135,
+                "line_start": 83
+              }
+            }
+          }
+        },
+        {
+          "number": 6,
+          "context_id": "pqac-85ad36bb",
+          "evidence": {
+            "rank": 4,
+            "score": 1.5693359375,
+            "chunk_id": "chunk:c5dfa8a29db1388e5e09f93de5274526c6fb59a6e9251238a559e8c32b05bdcf",
+            "text": "class SwinTransformer(nn.Module):\r\n    r\"\"\" Swin Transformer\r\n        A PyTorch impl of : `Swin Transformer: Hierarchical Vision Transformer using Shifted Windows`  -\r\n          https://arxiv.org/pdf/2103.14030\r\n\r\n    Args:\r\n        img_size (int | tuple(int)): Input image size. Default 224\r\n        patch_size (int | tuple(int)): Patch size. Default: 4\r\n        in_chans (int): Number of input image channels. Default: 3\r\n        num_classes (int): Number of classes for classification head. Default: 1000\r\n        embed_dim (int): Patch embedding dimension. Default: 96\r\n        depths (tuple(int)): Depth of each Swin Transformer layer.\r\n        num_heads (tuple(int)): Number of attention heads in different layers.\r\n        window_size (int): Window size. Default: 7\r\n        mlp_ratio (float): Ratio of mlp hidden dim to embedding dim. Default: 4\r\n        qkv_bias (bool): If True, add a learnable bias to query, key, value. Default: True\r\n        qk_scale (float): Override default qk scale of head_dim ** -0.5 if set. Default: None\r\n        drop_rate (float): Dropout rate. Default: 0\r\n        attn_drop_rate (float): Attention dropout rate. Default: 0\r\n        drop_path_rate (float): Stochastic depth rate. Default: 0.1\r\n        norm_layer (nn.Module): Normalization layer. Default: nn.LayerNorm.\r\n        ape (bool): If True, add absolute position embedding to the patch embedding. Default: False\r\n        patch_norm (bool): If True, add normalization after patch embedding. Default: True\r\n        use_checkpoint (bool): Whether to use checkpointing to save memory. Default: False\r\n        fused_window_process (bool, optional): If True, use one kernel to fused window shift & window partition for acceleration, similar for the reversed part. Default: False\r\n    \"\"\"\r\n\r\n",
+            "review_required": false,
+            "source": {
+              "source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4",
+              "source_type": "code",
+              "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py",
+              "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d",
+              "location": {
+                "line_end": 511,
+                "line_start": 485
+              }
+            }
+          }
+        }
+      ],
+      "invalid_citation_ids": [],
+      "included_chunk_ids": [
+        "chunk:0f147af11e9a6ff4998760e94c3ac3788b3378c4171e6c0a8a7fea6f113d30db",
+        "chunk:2cefb942b7528d2af811a6af15ca38bd2efdacc4e2bbbafd5650866e4f5a752e",
+        "chunk:a75612ae170b7a8096fde151c103c5a46099ac862695b02151073712cfa97765",
+        "chunk:c5dfa8a29db1388e5e09f93de5274526c6fb59a6e9251238a559e8c32b05bdcf",
+        "chunk:000dbccc73ad65acc646ce3945a852b62dc07cd9e72853de6e010cc5470fa393",
+        "chunk:97ac02f20e8e19c445dfd2afd820a3a8d704b316dfdeff2e483811c24480408d"
+      ],
+      "dropped_chunk_ids": [],
+      "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+      "collection": "swin_v1",
+      "model": "deepseek-flash",
+      "paperqa_version": "2026.8.12",
+      "prompt_version": "p4-tools-evidence-v1",
+      "usage": {
+        "generation_calls": 1,
+        "prompt_tokens": 4050,
+        "completion_tokens": 269,
+        "cost_usd": null
+      }
+    },
+    "artifacts": [],
+    "trajectory": [
+      {
+        "event": "planning",
+        "turn": 1,
+        "tool": null,
+        "parameter_summary": "",
+        "status": "planned",
+        "result_summary": "第 1 轮工具规划已返回",
+        "cached": false
+      },
+      {
+        "event": "tool",
+        "turn": 1,
+        "tool": "search_evidence",
+        "parameter_summary": "查询 “PatchEmbed convolution projection LayerNorm default Swin-T design motivation”；来源范围：paper, code；策略：hybrid_rerank",
+        "status": "completed",
+        "result_summary": "检索到 8 项证据",
+        "cached": false
+      },
+      {
+        "event": "tool",
+        "turn": 1,
+        "tool": "search_evidence",
+        "parameter_summary": "查询 “PatchEmbed LayerNorm patch_norm normalization after conv projection”；来源范围：code, config；策略：hybrid_rerank",
+        "status": "completed",
+        "result_summary": "检索到 8 项证据",
+        "cached": false
+      },
+      {
+        "event": "planning",
+        "turn": 2,
+        "tool": null,
+        "parameter_summary": "",
+        "status": "planned",
+        "result_summary": "第 2 轮工具规划已返回",
+        "cached": false
+      },
+      {
+        "event": "tool",
+        "turn": 2,
+        "tool": "search_evidence",
+        "parameter_summary": "查询 “LayerNorm patch embedding linear projection design choice why”；来源范围：paper；策略：hybrid_rerank",
+        "status": "completed",
+        "result_summary": "检索到 8 项证据",
+        "cached": false
+      },
+      {
+        "event": "planning",
+        "turn": 3,
+        "tool": null,
+        "parameter_summary": "",
+        "status": "planned",
+        "result_summary": "第 3 轮工具规划已返回",
+        "cached": false
+      },
+      {
+        "event": "tool",
+        "turn": 3,
+        "tool": "gen_answer",
+        "parameter_summary": "基于 6 项保留证据生成回答",
+        "status": "completed",
+        "result_summary": "返回状态：answered",
+        "cached": false
+      }
+    ],
+    "workflow_mode": "tool_loop",
+    "workflow_stages": [],
+    "usage": {
+      "paid_calls": 4,
+      "planner_calls": 3,
+      "answer_calls": 1,
+      "prompt_tokens": 32361,
+      "completion_tokens": 814,
+      "usage_missing_calls": 0,
+      "actual_cost_usd": null
+    },
+    "index_fingerprint": "3fcc38131d303a03b83cbe0dea77dc74b83398f597aee10e6a4fb1fbae9eaa87",
+    "paperqa_version": "2026.8.12",
+    "planner_model": "deepseek-v4-pro",
+    "answer_model": "deepseek-flash"
+  }
+}

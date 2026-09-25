@@ -6,7 +6,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from ican.qa.schema import QAResponse
-from ican.retrieval.schema import SearchRequest
+from ican.retrieval.schema import EvidenceResult, SearchRequest
 
 
 class AgentConfig(BaseModel):
@@ -114,6 +114,61 @@ class AgentResponse(BaseModel):
     paperqa_version: str = "2026.8.12"
     planner_model: str
     answer_model: str
+
+
+class PublicAgentEvent(BaseModel):
+    """A bounded Agent trace event safe to return to the web client."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    event: Literal["planning", "tool"]
+    turn: int = Field(ge=1, le=20)
+    tool: str | None = Field(default=None, max_length=64)
+    parameter_summary: str = Field(default="", max_length=240)
+    status: Literal["planned", "completed", "cached", "failed"] | None = None
+    result_summary: str = Field(default="", max_length=240)
+    cached: bool = False
+
+
+class PublicClaimText(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    statement: str = Field(min_length=1, max_length=2000)
+    kind: Literal["verbatim", "numeric", "code_execution", "inference"]
+    evidence_ids: list[str] = Field(default_factory=list, max_length=8)
+
+
+class PublicEvidenceResult(EvidenceResult):
+    text: str = Field(max_length=6000)
+
+
+class PublicClaimVerdict(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    status: Literal[
+        "supported",
+        "requires_review",
+        "insufficient_evidence",
+        "blocked_by_precondition",
+    ]
+    claim: PublicClaimText
+    evidence: list[PublicEvidenceResult] = Field(default_factory=list, max_length=8)
+
+
+class PublicAgentArtifact(BaseModel):
+    """The user-facing claim checks needed for evidence review."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    kind: Literal["claim_verification"]
+    verdicts: list[PublicClaimVerdict] = Field(max_length=12)
+
+
+class PublicAgentResponse(AgentResponse):
+    """HTTP response shape with private planner and raw tool data removed."""
+
+    artifacts: list[PublicAgentArtifact] = Field(default_factory=list, max_length=20)
+    trajectory: list[PublicAgentEvent] = Field(default_factory=list)
 
 
 class ToolInputError(ValueError):

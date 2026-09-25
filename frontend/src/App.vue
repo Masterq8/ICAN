@@ -23,6 +23,9 @@ import {
 } from '@lucide/vue'
 import { ApiError, compareCards, discover, generateCard, getResearchHistory, loadCard, reviseExtraction, reviseScreening, runAgent, searchPaperEvidence } from './api'
 import type { AgentResponse, Candidate, CardResponse, ClaimStatus, Collection, ComparisonResponse, Evidence, ResearchHistory, ResearchRecord, ReviewCandidate } from './types'
+import AgentTrace from './components/AgentTrace.vue'
+import DemoCenter from './components/DemoCenter.vue'
+import agentReplay from './demo/swin-agent-trace.json'
 import demoFixture from './demo/swin-case.json'
 import { compareRecords, historyForSubjectAndType, selectLatestPair } from './versionDiff'
 
@@ -36,13 +39,16 @@ const cards = ref<Record<string, CardResponse>>({})
 const report = ref<ComparisonResponse | null>(null)
 const proof = ref<Evidence | null>(null)
 const agentQuery = ref('')
+const agentResultQuery = ref('')
 const agentClaimKind = ref('code_execution')
 const agentResult = ref<AgentResponse | null>(null)
+const evidencePanel = ref<HTMLElement | null>(null)
 const busy = ref<'search' | 'card' | 'load' | 'compare' | 'agent' | 'screening' | 'extraction' | 'evidence' | null>(null)
 const error = ref('')
 const serviceOnline = ref<boolean | null>(null)
 const searchCompleted = ref(false)
 const demoMode = ref(false)
+const staticDemoOnly = import.meta.env.VITE_DEMO_ONLY === 'true'
 const demoReport = ref('')
 const researchHistory = ref<ResearchHistory | null>(null)
 const historyError = ref('')
@@ -89,7 +95,7 @@ let savedLiveState: null | {
   reviewEdits: typeof reviewEdits.value; agentQuery: string; agentClaimKind: string;
   researchHistory: ResearchHistory | null; historyError: string;
   historyType: 'screening' | 'extraction'; historyLeftId: string; historyRightId: string;
-  error: string; serviceOnline: boolean | null; agentResult: AgentResponse | null;
+  error: string; serviceOnline: boolean | null; agentResult: AgentResponse | null; agentResultQuery: string;
 } = null
 let restoringSnapshot = false
 let historyRequestId = 0
@@ -129,7 +135,7 @@ watch(activeId, () => {
 
 watch(activeId, async sourceId => {
   const paper = candidates.value.find(item => item.source_id === sourceId)
-  if (!paper || demoMode.value) return
+  if (!paper || demoMode.value || restoringSnapshot) return
   const requestId = ++historyRequestId
   historyBusy.value = true
   historyError.value = ''
@@ -169,6 +175,7 @@ function loadDemoCase() {
     historyType: historyType.value, historyLeftId: historyLeftId.value,
     historyRightId: historyRightId.value, error: error.value,
     serviceOnline: serviceOnline.value, agentResult: agentResult.value,
+    agentResultQuery: agentResultQuery.value,
   }
   const fixture = demoFixture as unknown as {
     label: string; query: string; candidate: Candidate; history: ResearchHistory; report: string
@@ -213,7 +220,11 @@ function loadDemoCase() {
     stages: [], stop_reason: 'completed',
   }
   cards.value = { [fixture.candidate.source_id]: card }
-  agentResult.value = null
+  agentQuery.value = agentReplay.query
+  agentResultQuery.value = agentReplay.query
+  // JSON import inference makes optional location keys include `undefined`;
+  // this curated fixture follows the API contract and is normalized by display code.
+  agentResult.value = agentReplay.response as unknown as AgentResponse
   researchHistory.value = demoHistory
   historyError.value = ''
   historyType.value = 'extraction'
@@ -229,7 +240,7 @@ function loadDemoCase() {
 }
 
 async function exitDemo() {
-  if (!savedLiveState) return
+  if (staticDemoOnly || !savedLiveState) return
   const state = savedLiveState
   savedLiveState = null
   restoringSnapshot = true
@@ -252,6 +263,7 @@ async function exitDemo() {
   error.value = state.error
   serviceOnline.value = state.serviceOnline
   agentResult.value = state.agentResult
+  agentResultQuery.value = state.agentResultQuery
   editingScreening.value = state.editingScreening
   editingExtraction.value = state.editingExtraction
   screeningDecision.value = state.screeningDecision
@@ -645,17 +657,26 @@ async function makeComparison() {
 async function checkReproduction() {
   if (demoMode.value) return
   if (!agentQuery.value.trim()) return issue('请输入需要核查的代码或配置问题。')
+  const submittedQuery = agentQuery.value.trim()
   busy.value = 'agent'
   error.value = ''
   agentResult.value = null
+  agentResultQuery.value = submittedQuery
   try {
-    agentResult.value = await runAgent(agentQuery.value.trim(), [agentClaimKind.value])
+    agentResult.value = await runAgent(submittedQuery, [agentClaimKind.value])
     serviceOnline.value = true
   } catch (cause) {
     markApiFailure(cause)
     issue(cause instanceof Error ? cause.message : '复现核查失败。')
   } finally {
     busy.value = null
+  }
+}
+
+function openAgentEvidence(evidence: Evidence) {
+  proof.value = evidence
+  if (window.matchMedia('(max-width: 1000px)').matches) {
+    void nextTick(() => evidencePanel.value?.scrollIntoView({ block: 'start' }))
   }
 }
 
@@ -691,6 +712,8 @@ function saveReport() {
   link.click()
   URL.revokeObjectURL(link.href)
 }
+
+if (staticDemoOnly) loadDemoCase()
 </script>
 
 <template>
@@ -701,10 +724,11 @@ function saveReport() {
         <span><strong>复现有据</strong><small>让研究结论有据可循</small></span>
       </a>
       <nav aria-label="工作区导航">
+        <a href="#demo" class="nav-link"><BookOpenText :size="19" />演示中心</a>
         <a href="#papers" class="nav-link"><FileSearch :size="19" />论文筛选</a>
         <a href="#card" class="nav-link"><ClipboardList :size="19" />实验信息卡</a>
         <a href="#comparison" class="nav-link"><GitCompareArrows :size="19" />对照报告</a>
-        <a href="#reproduction" class="nav-link"><ShieldCheck :size="19" />复现核查</a>
+        <a href="#reproduction" class="nav-link"><ShieldCheck :size="19" />{{ staticDemoOnly ? 'Agent 执行回放' : '复现核查' }}</a>
       </nav>
       <p class="sidebar-foot">基于原文证据<br />支持可复核的研究</p>
     </aside>
@@ -715,29 +739,34 @@ function saveReport() {
           <h1>从问题到可核查的研究结论</h1>
           <p>检索相关论文，提取实验信息，基于原文证据进行对照与核查。</p>
         </div>
-        <div class="connection" :class="{ offline: serviceOnline === false }">
+        <div v-if="staticDemoOnly" class="connection">
+          <span class="connection-dot" />公网只读演示
+        </div>
+        <div v-else class="connection" :class="{ offline: serviceOnline === false }">
           <span class="connection-dot" />{{ serviceOnline === null ? '未检测' : serviceOnline ? '服务已连接' : '服务未连接' }}
         </div>
       </header>
 
       <div v-if="demoMode" class="demo-banner" role="status">
-        <div><strong>预置演示数据 · 只读</strong><span>单篇 Swin 论文快照，加载与浏览不访问后端、模型或本地研究记录。</span></div>
-        <button type="button" class="secondary-button" @click="exitDemo">退出演示</button>
+        <div><strong>预置运行回放 · 只读</strong><span>{{ staticDemoOnly ? '公网固定案例；查看真实保存的运行快照，不连接在线服务。' : '单篇 Swin 论文快照，加载与浏览不访问后端、模型、研究记录或浏览器存储。' }}</span></div>
+        <button v-if="!staticDemoOnly" type="button" class="secondary-button" @click="exitDemo">退出演示</button>
       </div>
 
       <div v-if="error" class="error-banner" role="alert"><AlertCircle :size="18" /><span>{{ error }}</span><button v-if="!demoMode" class="text-button" type="button" @click="loadDemoCase">查看只读演示</button><button type="button" aria-label="关闭错误" @click="error = ''"><X :size="16" /></button></div>
+
+      <DemoCenter :demo-mode="demoMode" :busy="busy !== null" :static-demo-only="staticDemoOnly" @load-demo="loadDemoCase" />
 
       <div class="workspace-grid">
         <div class="content-column">
           <section id="papers" class="search-section" aria-labelledby="papers-title">
             <div class="section-heading"><div><p class="section-number">01 / 论文筛选</p><h2 id="papers-title">找到值得细读的论文</h2></div><span>来源限定在已建索引语料</span></div>
             <form class="search-form" @submit.prevent="searchPapers">
-              <label class="search-input"><Search :size="19" /><input v-model="query" maxlength="1000" aria-label="研究问题" placeholder="输入研究问题或筛选条件" /></label>
+              <label class="search-input"><Search :size="19" /><input v-model="query" maxlength="1000" aria-label="研究问题" placeholder="输入研究问题或筛选条件" :disabled="demoMode" /></label>
               <label class="collection-select"><span class="sr-only">语料库</span><select v-model="collection" :disabled="demoMode"><option value="swin_v1">Swin Transformer</option><option value="vision_mamba_v1">Vision Mamba (Vim)</option><option value="qasper_train_v1">QASPER train · 方法示例</option></select></label>
               <button class="primary-button" type="submit" :disabled="demoMode || busy !== null"><LoaderCircle v-if="busy === 'search'" class="spin" :size="18" /><Search v-else :size="18" />{{ busy === 'search' ? '检索中' : '检索论文' }}</button>
               <button class="secondary-button demo-load-button" type="button" :disabled="busy !== null" @click="loadDemoCase"><BookOpenText :size="17" />载入演示案例</button>
             </form>
-            <p v-if="demoMode" class="readonly-note">当前演示案例为只读快照；退出后可恢复在线检索与编辑。</p>
+            <p v-if="demoMode" class="readonly-note">{{ staticDemoOnly ? '公网演示仅展示固定 Swin 案例；在线检索和编辑未启用。' : '当前演示案例为只读快照；退出后可恢复在线检索与编辑。' }}</p>
             <p class="collection-note">{{ collection === 'swin_v1' ? 'Swin 固定论文版本，用于视觉模型深度核查。' : collection === 'vision_mamba_v1' ? 'Vision Mamba 论文与固定 commit 源码组成独立语料；可生成证据卡并与 Swin 做字段对照。' : 'QASPER train 提供多论文方法演示；这些论文不代表视觉论文库。' }}</p>
             <div v-if="!candidates.length" class="empty-result"><FileSearch :size="25" /><p>{{ searchCompleted ? '没有找到符合条件的论文；可以修改关键词后重新检索，或查看只读演示。' : '输入问题并检索，候选论文将在这里出现。' }}</p><button v-if="searchCompleted" class="text-button" type="button" @click="loadDemoCase">载入演示案例</button></div>
             <div v-else class="candidate-list">
@@ -778,7 +807,7 @@ function saveReport() {
             <p class="panel-note">“原文匹配”只表示所引文字在原文中；字段归类与研究解释须人工核对。</p>
           </section>
 
-          <section class="paper-panel history-section" aria-labelledby="history-title">
+          <section id="history" class="paper-panel history-section" aria-labelledby="history-title">
             <div class="panel-header"><div><p class="section-number">02.5 / 记录历史</p><h2 id="history-title">研究记录版本与差异</h2></div><span v-if="demoMode" class="demo-chip">预置演示数据</span><button v-else-if="active" class="text-button" type="button" :disabled="historyBusy" @click="retryHistory"><LoaderCircle v-if="historyBusy" class="spin" :size="15" /><FolderOpen v-else :size="15" />{{ historyBusy ? '读取中' : '刷新历史' }}</button></div>
             <p v-if="!active" class="empty-inline">选择一篇论文后查看其筛选与提取记录。</p>
             <div v-else-if="historyError" class="inline-error" role="alert"><span>历史记录读取失败：{{ historyError }}</span><button type="button" class="text-button" @click="retryHistory">重试只读请求</button></div>
@@ -806,14 +835,22 @@ function saveReport() {
           </section>
 
           <section id="reproduction" class="paper-panel reproduction-section" aria-labelledby="reproduction-title">
-            <div class="panel-header"><div><p class="section-number">04 / 复现核查</p><h2 id="reproduction-title">对代码条件做证据核查</h2></div><ShieldCheck :size="22" /></div>
-            <p>限定 Swin 官方固定版本。Agent 会检索、提交结构化结论，程序核查后再生成引用回答；一次任务可能产生付费模型调用。</p>
-            <div class="agent-form"><textarea v-model="agentQuery" maxlength="4096" placeholder="例如：给定 PatchMerging.forward 的 H=8、W=8、L=64，前置断言是否通过？" aria-label="复现核查问题" /><div><select v-model="agentClaimKind" aria-label="核查类型"><option value="code_execution">代码前置条件</option><option value="inference">研究推断</option><option value="numeric">数值计算</option><option value="verbatim">原文引文</option></select><button class="primary-button" type="button" :disabled="demoMode || busy !== null" @click="checkReproduction"><LoaderCircle v-if="busy === 'agent'" class="spin" :size="17" /><ShieldCheck v-else :size="17" />{{ busy === 'agent' ? '核查中' : demoMode ? '只读演示' : '运行核查' }}</button></div></div>
-            <div v-if="agentResult" class="agent-result"><div class="agent-result-head"><strong>任务状态：{{ agentResult.status }}</strong><span>{{ agentResult.usage.paid_calls }} 次模型调用 · {{ agentResult.usage.actual_cost_usd === null ? '实际费用未提供' : agentResult.usage.actual_cost_usd }}</span></div><p v-if="agentResult.workflow_stages.length">{{ agentResult.workflow_stages.map(stage => `${stage.stage}: ${stage.status}`).join(' → ') }}</p><div v-if="agentResult.answer" class="answer-text">{{ agentResult.answer.answer }}</div><p v-else>未生成回答：{{ agentResult.stop_reason }}</p><div v-for="artifact in agentResult.artifacts" :key="artifact.kind"><div v-for="verdict in artifact.verdicts || []" :key="verdict.claim.statement" class="verdict-row"><span :class="verdict.status">{{ statusText(verdict.status) }}</span><span>{{ verdict.claim.statement }}</span><button v-if="verdict.evidence[0]" type="button" class="inline-proof" @click="proof = verdict.evidence[0]">原文</button></div></div></div>
+            <div class="panel-header"><div><p class="section-number">04 / {{ staticDemoOnly ? 'Agent 回放' : '复现核查' }}</p><h2 id="reproduction-title">{{ staticDemoOnly ? 'Agent 执行轨迹与有据回答' : '对代码条件做证据核查' }}</h2></div><ShieldCheck :size="22" /></div>
+            <p v-if="staticDemoOnly">下方展示已完成任务的真实轨迹快照；本页不会提交新的检索或 Agent 任务。</p>
+            <p v-else>限定 Swin 官方固定版本。Agent 会检索、提交结构化结论，程序核查后再生成引用回答；一次任务可能产生付费模型调用。</p>
+            <div v-if="!staticDemoOnly" class="agent-form"><textarea id="agent-query" v-model="agentQuery" maxlength="4096" placeholder="例如：给定 PatchMerging.forward 的 H=8、W=8、L=64，前置断言是否通过？" aria-label="复现核查问题" :disabled="demoMode" /><div><select v-model="agentClaimKind" aria-label="核查类型" :disabled="demoMode"><option value="code_execution">代码前置条件</option><option value="inference">研究推断</option><option value="numeric">数值计算</option><option value="verbatim">原文引文</option></select><button class="primary-button" type="button" :disabled="demoMode || busy !== null" @click="checkReproduction"><LoaderCircle v-if="busy === 'agent'" class="spin" :size="17" /><ShieldCheck v-else :size="17" />{{ busy === 'agent' ? '请求已提交' : demoMode ? '只读演示' : '运行核查' }}</button></div></div>
+            <AgentTrace
+              v-if="agentResult || busy === 'agent'"
+              :response="agentResult"
+              :query="agentResultQuery"
+              :loading="busy === 'agent'"
+              :mode="demoMode ? 'replay' : 'live'"
+              @open-evidence="openAgentEvidence"
+            />
           </section>
         </div>
 
-        <aside class="evidence-panel" aria-label="原文证据"><div class="evidence-title"><div><p class="section-number">原文证据</p><h2>当前选中来源</h2></div><button type="button" :disabled="!proof" aria-label="关闭证据" @click="proof = null"><X :size="18" /></button></div>
+        <aside id="evidence" ref="evidencePanel" class="evidence-panel" aria-label="原文证据"><div class="evidence-title"><div><p class="section-number">原文证据</p><h2>当前选中来源</h2></div><button type="button" :disabled="!proof" aria-label="关闭证据" @click="proof = null"><X :size="18" /></button></div>
           <div v-if="proof" class="proof-content"><p class="proof-id">{{ proof.source.source_id }}</p><dl><dt>路径</dt><dd>{{ proof.source.source_path }}</dd><dt>版本</dt><dd>{{ proof.source.source_version }}</dd><dt>位置</dt><dd>{{ sourceLabel(proof) }}</dd></dl><blockquote>{{ proof.text }}</blockquote><a v-if="paperUrl(proof.source.source_id)" :href="paperUrl(proof.source.source_id)!" target="_blank" rel="noopener noreferrer" class="source-link">打开论文来源 <ExternalLink :size="16" /></a><p v-else class="proof-note">已记录原始文件路径与行号；请在项目语料中核对。</p></div>
           <div v-else class="proof-empty"><BookOpenText :size="26" /><p>点击候选或字段旁的“查看证据”，在这里阅读原文、位置与版本。</p></div>
           <div class="inspector-foot"><CheckCheck :size="16" /> 检索与引文只使用当前限定的语料版本</div>
