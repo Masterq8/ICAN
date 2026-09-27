@@ -25,9 +25,11 @@ import { ApiError, compareCards, discover, generateCard, getResearchHistory, loa
 import type { AgentResponse, Candidate, CardResponse, ClaimStatus, Collection, ComparisonResponse, Evidence, ResearchHistory, ResearchRecord, ReviewCandidate } from './types'
 import AgentTrace from './components/AgentTrace.vue'
 import DemoCenter from './components/DemoCenter.vue'
+import PanelCollapseButton from './components/PanelCollapseButton.vue'
 import agentReplay from './demo/swin-agent-trace.json'
 import demoFixture from './demo/swin-case.json'
 import { hydrateAndValidateDemoFixture } from './demoFixture'
+import { createPanelVisibility, togglePanelVisibility, type PanelKey } from './panelCollapse'
 import { compareRecords, historyForSubjectAndType, selectLatestPair } from './versionDiff'
 
 const markdown = new MarkdownIt({ html: false, linkify: true, breaks: true })
@@ -65,6 +67,7 @@ const editFields = ref<Array<{ name: string; value: string; originalIndex: numbe
 const reviewSearch = ref('')
 const reviewEvidence = ref<Evidence[]>([])
 const reviewEdits = ref<Record<number, { name: string; value: string; quote: string; evidence_id: string }>>({})
+const panelVisibility = ref(createPanelVisibility())
 
 const fields = [
   ['task', '任务'], ['model', '模型'], ['dataset', '数据集'], ['input_setting', '输入设置'],
@@ -86,6 +89,10 @@ const selectedHistoryRight = computed(() => historyRecords.value.find(record => 
 const historyDiff = computed(() => selectedHistoryLeft.value && selectedHistoryRight.value && historyLeftId.value !== historyRightId.value
   ? compareRecords(selectedHistoryLeft.value, selectedHistoryRight.value)
   : [])
+
+function togglePanel(key: PanelKey) {
+  panelVisibility.value = togglePanelVisibility(panelVisibility.value, key)
+}
 
 let savedLiveState: null | {
   query: string; collection: Collection; candidates: Candidate[]; selected: string[]; activeId: string | null;
@@ -735,12 +742,20 @@ if (staticDemoOnly) loadDemoCase()
 
       <div v-if="error" class="error-banner" role="alert"><AlertCircle :size="18" /><span>{{ error }}</span><button v-if="!demoMode" class="text-button" type="button" @click="loadDemoCase">查看只读演示</button><button type="button" aria-label="关闭错误" @click="error = ''"><X :size="16" /></button></div>
 
-      <DemoCenter :demo-mode="demoMode" :busy="busy !== null" :static-demo-only="staticDemoOnly" @load-demo="loadDemoCase" />
+      <DemoCenter
+        :demo-mode="demoMode"
+        :busy="busy !== null"
+        :static-demo-only="staticDemoOnly"
+        :expanded="panelVisibility.demo"
+        @load-demo="loadDemoCase"
+        @toggle-collapse="togglePanel('demo')"
+      />
 
       <div class="workspace-grid">
         <div class="content-column">
-          <section id="papers" class="search-section" aria-labelledby="papers-title">
-            <div class="section-heading"><div><p class="section-number">01 / 论文筛选</p><h2 id="papers-title">找到值得细读的论文</h2></div><span>来源限定在已建索引语料</span></div>
+          <section id="papers" class="search-section" :class="{ 'is-collapsed': !panelVisibility.papers }" aria-labelledby="papers-title">
+            <div class="section-heading"><div><p class="section-number">01 / 论文筛选</p><h2 id="papers-title">找到值得细读的论文</h2></div><div class="section-heading-actions"><span>来源限定在已建索引语料</span><PanelCollapseButton :expanded="panelVisibility.papers" controls="papers-panel-body" label="论文筛选" @toggle="togglePanel('papers')" /></div></div>
+            <div id="papers-panel-body" v-show="panelVisibility.papers" class="panel-body">
             <form class="search-form" @submit.prevent="searchPapers">
               <label class="search-input"><Search :size="19" /><input v-model="query" maxlength="1000" aria-label="研究问题" placeholder="输入研究问题或筛选条件" :disabled="demoMode" /></label>
               <label class="collection-select"><span class="sr-only">语料库</span><select v-model="collection" :disabled="demoMode"><option value="swin_v1">Swin Transformer</option><option value="vision_mamba_v1">Vision Mamba (Vim)</option><option value="qasper_train_v1">QASPER train · 方法示例</option></select></label>
@@ -761,10 +776,12 @@ if (staticDemoOnly) loadDemoCase()
                 <button type="button" class="text-button evidence-action" @click="proof = candidate.evidence[0] ?? null">查看证据 <ExternalLink :size="15" /></button>
               </article>
             </div>
+            </div>
           </section>
 
-          <section id="card" class="paper-panel card-section" aria-labelledby="card-title">
-            <div class="panel-header"><div><p class="section-number">02 / 实验信息卡</p><h2 id="card-title">{{ active?.title || '选择论文后整理信息' }}</h2></div><div class="panel-actions"><button class="text-button" type="button" :disabled="!active || demoMode || busy !== null" @click="restoreCard"><LoaderCircle v-if="busy === 'load'" class="spin" :size="16" /><FolderOpen v-else :size="16" />{{ busy === 'load' ? '读取中' : '读取已存卡' }}</button><button class="secondary-button" type="button" :disabled="!active || demoMode || busy !== null" @click="createCard"><LoaderCircle v-if="busy === 'card'" class="spin" :size="17" /><FileText v-else :size="17" />{{ busy === 'card' ? '生成中' : '从原文生成' }}</button></div></div>
+          <section id="card" class="paper-panel card-section" :class="{ 'is-collapsed': !panelVisibility.card }" aria-labelledby="card-title">
+            <div class="panel-header"><div><p class="section-number">02 / 实验信息卡</p><h2 id="card-title">{{ active?.title || '选择论文后整理信息' }}</h2></div><div class="panel-actions"><button class="text-button" type="button" :disabled="!active || demoMode || busy !== null" @click="restoreCard"><LoaderCircle v-if="busy === 'load'" class="spin" :size="16" /><FolderOpen v-else :size="16" />{{ busy === 'load' ? '读取中' : '读取已存卡' }}</button><button class="secondary-button" type="button" :disabled="!active || demoMode || busy !== null" @click="createCard"><LoaderCircle v-if="busy === 'card'" class="spin" :size="17" /><FileText v-else :size="17" />{{ busy === 'card' ? '生成中' : '从原文生成' }}</button><PanelCollapseButton :expanded="panelVisibility.card" controls="card-panel-body" label="实验信息卡" @toggle="togglePanel('card')" /></div></div>
+            <div id="card-panel-body" v-show="panelVisibility.card" class="panel-body">
             <p v-if="demoMode" class="readonly-note">只读演示：生成、修订、论文内搜索和 Agent 调用已停用。</p>
             <div v-if="activeCard?.screening" class="screening-line"><span>筛选决定：{{ activeCard.screening.decision === 'include' ? '纳入' : activeCard.screening.decision === 'exclude' ? '排除' : '待定' }}</span><span>理由：{{ activeCard.screening.claims[0]?.claim.statement }}</span><em>待人工复核</em></div>
             <div v-else-if="activeCard" class="screening-line review-alert"><span>模型输出需要复核</span><span>{{ activeCard.failure_code || '未形成可提交的信息卡' }}</span><em>请在同一论文内查证</em></div>
@@ -786,10 +803,12 @@ if (staticDemoOnly) loadDemoCase()
             </div>
             <form v-if="editingExtraction" class="revision-form" @submit.prevent="saveExtraction"><strong>实验字段人工修订</strong><p>留空可移除字段。新增或改写内容若不在所引原文中，将标记为待人工复核；保存后生成新的字段版本。</p><div class="revision-fields"><label v-for="(entry, index) in editFields" :key="index">{{ fields.find(([name]) => name === entry.name)?.[1] }} · {{ index + 1 }}<input v-model="entry.value" maxlength="2000" :aria-label="`修订${entry.name}条目${index + 1}`" /></label></div><div class="revision-buttons"><button v-for="[name, label] in fields" :key="name" type="button" class="text-button" :disabled="editFields.length >= 36" @click="editFields.push({ name, value: '', originalIndex: -1 })">添加{{ label }}</button></div><div class="revision-buttons"><button type="button" class="text-button" @click="editingExtraction = false">取消</button><button type="submit" class="secondary-button" :disabled="busy !== null"><Save :size="15" />{{ busy === 'extraction' ? '保存中' : '保存新版本' }}</button></div></form>
             <p class="panel-note">“原文匹配”只表示所引文字在原文中；字段归类与研究解释须人工核对。</p>
+            </div>
           </section>
 
-          <section id="history" class="paper-panel history-section" aria-labelledby="history-title">
-            <div class="panel-header"><div><p class="section-number">02.5 / 记录历史</p><h2 id="history-title">研究记录版本与差异</h2></div><span v-if="demoMode" class="demo-chip">预置演示数据</span><button v-else-if="active" class="text-button" type="button" :disabled="historyBusy" @click="retryHistory"><LoaderCircle v-if="historyBusy" class="spin" :size="15" /><FolderOpen v-else :size="15" />{{ historyBusy ? '读取中' : '刷新历史' }}</button></div>
+          <section id="history" class="paper-panel history-section" :class="{ 'is-collapsed': !panelVisibility.history }" aria-labelledby="history-title">
+            <div class="panel-header"><div><p class="section-number">02.5 / 记录历史</p><h2 id="history-title">研究记录版本与差异</h2></div><div class="panel-heading-actions"><span v-if="demoMode" class="demo-chip">预置演示数据</span><button v-else-if="active" class="text-button" type="button" :disabled="historyBusy" @click="retryHistory"><LoaderCircle v-if="historyBusy" class="spin" :size="15" /><FolderOpen v-else :size="15" />{{ historyBusy ? '读取中' : '刷新历史' }}</button><PanelCollapseButton :expanded="panelVisibility.history" controls="history-panel-body" label="历史版本" @toggle="togglePanel('history')" /></div></div>
+            <div id="history-panel-body" v-show="panelVisibility.history" class="panel-body">
             <p v-if="!active" class="empty-inline">选择一篇论文后查看其筛选与提取记录。</p>
             <div v-else-if="historyError" class="inline-error" role="alert"><span>历史记录读取失败：{{ historyError }}</span><button type="button" class="text-button" @click="retryHistory">重试只读请求</button></div>
             <p v-else-if="historyBusy && !researchHistory" class="empty-inline">正在读取已保存的研究记录…</p>
@@ -805,18 +824,22 @@ if (staticDemoOnly) loadDemoCase()
               <p v-else-if="historyLeftId === historyRightId" class="empty-inline">请选择两个不同版本进行比较。</p>
               <div v-else-if="historyDiff.length" class="diff-table-wrap"><table class="diff-table"><thead><tr><th>变化</th><th>字段</th><th>旧版本</th><th>新版本</th><th>原文证据</th></tr></thead><tbody><tr v-for="row in historyDiff" :key="row.key"><td><span class="change-chip" :class="row.change">{{ changeLabel(row.change) }}</span><small v-if="row.needsReview" class="ambiguous-note">同名多条目配对，需人工确认</small></td><th>{{ row.label }}</th><td>{{ row.before?.value ?? '—' }}<small v-for="detail in row.before ? claimDetails(row.before.claims) : []" :key="`old-${row.key}-${detail.statement}`">{{ detail.status }} · {{ detail.quote ? `原文引文：“${detail.quote}”` : `研究陈述：${detail.statement}（未附原文引文）` }} · {{ detail.location }}</small></td><td>{{ row.after?.value ?? '—' }}<small v-for="detail in row.after ? claimDetails(row.after.claims) : []" :key="`new-${row.key}-${detail.statement}`">{{ detail.status }} · {{ detail.quote ? `原文引文：“${detail.quote}”` : `研究陈述：${detail.statement}（未附原文引文）` }} · {{ detail.location }}</small></td><td><button v-for="evidence in [...(row.before?.claims ?? []), ...(row.after?.claims ?? [])].flatMap(claim => claim.evidence)" :key="evidence.chunk_id" class="inline-proof" type="button" @click="proof = evidence">{{ sourceLabel(evidence) }}</button><span v-if="![...(row.before?.claims ?? []), ...(row.after?.claims ?? [])].some(claim => claim.evidence.length)" class="muted">记录未携带证据对象</span></td></tr></tbody></table></div>
             </template>
+            </div>
           </section>
 
-          <section id="comparison" class="paper-panel comparison-section" aria-labelledby="comparison-title">
-            <div class="panel-header"><div><p class="section-number">03 / 对照报告</p><h2 id="comparison-title">{{ demoMode ? '单篇论文研究记录快照' : '比较实验设置，保留不可比条件' }}</h2></div><button v-if="!demoMode" class="secondary-button" type="button" :disabled="comparisonIds.length < 2 || busy !== null" @click="makeComparison"><LoaderCircle v-if="busy === 'compare'" class="spin" :size="17" /><GitCompareArrows v-else :size="17" />生成对照报告</button><span v-else class="demo-chip">预置单篇快照</span></div>
+          <section id="comparison" class="paper-panel comparison-section" :class="{ 'is-collapsed': !panelVisibility.comparison }" aria-labelledby="comparison-title">
+            <div class="panel-header"><div><p class="section-number">03 / 对照报告</p><h2 id="comparison-title">{{ demoMode ? '单篇论文研究记录快照' : '比较实验设置，保留不可比条件' }}</h2></div><div class="panel-heading-actions"><button v-if="!demoMode" class="secondary-button" type="button" :disabled="comparisonIds.length < 2 || busy !== null" @click="makeComparison"><LoaderCircle v-if="busy === 'compare'" class="spin" :size="17" /><GitCompareArrows v-else :size="17" />生成对照报告</button><span v-else class="demo-chip">预置单篇快照</span><PanelCollapseButton :expanded="panelVisibility.comparison" controls="comparison-panel-body" label="对照报告" @toggle="togglePanel('comparison')" /></div></div>
+            <div id="comparison-panel-body" v-show="panelVisibility.comparison" class="panel-body">
             <div v-if="demoMode && demoReport" class="report-box"><p class="readonly-note">这是单篇研究记录快照，不是论文间比较或性能排名。</p><div class="markdown-body" v-html="DOMPurify.sanitize(markdown.render(demoReport))" /></div>
             <p v-if="!demoMode" class="comparison-hint">已选择 {{ selected.length }} 篇论文，其中 {{ comparisonIds.length }} 篇已有信息卡。需要至少两张卡片才能比较。</p>
             <div v-if="report" class="report-box"><div class="report-toolbar"><span>{{ report.comparable ? '关键条件字面一致，仍不自动排名' : '数据集、指标或输入条件不完整，不自动排名' }}</span><button type="button" class="text-button" @click="saveReport"><ArrowDownToLine :size="17" />下载 Markdown</button></div><div class="markdown-body" v-html="reportHtml" /></div>
             <div v-else-if="!demoMode" class="report-empty"><GitCompareArrows :size="23" /><p>为两篇以上论文生成实验卡后，这里会显示带原文位置的对照报告。</p></div>
+            </div>
           </section>
 
-          <section id="reproduction" class="paper-panel reproduction-section" aria-labelledby="reproduction-title">
-            <div class="panel-header"><div><p class="section-number">04 / {{ staticDemoOnly ? 'Agent 回放' : '复现核查' }}</p><h2 id="reproduction-title">{{ staticDemoOnly ? 'Agent 执行轨迹与有据回答' : '对代码条件做证据核查' }}</h2></div><ShieldCheck :size="22" /></div>
+          <section id="reproduction" class="paper-panel reproduction-section" :class="{ 'is-collapsed': !panelVisibility.reproduction }" aria-labelledby="reproduction-title">
+            <div class="panel-header"><div><p class="section-number">04 / {{ staticDemoOnly ? 'Agent 回放' : '复现核查' }}</p><h2 id="reproduction-title">{{ staticDemoOnly ? 'Agent 执行轨迹与有据回答' : '对代码条件做证据核查' }}</h2></div><div class="panel-heading-actions"><ShieldCheck :size="22" /><PanelCollapseButton :expanded="panelVisibility.reproduction" controls="reproduction-panel-body" label="复现核查" @toggle="togglePanel('reproduction')" /></div></div>
+            <div id="reproduction-panel-body" v-show="panelVisibility.reproduction" class="panel-body">
             <p v-if="staticDemoOnly">下方展示已完成任务的真实轨迹快照；本页不会提交新的检索或 Agent 任务。</p>
             <p v-else>限定 Swin 官方固定版本。Agent 会检索、提交结构化结论，程序核查后再生成引用回答；一次任务可能产生付费模型调用。</p>
             <div v-if="!staticDemoOnly" class="agent-form"><textarea id="agent-query" v-model="agentQuery" maxlength="4096" placeholder="例如：给定 PatchMerging.forward 的 H=8、W=8、L=64，前置断言是否通过？" aria-label="复现核查问题" :disabled="demoMode" /><div><select v-model="agentClaimKind" aria-label="核查类型" :disabled="demoMode"><option value="code_execution">代码前置条件</option><option value="inference">研究推断</option><option value="numeric">数值计算</option><option value="verbatim">原文引文</option></select><button class="primary-button" type="button" :disabled="demoMode || busy !== null" @click="checkReproduction"><LoaderCircle v-if="busy === 'agent'" class="spin" :size="17" /><ShieldCheck v-else :size="17" />{{ busy === 'agent' ? '请求已提交' : demoMode ? '只读演示' : '运行核查' }}</button></div></div>
@@ -828,13 +851,16 @@ if (staticDemoOnly) loadDemoCase()
               :mode="demoMode ? 'replay' : 'live'"
               @open-evidence="openAgentEvidence"
             />
+            </div>
           </section>
         </div>
 
-        <aside id="evidence" ref="evidencePanel" class="evidence-panel" aria-label="原文证据"><div class="evidence-title"><div><p class="section-number">原文证据</p><h2>当前选中来源</h2></div><button type="button" :disabled="!proof" aria-label="关闭证据" @click="proof = null"><X :size="18" /></button></div>
+        <aside id="evidence" ref="evidencePanel" class="evidence-panel" :class="{ 'is-collapsed': !panelVisibility.evidence }" aria-label="原文证据"><div class="evidence-title"><div><p class="section-number">原文证据</p><h2>当前选中来源</h2></div><div class="evidence-title-actions"><button type="button" class="evidence-close-button" :disabled="!proof" aria-label="关闭证据" @click="proof = null"><X :size="18" /></button><PanelCollapseButton :expanded="panelVisibility.evidence" controls="evidence-panel-body" label="原文证据" @toggle="togglePanel('evidence')" /></div></div>
+          <div id="evidence-panel-body" v-show="panelVisibility.evidence" class="panel-body">
           <div v-if="proof" class="proof-content"><p class="proof-id">{{ proof.source.source_id }}</p><dl><dt>路径</dt><dd>{{ proof.source.source_path }}</dd><dt>版本</dt><dd>{{ proof.source.source_version }}</dd><dt>位置</dt><dd>{{ sourceLabel(proof) }}</dd></dl><blockquote>{{ proof.text }}</blockquote><a v-if="paperUrl(proof.source.source_id)" :href="paperUrl(proof.source.source_id)!" target="_blank" rel="noopener noreferrer" class="source-link">打开论文来源 <ExternalLink :size="16" /></a><p v-else class="proof-note">已记录原始文件路径与行号；请在项目语料中核对。</p></div>
           <div v-else class="proof-empty"><BookOpenText :size="26" /><p>点击候选或字段旁的“查看证据”，在这里阅读原文、位置与版本。</p></div>
           <div class="inspector-foot"><CheckCheck :size="16" /> 检索与引文只使用当前限定的语料版本</div>
+          </div>
         </aside>
       </div>
     </main>
