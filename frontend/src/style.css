@@ -77,6 +77,10 @@ a { color: inherit; }
 .text-button { border: 0; background: none; display: inline-flex; align-items: center; gap: 5px; color: #0b6a77; font-weight: 700; padding: 4px 0; font-size: 12px; white-space: nowrap; }
 .text-button:hover, .inline-proof:hover, .source-link:hover { text-decoration: underline; }
 .evidence-action { align-self: center; }
+.panel-collapse-button { flex: 0 0 auto; min-height: 36px; white-space: nowrap; }
+.panel-heading-actions, .evidence-title-actions, .section-heading-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.section-heading-actions > span { color: #899aa5; font-size: 12px; white-space: nowrap; }
+.is-collapsed { min-height: 0; }
 
 .paper-panel, .evidence-panel { background: white; border: 1px solid #d6e0e5; border-radius: 6px; box-shadow: 0 1px 2px rgba(18,43,57,.025); }
 .card-section, .comparison-section, .reproduction-section { scroll-margin-top: 22px; }
@@ -150,7 +154,7 @@ a { color: inherit; }
 .markdown-body code { background: #edf3f5; padding: 2px 4px; border-radius: 3px; overflow-wrap: anywhere; }
 .markdown-body a { color: #0b6a77; }
 .markdown-body p, .markdown-body li { overflow-wrap: anywhere; }
-.reproduction-section > p { color: #687e8a; font-size: 12px; line-height: 1.7; padding: 0 17px; }
+.reproduction-section > p, .reproduction-section .panel-body > p { color: #687e8a; font-size: 12px; line-height: 1.7; padding: 0 17px; }
 .agent-form { padding: 0 17px 18px; }
 .agent-form textarea { display: block; width: 100%; min-height: 82px; resize: vertical; border: 1px solid #cbd7dd; padding: 12px; border-radius: 4px; outline: none; color: #263d50; font-size: 12px; }
 .agent-form > div { margin-top: 9px; display: flex; gap: 10px; justify-content: flex-end; }
@@ -164,7 +168,7 @@ a { color: inherit; }
 .evidence-panel { position: sticky; top: 22px; overflow: hidden; scroll-margin-top: 22px; }
 .evidence-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px; border-bottom: 1px solid #dce5e9; }
 .evidence-title h2 { font-size: 18px; }
-.evidence-title button { background: none; border: 0; color: #8394a0; padding: 3px; }
+.evidence-close-button { background: none; border: 0; color: #8394a0; padding: 3px; }
 .proof-content { padding: 16px; font-size: 12px; }
 .proof-id { color: #0b6a77; font-weight: 800; word-break: break-all; margin: 0 0 14px; }
 .proof-content dl { display: grid; grid-template-columns: 42px 1fr; gap: 10px; margin: 0; }
@@ -208,6 +212,8 @@ a { color: inherit; }
   .page-header h1 { font-size: 26px; }
   .connection { margin-top: 12px; }
   .section-heading > span { display: none; }
+  .panel-heading-actions, .evidence-title-actions, .section-heading-actions { width: 100%; justify-content: flex-start; }
+  .section-heading-actions > span { display: none; }
   .search-form { grid-template-columns: minmax(0, 1fr); }
   .candidate-row { grid-template-columns: 21px minmax(0, 1fr); }
   .evidence-action { grid-column: 2; justify-self: start; }
@@ -269,6 +275,9 @@ a { color: inherit; }
 }
 
 .demo-center { scroll-margin-top:24px; margin:0 0 24px; overflow:hidden; border:1px solid #d2dfde; border-radius:10px; background:#fbfcf9; box-shadow:0 2px 10px rgba(24,47,65,.045); }
+.demo-center-summary { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; background:linear-gradient(112deg,#f8fbf8 0%,#f3f8f5 62%,#e8f2ee 100%); }
+.demo-center-summary h2 { margin:0; color:#1b3547; font:700 clamp(22px,2.5vw,33px)/1.25 "Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif; letter-spacing:.015em; }
+.demo-center-summary-actions { display:flex; align-items:center; justify-content:flex-end; gap:12px; flex-wrap:wrap; }
 .demo-center-header { display:grid; grid-template-columns:minmax(0,1fr) minmax(290px,340px); gap:26px; align-items:stretch; padding:24px; background:linear-gradient(112deg,#f8fbf8 0%,#f3f8f5 62%,#e8f2ee 100%); }
 .demo-center-copy { align-self:center; max-width:720px; }
 .demo-eyebrow { margin:0 0 11px; color:#24766e; font:800 10px/1.3 "Segoe UI",sans-serif; letter-spacing:.19em; }
@@ -348,6 +357,8 @@ a { color: inherit; }
 .trace-verdict button { grid-column:2; justify-self:start; }
 @media (max-width: 900px) { .demo-center-header { grid-template-columns:1fr; gap:18px; } }
 @media (max-width: 700px) {
+  .demo-center-summary { align-items:flex-start; padding:18px 15px; flex-direction:column; }
+  .demo-center-summary-actions { justify-content:flex-start; }
   .demo-center-header { padding:18px 15px; }
   .demo-center-copy h2 { font-size:22px; }
   .demo-stage-nav ol { min-width:760px; padding:14px 13px 10px; }
