@@ -11,6 +11,7 @@ from ican.agent.journal import PaidJournal
 from ican.agent.runtime import DeepSeekRuntime
 from ican.agent.schema import AgentConfig, AgentRequest, BudgetExhausted, ToolInputError
 from ican.indexing.inputs import load_chunks
+from ican.qa.runtime import ModelOutputTruncated
 from ican.retrieval.schema import SearchFilters, SearchRequest
 
 from .auto_schema import (
@@ -379,6 +380,8 @@ class ResearchAutoService:
             stop_reason = (
                 "budget_exhausted"
                 if isinstance(error, BudgetExhausted)
+                else "model_output_truncated"
+                if isinstance(error, ModelOutputTruncated)
                 else "model_unavailable"
                 if type(error).__name__ == "ModelUnavailable"
                 else "model_timeout"

@@ -13,6 +13,10 @@ class ModelUnavailable(Exception):
     """The generation service is missing or failed; no sensitive details escape."""
 
 
+class ModelOutputTruncated(ModelUnavailable):
+    """The provider stopped at the configured output-token limit."""
+
+
 class ModelTimeout(Exception):
     """The single generation attempt exceeded its time budget."""
 
@@ -71,6 +75,8 @@ class OpenAICompatibleModel:
             raise ModelTimeout("Generation timed out") from None
         except (APIError, httpx.HTTPError, ValueError):
             raise ModelUnavailable("Generation service is unavailable") from None
+        if response.choices and response.choices[0].finish_reason == "length":
+            raise ModelOutputTruncated("Generation output reached its token limit")
         if (
             not response.choices
             or not response.choices[0].message.content

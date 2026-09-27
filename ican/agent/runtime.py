@@ -4,7 +4,7 @@ import os
 
 from dotenv import load_dotenv
 
-from ican.qa.runtime import ModelTimeout, ModelUnavailable
+from ican.qa.runtime import ModelOutputTruncated, ModelTimeout, ModelUnavailable
 
 from .schema import BudgetExhausted
 
@@ -71,6 +71,10 @@ class DeepSeekRuntime:
             record["finish_reason"] = (
                 result.choices[0].finish_reason if result.choices else None
             )
+            if result.choices and result.choices[0].finish_reason == "length":
+                raise ModelOutputTruncated(
+                    "Agent model output reached its token limit"
+                )
             if not result.choices or result.choices[0].finish_reason not in {
                 "stop",
                 "tool_calls",

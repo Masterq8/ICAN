@@ -60,7 +60,7 @@ export interface CardResponse {
   review_candidates: ReviewCandidate[]
   failure_code?: string | null
   stages: Array<{ stage: 'evidence_preparation' | 'model_submission' | 'result_validation' | 'record_save'; status: 'completed' | 'failed' | 'skipped' }>
-  stop_reason: 'completed' | 'tool_submission_rejected' | 'model_request_failed' | 'model_unavailable' | 'model_timeout' | 'budget_exhausted' | 'record_save_failed'
+  stop_reason: 'completed' | 'tool_submission_rejected' | 'model_request_failed' | 'model_unavailable' | 'model_output_truncated' | 'model_timeout' | 'budget_exhausted' | 'record_save_failed'
 }
 
 export interface HighConfidenceField {

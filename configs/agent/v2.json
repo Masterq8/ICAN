@@ -8,5 +8,5 @@
   "max_evidence_pool": 32,
   "model_timeout_seconds": 60,
   "task_timeout_seconds": 180,
-  "planner_max_tokens": 2048
+  "planner_max_tokens": 4096
 }

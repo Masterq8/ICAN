@@ -174,6 +174,7 @@ class AutoCardResponse(BaseModel):
         "tool_submission_rejected",
         "model_request_failed",
         "model_unavailable",
+        "model_output_truncated",
         "model_timeout",
         "budget_exhausted",
         "record_save_failed",

@@ -22,6 +22,7 @@ import {
   X,
 } from '@lucide/vue'
 import { ApiError, compareCards, discover, generateCard, getResearchHistory, loadCard, reviseExtraction, reviseScreening, runAgent, searchPaperEvidence } from './api'
+import { cardFailureLabel, cardStopReasonLabel } from './cardStatus'
 import type { AgentResponse, Candidate, CardResponse, ClaimStatus, Collection, ComparisonResponse, Evidence, ResearchHistory, ResearchRecord, ReviewCandidate } from './types'
 import AgentTrace from './components/AgentTrace.vue'
 import DemoCenter from './components/DemoCenter.vue'
@@ -299,14 +300,7 @@ function stageLabel(stage: string): string {
 }
 
 function stopReasonLabel(reason: string): string {
-  return ({
-    tool_submission_rejected: '模型未能提交符合约束的工具结果',
-    model_request_failed: '模型请求未完成',
-    model_unavailable: '生成服务不可用',
-    model_timeout: '模型请求超时',
-    budget_exhausted: '本次任务预算已用尽',
-    record_save_failed: '模型已返回结果，但研究记录保存失败；请先检查历史记录',
-  } as Record<string, string>)[reason] ?? reason
+  return cardStopReasonLabel(reason)
 }
 
 function changeLabel(change: string): string {
@@ -784,7 +778,7 @@ if (staticDemoOnly) loadDemoCase()
             <div id="card-panel-body" v-show="panelVisibility.card" class="panel-body">
             <p v-if="demoMode" class="readonly-note">只读演示：生成、修订、论文内搜索和 Agent 调用已停用。</p>
             <div v-if="activeCard?.screening" class="screening-line"><span>筛选决定：{{ activeCard.screening.decision === 'include' ? '纳入' : activeCard.screening.decision === 'exclude' ? '排除' : '待定' }}</span><span>理由：{{ activeCard.screening.claims[0]?.claim.statement }}</span><em>待人工复核</em></div>
-            <div v-else-if="activeCard" class="screening-line review-alert"><span>模型输出需要复核</span><span>{{ activeCard.failure_code || '未形成可提交的信息卡' }}</span><em>请在同一论文内查证</em></div>
+            <div v-else-if="activeCard" class="screening-line review-alert"><span>模型输出需要复核</span><span>{{ cardFailureLabel(activeCard.failure_code) }}</span><em>请在同一论文内查证</em></div>
             <div v-if="activeCard" class="card-usage"><span v-if="demoMode">预置演示数据 · 本地快照，不代表模型调用</span><span v-else-if="activeCard.usage.paid_calls">本次生成：{{ activeCard.usage.paid_calls }} 次模型调用 · {{ activeCard.usage.prompt_tokens }} 输入 token · {{ activeCard.usage.completion_tokens }} 输出 token · {{ activeCard.usage.actual_cost_usd === null ? '实际费用未提供' : activeCard.usage.actual_cost_usd }}</span><span v-else>读取已存记录：本次未调用模型</span><span v-if="activeCard.stages.length" class="stage-list">{{ activeCard.stages.map(stage => `${stageLabel(stage.stage)}：${stage.status === 'completed' ? '完成' : stage.status === 'failed' ? '失败' : '未执行'}`).join(' → ') }}</span><span v-if="activeCard.stop_reason !== 'completed'">停止原因：{{ stopReasonLabel(activeCard.stop_reason) }}</span></div>
             <div v-if="activeCard" class="revision-actions"><span>{{ activeCard.screening ? `当前筛选版本 ${activeCard.screening.record_id.slice(0, 8)}` : '尚无已提交筛选记录' }}{{ activeCard.extraction ? ` · 字段版本 ${activeCard.extraction.record_id.slice(0, 8)}` : '' }}</span><button type="button" class="text-button" :disabled="demoMode || !activeCard.screening || busy !== null" @click="beginScreeningEdit"><PencilLine :size="15" />修订筛选</button><button type="button" class="text-button" :disabled="demoMode || !activeCard.extraction || busy !== null" @click="beginExtractionEdit"><PencilLine :size="15" />修订字段</button></div>
             <form v-if="editingScreening" class="revision-form" @submit.prevent="saveScreening"><strong>筛选人工修订</strong><p>新记录会引用当前论文证据，并保留上一版本；筛选理由仍标记为待人工复核。</p><label>决定<select v-model="screeningDecision"><option value="include">纳入</option><option value="exclude">排除</option><option value="hold">待定</option></select></label><label>理由<textarea v-model="screeningReason" maxlength="2000" rows="3" /></label><div class="revision-buttons"><button type="button" class="text-button" @click="editingScreening = false">取消</button><button type="submit" class="secondary-button" :disabled="busy !== null"><Save :size="15" />{{ busy === 'screening' ? '保存中' : '保存新版本' }}</button></div></form>

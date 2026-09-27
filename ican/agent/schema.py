@@ -20,7 +20,7 @@ class AgentConfig(BaseModel):
     max_evidence_pool: int = Field(default=32, ge=8, le=40)
     model_timeout_seconds: float = Field(default=60, gt=0, le=90)
     task_timeout_seconds: float = Field(default=180, gt=0, le=300)
-    planner_max_tokens: int = Field(default=1536, ge=128, le=2048)
+    planner_max_tokens: int = Field(default=1536, ge=128, le=8192)
 
     @model_validator(mode="after")
     def reserve_submission_turn(self):

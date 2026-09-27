@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 
 from ican.agent.schema import AgentConfig, AgentRequest, ToolInputError
 from ican.api.app import create_app
-from ican.qa.runtime import ModelUnavailable
+from ican.qa.runtime import ModelOutputTruncated, ModelUnavailable
 from ican.research.auto_schema import (
     AutoCardRequest,
     ComparisonRequest,
@@ -126,6 +126,19 @@ class FailingRuntime:
 
     async def request(self, role, messages, tools):
         raise ModelUnavailable("incomplete response")
+
+
+class TruncatedRuntime:
+    def __init__(self):
+        self.records = [
+            {
+                "usage": {"prompt_tokens": 2529, "completion_tokens": 4096},
+                "finish_reason": "length",
+            }
+        ]
+
+    async def request(self, role, messages, tools):
+        raise ModelOutputTruncated("structured model output reached its limit")
 
 
 def field(name, value, quote, cid):
@@ -389,6 +402,19 @@ async def test_runtime_failure_returns_paper_scoped_review_fallback(tmp_path):
         ("result_validation", "skipped"),
         ("record_save", "skipped"),
     ]
+
+
+@pytest.mark.asyncio
+async def test_truncated_output_has_specific_fallback_status(tmp_path):
+    auto = build(tmp_path, [])
+    auto.runtime_factory = lambda root, config, journal, task_id: TruncatedRuntime()
+    result = await auto.auto_card(
+        AutoCardRequest(query="image models", collection="swin_v1", source_id="paper-a")
+    )
+    assert result.status == "review_required"
+    assert result.failure_code == "generation:ModelOutputTruncated"
+    assert result.usage.completion_tokens == 4096
+    assert result.stop_reason == "model_output_truncated"
 
 
 @pytest.mark.asyncio
