@@ -38,9 +38,10 @@ function hydrateRecord(
       throw new Error('Readonly demo references missing evidence')
     }
     const resolvedEvidence = evidence.filter(item => item !== undefined)
+    const quote = verdict.claim.quote
     if (
-      verdict.claim.quote &&
-      !resolvedEvidence.some(item => item.text.includes(verdict.claim.quote))
+      quote &&
+      !resolvedEvidence.some(item => item.text.includes(quote))
     ) {
       throw new Error('Readonly demo quote is not present in evidence')
     }

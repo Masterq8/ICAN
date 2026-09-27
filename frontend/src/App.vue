@@ -27,6 +27,7 @@ import AgentTrace from './components/AgentTrace.vue'
 import DemoCenter from './components/DemoCenter.vue'
 import agentReplay from './demo/swin-agent-trace.json'
 import demoFixture from './demo/swin-case.json'
+import { hydrateAndValidateDemoFixture } from './demoFixture'
 import { compareRecords, historyForSubjectAndType, selectLatestPair } from './versionDiff'
 
 const markdown = new MarkdownIt({ html: false, linkify: true, breaks: true })
@@ -177,9 +178,7 @@ function loadDemoCase() {
     serviceOnline: serviceOnline.value, agentResult: agentResult.value,
     agentResultQuery: agentResultQuery.value,
   }
-  const fixture = demoFixture as unknown as {
-    label: string; query: string; candidate: Candidate; history: ResearchHistory; report: string
-  }
+  const fixture = hydrateAndValidateDemoFixture(demoFixture)
   demoMode.value = true
   editingScreening.value = false
   editingExtraction.value = false
@@ -192,25 +191,7 @@ function loadDemoCase() {
   candidates.value = [fixture.candidate]
   selected.value = [fixture.candidate.source_id]
   activeId.value = fixture.candidate.source_id
-  const enrichEvidence = (record: ResearchRecord): ResearchRecord => ({
-    ...record,
-    claims: record.claims.map(verdict => ({
-      ...verdict,
-      evidence: fixture.candidate.evidence.filter(item => verdict.claim.evidence_ids.includes(item.chunk_id)),
-    })),
-    fields: record.fields.map(field => ({
-      ...field,
-      claims: field.claims.map(verdict => ({
-        ...verdict,
-        evidence: fixture.candidate.evidence.filter(item => verdict.claim.evidence_ids.includes(item.chunk_id)),
-      })),
-    })),
-  })
-  const demoHistory: ResearchHistory = {
-    screening: fixture.history.screening.map(enrichEvidence),
-    extraction: fixture.history.extraction.map(enrichEvidence),
-    diagnostics: [],
-  }
+  const demoHistory = fixture.history
   const screening = demoHistory.screening[0] ?? null
   const extraction = demoHistory.extraction[0] ?? null
   const card: CardResponse = {

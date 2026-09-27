@@ -54,8 +54,11 @@ describe('readonly Swin demo fixture', () => {
 
   it('rejects a claim quote that is absent from its bound evidence', () => {
     const brokenFixture = structuredClone(fixture)
-    brokenFixture.history.extraction[0].fields[0].claims[0].claim.quote =
-      '这段引文不存在于任何证据中'
+    Reflect.set(
+      brokenFixture.history.extraction[0].fields[0].claims[0].claim,
+      'quote',
+      '这段引文不存在于任何证据中',
+    )
 
     expect(() => hydrateAndValidateDemoFixture(brokenFixture)).toThrow(
       'Readonly demo quote is not present in evidence',
