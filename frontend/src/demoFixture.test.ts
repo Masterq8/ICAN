@@ -38,7 +38,7 @@ describe('readonly Swin demo fixture', () => {
           ),
         ),
       ),
-    ).toEqual(new Set(['paper', 'code']))
+    ).toEqual(new Set(['paper', 'documentation']))
   })
 
   it('preserves stable revision chains', () => {
@@ -49,6 +49,16 @@ describe('readonly Swin demo fixture', () => {
     )
     expect(demo.history.extraction[0].revision_of).toBe(
       demo.history.extraction[1].record_id,
+    )
+  })
+
+  it('rejects a claim quote that is absent from its bound evidence', () => {
+    const brokenFixture = structuredClone(fixture)
+    brokenFixture.history.extraction[0].fields[0].claims[0].claim.quote =
+      '这段引文不存在于任何证据中'
+
+    expect(() => hydrateAndValidateDemoFixture(brokenFixture)).toThrow(
+      'Readonly demo quote is not present in evidence',
     )
   })
 })

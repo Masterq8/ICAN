@@ -1,6 +1,6 @@
 {
-  "label": "预置演示数据",
-  "query": "Swin Transformer 的 shifted window 如何连接相邻窗口？",
+  "label": "预置演示数据 · 本地只读快照",
+  "query": "如何结合论文、配置和官方代码理解并复现 Swin-T？",
   "candidate": {
     "collection": "swin_v1",
     "source_id": "src:21e757794f07f8f043ac",
@@ -10,17 +10,99 @@
     "evidence": [
       {
         "rank": 1,
-        "score": 0.7607518316419253,
-        "chunk_id": "chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b",
-        "text": "A key design element of Swin Transformer is its shift of the window partition between consecutive self-attention layers, as illustrated in Figure 2. The shifted windows bridge the windows of the preceding layer, providing connections among them that significantly enhance modeling power (see Table 4). This strategy is also efficient in regards to real-world latency: all query patches within a window share the same key set 1, which facilitates memory access in hardware. In contrast, earlier sliding window based self-attention approaches [33, 50] suffer from low latency on general hardware due to different key sets for different query pixels 2. Our experiments show that the proposed shifted window approach has much lower latency than the sliding window method, yet is similar in modeling power (see Tables 5 and 6). The shifted window approach also proves beneficial for all-MLP architectures [61].",
+        "score": 1,
+        "chunk_id": "chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5",
+        "text": "This paper presents a new vision Transformer, called Swin Transformer, that capably serves as a general-purpose backbone for computer vision. Challenges in adapting Transformer from language to vision arise from differences between the two domains, such as large variations in the scale of visual entities and the high resolution of pixels in images compared to words in text. To address these differences, we propose a hierarchical Transformer whose representation is computed with shifted windows. The shifted windowing scheme brings greater efficiency by limiting self-attention computation to non-overlapping local windows while also allowing for cross-window connection. This hierarchical architecture has the flexibility to model at various scales and has linear computational complexity with respect to image size. These qualities of Swin Transformer make it compatible with a broad range of vision tasks, including image classification (87.3 top-1 accuracy on ImageNet-1K) and dense prediction tasks such as object detection (58.7 box AP and 51.1 mask AP on COCO testdev) and semantic segmentation (53.5 mIoU on ADE20K val). The code and models are publicly available at https://github.com/microsoft/Swin-Transformer.",
         "review_required": false,
-        "source": {
-          "source_id": "src:21e757794f07f8f043ac",
-          "source_type": "paper",
-          "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf",
-          "source_version": "arXiv:2103.14030v2 / ICCV 2021",
-          "location": {"page": 2}
-        }
+        "source": {"source_id": "src:21e757794f07f8f043ac", "source_type": "paper", "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf", "source_version": "arXiv:2103.14030v2 / ICCV 2021", "location": {"page": 1}}
+      },
+      {
+        "rank": 2,
+        "score": 0.98,
+        "chunk_id": "chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b",
+        "text": "A key design element of Swin Transformer is its shift of the window partition between consecutive self-attention layers, as illustrated in Figure 2. The shifted windows bridge the windows of the preceding layer, providing connections among them that significantly enhance modeling power (see Table 4).",
+        "review_required": false,
+        "source": {"source_id": "src:21e757794f07f8f043ac", "source_type": "paper", "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf", "source_version": "arXiv:2103.14030v2 / ICCV 2021", "location": {"page": 2}}
+      },
+      {
+        "rank": 3,
+        "score": 0.96,
+        "chunk_id": "chunk:97ac02f20e8e19c445dfd2afd820a3a8d704b316dfdeff2e483811c24480408d",
+        "text": "An overview of the Swin Transformer architecture is presented in Figure 3, which illustrates the tiny version (Swin-T). It first splits an input RGB image into non-overlapping patches by a patch splitting module, like ViT. In our implementation, we use a patch size of 4 × 4 and thus the feature dimension of each patch is 4 × 4 × 3 = 48. A linear embedding layer is applied on this raw-valued feature to project it to an arbitrary dimension (denoted as C).",
+        "review_required": false,
+        "source": {"source_id": "src:21e757794f07f8f043ac", "source_type": "paper", "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf", "source_version": "arXiv:2103.14030v2 / ICCV 2021", "location": {"page": 3}}
+      },
+      {
+        "rank": 4,
+        "score": 0.94,
+        "chunk_id": "chunk:729cb00ca7b1c4acbcfcb005f0c96330679627d7fcb1906c3f6b1fea57245f39",
+        "text": "The detailed architecture specifications are shown in Table 7, where an input image size of 224 × 224 is assumed for all architectures. 'Concat n × n' indicates a concatenation of n × n neighboring features in a patch. '96-d' denotes a linear layer with an output dimension of 96. 'win. sz. 7 × 7' indicates a multi-head self-attention module with window size of 7 × 7.",
+        "review_required": false,
+        "source": {"source_id": "src:21e757794f07f8f043ac", "source_type": "paper", "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf", "source_version": "arXiv:2103.14030v2 / ICCV 2021", "location": {"page": 9}}
+      },
+      {
+        "rank": 5,
+        "score": 0.92,
+        "chunk_id": "chunk:e995602c7dba196a81771ccf400135c98f4cfd278755fe8ece91b3a72827efe1",
+        "text": "When training from scratch with a 224² input, we employ an AdamW optimizer for 300 epochs using a cosine decay learning rate scheduler with 20 epochs of linear warm-up. A batch size of 1024, an initial learning rate of 0.001, a weight decay of 0.05, and gradient clipping with a max norm of 1 are used.",
+        "review_required": false,
+        "source": {"source_id": "src:21e757794f07f8f043ac", "source_type": "paper", "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf", "source_version": "arXiv:2103.14030v2 / ICCV 2021", "location": {"page": 9}}
+      },
+      {
+        "rank": 6,
+        "score": 0.9,
+        "chunk_id": "chunk:3c45964ececfbbc7a3e7afac9ca60a1de7d840833b8338b1ad960a1a90c4c17c",
+        "text": "The image classification is performed by applying a global average pooling layer on the output feature map of the last stage, followed by a linear classifier. In evaluation, the top-1 accuracy using a single crop is reported.",
+        "review_required": false,
+        "source": {"source_id": "src:21e757794f07f8f043ac", "source_type": "paper", "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf", "source_version": "arXiv:2103.14030v2 / ICCV 2021", "location": {"page": 9}}
+      },
+      {
+        "rank": 7,
+        "score": 0.88,
+        "chunk_id": "chunk:2082098cb170cabc6bea747c4e5f08265973938957fd88358b2b4ba2cec8e46b",
+        "text": "Compared to the previous state-of-the-art Transformer-based architecture, i.e. DeiT, Swin Transformers noticeably surpass the counterpart DeiT architectures with similar complexities: +1.5% for Swin-T (81.3%) over DeiT-S (79.8%) using 224² input.",
+        "review_required": false,
+        "source": {"source_id": "src:21e757794f07f8f043ac", "source_type": "paper", "source_path": "data/raw/papers/swin_transformer_2103.14030.pdf", "source_version": "arXiv:2103.14030v2 / ICCV 2021", "location": {"page": 6}}
+      },
+      {
+        "rank": 8,
+        "score": 0.86,
+        "chunk_id": "chunk:96ff4bdd6493775b6f1a4b6f537a99b85f32087a2e92c1ef62fc898188220e19",
+        "text": "| Swin-T | ImageNet-1K | 224x224 | 81.2 | 95.5 | 28M | 4.5G | 755 | - | checkpoint / config / log |",
+        "review_required": false,
+        "source": {"source_id": "src:0790a4963843e3e453c1:file:b335630551682c19", "source_type": "documentation", "source_path": "data/raw/repositories/Swin-Transformer/README.md", "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d", "location": {"line_start": 108, "line_end": 117}}
+      },
+      {
+        "rank": 9,
+        "score": 0.84,
+        "chunk_id": "chunk:2cefb942b7528d2af811a6af15ca38bd2efdacc4e2bbbafd5650866e4f5a752e",
+        "text": "def forward(self, x):\n    B, C, H, W = x.shape\n    assert H == self.img_size[0] and W == self.img_size[1], f\"Input image size ({H}*{W}) doesn't match model ({self.img_size[0]}*{self.img_size[1]}).\"\n    x = self.proj(x).flatten(2).transpose(1, 2)\n    if self.norm is not None:\n        x = self.norm(x)\n    return x",
+        "review_required": false,
+        "source": {"source_id": "src:0790a4963843e3e453c1:file:0f0bd8ddce10bec4", "source_type": "code", "source_path": "data/raw/repositories/Swin-Transformer/models/swin_transformer.py", "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d", "location": {"line_start": 467, "line_end": 475}}
+      },
+      {
+        "rank": 10,
+        "score": 0.82,
+        "chunk_id": "chunk:f97d9b2e4291cc2e9b0aa9a06ea1e504ee4ea42d71b3647115b4dd94b983a2fa",
+        "text": "NAME: swin_tiny_patch4_window7_224",
+        "review_required": false,
+        "source": {"source_id": "src:0790a4963843e3e453c1:file:83fa6a76f8de37d6", "source_type": "config", "source_path": "data/raw/repositories/Swin-Transformer/configs/swin/swin_tiny_patch4_window7_224.yaml", "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d", "location": {"line_start": 3, "line_end": 3}}
+      },
+      {
+        "rank": 11,
+        "score": 0.8,
+        "chunk_id": "chunk:5a96fc09ca2554acd0f142044a67e9a0d16e40ac8069033b184a0b07785d5066",
+        "text": "WINDOW_SIZE: 7",
+        "review_required": false,
+        "source": {"source_id": "src:0790a4963843e3e453c1:file:83fa6a76f8de37d6", "source_type": "config", "source_path": "data/raw/repositories/Swin-Transformer/configs/swin/swin_tiny_patch4_window7_224.yaml", "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d", "location": {"line_start": 9, "line_end": 9}}
+      },
+      {
+        "rank": 12,
+        "score": 0.78,
+        "chunk_id": "chunk:865033990a769348c28e8ac3a252b4dd3ca209a399ee208b95a3d5e3b214eda7",
+        "text": "def build_model(config, is_pretrain=False):\n    model_type = config.MODEL.TYPE\n    if model_type == 'swin':\n        model = SwinTransformer(img_size=config.DATA.IMG_SIZE, patch_size=config.MODEL.SWIN.PATCH_SIZE, embed_dim=config.MODEL.SWIN.EMBED_DIM, depths=config.MODEL.SWIN.DEPTHS, num_heads=config.MODEL.SWIN.NUM_HEADS, window_size=config.MODEL.SWIN.WINDOW_SIZE)",
+        "review_required": false,
+        "source": {"source_id": "src:0790a4963843e3e453c1:file:2b4ab165250ada80", "source_type": "code", "source_path": "data/raw/repositories/Swin-Transformer/models/build.py", "source_version": "f82860bfb5225915aca09c3227159ee9e1df874d", "location": {"line_start": 15, "line_end": 52}}
       }
     ]
   },
@@ -34,9 +116,7 @@
         "subject_source_id": "src:21e757794f07f8f043ac",
         "revision_of": "30000001-0000-4000-8000-000000000001",
         "decision": "include",
-        "claims": [
-          {"claim": {"statement": "论文研究 shifted window 视觉 Transformer，符合当前架构分析主题。", "kind": "inference", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示数据；筛选判断需人工确认。"]}
-        ],
+        "claims": [{"claim": {"statement": "论文提出可用于分类、检测与分割的通用视觉骨干网络，符合架构与复现分析范围。", "kind": "inference", "evidence_ids": ["chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示整理；纳入决定保留人工复核标记。"]}],
         "fields": []
       },
       {
@@ -47,9 +127,7 @@
         "subject_source_id": "src:21e757794f07f8f043ac",
         "revision_of": null,
         "decision": "hold",
-        "claims": [
-          {"claim": {"statement": "主题相关，但需要进一步核对实验范围。", "kind": "inference", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示数据；筛选判断需人工确认。"]}
-        ],
+        "claims": [{"claim": {"statement": "主题相关，但尚未核对实验范围与官方实现入口。", "kind": "inference", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示初始版本。"]}],
         "fields": []
       }
     ],
@@ -64,8 +142,20 @@
         "decision": null,
         "claims": [],
         "fields": [
-          {"name": "model", "value": "Swin Transformer", "claims": [{"claim": {"statement": "Swin Transformer", "kind": "verbatim", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"], "quote": "Swin Transformer"}, "status": "supported", "evidence": [], "diagnostics": []}]},
-          {"name": "result", "value": "移位窗口在连续层之间建立跨窗口连接。", "claims": [{"claim": {"statement": "移位窗口连接前一层窗口。", "kind": "inference", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示整理；建议核对英文原文。"]}]}
+          {"name": "task", "value": "通用视觉骨干：图像分类、目标检测与语义分割", "claims": [{"claim": {"statement": "Swin Transformer serves as a general-purpose backbone for computer vision tasks including classification, detection and segmentation.", "kind": "verbatim", "evidence_ids": ["chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5"], "quote": "serves as a general-purpose backbone for computer vision"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "model", "value": "Swin Transformer Tiny（分层表示 + shifted-window self-attention）", "claims": [{"claim": {"statement": "Swin Transformer uses a hierarchical Transformer with shifted windows.", "kind": "verbatim", "evidence_ids": ["chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5"], "quote": "a hierarchical Transformer whose representation is computed with shifted windows"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "dataset", "value": "ImageNet-1K", "claims": [{"claim": {"statement": "ImageNet-1K", "kind": "verbatim", "evidence_ids": ["chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5"], "quote": "ImageNet-1K"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "dataset", "value": "COCO test-dev", "claims": [{"claim": {"statement": "COCO testdev", "kind": "verbatim", "evidence_ids": ["chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5"], "quote": "COCO testdev"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "dataset", "value": "ADE20K validation", "claims": [{"claim": {"statement": "ADE20K val", "kind": "verbatim", "evidence_ids": ["chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5"], "quote": "ADE20K val"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "input_setting", "value": "默认 224×224 输入；4×4 patch；7×7 attention window", "claims": [{"claim": {"statement": "默认输入和窗口设置由论文架构说明与固定实现共同给出。", "kind": "inference", "evidence_ids": ["chunk:97ac02f20e8e19c445dfd2afd820a3a8d704b316dfdeff2e483811c24480408d", "chunk:729cb00ca7b1c4acbcfcb005f0c96330679627d7fcb1906c3f6b1fea57245f39", "chunk:5a96fc09ca2554acd0f142044a67e9a0d16e40ac8069033b184a0b07785d5066"]}, "status": "requires_review", "evidence": [], "diagnostics": ["中文字段合并了三个同源事实，保留人工复核。"]}]},
+          {"name": "training", "value": "ImageNet-1K 从头训练：AdamW，300 epochs，cosine decay，20 epochs warm-up，batch size 1024", "claims": [{"claim": {"statement": "The regular ImageNet-1K recipe uses AdamW for 300 epochs with cosine decay and 20 epochs of warm-up.", "kind": "verbatim", "evidence_ids": ["chunk:e995602c7dba196a81771ccf400135c98f4cfd278755fe8ece91b3a72827efe1"], "quote": "we employ an AdamW optimizer for 300 epochs using a cosine decay learning rate scheduler with 20 epochs of linear warm-up"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "metric", "value": "ImageNet-1K single-crop top-1 accuracy", "claims": [{"claim": {"statement": "Top-1 accuracy using a single crop is reported.", "kind": "verbatim", "evidence_ids": ["chunk:3c45964ececfbbc7a3e7afac9ca60a1de7d840833b8338b1ad960a1a90c4c17c"], "quote": "the top-1 accuracy using a single crop is reported"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "result", "value": "Shifted windows 在连续注意力层之间建立跨窗口连接", "claims": [{"claim": {"statement": "The shifted windows bridge windows from the preceding layer.", "kind": "verbatim", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"], "quote": "The shifted windows bridge the windows of the preceding layer, providing connections among them"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "result", "value": "论文 Table 1(a)：Swin-T 在 ImageNet-1K、224×224 下 top-1 为 81.3%", "claims": [{"claim": {"statement": "Swin-T reports 81.3% using 224² input in the paper.", "kind": "verbatim", "evidence_ids": ["chunk:2082098cb170cabc6bea747c4e5f08265973938957fd88358b2b4ba2cec8e46b"], "quote": "Swin-T (81.3%) over DeiT-S (79.8%) using 224² input"}, "status": "supported", "evidence": [], "diagnostics": ["论文口径；与仓库 checkpoint 表分开保留。"]}]},
+          {"name": "result", "value": "官方仓库模型表：对应 Swin-T checkpoint 的 top-1 为 81.2%", "claims": [{"claim": {"statement": "The fixed repository model table lists Swin-T at 81.2 acc@1.", "kind": "verbatim", "evidence_ids": ["chunk:96ff4bdd6493775b6f1a4b6f537a99b85f32087a2e92c1ef62fc898188220e19"], "quote": "| Swin-T | ImageNet-1K | 224x224 | 81.2 |"}, "status": "supported", "evidence": [], "diagnostics": ["仓库 checkpoint 口径；不与论文 81.3 合并。"]}]},
+          {"name": "limitation", "value": "固定 PatchEmbed.forward 要求输入高宽与配置 img_size 完全一致", "claims": [{"claim": {"statement": "PatchEmbed.forward asserts that input H and W equal the configured image size.", "kind": "verbatim", "evidence_ids": ["chunk:2cefb942b7528d2af811a6af15ca38bd2efdacc4e2bbbafd5650866e4f5a752e"], "quote": "assert H == self.img_size[0] and W == self.img_size[1]"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "code_availability", "value": "官方 Swin-T 配置：configs/swin/swin_tiny_patch4_window7_224.yaml", "claims": [{"claim": {"statement": "The fixed repository contains the Swin-T configuration.", "kind": "verbatim", "evidence_ids": ["chunk:f97d9b2e4291cc2e9b0aa9a06ea1e504ee4ea42d71b3647115b4dd94b983a2fa"], "quote": "NAME: swin_tiny_patch4_window7_224"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "code_availability", "value": "模型入口：models/build.py::build_model → SwinTransformer", "claims": [{"claim": {"statement": "build_model constructs SwinTransformer when MODEL.TYPE is swin.", "kind": "verbatim", "evidence_ids": ["chunk:865033990a769348c28e8ac3a252b4dd3ca209a399ee208b95a3d5e3b214eda7"], "quote": "if model_type == 'swin':\n        model = SwinTransformer"}, "status": "supported", "evidence": [], "diagnostics": []}]}
         ]
       },
       {
@@ -78,11 +168,13 @@
         "decision": null,
         "claims": [],
         "fields": [
-          {"name": "model", "value": "Swin Transformer", "claims": [{"claim": {"statement": "Swin Transformer", "kind": "verbatim", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"], "quote": "Swin Transformer"}, "status": "supported", "evidence": [], "diagnostics": []}]},
-          {"name": "result", "value": "移位窗口连接前一层中的窗口。", "claims": [{"claim": {"statement": "移位窗口连接前一层中的窗口。", "kind": "inference", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"]}, "status": "requires_review", "evidence": [], "diagnostics": ["预置演示整理；建议核对英文原文。"]}]}
+          {"name": "task", "value": "视觉 Transformer 骨干网络", "claims": [{"claim": {"statement": "general-purpose backbone for computer vision", "kind": "verbatim", "evidence_ids": ["chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5"], "quote": "general-purpose backbone for computer vision"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "model", "value": "Swin Transformer", "claims": [{"claim": {"statement": "Swin Transformer", "kind": "verbatim", "evidence_ids": ["chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5"], "quote": "Swin Transformer"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "result", "value": "移位窗口连接前一层窗口", "claims": [{"claim": {"statement": "The shifted windows bridge the windows of the preceding layer.", "kind": "verbatim", "evidence_ids": ["chunk:f20c7f1cdeb64b376f43a3f8c78db6e321922b66eaf0d5b57d61c9a535548e1b"], "quote": "The shifted windows bridge the windows of the preceding layer"}, "status": "supported", "evidence": [], "diagnostics": []}]},
+          {"name": "code_availability", "value": "论文声明代码和模型公开可用", "claims": [{"claim": {"statement": "The code and models are publicly available.", "kind": "verbatim", "evidence_ids": ["chunk:3155248c723057a2ad4a6e661c1baaf02d86f662b7a6edae4d111b62d71c30c5"], "quote": "The code and models are publicly available"}, "status": "supported", "evidence": [], "diagnostics": []}]}
         ]
       }
     ]
   },
-  "report": "# Swin Transformer 单篇研究记录\n\n**范围：** arXiv:2103.14030v2 / ICCV 2021。以下是预置演示数据，不是本次模型生成或评测 gold。\n\n## 当前记录\n\n筛选：纳入（仍需人工确认）。\n\n提取：模型为 Swin Transformer；核心设计为相邻层移动窗口建立跨窗口连接。\n\n## 证据\n\n原文说明，移位窗口桥接前一层窗口并在窗口间提供连接（PDF 第 2 页）。\n\n## 使用边界\n\n本页展示单篇论文的记录快照，不代表论文间比较、实验排名或自动抽取质量。"
+  "report": "# Swin-T 复现研究快照\n\n**固定范围：** 论文 `arXiv:2103.14030v2 / ICCV 2021`；官方仓库 commit `f82860bfb5225915aca09c3227159ee9e1df874d`。以下内容为预置演示数据，不是本次实时模型调用或评测答案。\n\n## 研究任务与架构\n\nSwin Transformer 被提出为通用视觉骨干，覆盖 ImageNet-1K 图像分类、COCO 目标检测和 ADE20K 语义分割。Swin-T 以分层表示配合 shifted-window self-attention；相邻注意力层改变窗口划分，使新窗口跨越上一层窗口边界。\n\n## 输入与训练\n\n固定案例采用 224×224 输入、4×4 patch 和 7×7 attention window。论文给出的常规 ImageNet-1K 从头训练设置为 AdamW、300 epochs、cosine decay、20 epochs warm-up 和 batch size 1024。\n\n## 指标与结果冲突\n\n评价指标为 single-crop ImageNet-1K top-1 accuracy。论文 Table 1(a) 报告 Swin-T 为 **81.3%**；固定官方仓库 README 的对应 checkpoint 表为 **81.2%**。两者按来源分别保留，不平均，也不推测差异原因。\n\n## 代码入口与限制\n\n配置入口为 `configs/swin/swin_tiny_patch4_window7_224.yaml`，模型由 `models/build.py::build_model` 构造。固定实现的 `PatchEmbed.forward` 显式断言输入高宽等于配置的 `img_size`；改变输入分辨率时不能只替换图片尺寸。\n\n## 证据边界\n\n每个字段绑定固定论文页码或官方仓库行号。字段中的中文归纳仍需研究者核对；本快照只用于展示有据整理、版本修订和冲突保留流程。"
 }
