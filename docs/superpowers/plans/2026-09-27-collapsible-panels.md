@@ -39,7 +39,7 @@
 - Produces: `panelKeys`, `PanelKey`, `PanelVisibility`, `createPanelVisibility()`, and `togglePanelVisibility(state, key)`.
 - Consumes: no Vue runtime; the module remains deterministic and testable in isolation.
 
-- [ ] **Step 1: Write the failing state tests**
+- [x] **Step 1: Write the failing state tests**
 
 Create `frontend/src/panelCollapse.test.ts`:
 
@@ -72,13 +72,13 @@ describe('workspace panel visibility', () => {
 })
 ```
 
-- [ ] **Step 2: Run the test and verify it fails**
+- [x] **Step 2: Run the test and verify it fails**
 
 Run: `cd frontend; npm test -- --run src/panelCollapse.test.ts`
 
 Expected: FAIL because `panelCollapse.ts` does not exist.
 
-- [ ] **Step 3: Implement the pure state module**
+- [x] **Step 3: Implement the pure state module**
 
 Create `frontend/src/panelCollapse.ts`:
 
@@ -108,13 +108,13 @@ export function togglePanelVisibility(
 }
 ```
 
-- [ ] **Step 4: Run the focused test**
+- [x] **Step 4: Run the focused test**
 
 Run: `cd frontend; npm test -- --run src/panelCollapse.test.ts`
 
 Expected: 2 tests PASS.
 
-- [ ] **Step 5: Commit the state contract**
+- [x] **Step 5: Commit the state contract**
 
 ```powershell
 git add frontend/src/panelCollapse.ts frontend/src/panelCollapse.test.ts
@@ -131,7 +131,7 @@ git commit -m "test: define workspace panel visibility contract"
 - Consumes: `expanded: boolean`, `controls: string`, and `label: string` props.
 - Produces: a `toggle` event and a button whose visible label, icon, `aria-label`, `aria-expanded`, and `aria-controls` all describe the next action and controlled body.
 
-- [ ] **Step 1: Create the shared button component**
+- [x] **Step 1: Create the shared button component**
 
 Create `frontend/src/components/PanelCollapseButton.vue`:
 
@@ -164,7 +164,7 @@ defineEmits<{ toggle: [] }>()
 </template>
 ```
 
-- [ ] **Step 2: Add shared layout styles**
+- [x] **Step 2: Add shared layout styles**
 
 Append focused rules to `frontend/src/style.css`:
 
@@ -246,13 +246,13 @@ Append focused rules to `frontend/src/style.css`:
 
 Replace the broad existing `.evidence-title button` rule with `.evidence-close-button`, and add that class to the existing close button, so the collapse control keeps `text-button` styling. Keep the existing `.reproduction-section > p` selector during migration and add the `.panel-body > p` form above so the wrapped explanatory copy retains its typography. Do not add transitions that delay content visibility or leave focusable hidden descendants during animation.
 
-- [ ] **Step 3: Run TypeScript and production build**
+- [x] **Step 3: Run TypeScript and production build**
 
 Run: `cd frontend; npm run build`
 
 Expected: Vue TypeScript checking and Vite production build PASS.
 
-- [ ] **Step 4: Commit the shared control**
+- [x] **Step 4: Commit the shared control**
 
 ```powershell
 git add frontend/src/components/PanelCollapseButton.vue frontend/src/style.css
@@ -270,7 +270,7 @@ git commit -m "feat: add accessible panel collapse control"
 - Consumes: `createPanelVisibility()` and `togglePanelVisibility()` from Task 1; `PanelCollapseButton` from Task 2.
 - Produces: independent controls for all seven panel keys, with body IDs `demo-panel-body`, `papers-panel-body`, `card-panel-body`, `history-panel-body`, `comparison-panel-body`, `reproduction-panel-body`, and `evidence-panel-body`.
 
-- [ ] **Step 1: Add page-level visibility state**
+- [x] **Step 1: Add page-level visibility state**
 
 In `frontend/src/App.vue`, import the shared component and state helpers:
 
@@ -291,7 +291,7 @@ function togglePanel(key: PanelKey) {
 
 Do not add this state to `savedLiveState`; entering or leaving the readonly demo must not reset the user's current layout.
 
-- [ ] **Step 2: Connect DemoCenter through props and events**
+- [x] **Step 2: Connect DemoCenter through props and events**
 
 Change the call in `App.vue` to:
 
@@ -319,7 +319,7 @@ The header button must be:
 />
 ```
 
-- [ ] **Step 3: Wrap the five content-column panel bodies**
+- [x] **Step 3: Wrap the five content-column panel bodies**
 
 For `papers`, `card`, `history`, `comparison`, and `reproduction` in `App.vue`:
 
@@ -342,7 +342,7 @@ For example, the card heading action ends with:
 
 Preserve every existing `v-if`, submit handler, disabled state, and readonly guard inside the body.
 
-- [ ] **Step 4: Connect the evidence panel without changing close behavior**
+- [x] **Step 4: Connect the evidence panel without changing close behavior**
 
 Keep the evidence title visible. Put the existing close button and this new control in `.evidence-title-actions`:
 
@@ -357,7 +357,7 @@ Keep the evidence title visible. Put the existing close button and this new cont
 
 Wrap only the evidence metadata, excerpt, source link, and footer note in `#evidence-panel-body`. The existing close button must continue to set `proof = null` and must not change `panelVisibility.evidence`.
 
-- [ ] **Step 5: Run focused and full frontend tests**
+- [x] **Step 5: Run focused and full frontend tests**
 
 Run:
 
@@ -369,7 +369,7 @@ npm test -- --run
 
 Expected: focused state tests and all frontend tests PASS.
 
-- [ ] **Step 6: Run default and readonly builds**
+- [x] **Step 6: Run default and readonly builds**
 
 Run:
 
@@ -382,7 +382,7 @@ try { npm run build } finally { Remove-Item Env:VITE_DEMO_ONLY -ErrorAction Sile
 
 Expected: both production profiles PASS.
 
-- [ ] **Step 7: Commit the seven-panel integration**
+- [x] **Step 7: Commit the seven-panel integration**
 
 Because `App.vue` already contains unrelated uncommitted work, stage only the collapse-state imports, state function, and template hunks for this feature. Then commit:
 
@@ -402,7 +402,7 @@ git commit -m "feat: make workspace panels collapsible"
 - Consumes: the completed seven-panel UI from Task 3.
 - Produces: verified desktop and narrow-screen behavior plus user-facing instructions.
 
-- [ ] **Step 1: Verify all seven controls in the running browser**
+- [x] **Step 1: Verify all seven controls in the running browser**
 
 At `http://127.0.0.1:5173/`, load the Swin readonly replay and check:
 
@@ -416,19 +416,19 @@ At `http://127.0.0.1:5173/`, load the Swin readonly replay and check:
 侧边导航能定位到已收起卡片的可见标题，且不会擅自改变展开状态
 ```
 
-- [ ] **Step 2: Verify readonly network isolation**
+- [x] **Step 2: Verify readonly network isolation**
 
 Inspect browser resource timing after loading and toggling panels. Expected: no resource URL contains `/v1`.
 
-- [ ] **Step 3: Verify narrow layout**
+- [x] **Step 3: Verify narrow layout**
 
 Use a viewport no wider than 720 CSS pixels. Confirm heading actions wrap below the title, every toggle remains visible, and no horizontal page overflow is introduced. Reset the temporary viewport afterward.
 
-- [ ] **Step 4: Update documentation**
+- [x] **Step 4: Update documentation**
 
 Add a short “展开与收起” subsection to `docs/p5-web-guide.md` stating that all seven main cards default to expanded, retain state while hidden, and reset layout after refresh. Append a problem-log entry describing the long-page usability issue, implementation boundary, and browser/build verification.
 
-- [ ] **Step 5: Run final checks**
+- [x] **Step 5: Run final checks**
 
 Run:
 
@@ -442,7 +442,7 @@ git diff --check
 
 Expected: all frontend tests PASS, production build PASS, and `git diff --check` prints no errors.
 
-- [ ] **Step 6: Commit documentation and verification results**
+- [x] **Step 6: Commit documentation and verification results**
 
 Stage `docs/p5-web-guide.md` and only the new collapse entry from `docs/problem-solution-log.md`, preserving the unrelated existing entry, then commit:
 
