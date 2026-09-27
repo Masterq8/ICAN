@@ -49,7 +49,7 @@ fixture 的 `candidate.evidence` 从一条扩展为覆盖上述字段的有界�
 - 论文页码或代码／配置行号；
 - 可直接展示的原文片段。
 
-优先复用当前 v2 Swin collection 已存在的真实 chunk。若一个现有 chunk 太大，只在 fixture 展示时截取连续片段，不修改索引或原始数据。历史记录中的每个 evidence ID 都必须能在 `candidate.evidence` 找到，页面现有 `enrichEvidence` 才能填充可点击证据对象。
+优先复用当前 v2 Swin collection 已存在的真实 chunk。若一个现有 chunk 太大，只在 fixture 展示时截取连续片段，不修改索引或原始数据。历史记录中的每个 evidence ID 都必须能在 `candidate.evidence` 找到，fixture 校验器会在载入前解析证据对象，并检查逐字引文确实存在于绑定证据中。
 
 ### 历史版本与差异
 

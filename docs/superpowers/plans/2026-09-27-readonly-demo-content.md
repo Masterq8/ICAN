@@ -25,7 +25,7 @@
 - Create: `frontend/src/demoFixture.test.ts`
 - Create: `frontend/src/demoFixture.ts`
 
-- [ ] **Step 1: Write the failing fixture contract test**
+- [x] **Step 1: Write the failing fixture contract test**
 
 Create a test that imports `swin-case.json` and requires all visible field names, resolvable evidence, a valid two-version chain, and separate conflicting result sources:
 
@@ -50,7 +50,7 @@ describe('readonly Swin demo fixture', () => {
       '论文 Table 1(a)：Swin-T 在 ImageNet-1K、224×224 下 top-1 为 81.3%',
       '官方仓库模型表：对应 Swin-T checkpoint 的 top-1 为 81.2%',
     ]))
-    expect(new Set(results.flatMap(field => field.claims.flatMap(claim => claim.evidence.map(item => item.source.source_type))))).toEqual(new Set(['paper', 'code']))
+    expect(new Set(results.flatMap(field => field.claims.flatMap(claim => claim.evidence.map(item => item.source.source_type))))).toEqual(new Set(['paper', 'documentation']))
   })
 
   it('preserves stable revision chains', () => {
@@ -61,13 +61,13 @@ describe('readonly Swin demo fixture', () => {
 })
 ```
 
-- [ ] **Step 2: Run the test and verify the sparse fixture fails**
+- [x] **Step 2: Run the test and verify the sparse fixture fails**
 
 Run: `cd frontend; npm test -- --run src/demoFixture.test.ts`
 
 Expected: FAIL because `demoFixture.ts` is absent or because the latest fixture does not cover all nine fields.
 
-- [ ] **Step 3: Add the focused validator and hydrator**
+- [x] **Step 3: Add the focused validator and hydrator**
 
 Implement `requiredDemoFields` and `hydrateAndValidateDemoFixture`. It must reject missing fields, unresolved evidence IDs, non-demo labels, fewer than two revisions, and broken `revision_of` links; then return history records with evidence objects attached:
 
@@ -127,13 +127,13 @@ export function hydrateAndValidateDemoFixture(raw: unknown): DemoFixture {
 }
 ```
 
-- [ ] **Step 4: Run the test and confirm it now fails only on sparse fixture content**
+- [x] **Step 4: Run the test and confirm it now fails only on sparse fixture content**
 
 Run: `cd frontend; npm test -- --run src/demoFixture.test.ts`
 
 Expected: FAIL with `Readonly demo card is incomplete`.
 
-- [ ] **Step 5: Commit the contract module and failing test**
+- [x] **Step 5: Commit the contract module and failing test**
 
 Run:
 
@@ -148,7 +148,7 @@ git commit -m "test: define complete readonly demo contract"
 - Modify: `frontend/src/demo/swin-case.json`
 - Test: `frontend/src/demoFixture.test.ts`
 
-- [ ] **Step 1: Expand candidate evidence using fixed sources**
+- [x] **Step 1: Expand candidate evidence using fixed sources**
 
 Add bounded, continuous excerpts for the following source locators, preserving the fixed paper and repository versions:
 
@@ -164,9 +164,9 @@ models/build.py lines 34-52: build_model entry
 README.md lines 110-118: checkpoint table top-1 81.2
 ```
 
-Every evidence object must have a unique stable `chunk_id`, fixed `source_version`, and page or line location. Repository snippets use `source_type: "code"`; paper snippets use `source_type: "paper"`.
+Every evidence object must have a unique stable `chunk_id`, fixed `source_version`, and page or line location. Paper snippets use `source_type: "paper"`; Python implementation snippets use `"code"`, YAML uses `"config"`, and the repository README uses `"documentation"`.
 
-- [ ] **Step 2: Build the two extraction versions**
+- [x] **Step 2: Build the two extraction versions**
 
 Keep the older version intentionally partial with `task`, `model`, one `result`, and `code_availability`. Make the latest version contain these exact field groups:
 
@@ -184,17 +184,17 @@ code_availability x2: Swin-T YAML and model build/implementation entry
 
 Use `supported` only for continuous source quotes. Use `requires_review` for Chinese synthesis across multiple facts. Bind every claim to at least one evidence ID in `candidate.evidence`.
 
-- [ ] **Step 3: Update the report to mirror the latest card**
+- [x] **Step 3: Update the report to mirror the latest card**
 
 The Markdown report must contain: source scope, task and architecture, datasets, input/training setup, top-1 metric, the separate 81.3/81.2 values, reproduction limitation, code entry points, and the statement that the snapshot is curated demo data rather than a live model result.
 
-- [ ] **Step 4: Run the fixture tests**
+- [x] **Step 4: Run the fixture tests**
 
 Run: `cd frontend; npm test -- --run src/demoFixture.test.ts`
 
-Expected: 3 tests PASS.
+Expected: fixture contract tests PASS, including the negative quote-binding case.
 
-- [ ] **Step 5: Commit the complete fixture**
+- [x] **Step 5: Commit the complete fixture**
 
 Run:
 
@@ -209,7 +209,7 @@ git commit -m "feat: fill readonly Swin demo with sourced research fields"
 - Modify: `frontend/src/App.vue`
 - Test: `frontend/src/demoFixture.test.ts`
 
-- [ ] **Step 1: Replace the inline evidence enrichment**
+- [x] **Step 1: Replace the inline evidence enrichment**
 
 Import and call the validated fixture helper:
 
@@ -227,19 +227,19 @@ function loadDemoCase() {
 
 All existing readonly guards, static-only behavior, Agent replay loading, selected evidence, report, and live-state restoration remain unchanged.
 
-- [ ] **Step 2: Run all frontend unit tests**
+- [x] **Step 2: Run all frontend unit tests**
 
 Run: `cd frontend; npm test -- --run`
 
 Expected: all tests PASS.
 
-- [ ] **Step 3: Run TypeScript and production builds**
+- [x] **Step 3: Run TypeScript and production builds**
 
 Run: `cd frontend; npm run build`
 
 Expected: `vue-tsc --noEmit` and `vite build` complete successfully.
 
-- [ ] **Step 4: Commit the integration**
+- [x] **Step 4: Commit the integration**
 
 Run:
 
@@ -254,7 +254,7 @@ git commit -m "refactor: validate readonly demo before rendering"
 - Modify: `docs/p5-web-guide.md`
 - Modify: `docs/problem-solution-log.md`
 
-- [ ] **Step 1: Build the static-only profile**
+- [x] **Step 1: Build the static-only profile**
 
 Run:
 
@@ -267,7 +267,7 @@ Remove-Item Env:VITE_DEMO_ONLY
 
 Expected: build succeeds and output contains the fixed demo fixture.
 
-- [ ] **Step 2: Perform browser acceptance checks**
+- [x] **Step 2: Perform browser acceptance checks**
 
 Open the local Vite page and verify:
 
@@ -281,11 +281,11 @@ Agent replay shows the frozen real trajectory and citations
 no /v1 request occurs while loading or navigating readonly content
 ```
 
-- [ ] **Step 3: Update documentation**
+- [x] **Step 3: Update documentation**
 
 In `docs/p5-web-guide.md`, replace the two-field description with the complete nine-field walkthrough and conflict-display behavior. Append a problem-log entry recording that the old fixture had one evidence item and two fields, and include test/build/browser verification.
 
-- [ ] **Step 4: Run final checks**
+- [x] **Step 4: Run final checks**
 
 Run:
 
@@ -299,7 +299,7 @@ git diff --check
 
 Expected: all frontend tests pass, production build succeeds, and `git diff --check` prints no errors.
 
-- [ ] **Step 5: Commit documentation and verification changes**
+- [x] **Step 5: Commit documentation and verification changes**
 
 Run:
 
