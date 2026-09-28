@@ -2,3 +2,4 @@
 # Keep hash-checked evaluation, catalogs, and configuration byte-for-byte.
 data/** -text
 configs/** -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
