@@ -49,14 +49,12 @@ const stages = [
 
     <div id="demo-panel-body" v-show="expanded" class="panel-body">
       <header class="demo-center-header">
-        <div class="demo-center-copy">
-        <p>从提出问题、筛选论文到 Agent 工具调用与证据回查。每一步都落在同一篇 Swin Transformer 论文上。</p>
-        </div>
-
         <div class="demo-mode-panel">
-          <span class="demo-mode-caption">当前演示模式</span>
-          <p v-if="demoMode">本地快照来自已完成的开发运行；浏览不会访问模型、服务或本地存储。</p>
-          <p v-else>在线 Agent 仅在你点击“运行核查”后提交；请求完成后展示服务端返回的实际轨迹。</p>
+          <div class="demo-mode-copy">
+            <span class="demo-mode-caption">当前演示模式</span>
+            <p v-if="demoMode">本地快照来自已完成的开发运行；浏览不会访问模型、服务或本地存储。</p>
+            <p v-else>在线 Agent 仅在你点击“运行核查”后提交；请求完成后展示服务端返回的实际轨迹。</p>
+          </div>
           <div class="demo-mode-actions">
             <button class="demo-replay-button" type="button" :disabled="demoMode || busy" @click="emit('load-demo')">
               {{ demoMode ? '只读回放已载入' : busy ? '请等待当前任务结束' : '载入 Swin 只读回放' }}
@@ -81,11 +79,6 @@ const stages = [
           </li>
         </ol>
       </nav>
-
-      <footer class="demo-center-foot">
-        <span>展示顺序可跳转；筛选、信息卡、报告和证据仍由现有工作台组件提供。</span>
-        <span>录制建议：16:9 桌面浏览器 · 约 5 分钟</span>
-      </footer>
     </div>
   </section>
 </template>
